@@ -45,3 +45,7 @@ lévő katonáinak arányában szerezhez többet tornyok ledöntésével és kat
 A játék akkor ér véget, amikor egy játékos kastélya illetve összes életben lévő katonája elveszti az életerőpontját. \
 Ha egy játékos elveszti a kastélyát, nem vásárolhat többet a játék során. \
 Amennyiben az életben maradt katonáinak sikerült lerombolni az ellenséges kastélyt, a játék döntentlennel ér véget.
+
+### Drótvázterv
+
+![Drózvázterv](./Double_Trouble_Kingdom.png)
