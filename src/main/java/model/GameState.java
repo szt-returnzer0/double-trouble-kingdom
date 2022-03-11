@@ -24,13 +24,13 @@ public class GameState {
         decideStarter();
     }
 
-    private void decideStarter() {
+    public void decideStarter() {
         Random rnd = new Random();
         this.playerNumber = rnd.nextInt(2);
         this.currentPlayer = players.get(this.playerNumber);
     }
 
-    private void nextPlayer() {
+    public void nextPlayer() {
         this.playerNumber = this.playerNumber == 0 ? 1 : 0;
         this.currentPlayer = players.get(this.playerNumber);
     }
