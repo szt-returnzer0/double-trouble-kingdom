@@ -23,13 +23,13 @@ public class MainWindow {
         frame.setVisible(true);
     }
 
-    public void startGame() {
+    public void startGame(int xMax, int yMax) {
         frame.remove(mainMenu);
 
         Database db = new Database();
-        Terrain[][] map = new Terrain[32][64];
-        for (int y = 0; y < 32; y++) {
-            for (int x = 0; x < 64; x++) {
+        Terrain[][] map = new Terrain[yMax][xMax];
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
                 switch ((int) (Math.random() * 4)) {
                     case 0 -> map[y][x] = new Plains(new Point(x, y));
                     case 1 -> map[y][x] = new Swamp(new Point(x, y));

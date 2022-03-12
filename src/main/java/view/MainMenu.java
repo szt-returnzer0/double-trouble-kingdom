@@ -27,7 +27,7 @@ public class MainMenu extends JPanel {
         centerButtons.setLayout(new FlowLayout());
         JButton start = new JButton("Start");
         centerButtons.add(start);
-        start.addActionListener(e -> wnd.startGame());
+        start.addActionListener(e -> wnd.startGame(64, 32));
 
         JButton editor = new JButton("Térképszerkesztő");
         centerButtons.add(editor);
