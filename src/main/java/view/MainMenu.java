@@ -2,9 +2,11 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainMenu extends JPanel {
-    public MainMenu() {
+    public MainMenu(MainWindow wnd) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel topBar = new JPanel();
@@ -25,6 +27,7 @@ public class MainMenu extends JPanel {
         centerButtons.setLayout(new FlowLayout());
         JButton start = new JButton("Start");
         centerButtons.add(start);
+        start.addActionListener(e -> wnd.startGame());
 
         JButton editor = new JButton("Térképszerkesztő");
         centerButtons.add(editor);
