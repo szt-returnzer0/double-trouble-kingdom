@@ -75,7 +75,7 @@ public class ControlPanel extends JPanel {
         g2d.dispose();
     }
 
-    private static class JRoundedButton extends JButton {
+    /*private static class JRoundedButton extends JButton {
         private Color selectedColor = new Color(92, 200, 230, 185);
         private Color notEnabled_bgColor = new Color(46, 154, 200, 130);
         private Color enabled_bgColor = new Color(16, 124, 170, 185);
@@ -118,5 +118,5 @@ public class ControlPanel extends JPanel {
             }
             g2d.dispose();
         }
-    }
+    }*/
 }
