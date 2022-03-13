@@ -26,9 +26,9 @@ import java.awt.event.MouseEvent;
 }*/
 
 public class MapEditorView extends GameField {
+    private final boolean pressed = false;
     private String type = "Plains";
     private Timer timer;
-    private final boolean pressed = false;
 
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
@@ -39,15 +39,28 @@ public class MapEditorView extends GameField {
             @Override
             public void mouseDragged(MouseEvent e) {
 
-                int x = e.getX();
-                int y = e.getY();
-                placeBlock(x, y);
-                repaint();
+                draw(e);
 
             }
-        });//not a good option
+        });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+                draw(e);
+
+            }
+        });
 
 
+        repaint();
+    }
+
+    private void draw(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        placeBlock(x, y);
         repaint();
     }
 
