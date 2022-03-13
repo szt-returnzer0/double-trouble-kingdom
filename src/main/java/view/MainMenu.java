@@ -2,8 +2,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenu extends JPanel {
     public MainMenu(MainWindow wnd) {
@@ -33,6 +31,7 @@ public class MainMenu extends JPanel {
         centerButtons.add(editor);
         centerPanel.add(centerButtons);
         this.add(centerPanel);
+        editor.addActionListener(e -> wnd.startEditor(64, 32));
 
         JPanel bottomButtons = new JPanel(new FlowLayout());
         JButton rename = new JButton("Átnevezés");
