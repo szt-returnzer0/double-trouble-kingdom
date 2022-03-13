@@ -9,7 +9,9 @@ import java.awt.event.ItemEvent;
 public class HamburgerMenu extends JPanel {
     private final JFrame frame;
     private final JRoundedButton[] buttons = new JRoundedButton[6]; //for multiple actionListener support
-    private Color bgColor = new Color(0, 0, 0, 0);
+    // private Color bgColor = new Color(0, 0, 0, 0);
+    private final Color bgColor = new Color(224, 224, 224, 205);
+    private boolean opened = false;
 
     public HamburgerMenu(JFrame frame) {
         super();
@@ -31,21 +33,27 @@ public class HamburgerMenu extends JPanel {
 
         menuList.setBounds(0, 50, 200, height);
         menuList.setOpaque(false);
+        menuList.setVisible(false);
         //menuList.setVisible(false);
         this.add(menuList);
+        setBounds(0, 0, 50, 50);
         toggleButton.setBounds(0, 0, 50, 50);
         toggleButton.addItemListener(e -> {
             //int state=e.getStateChange();
+            opened = e.getStateChange() == ItemEvent.SELECTED;
 
-            if (e.getStateChange() == ItemEvent.SELECTED) {
+            if (opened) {
                 setBounds(0, 0, 200, height);
-                bgColor = new Color(224, 224, 224, 205);
-                add(menuList);
+                //bgColor = new Color(224, 224, 224, 205);
+                menuList.setVisible(true);
+                //add(menuList);
+
                 repaint();
             } else {
                 setBounds(0, 0, 50, 50);
-                bgColor = new Color(0, 0, 0, 0);
-                remove(menuList);
+                //bgColor = new Color(0, 0, 0, 0);
+                //remove(menuList);
+                menuList.setVisible(false);
                 repaint();
             }
         });
@@ -54,15 +62,17 @@ public class HamburgerMenu extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        //super.paintComponent(g);
         setBounds(0, 0, 200, frame.getHeight() - 40);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(bgColor);
-        g2d.fillRoundRect(-25, 0, getWidth() - 1 + 25, getHeight() - 1, 50, 50);
-        g2d.setColor(Color.white);
-        g2d.drawRoundRect(-25, 0, getWidth() - 1 + 25, getHeight() - 1, 50, 50);
+        if (opened) {
+            g2d.setColor(bgColor);
+            g2d.fillRoundRect(-25, 0, getWidth() - 1 + 25, getHeight() - 1, 50, 50);
+            g2d.setColor(Color.white);
+            g2d.drawRoundRect(-25, 0, getWidth() - 1 + 25, getHeight() - 1, 50, 50);
+        }
         g2d.dispose();
     }
 
@@ -77,6 +87,7 @@ public class HamburgerMenu extends JPanel {
     private static class tripleStripeButton extends JToggleButton {
         public tripleStripeButton() {
             super();
+            setOpaque(false);
             setFocusPainted(false);
             setBorderPainted(false);
         }
