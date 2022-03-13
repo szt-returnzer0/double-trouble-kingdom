@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ControlPanel extends JPanel {
 
@@ -42,10 +43,18 @@ public class ControlPanel extends JPanel {
         }
 
         //TESTING PURPOSES
-        for (int i = 3; i < buttons.length; i++) {
+        for (int i = 4; i < buttons.length; i++) {
             buttons[i].setEnabled(false);
         }
 
+    }
+
+    public void attachActionListener(int idx, ActionListener e) {
+        buttons[idx].addActionListener(e);
+    }
+
+    public void changeButtonColor(int idx, Color color, int idx2) {
+        buttons[idx].changeColor(idx2, color);
     }
 
     @Override
@@ -62,9 +71,9 @@ public class ControlPanel extends JPanel {
     }
 
     private static class JRoundedButton extends JButton {
-        private final Color selectedColor = new Color(92, 200, 230, 185);
-        private final Color notEnabled_bgColor = new Color(46, 154, 200, 130);
-        private final Color enabled_bgColor = new Color(16, 124, 170, 185);
+        private Color selectedColor = new Color(92, 200, 230, 185);
+        private Color notEnabled_bgColor = new Color(46, 154, 200, 130);
+        private Color enabled_bgColor = new Color(16, 124, 170, 185);
 
         public JRoundedButton(String text, int w, int h) {
             super(text);
@@ -72,6 +81,15 @@ public class ControlPanel extends JPanel {
             setOpaque(false);
             setFocusPainted(false);
             setBorderPainted(false);
+        }
+
+        public void changeColor(int idx, Color color) {
+            switch (idx) {
+                case 0 -> selectedColor = color;
+                case 1 -> notEnabled_bgColor = color;
+                case 2 -> enabled_bgColor = color;
+                default -> selectedColor = notEnabled_bgColor = enabled_bgColor = Color.pink;
+            }
         }
 
         @Override
