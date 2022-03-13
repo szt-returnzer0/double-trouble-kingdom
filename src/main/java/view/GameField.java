@@ -10,11 +10,11 @@ import java.awt.event.ComponentEvent;
 
 public class GameField extends JPanel {
 
-    private final Terrain[][] mapRef;
-    private final int xLength;
-    private final int yLength;
-    private final ControlPanel controlPanel;
-    private int scale;
+    protected final Terrain[][] mapRef;
+    protected final int xLength;
+    protected final int yLength;
+    protected final ControlPanel controlPanel;
+    protected int scale;
 
     public GameField(Game game, JFrame frame) {
         this.mapRef = game.getMap();
@@ -29,7 +29,7 @@ public class GameField extends JPanel {
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                scale = getSize().width / xLength;
+                scale = (frame.getContentPane().getSize().width) / xLength;
                 int panelX = (int) (frame.getSize().getWidth());
                 int panelY = (int) (frame.getSize().getHeight());
                 int w = panelX / 3;
@@ -55,7 +55,7 @@ public class GameField extends JPanel {
         //g.dispose(); //not needed as g wasn't created by us
     }
 
-    private void renderField(Graphics2D g2d) {
+    protected void renderField(Graphics2D g2d) {
 
 
         for (int y = 0; y < yLength; y++) {
@@ -68,13 +68,13 @@ public class GameField extends JPanel {
         }
     }
 
-    private void drawObj(Graphics2D g2d, int x, int y) {
+    protected void drawObj(Graphics2D g2d, int x, int y) {
         handleType(g2d, mapRef[y][x].getType());
         //System.out.println("["+y+"]"+"["+x+"]");
         g2d.fillRect(x * scale, y * scale, scale, scale);
     }
 
-    private void handleType(Graphics2D g2d, String type) {
+    protected void handleType(Graphics2D g2d, String type) {
         switch (type) {
             case "Plains" -> g2d.setColor(Color.GREEN);
             case "Desert" -> g2d.setColor(Color.YELLOW);
@@ -83,5 +83,4 @@ public class GameField extends JPanel {
             default -> g2d.setColor(Color.GRAY);
         }
     }
-
 }
