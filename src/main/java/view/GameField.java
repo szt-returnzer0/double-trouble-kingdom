@@ -14,6 +14,7 @@ public class GameField extends JPanel {
     protected final int xLength;
     protected final int yLength;
     protected final ControlPanel controlPanel;
+    protected final HamburgerMenu hamburgerMenu;
     protected int scale;
 
     public GameField(Game game, JFrame frame) {
@@ -38,7 +39,10 @@ public class GameField extends JPanel {
                 repaint();
             }
         });
+        this.hamburgerMenu = new HamburgerMenu(frame);
+        //hamburgerMenu.setBounds(0,0,200,frame.getContentPane().getSize().width);
         this.add(controlPanel);
+        this.add(hamburgerMenu);
     }
 
     @Override
