@@ -49,4 +49,20 @@ public class MainWindow {
         frame.add(gameField, BorderLayout.CENTER);
         frame.pack();
     }
+
+    public void startEditor(int xMax, int yMax) {
+        frame.remove(mainMenu);
+
+        Terrain[][] map = new Terrain[yMax][xMax];
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                map[y][x] = new Plains(new Point(x, y));
+            }
+        }
+        Game dummyGame = new Game(null, map, "", "");
+        MapEditorView mapEditor = new MapEditorView(dummyGame, frame);
+
+        frame.add(mapEditor, BorderLayout.CENTER);
+        frame.pack();
+    }
 }
