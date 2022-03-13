@@ -36,16 +36,21 @@ public class ControlPanel extends JPanel {
             e = new JRoundedButton("0", 50, 50);
             this.add(e);
         }*/
-        String[] texts = new String[]{"1", "2", "3", "4", "5", "6"};
+        /*String[] texts = new String[]{"Teszt", "2", "Block", "4", "5", "6"};
         for (int i = 0; i < texts.length; i++) {
             buttons[i] = new JRoundedButton(texts[i], 50, 50);
+            this.add(buttons[i]);
+        }*/
+
+        for (int i = 0; i < 6; i++) {
+            buttons[i] = new JRoundedButton("", 50, 50);
             this.add(buttons[i]);
         }
 
         //TESTING PURPOSES
-        for (int i = 4; i < buttons.length; i++) {
+        /*for (int i = 4; i < buttons.length; i++) {
             buttons[i].setEnabled(false);
-        }
+        }*/
 
     }
 
@@ -74,9 +79,10 @@ public class ControlPanel extends JPanel {
         private Color selectedColor = new Color(92, 200, 230, 185);
         private Color notEnabled_bgColor = new Color(46, 154, 200, 130);
         private Color enabled_bgColor = new Color(16, 124, 170, 185);
-
+        private final String text;
         public JRoundedButton(String text, int w, int h) {
             super(text);
+            this.text = text;
             setPreferredSize(new Dimension(w, h));
             setOpaque(false);
             setFocusPainted(false);
@@ -105,6 +111,11 @@ public class ControlPanel extends JPanel {
                 g2d.setColor(selectedColor);
             }
             g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 25, 25);
+            if (text.length() > 0) {
+                g2d.setColor(Color.white);
+                g2d.setFont(new Font("Roboto", Font.PLAIN, 20));
+                g2d.drawString(text, getWidth() / 2 - text.length() * 5, getHeight() / 2 + 5);
+            }
             g2d.dispose();
         }
     }
