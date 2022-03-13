@@ -83,11 +83,14 @@ public class MapEditorView extends GameField {
         Terrain[][] map = mapRef;
 
         if (yIdx < yLength && xIdx < xLength)
-            switch (type) {
-                case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx));
-                case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx));
-                case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx));
-                case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx));
+            try {
+                switch (type) {
+                    case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx));
+                    case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx));
+                    case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx));
+                    case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx));
+                }
+            } catch (Exception e) {
             }
     }
 
