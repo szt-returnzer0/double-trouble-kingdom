@@ -80,8 +80,6 @@ public class MapEditorView extends GameField {
         this.controlPanel.changeButtonColor(5, new Color(64, 37, 19), 2);
         this.controlPanel.attachActionListener(5, e -> type = "Barracks");
 
-        this.hamburgerMenu.attachActionListener(4, e -> System.exit(0));
-
     }
 
     private void placeBlock(int x, int y) {

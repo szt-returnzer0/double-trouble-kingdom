@@ -45,6 +45,7 @@ public class GameField extends JPanel {
         //hamburgerMenu.setBounds(0,0,200,frame.getContentPane().getSize().width);
         this.add(controlPanel);
         this.add(hamburgerMenu);
+        this.hamburgerMenu.attachActionListener(4, e -> System.exit(0));
     }
 
     @Override
