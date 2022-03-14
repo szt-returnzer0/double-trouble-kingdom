@@ -17,6 +17,7 @@ public class GameField extends JPanel {
     protected final ControlPanel controlPanel;
     protected final HamburgerMenu hamburgerMenu;
     protected int scale;
+    protected Entity selection = null;
 
     public GameField(Game game, JFrame frame) {
         this.mapRef = game.getMap();
@@ -55,7 +56,7 @@ public class GameField extends JPanel {
         //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
 
         renderField(g2d);
-
+        drawCurrentSelection(g2d);
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
     }
@@ -87,6 +88,26 @@ public class GameField extends JPanel {
             g2d.fillRect(x * scale, y * scale, scale, scale);
         }
 
+    }
+
+    protected void drawCurrentSelection(Graphics2D g2d) {
+        System.out.println(selection);
+        if (selection != null) {
+            handleType(g2d, selection.getType());
+            Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, new float[]{9}, 0);
+            g2d.setStroke(dashed);
+            Color col = g2d.getColor();
+            g2d.drawRect(selection.getPosition().x * scale, selection.getPosition().y * scale, selection.getSize().width * scale, selection.getSize().height * scale);
+            g2d.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 150));
+            g2d.fillRect(selection.getPosition().x * scale, selection.getPosition().y * scale, selection.getSize().width * scale, selection.getSize().height * scale);
+
+        }
+
+    }
+
+    protected void setSelection(Entity ent) {
+        selection = ent;
     }
 
     protected void handleType(Graphics2D g2d, String type) {
