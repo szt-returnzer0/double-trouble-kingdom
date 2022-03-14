@@ -9,23 +9,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/*public class MapEditorView extends JPanel {
-    private final GameField gameField;
-    public MapEditorView(Terrain[][] map, JFrame frame) {
-        Game dummyGame = new Game(null, map, "", "");
-        gameField = new GameField(dummyGame, frame);
-        setupButtons();
-        frame.add(gameField);
-        frame.pack();
-    }
-
-    private void setupButtons() {
-
-        gameField.attachActionListener(0,e->System.out.println("megy"));
-
-    }
-
-}*/
 
 public class MapEditorView extends GameField {
     private final boolean pressed = false;
@@ -159,26 +142,6 @@ public class MapEditorView extends GameField {
             }
         }
     }
-
-    /*private void placeCastle(int xIdx, int yIdx) {
-        String side = xIdx < xLength / 2 ? "left" : "right";
-        Castle c = new Castle(new Point(xIdx, yIdx), side);
-        if (xIdx + c.getSize().width <= xLength && yIdx + c.getSize().height <= yLength && !(xIdx>xLength/2-5 && xIdx<xLength/2+3)) {
-            if(side=="left"){
-                deleteBuilding(castles[0]);
-                castles[0]=c;
-            }else{
-                deleteBuilding(castles[1]);
-                castles[1]=c;
-            }
-            for (int y = yIdx; y < yIdx + c.getSize().height; y++) {
-                for (int x = xIdx; x < xIdx + c.getSize().width; x++) {
-                    mapRef[y][x].addEntities(c);
-                }
-            }
-
-        }
-    }*/
 
     private void placeLimitedBuilding(Building b) {
         int xIdx = b.getPosition().x;
