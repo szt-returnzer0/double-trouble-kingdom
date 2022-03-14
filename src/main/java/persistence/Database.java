@@ -1,4 +1,65 @@
 package persistence;
 
+import java.sql.*;
+
 public class Database {
+    Connection c;
+
+    public Database() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:game.db");
+            ResultSet tables = c.getMetaData().getTables(null, null, "RECORDS", null);
+            if (!tables.next()) createTable();
+            //c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    public static void main(String[] args) {
+        Database db = new Database();
+        db.saveRecord(new Record("A","B",1, 100));
+        //db.deleteRecordByID(1);
+    }
+
+    public void createTable() {
+        try {
+            Statement createStatement = c.createStatement();
+            String sql = "CREATE TABLE RECORDS " +
+                    "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " P1NAME TEXT NOT NULL," +
+                    " P2NAME TEXT NOT NULL," +
+                    " WINNER INT NOT NULL," +
+                    " TIME INT NOT NULL)";
+            createStatement.executeUpdate(sql);
+            createStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveRecord(Record record) {
+        try {
+            Statement createStatement = c.createStatement();
+            String sql = "INSERT INTO RECORDS (P1NAME,P2NAME,WINNER,TIME) " +
+                    "VALUES (" + record.toString() + ")";
+            createStatement.executeUpdate(sql);
+            createStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteRecordByID(int id) {
+        try {
+            Statement createStatement = c.createStatement();
+            String sql = "DELETE FROM RECORDS WHERE ID=" + id;
+            createStatement.executeUpdate(sql);
+            createStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
