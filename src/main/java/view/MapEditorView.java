@@ -16,7 +16,7 @@ public class MapEditorView extends GameField {
     private Timer timer;
     private final Castle[] castles = new Castle[]{null, null};
     private final Barracks[] barracks = new Barracks[]{null, null};
-
+    private boolean inverted = false;
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
         setupButtons();
@@ -25,17 +25,31 @@ public class MapEditorView extends GameField {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
+                    setSelection(null);
+                    draw(e);
+                }
 
-                draw(e);
+            }
+        });
 
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                updateSelection(e.getX(), e.getY());
             }
         });
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
-                draw(e);
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    inverted = !inverted;
+                    updateSelection(e.getX(), e.getY());
+                } else if (e.getButton() == MouseEvent.BUTTON1) {
+                    setSelection(null);
+                    draw(e);
+                }
 
             }
         });
@@ -111,6 +125,21 @@ public class MapEditorView extends GameField {
         return onBuilding;
     }
 
+    private void updateSelection(int x, int y) {
+        int yIdx = y / scale;
+        int xIdx = x / scale;
+        Building tmp;
+        switch (type) {
+            case "Castle" -> tmp = new Castle(new Point(xIdx, yIdx), "");
+            case "Barracks" -> tmp = new Barracks(new Point(xIdx, yIdx), "");
+            default -> tmp = null;
+        }
+
+        if (inverted && tmp != null) tmp.invert();
+        setSelection(tmp);
+        repaint();
+    }
+
     private boolean hasMatchingTypes(ArrayList<Entity> ent) {
         boolean result = false;
         for (Entity entity : ent) {
@@ -148,6 +177,8 @@ public class MapEditorView extends GameField {
         int yIdx = b.getPosition().y;
         String side = xIdx < xLength / 2 ? "left" : "right";
         b.setSide(side);
+        if (inverted)
+            b.invert();
         Building[] arr = Objects.equals(b.getType(), "Castle") ? castles : barracks;
         if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (side.equals("left")) {
