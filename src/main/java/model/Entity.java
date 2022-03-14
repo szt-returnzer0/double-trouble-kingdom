@@ -66,6 +66,10 @@ public abstract class Entity {
         return this.size;
     }
 
+    public void invert() {
+        this.size = new Dimension(this.size.height, this.size.width);
+    }
+
     public void destroy() {
     }
 
