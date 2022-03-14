@@ -17,6 +17,13 @@ public abstract class Terrain {
         this.speedMod = 1;
     }
 
+    protected Terrain(Point gridPos, String type, ArrayList<Entity> entities) {
+        this.gridPos = gridPos;
+        this.type = type;
+        this.speedMod = 1;
+        this.entities = entities;
+    }
+
     public Point getGridPos() {
         return gridPos;
     }
