@@ -14,11 +14,20 @@ public abstract class Entity {
     protected Animator animObj;
     protected Image texture;
     protected boolean isAnimated;
+    protected String side;
 
     protected Entity(Point position) {
         this.position = position;
         this.isAlive = true;
 
+    }
+
+    public String getSide() {
+        return this.side;
+    }
+
+    public void setSide(String side) {
+        this.side = side;
     }
 
     public int getHealthPoints() {
