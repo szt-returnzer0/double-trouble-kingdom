@@ -186,8 +186,7 @@ public class MapEditorView extends GameField {
         String side = xIdx < xLength / 2 ? "left" : "right";
         b.setSide(side);
         Building[] arr = Objects.equals(b.getType(), "Castle") ? castles : barracks;
-
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - Math.ceil(b.getSize().width / 2.0) && xIdx < xLength / 2.0 + Math.ceil(b.getSize().width / 2.0))) {
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (side.equals("left")) {
                 deleteBuilding(arr[0]);
                 arr[0] = b;
