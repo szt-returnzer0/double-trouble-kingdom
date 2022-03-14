@@ -96,6 +96,7 @@ public class GameField extends JPanel {
             case "Swamp" -> g2d.setColor(Color.BLUE);
             case "Mountain" -> g2d.setColor(Color.DARK_GRAY);
             case "Castle" -> g2d.setColor(Color.lightGray);
+            case "Barracks" -> g2d.setColor(new Color(64, 37, 19));
             default -> g2d.setColor(Color.GRAY);
         }
     }
