@@ -91,7 +91,7 @@ public class GameField extends JPanel {
     }
 
     protected void drawCurrentSelection(Graphics2D g2d) {
-        System.out.println(selection);
+        //System.out.println(selection);
         if (selection != null) {
             handleType(g2d, selection.getType());
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
