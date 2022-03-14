@@ -1,4 +1,9 @@
 package model;
 
-public class Climber {
+import java.awt.*;
+
+public class Climber extends Soldier {
+    public Climber(Point position, int speed) {
+        super(position, speed);
+    }
 }
