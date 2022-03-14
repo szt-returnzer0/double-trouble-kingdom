@@ -10,5 +10,6 @@ public class Castle extends Building {
         this.isAnimated = false;
         this.healthPoints = 100;
         this.size = new Dimension(5, 15);
+        this.side = side;
     }
 }
