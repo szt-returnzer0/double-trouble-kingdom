@@ -1,5 +1,6 @@
 package view;
 
+import model.Entity;
 import model.Game;
 import model.Terrain;
 
@@ -66,6 +67,7 @@ public class GameField extends JPanel {
             for (int x = 0; x < xLength; x++) {
                 //System.out.println("["+y+"]"+"["+x+"]");
                 drawObj(g2d, x, y);
+                drawEnt(g2d, x, y);
                 g2d.setColor(Color.GRAY);
                 g2d.drawRect(x * scale, y * scale, scale, scale);
             }
@@ -78,12 +80,22 @@ public class GameField extends JPanel {
         g2d.fillRect(x * scale, y * scale, scale, scale);
     }
 
+    protected void drawEnt(Graphics2D g2d, int x, int y) {
+        for (Entity entity : mapRef[y][x].getEntities()) {
+            handleType(g2d, entity.getType());
+            // System.out.println(entity.getType());
+            g2d.fillRect(x * scale, y * scale, scale, scale);
+        }
+
+    }
+
     protected void handleType(Graphics2D g2d, String type) {
         switch (type) {
             case "Plains" -> g2d.setColor(Color.GREEN);
             case "Desert" -> g2d.setColor(Color.YELLOW);
             case "Swamp" -> g2d.setColor(Color.BLUE);
             case "Mountain" -> g2d.setColor(Color.DARK_GRAY);
+            case "Castle" -> g2d.setColor(Color.lightGray);
             default -> g2d.setColor(Color.GRAY);
         }
     }
