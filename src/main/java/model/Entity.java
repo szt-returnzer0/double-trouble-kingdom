@@ -53,6 +53,10 @@ public abstract class Entity {
         this.healthPoints -= value;
     }
 
+    public Dimension getSize() {
+        return this.size;
+    }
+
     public void destroy() {
     }
 
