@@ -46,6 +46,18 @@ public class GameField extends JPanel {
         this.add(controlPanel);
         this.add(hamburgerMenu);
         this.hamburgerMenu.attachActionListener(4, e -> System.exit(0));
+        this.hamburgerMenu.attachActionListener(0, e -> {
+            String s = (String) JOptionPane.showInputDialog(
+                    frame,
+                    "Enter filename",
+                    "Save Dialog",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "filename");
+            System.out.println(s);
+
+        });
     }
 
     @Override
