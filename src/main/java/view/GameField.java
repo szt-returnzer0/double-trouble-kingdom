@@ -3,6 +3,7 @@ package view;
 import model.Entity;
 import model.Game;
 import model.Terrain;
+import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +57,7 @@ public class GameField extends JPanel {
                     null,
                     "filename");
             System.out.println(s);
-
+            FileHandler.saveMapToFile(s, mapRef);
         });
     }
 
