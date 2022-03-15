@@ -1,8 +1,9 @@
 package model;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
     protected int healthPoints;
     protected Point position;
     protected String type;

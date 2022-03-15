@@ -1,8 +1,9 @@
 package model;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Castle extends Building {
+public class Castle extends Building implements Serializable {
 
     public Castle(Point position, String side) {
         super(position);
@@ -12,4 +13,6 @@ public class Castle extends Building {
         this.size = new Dimension(5, 15);
         this.side = side;
     }
+
+
 }

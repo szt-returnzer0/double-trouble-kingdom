@@ -1,9 +1,10 @@
 package model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Terrain {
+public abstract class Terrain implements Serializable {
     protected Point gridPos;
     protected ArrayList<Entity> entities;
     protected String type;
@@ -49,6 +50,6 @@ public abstract class Terrain {
     }
 
     public String typeToString() {
-        return "" + type;
+        return "( " + type + getEntities() + " ) ";
     }
 }
