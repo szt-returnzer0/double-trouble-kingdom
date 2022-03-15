@@ -5,12 +5,18 @@ A __*returnzer0*__ csapat __Szofvertechnológia__ tárgyon fejlesztettet straté
 
 
 ## Tartalom
-- [Rövid játékleírás](#rövid-játékleírás)
-- [Megvalósítás](#megvalósítás)
-- [Projekt Setup](#projekt-setup)
-- [Technológiák](#technológiák)
-- [Projekt Wiki](../../wikis/Home)
-- [A Csapat](#a-csapat)
+- [Double Trouble Kingdom](#double-trouble-kingdom)
+  - [Tartalom](#tartalom)
+  - [Rövid játékleírás](#rövid-játékleírás)
+  - [Megvalósítás](#megvalósítás)
+  - [Projekt Setup](#projekt-setup)
+    - [Gradle command](#gradle-command)
+    - [Buildelés](#buildelés)
+    - [Futtatás](#futtatás)
+    - [Tesztesetek futtatása](#tesztesetek-futtatása)
+  - [Technológiák:](#technológiák)
+  - [További információ](#további-információ)
+  - [A Csapat:](#a-csapat)
 
 
 ## Rövid játékleírás
@@ -18,7 +24,7 @@ A Double Trouble Kingdom kétszemélyes, egy gépen játszható stratégiai ját
 
 
 ## Megvalósítás
-A feladat megvalósításához a Java nyelvet választottuk, mert hatékonyan lehet benne eseményvezérelt alkalmazásokat fejleszteni és beszédes a szintaxisa. A fejlesztést a legújabb LTS verzióban, a Java 17-ben végezzük. A projekt buildeléséhez a Gradle-t használjuk, a tisztán érthető dokumentációja és a felkapottsága miatt esett rá a választás. A felhasználói felület fejlesztéshez a Java Swing és AWT párost alkalmazzuk.
+A feladat megvalósításához a Java nyelvet választottuk, mert hatékonyan lehet benne eseményvezérelt alkalmazásokat fejleszteni és beszédes a szintaxisa. A fejlesztést a legújabb LTS verzióban, a Java 17-ben végezzük. A projekt buildeléséhez a Gradle-t használjuk, a tisztán érthető dokumentációja és a felkapottsága miatt esett rá a választás. A felhasználói felület fejlesztéshez a Java Swing és AWT párost alkalmazzuk. A korábbi játékeredményeket SQLite adatbázisban tároljuk a serverless mivoltából és könnyen kezelhetőségéből kiindulva. 
 
 
 ## Projekt Setup
@@ -74,6 +80,7 @@ gradle test
 - Gradle
 - Swing
 - AWT
+- SQLite
 
 
 ## További információ
