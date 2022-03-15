@@ -57,7 +57,7 @@ public class GameField extends JPanel {
                     null,
                     "filename");
             System.out.println(s);
-            FileHandler.saveMapToFile(s, mapRef);
+            FileHandler.saveToFile(s, mapRef);
         });
 
         this.hamburgerMenu.attachActionListener(1, e -> {
@@ -70,7 +70,7 @@ public class GameField extends JPanel {
                     null,
                     "filename");
             System.out.println(s);
-            mapRef = FileHandler.loadMapToFile(s);
+            mapRef = FileHandler.loadMap(s);
         });
     }
 
