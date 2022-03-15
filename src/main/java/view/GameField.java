@@ -12,7 +12,7 @@ import java.awt.event.ComponentEvent;
 
 public class GameField extends JPanel {
 
-    protected final Terrain[][] mapRef;
+    protected Terrain[][] mapRef;
     protected final int xLength;
     protected final int yLength;
     protected final ControlPanel controlPanel;
@@ -58,6 +58,19 @@ public class GameField extends JPanel {
                     "filename");
             System.out.println(s);
             FileHandler.saveMapToFile(s, mapRef);
+        });
+
+        this.hamburgerMenu.attachActionListener(1, e -> {
+            String s = (String) JOptionPane.showInputDialog(
+                    frame,
+                    "Enter filename",
+                    "Load Dialog",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "filename");
+            System.out.println(s);
+            mapRef = FileHandler.loadMapToFile(s);
         });
     }
 
