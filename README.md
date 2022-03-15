@@ -14,9 +14,9 @@ A __*returnzer0*__ csapat __Szofvertechnológia__ tárgyon fejlesztettet straté
     - [Buildelés](#buildelés)
     - [Futtatás](#futtatás)
     - [Tesztesetek futtatása](#tesztesetek-futtatása)
-  - [Technológiák:](#technológiák)
+  - [Technológiák](#technológiák)
   - [További információ](#további-információ)
-  - [A Csapat:](#a-csapat)
+  - [A Csapat](#a-csapat)
 
 
 ## Rövid játékleírás
@@ -43,6 +43,7 @@ gradle
 
 __Ha nem rendelkezünk telepített Gradle-lel a prokjektmappában a megfelelő *gradle wrapper (gradlew)* fájl futtatásával helyettesíthetjük a telepítését.__
 
+
 *Windows rendszeren:*
 ```
 gradlew.bat
@@ -52,7 +53,6 @@ gradlew.bat
 ```
 ./gradlew
 ```
-
 > __Érdekesség:__ Egyes IDE-k, például az IntelliJ alapból tartalmaz Gradle integrációt, más fejlesztőprogramokhoz pedig bővítményként adhatjuk hozzá, például a VSCode-hoz is.
 
 
@@ -74,8 +74,7 @@ gradle run
 gradle test
 ```
 
-
-## Technológiák:
+## Technológiák
 - Java 17 LTS
 - Gradle
 - Swing
@@ -86,11 +85,9 @@ gradle test
 ## További információ
 A projekt tervei és a játék részletes leírása a repository [Wiki](../../wikis/Home) oldalán található.
 
-
-## A Csapat:
+## A Csapat
 - Berecz Dániel 
 - Neszlényi Kálmán 
 - Rubóczki Benedek
 
-
-2022. ELTE IK Szoftvertechnológia
+__*2022.*__ *ELTE IK Szoftvertechnológia*
