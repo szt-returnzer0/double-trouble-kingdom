@@ -12,6 +12,7 @@ public class GameState {
     private int playerNumber;
     private boolean isEnded;
     private int elapsedTime;
+    private String roundState;
 
     public GameState(String p1Name, String p2Name) {
         this.isEnded = false;
@@ -22,6 +23,17 @@ public class GameState {
         elapsedTimer.start();
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
         decideStarter();
+        this.roundState = "Building";
+        nextRoundState();
+        nextRoundState();
+    }
+
+    public String getRoundState() {
+        return roundState;
+    }
+
+    public void nextRoundState() {
+        this.roundState = this.roundState.equals("Building") ? "Attacking" : "Building";
     }
 
     public void decideStarter() {
