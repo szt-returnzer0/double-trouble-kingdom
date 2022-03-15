@@ -47,4 +47,8 @@ public abstract class Terrain {
     public double getSpeedMod() {
         return speedMod;
     }
+
+    public String typeToString() {
+        return "" + type;
+    }
 }
