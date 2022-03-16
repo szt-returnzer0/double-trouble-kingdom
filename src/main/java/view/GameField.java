@@ -1,151 +1,170 @@
 package view;
 
-import model.Entity;
-import model.Game;
-import model.Terrain;
-import persistence.FileHandler;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-public class GameField extends JPanel {
 
-    protected Terrain[][] mapRef;
-    protected final int xLength;
-    protected final int yLength;
-    protected final ControlPanel controlPanel;
-    protected final HamburgerMenu hamburgerMenu;
-    protected int scale;
-    protected Entity selection = null;
+public class GameField extends GameFieldRenderer {
+    protected final boolean pressed = false;
+    protected String type = "Plains";
+    protected Timer timer;
 
-    public GameField(Game game, JFrame frame) {
-        this.mapRef = game.getMap();
-        this.xLength = mapRef[0].length;
-        this.yLength = mapRef.length;
-        this.scale = (frame.getContentPane().getSize().width) / xLength;
-        frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
 
-        setLayout(null);
-        this.controlPanel = new ControlPanel();
-        controlPanel.setSize((int) (frame.getSize().getWidth() / 3), (int) (frame.getSize().getHeight() * 0.07));
+    //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
+    protected boolean inverted = false;
 
-        this.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent componentEvent) {
-                scale = (frame.getContentPane().getSize().width) / xLength;
-                int panelX = (int) (frame.getSize().getWidth());
-                int panelY = (int) (frame.getSize().getHeight());
-                int w = panelX / 3;
-                int h = (int) (panelY * 0.07);
-                controlPanel.setBounds(panelX / 2 - w / 2, (int) (panelY * 0.85), w, h);
-                repaint();
+    public GameField(Game dummyGame, JFrame frame) {
+        super(dummyGame, frame);
+        setupButtons();
+
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
+                    setSelection(null);
+                    draw(e);
+                }
+
             }
         });
-        this.hamburgerMenu = new HamburgerMenu(frame);
-        //hamburgerMenu.setBounds(0,0,200,frame.getContentPane().getSize().width);
-        this.add(controlPanel);
-        this.add(hamburgerMenu);
-        this.hamburgerMenu.attachActionListener(4, e -> System.exit(0));
-        this.hamburgerMenu.attachActionListener(0, e -> {
-            String s = (String) JOptionPane.showInputDialog(
-                    frame,
-                    "Enter filename",
-                    "Save Dialog",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "filename");
-            System.out.println(s);
-            FileHandler.saveToFile(s, mapRef);
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                updateSelection(e.getX(), e.getY());
+            }
         });
 
-        this.hamburgerMenu.attachActionListener(1, e -> {
-            String s = (String) JOptionPane.showInputDialog(
-                    frame,
-                    "Enter filename",
-                    "Load Dialog",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "filename");
-            System.out.println(s);
-            mapRef = FileHandler.loadMap(s);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    inverted = !inverted;
+                    updateSelection(e.getX(), e.getY());
+                } else if (e.getButton() == MouseEvent.BUTTON1) {
+                    setSelection(null);
+                    draw(e);
+                }
+
+            }
         });
+
+        repaint();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
-
-        renderField(g2d);
-        drawCurrentSelection(g2d);
-        g2d.dispose();
-        //g.dispose(); //not needed as g wasn't created by us
+    private void draw(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        placeBlock(x, y);
+        repaint();
     }
 
-    protected void renderField(Graphics2D g2d) {
+    protected void setupButtons() {
 
+        /*this.controlPanel.setButtonColor(0, Color.green, 2);
+        this.controlPanel.attachActionListener(0, e -> type = "Plains");
+        this.controlPanel.setButtonColor(1, Color.blue, 2);
+        this.controlPanel.attachActionListener(1, e -> type = "Swamp");
+        this.controlPanel.setButtonColor(2, Color.darkGray, 2);
+        this.controlPanel.attachActionListener(2, e -> type = "Mountain");
+        this.controlPanel.setButtonColor(3, Color.yellow, 2);
+        this.controlPanel.attachActionListener(3, e -> type = "Desert");
 
-        for (int y = 0; y < yLength; y++) {
-            for (int x = 0; x < xLength; x++) {
-                //System.out.println("["+y+"]"+"["+x+"]");
-                drawObj(g2d, x, y);
-                drawEnt(g2d, x, y);
-                g2d.setColor(Color.GRAY);
-                g2d.drawRect(x * scale, y * scale, scale, scale);
+        this.controlPanel.setButtonColor(4, Color.lightGray, 2);
+        this.controlPanel.attachActionListener(4, e -> type = "Castle");
+        this.controlPanel.setButtonColor(5, new Color(64, 37, 19), 2);
+        this.controlPanel.attachActionListener(5, e -> type = "Barracks");*/
+
+        this.controlPanel.setButtonText(0, "Bar");
+        this.controlPanel.setButtonColors(0, new Color[]{
+                new Color(224, 136, 65),
+                new Color(58, 52, 46),
+                new Color(175, 100, 49)});
+        this.controlPanel.attachActionListener(0, e -> type = "Barricade"); //Lerakas
+
+    }
+
+    protected void placeBlock(int x, int y) { //Lerakas
+        int yIdx = y / scale;
+        int xIdx = x / scale;
+        Terrain[][] map = mapRef;
+
+        if (yIdx < yLength && xIdx < xLength)
+            try {
+                ArrayList<Entity> ent = map[yIdx][xIdx].getEntities();
+                switch (type) {
+                    case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
+                    case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
+                    case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
+                    case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
+                    case "Barracks" -> placeBuilding(new Barracks(new Point(xIdx, yIdx), ""));
+                    case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
+                }
+
+            } catch (Exception e) {
+            }
+    }
+
+    protected boolean isEmpty(int xIdx, int yIdx, Dimension size) { //Will probably be moved to GameFieldRenderer
+        boolean isEmpty = true;
+        for (int y = yIdx; y < yIdx + size.height; y++) {
+            for (int x = xIdx; x < xIdx + size.width; x++) {
+                isEmpty = isEmpty && mapRef[y][x].getEntities().isEmpty();
             }
         }
+        return isEmpty;
     }
 
-    protected void drawObj(Graphics2D g2d, int x, int y) {
-        handleType(g2d, mapRef[y][x].getType());
-        //System.out.println("["+y+"]"+"["+x+"]");
-        g2d.fillRect(x * scale, y * scale, scale, scale);
-    }
 
-    protected void drawEnt(Graphics2D g2d, int x, int y) {
-        for (Entity entity : mapRef[y][x].getEntities()) {
-            handleType(g2d, entity.getType());
-            // System.out.println(entity.getType());
-            g2d.fillRect(x * scale, y * scale, scale, scale);
-        }
-
-    }
-
-    protected void drawCurrentSelection(Graphics2D g2d) {
-        //System.out.println(selection);
-        if (selection != null) {
-            handleType(g2d, selection.getType());
-            Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[]{9}, 0);
-            g2d.setStroke(dashed);
-            Color col = g2d.getColor();
-            g2d.drawRect(selection.getPosition().x * scale, selection.getPosition().y * scale, selection.getSize().width * scale, selection.getSize().height * scale);
-            g2d.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 150));
-            g2d.fillRect(selection.getPosition().x * scale, selection.getPosition().y * scale, selection.getSize().width * scale, selection.getSize().height * scale);
-
-        }
-
-    }
-
-    protected void setSelection(Entity ent) {
-        selection = ent;
-    }
-
-    protected void handleType(Graphics2D g2d, String type) {
+    private void updateSelection(int x, int y) { //Lerakas
+        int yIdx = y / scale;
+        int xIdx = x / scale;
+        Building tmp;
         switch (type) {
-            case "Plains" -> g2d.setColor(Color.GREEN);
-            case "Desert" -> g2d.setColor(Color.YELLOW);
-            case "Swamp" -> g2d.setColor(Color.BLUE);
-            case "Mountain" -> g2d.setColor(Color.DARK_GRAY);
-            case "Castle" -> g2d.setColor(Color.lightGray);
-            case "Barracks" -> g2d.setColor(new Color(64, 37, 19));
-            default -> g2d.setColor(Color.GRAY);
+            case "Castle" -> tmp = new Castle(new Point(xIdx, yIdx), "");
+            case "Barracks" -> tmp = new Barracks(new Point(xIdx, yIdx), "");
+            case "Barricade" -> tmp = new Barricade(new Point(xIdx, yIdx), "");
+            default -> tmp = null;
+        }
+
+        if (inverted && tmp != null) tmp.invert();
+        setSelection(tmp);
+        repaint();
+    }
+
+
+    protected void deleteBuilding(Building b) {
+        if (b != null) {
+            for (int y = b.getPosition().y; y < b.getPosition().y + b.getSize().height; y++) {
+                for (int x = b.getPosition().x; x < b.getPosition().x + b.getSize().width; x++) {
+                    mapRef[y][x].getEntities().clear();
+                }
+            }
         }
     }
+
+    protected void placeBuilding(Building b) {
+        int xIdx = b.getPosition().x;
+        int yIdx = b.getPosition().y;
+        String side = xIdx + 3 < xLength / 2 ? "left" : "right";
+        b.setSide(side);
+        if (inverted)
+            b.invert();
+
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+            for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
+                for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+                    mapRef[y][x].addEntities(b);
+                }
+            }
+        }
+    }
+
+
 }

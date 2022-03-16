@@ -1,118 +1,69 @@
 package view;
 
 import model.*;
+import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Objects;
-
+import java.util.Queue;
+import java.util.*;
 
 public class MapEditorView extends GameField {
-    private final boolean pressed = false;
-    private String type = "Plains";
-    private Timer timer;
-    private final Castle[] castles = new Castle[]{null, null};
-    private final Barracks[] barracks = new Barracks[]{null, null};
-    private boolean inverted = false;
+    //private final Castle[] castles = new Castle[]{null, null};
+    private final ArrayList<Queue<Building>> castles = new ArrayList<>(Arrays.asList(new LinkedList<>(), new LinkedList<>()));
+    private final ArrayList<Queue<Building>> barracks = new ArrayList<>(Arrays.asList(new LinkedList<>(), new LinkedList<>()));
+
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
-        setupButtons();
 
-
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
-                    setSelection(null);
-                    draw(e);
-                }
-
-            }
-        });
-
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                updateSelection(e.getX(), e.getY());
-            }
-        });
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    inverted = !inverted;
-                    updateSelection(e.getX(), e.getY());
-                } else if (e.getButton() == MouseEvent.BUTTON1) {
-                    setSelection(null);
-                    draw(e);
-                }
-
-            }
-        });
-
-        repaint();
     }
 
-    private void draw(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        placeBlock(x, y);
-        repaint();
-    }
+    @Override
+    protected void setupButtons() {
 
-    private void setupButtons() {
-
-        this.controlPanel.changeButtonColor(0, Color.green, 2);
+        this.controlPanel.setButtonColor(0, Color.green, 2);
         this.controlPanel.attachActionListener(0, e -> type = "Plains");
-        this.controlPanel.changeButtonColor(1, Color.blue, 2);
+        this.controlPanel.setButtonColor(1, Color.blue, 2);
         this.controlPanel.attachActionListener(1, e -> type = "Swamp");
-        this.controlPanel.changeButtonColor(2, Color.darkGray, 2);
+        this.controlPanel.setButtonColor(2, Color.darkGray, 2);
         this.controlPanel.attachActionListener(2, e -> type = "Mountain");
-        this.controlPanel.changeButtonColor(3, Color.yellow, 2);
+        this.controlPanel.setButtonColor(3, Color.yellow, 2);
         this.controlPanel.attachActionListener(3, e -> type = "Desert");
 
-        this.controlPanel.changeButtonColor(4, Color.lightGray, 2);
+        this.controlPanel.setButtonColor(4, Color.lightGray, 2);
         this.controlPanel.attachActionListener(4, e -> type = "Castle");
-        this.controlPanel.changeButtonColor(5, new Color(64, 37, 19), 2);
+        this.controlPanel.setButtonColor(5, new Color(64, 37, 19), 2);
         this.controlPanel.attachActionListener(5, e -> type = "Barracks");
 
+        this.controlPanel.attachActionListener(6, e -> type = "Delete");
+        this.controlPanel.setButtonColors(6, new Color[]{
+                new Color(255, 142, 142),
+                new Color(70, 0, 0),
+                new Color(166, 0, 0)});
+        this.controlPanel.setButtonText(6, "X");
+
+        this.hamburgerMenu.attachActionListener(1, e -> {
+            String s = (String) JOptionPane.showInputDialog(
+                    frame,
+                    "Enter filename",
+                    "Load Dialog",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "filename");
+            System.out.println(s);
+            mapRef = FileHandler.loadMap(s);
+            checkForBuildings();
+        });
+
     }
 
-    private void placeBlock(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
-        Terrain[][] map = mapRef;
-
-        if (yIdx < yLength && xIdx < xLength)
-            try {
-                ArrayList<Entity> ent = map[yIdx][xIdx].getEntities();
-                switch (type) {
-                    case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
-                    case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
-                    case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
-                    case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
-                    //case "Castle" -> placeCastle(xIdx, yIdx);
-                    //case "Castle" -> placeBuilding(new Castle(new Point(xIdx, yIdx),""));
-                    case "Castle" -> placeLimitedBuilding(new Castle(new Point(xIdx, yIdx), ""));
-                    case "Barracks" -> placeLimitedBuilding(new Barracks(new Point(xIdx, yIdx), ""));
-                }
-
-            } catch (Exception e) {
-            }
-    }
-
-    private boolean isEmpty(int xIdx, int yIdx, Dimension size) { //Will probably be moved to GameField
-        boolean isEmpty = true;
-        for (int y = yIdx; y < yIdx + size.height; y++) {
-            for (int x = xIdx; x < xIdx + size.width; x++) {
-                isEmpty = isEmpty && mapRef[y][x].getEntities().isEmpty();
-            }
+    private boolean hasMatchingTypes(ArrayList<Entity> ent) {
+        boolean result = false;
+        for (Entity entity : ent) {
+            result = result || Objects.equals(entity.getType(), this.type);
         }
-        return isEmpty;
+        return result;
     }
 
     private boolean notOnOtherBuilding(int xIdx, int yIdx, Dimension size) {
@@ -125,53 +76,6 @@ public class MapEditorView extends GameField {
         return onBuilding;
     }
 
-    private void updateSelection(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
-        Building tmp;
-        switch (type) {
-            case "Castle" -> tmp = new Castle(new Point(xIdx, yIdx), "");
-            case "Barracks" -> tmp = new Barracks(new Point(xIdx, yIdx), "");
-            default -> tmp = null;
-        }
-
-        if (inverted && tmp != null) tmp.invert();
-        setSelection(tmp);
-        repaint();
-    }
-
-    private boolean hasMatchingTypes(ArrayList<Entity> ent) {
-        boolean result = false;
-        for (Entity entity : ent) {
-            result = result || Objects.equals(entity.getType(), this.type);
-        }
-        return result;
-    }
-
-    private void deleteBuilding(Building b) { //Will probably be moved to GameField
-        if (b != null) {
-            for (int y = b.getPosition().y; y < b.getPosition().y + b.getSize().height; y++) {
-                for (int x = b.getPosition().x; x < b.getPosition().x + b.getSize().width; x++) {
-                    mapRef[y][x].getEntities().clear();
-                }
-            }
-        }
-    }
-
-    private void placeBuilding(Building b) { //Will probably be used in GameField
-        int xIdx = b.getPosition().x;
-        int yIdx = b.getPosition().y;
-        String side = xIdx + 3 < xLength / 2 ? "left" : "right";
-        b.setSide(side);
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize())) {
-            for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                    mapRef[y][x].addEntities(b);
-                }
-            }
-        }
-    }
-
     private void placeLimitedBuilding(Building b) {
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
@@ -179,14 +83,21 @@ public class MapEditorView extends GameField {
         b.setSide(side);
         if (inverted)
             b.invert();
-        Building[] arr = Objects.equals(b.getType(), "Castle") ? castles : barracks;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), "Castle") ? castles : barracks;
+        int maxSize = Objects.equals(b.getType(), "Castle") ? 1 : 2;
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), "Castle") || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+            if (side.equals("left") && arr.get(0).size() >= maxSize) {
+                deleteBuilding(arr.get(0).remove());
+                //arr.get(0).add(b);
+
+            } else if (side.equals("right") && arr.get(1).size() >= maxSize) {
+                deleteBuilding(arr.get(1).remove());
+                //arr.get(1).add(b);
+            }
             if (side.equals("left")) {
-                deleteBuilding(arr[0]);
-                arr[0] = b;
+                arr.get(0).add(b);
             } else {
-                deleteBuilding(arr[1]);
-                arr[1] = b;
+                arr.get(1).add(b);
             }
             for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
                 for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
@@ -197,4 +108,73 @@ public class MapEditorView extends GameField {
         }
     }
 
+    @Override
+    protected void placeBlock(int x, int y) {
+        int yIdx = y / scale;
+        int xIdx = x / scale;
+        Terrain[][] map = mapRef;
+
+        if (yIdx < yLength && xIdx < xLength)
+            try {
+                ArrayList<Entity> ent = map[yIdx][xIdx].getEntities();
+                switch (type) {
+                    case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
+                    case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
+                    case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
+                    case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
+                    case "Castle" -> placeLimitedBuilding(new Castle(new Point(xIdx, yIdx), ""));
+                    case "Barracks" -> placeLimitedBuilding(new Barracks(new Point(xIdx, yIdx), ""));
+                    case "Delete" -> {
+                        if (!ent.isEmpty()) safeDeleteBuilding(ent.get(0));
+                    }
+                }
+
+            } catch (Exception e) {
+            }
+    }
+
+    private void safeDeleteBuilding(Entity ent) {
+        switch (ent.getType()) {
+            case "Castle" -> {
+                switch (ent.getSide()) {
+                    case "left" -> castles.get(0).remove((Building) ent);
+                    case "right" -> castles.get(1).remove((Building) ent);
+                }
+            }
+            case "Barracks" -> {
+                switch (ent.getSide()) {
+                    case "left" -> barracks.get(0).remove((Building) ent);
+                    case "right" -> barracks.get(1).remove((Building) ent);
+                }
+            }
+        }
+        deleteBuilding((Building) ent);
+    }
+
+    private void checkForBuildings() {
+        Set<Entity> buildings = new HashSet<>();
+        for (int y = 0; y < yLength; y++) {
+            for (int x = 0; x < xLength; x++) {
+                if (!mapRef[y][x].getEntities().isEmpty())
+                    buildings.add(mapRef[y][x].getEntities().get(0));
+            }
+        }
+        for (Entity building : buildings) {
+            System.out.println(building.getType() + " " + building.getSide());
+            switch (building.getType()) {
+                case "Castle" -> {
+                    switch (building.getSide()) {
+                        case "left" -> castles.get(0).add((Building) building);
+                        case "right" -> castles.get(1).add((Building) building);
+                    }
+                }
+                case "Barracks" -> {
+                    switch (building.getSide()) {
+                        case "left" -> barracks.get(0).add((Building) building);
+                        case "right" -> barracks.get(1).add((Building) building);
+                    }
+                }
+            }
+        }
+    }
 }
