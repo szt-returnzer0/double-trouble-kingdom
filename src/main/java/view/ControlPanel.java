@@ -8,12 +8,15 @@ public class ControlPanel extends JPanel {
 
     private final Color backgroundColor;
     private final Color borderColor;
-    private final JRoundedButton[] buttons = new JRoundedButton[6]; //for multiple actionListener support
+    private final JRoundedButton[] buttons = new JRoundedButton[7]; //for multiple actionListener support
+    JPanel innerPanel = new JPanel();
 
     public ControlPanel() {
         super();
-
-        setLayout(new FlowLayout(FlowLayout.CENTER, 20, 8));
+        setLayout(new BorderLayout());
+        innerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 8));
+        add(innerPanel, BorderLayout.CENTER);
+        innerPanel.setOpaque(false);
         backgroundColor = new Color(185, 185, 185, 200);
         borderColor = Color.white;
         setOpaque(false);
@@ -44,8 +47,17 @@ public class ControlPanel extends JPanel {
 
         for (int i = 0; i < 6; i++) {
             buttons[i] = new JRoundedButton("", 50, 50);
-            this.add(buttons[i]);
+            innerPanel.add(buttons[i]);
         }
+        buttons[6] = new JRoundedButton("200", 50, 50, new Color[]{
+                new Color(255, 205, 0),
+                new Color(255, 205, 0),
+                new Color(255, 205, 0)}, 50, 50);
+
+        JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 45, 8));
+        sidePanel.add(buttons[6]);
+        sidePanel.setOpaque(false);
+        this.add(sidePanel, BorderLayout.LINE_END);
 
         //TESTING PURPOSES
         /*for (int i = 4; i < buttons.length; i++) {
@@ -58,8 +70,16 @@ public class ControlPanel extends JPanel {
         buttons[idx].addActionListener(e);
     }
 
-    public void changeButtonColor(int idx, Color color, int idx2) {
-        buttons[idx].changeColor(idx2, color);
+    public void setButtonColor(int idx, Color color, int idx2) {
+        buttons[idx].setColor(idx2, color);
+    }
+
+    public void setButtonColors(int idx, Color[] colors) {
+        buttons[idx].setColors(colors);
+    }
+
+    public void setButtonText(int idx, String text) {
+        buttons[idx].setText(text);
     }
 
     @Override

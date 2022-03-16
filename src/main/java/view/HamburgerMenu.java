@@ -80,8 +80,8 @@ public class HamburgerMenu extends JPanel {
         buttons[idx].addActionListener(e);
     }
 
-    public void changeButtonColor(int idx, Color color, int idx2) {
-        buttons[idx].changeColor(idx2, color);
+    public void setButtonColor(int idx, Color color, int idx2) {
+        buttons[idx].setColor(idx2, color);
     }
 
     private static class tripleStripeButton extends JToggleButton {
