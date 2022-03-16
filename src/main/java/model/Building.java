@@ -7,8 +7,8 @@ public abstract class Building extends Entity implements Serializable {
     protected boolean canUpgrade; // false
     protected boolean isDestroyed; // false
 
-    public Building(Point position) {
-        super(position);
+    public Building(Point position, String side) {
+        super(position, side);
     }
 
     @Override

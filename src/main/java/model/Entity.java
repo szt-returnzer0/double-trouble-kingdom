@@ -20,7 +20,12 @@ public abstract class Entity implements Serializable {
     protected Entity(Point position) {
         this.position = position;
         this.isAlive = true;
+    }
 
+    protected Entity(Point position, String side) {
+        this.position = position;
+        this.isAlive = true;
+        this.side = side;
     }
 
     public String getSide() {

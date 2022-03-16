@@ -10,18 +10,18 @@ public abstract class Tower extends Building {
     protected boolean canAttack;
     protected int attackSpeed;
 
-    public Tower(Point position) {
-        super(position);
+    public Tower(Point position, String side) {
+        super(position, side);
         attackSpeed = 1;
     }
 
     public Tower transform(String type) {
         switch (type) {
             case "Sniper" -> {
-                return new Sniper(position);
+                return new Sniper(position, side);
             }
             case "Shotgun" -> {
-                return new Shotgun(position);
+                return new Shotgun(position, side);
             }
             default -> {
                 try {
