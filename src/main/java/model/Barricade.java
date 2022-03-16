@@ -7,6 +7,5 @@ public class Barricade extends Tower {
         super(position);
     }
 
-    public void transform(String type) {
-    }
+
 }
