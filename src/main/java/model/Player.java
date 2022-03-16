@@ -36,8 +36,18 @@ public class Player {
         return entities;
     }
 
-    public void addEntity(Entity entity) {
+    public void addEntity(Entity entity) { // or string as parameter
         this.entities.add(entity);
+        this.gold -= entity.value;
+    }
+
+    public void upgradeBuilding(Building building) {
+        this.gold -= building.upgrade();
+    }
+
+    public Tower transformTower(Tower tower, String type) {
+        this.gold -= 20;
+        return tower.transform(type);
     }
 
     public void removeEntity(Entity entity) {
