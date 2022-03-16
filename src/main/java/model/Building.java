@@ -24,4 +24,6 @@ public abstract class Building extends Entity implements Serializable {
     public boolean isDestroyed() {
         return isDestroyed;
     }
+
+    public abstract int upgrade();
 }

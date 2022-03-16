@@ -1,7 +1,7 @@
 package model;
 
+import javax.naming.OperationNotSupportedException;
 import java.awt.*;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 public abstract class Tower extends Building {
@@ -16,24 +16,45 @@ public abstract class Tower extends Building {
     }
 
     public Tower transform(String type) {
-        Tower newTower;
         switch (type) {
-            case "Sniper" -> newTower = new Sniper(position);
-            case "Shotgun" -> newTower = new Shotgun(position);
-            default -> throw new InvalidParameterException("Tower type not Sniper or Shotgun");
+            case "Sniper" -> {
+                return new Sniper(position);
+            }
+            case "Shotgun" -> {
+                return new Shotgun(position);
+            }
+            default -> {
+                try {
+                    throw new OperationNotSupportedException("Tower type not Sniper or Shotgun");
+                } catch (OperationNotSupportedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
         }
-        return newTower;
     }
 
-    public void upgrade() {
-        if (this.canUpgrade)
+    @Override
+    public int upgrade() {
+        if (this.canUpgrade && this.level < 3)
             this.level++;
 
         switch (level) {
-            case 1 -> this.damage += this.damage / 2;
-            case 2 -> this.attackSpeed += this.attackSpeed / 2;
-            case 3 -> this.healthPoints += this.healthPoints / 3;
+            case 1 -> {
+                this.damage += this.damage / 2;
+                return 10;
+            }
+            case 2 -> {
+                this.attackSpeed += this.attackSpeed / 2;
+                return 15;
+            }
+            case 3 -> {
+                this.healthPoints += this.healthPoints / 3;
+                return 20;
+            }
         }
+
+        return 0;
     }
 
     protected void selectTargets() {

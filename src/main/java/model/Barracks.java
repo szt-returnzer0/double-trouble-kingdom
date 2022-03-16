@@ -12,9 +12,12 @@ public class Barracks extends Building {
         this.side = side;
         this.isUpgraded = false;
         this.canUpgrade = true;
+        this.value = 50;
     }
 
-    public void upgrade() {
+    @Override
+    public int upgrade() {
         this.isUpgraded = true;
+        return 50;
     }
 }

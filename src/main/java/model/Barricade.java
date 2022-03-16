@@ -5,6 +5,7 @@ import java.awt.*;
 public class Barricade extends Tower {
     public Barricade(Point position) {
         super(position);
+        this.value = 10;
     }
 
 
