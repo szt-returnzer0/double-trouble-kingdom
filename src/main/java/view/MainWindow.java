@@ -48,8 +48,6 @@ public class MainWindow {
                     case 1 -> map[y][x] = new Swamp(new Point(x, y));
                     case 2 -> map[y][x] = new Desert(new Point(x, y));
                     case 3 -> map[y][x] = new Mountain(new Point(x, y));
-                    default -> {
-                    }
                 }
             }
         }

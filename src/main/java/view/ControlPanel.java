@@ -1,5 +1,7 @@
 package view;
 
+import model.Game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -9,7 +11,22 @@ public class ControlPanel extends JPanel {
     private final Color backgroundColor;
     private final Color borderColor;
     private final JRoundedButton[] buttons = new JRoundedButton[7]; //for multiple actionListener support
+    private Game game;
     JPanel innerPanel = new JPanel();
+
+    public ControlPanel(Game game) {
+        super();
+        this.game = game;
+        setLayout(new BorderLayout());
+        innerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 8));
+        add(innerPanel, BorderLayout.CENTER);
+        innerPanel.setOpaque(false);
+        backgroundColor = new Color(185, 185, 185, 200);
+        borderColor = Color.white;
+        setOpaque(false);
+        createButtons();
+        repaint();
+    }
 
     public ControlPanel() {
         super();
@@ -49,7 +66,7 @@ public class ControlPanel extends JPanel {
             buttons[i] = new JRoundedButton("", 50, 50);
             innerPanel.add(buttons[i]);
         }
-        buttons[6] = new JRoundedButton("200", 50, 50, new Color[]{
+        buttons[6] = new JRoundedButton("" + game.getGameState().getCurrentPlayer().getGold(), 50, 50, new Color[]{
                 new Color(255, 205, 0),
                 new Color(255, 205, 0),
                 new Color(255, 205, 0)}, 50, 50);
@@ -64,6 +81,10 @@ public class ControlPanel extends JPanel {
             buttons[i].setEnabled(false);
         }*/
 
+    }
+
+    public void updateButtonText() {
+        buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
     }
 
     public void attachActionListener(int idx, ActionListener e) {

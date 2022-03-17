@@ -30,7 +30,7 @@ public class GameFieldRenderer extends JPanel {
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
 
         setLayout(null);
-        this.controlPanel = new ControlPanel();
+        this.controlPanel = new ControlPanel(game);
         controlPanel.setSize((int) (frame.getSize().getWidth() / 3), (int) (frame.getSize().getHeight() * 0.07));
 
         this.addComponentListener(new ComponentAdapter() {

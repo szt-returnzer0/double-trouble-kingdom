@@ -13,13 +13,15 @@ public class GameField extends GameFieldRenderer {
     protected final boolean pressed = false;
     protected String type = "Plains";
     protected Timer timer;
+    protected Game game;
 
 
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
 
-    public GameField(Game dummyGame, JFrame frame) {
-        super(dummyGame, frame);
+    public GameField(Game game, JFrame frame) {
+        super(game, frame);
+        this.game = game;
         setupButtons();
 
 
@@ -177,20 +179,29 @@ public class GameField extends GameFieldRenderer {
     }
 
     protected void placeBuilding(Building b) {
-        int xIdx = b.getPosition().x;
-        int yIdx = b.getPosition().y;
-        String side = xIdx + 3 < xLength / 2 ? "left" : "right";
-        b.setSide(side);
-        if (inverted)
-            b.invert();
+        if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
+            int xIdx = b.getPosition().x;
+            int yIdx = b.getPosition().y;
+            String side = xIdx + 3 < xLength / 2 ? "left" : "right";
+            b.setSide(side);
+            if (inverted)
+                b.invert();
 
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
-            for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                    mapRef[y][x].addEntities(b);
+            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+                for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
+                    for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+                        mapRef[y][x].addEntities(b);
+                    }
                 }
+                game.getGameState().getCurrentPlayer().addEntity(b);
+                controlPanel.updateButtonText();
             }
+
+
+        } else {
+            //Hibaüzenet
         }
+
     }
 
 
