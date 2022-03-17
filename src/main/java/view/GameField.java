@@ -148,6 +148,16 @@ public class GameField extends GameFieldRenderer {
         return isEmpty;
     }
 
+    protected boolean isBuildable(int xIdx, int yIdx, Dimension size) { //Will probably be moved to GameFieldRenderer
+        boolean isBuildable = true;
+        for (int y = yIdx; y < yIdx + size.height; y++) {
+            for (int x = xIdx; x < xIdx + size.width; x++) {
+                isBuildable = isBuildable && mapRef[y][x].getEntities().isEmpty() && !mapRef[y][x].getType().equals("Mountain") && !mapRef[y][x].getType().equals("Swamp");
+            }
+        }
+        return isBuildable;
+    }
+    //
 
     private void updateSelection(int x, int y) { //Lerakas
         int yIdx = y / scale;
@@ -182,12 +192,12 @@ public class GameField extends GameFieldRenderer {
         if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
             int xIdx = b.getPosition().x;
             int yIdx = b.getPosition().y;
-            String side = xIdx + 3 < xLength / 2 ? "left" : "right";
+            String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
             b.setSide(side);
             if (inverted)
                 b.invert();
 
-            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) && isBuildable(xIdx, yIdx, b.getSize())) {
                 for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
                     for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
                         mapRef[y][x].addEntities(b);
@@ -198,8 +208,6 @@ public class GameField extends GameFieldRenderer {
             }
 
 
-        } else {
-            //Hibaüzenet
         }
 
     }
