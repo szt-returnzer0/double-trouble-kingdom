@@ -106,6 +106,12 @@ public class GameField extends GameFieldRenderer {
                     new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(3, e -> type = "Barracks");
 
+            this.controlPanel.setButtonText(4, "");
+            this.controlPanel.setButtonColors(4, new Color[]{
+                    new Color(185, 185, 185, 0),
+                    new Color(185, 185, 185, 0),
+                    new Color(185, 185, 185, 0)});
+            this.controlPanel.getButtons()[4].setEnabled(false);
         } else if (game.getGameState().getRoundState().equals("Training")) {
             this.controlPanel.setButtonText(0, "Sol");
             this.controlPanel.setButtonColors(0, new Color[]{
@@ -135,12 +141,14 @@ public class GameField extends GameFieldRenderer {
                     new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(3, e -> type = "Diver");
 
+
             this.controlPanel.setButtonText(4, "Cli");
             this.controlPanel.setButtonColors(4, new Color[]{
                     new Color(224, 136, 65),
                     new Color(63, 60, 60),
                     new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(4, e -> type = "Climber");
+            this.controlPanel.getButtons()[4].setEnabled(true);
         }
         controlPanel.updateButtonText();
         repaint();
