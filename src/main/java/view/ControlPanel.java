@@ -14,6 +14,10 @@ public class ControlPanel extends JPanel {
     private Game game;
     JPanel innerPanel = new JPanel();
 
+    public JRoundedButton[] getButtons() {
+        return buttons;
+    }
+
     public ControlPanel(Game game) {
         super();
         this.game = game;
@@ -98,7 +102,10 @@ public class ControlPanel extends JPanel {
     }
 
     public void attachActionListener(int idx, ActionListener e) {
-        buttons[idx].addActionListener(e);
+        if (buttons[idx].getActionListeners().length == 0)
+            buttons[idx].addActionListener(e);
+        else
+            buttons[idx].getActionListeners()[0] = e;
     }
 
     public void setButtonColor(int idx, Color color, int idx2) {

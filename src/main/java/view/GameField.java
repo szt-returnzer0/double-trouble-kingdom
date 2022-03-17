@@ -69,54 +69,81 @@ public class GameField extends GameFieldRenderer {
     }
 
     protected void setupButtons() {
-
-        /*this.controlPanel.setButtonColor(0, Color.green, 2);
-        this.controlPanel.attachActionListener(0, e -> type = "Plains");
-        this.controlPanel.setButtonColor(1, Color.blue, 2);
-        this.controlPanel.attachActionListener(1, e -> type = "Swamp");
-        this.controlPanel.setButtonColor(2, Color.darkGray, 2);
-        this.controlPanel.attachActionListener(2, e -> type = "Mountain");
-        this.controlPanel.setButtonColor(3, Color.yellow, 2);
-        this.controlPanel.attachActionListener(3, e -> type = "Desert");
-
-        this.controlPanel.setButtonColor(4, Color.lightGray, 2);
-        this.controlPanel.attachActionListener(4, e -> type = "Castle");
-        this.controlPanel.setButtonColor(5, new Color(64, 37, 19), 2);
-        this.controlPanel.attachActionListener(5, e -> type = "Barracks");*/
-
-        this.controlPanel.setButtonText(0, "Bar");
-        this.controlPanel.setButtonColors(0, new Color[]{
-                new Color(224, 136, 65),
-                new Color(58, 52, 46),
-                new Color(175, 100, 49)});
-        this.controlPanel.attachActionListener(0, e -> type = "Barricade");          //Lerakas
-
-        this.controlPanel.setButtonText(1, "Sho");
-        this.controlPanel.setButtonColors(1, new Color[]{
-                new Color(224, 136, 65),
-                new Color(152, 145, 138),
-                new Color(175, 100, 49)});
-        this.controlPanel.attachActionListener(1, e -> type = "Shotgun");
-
-        this.controlPanel.setButtonText(2, "Sni");
-        this.controlPanel.setButtonColors(2, new Color[]{
-                new Color(224, 136, 65),
-                new Color(63, 60, 60),
-                new Color(175, 100, 49)});
-        this.controlPanel.attachActionListener(2, e -> type = "Sniper");
-
-        this.controlPanel.setButtonText(3, "Brk");
-        this.controlPanel.setButtonColors(3, new Color[]{
-                new Color(224, 136, 65),
-                new Color(63, 60, 60),
-                new Color(175, 100, 49)});
-        this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+        updateButtons();
         this.controlPanel.attachActionListener(5, e -> {
             game.getGameState().nextRoundState();
-            controlPanel.updateButtonText();
+            updateButtons();
         });
+    }
 
+    private void updateButtons() {
+        if (game.getGameState().getRoundState().equals("Building")) {
+            this.controlPanel.setButtonText(0, "Bar");
+            this.controlPanel.setButtonColors(0, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(58, 52, 46),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(0, e -> type = "Barricade");          //Lerakas
 
+            this.controlPanel.setButtonText(1, "Sho");
+            this.controlPanel.setButtonColors(1, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(152, 145, 138),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(1, e -> type = "Shotgun");
+
+            this.controlPanel.setButtonText(2, "Sni");
+            this.controlPanel.setButtonColors(2, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(63, 60, 60),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(2, e -> type = "Sniper");
+
+            this.controlPanel.setButtonText(3, "Brk");
+            this.controlPanel.setButtonColors(3, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(63, 60, 60),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+
+        } else if (game.getGameState().getRoundState().equals("Training")) {
+            this.controlPanel.setButtonText(0, "Sol");
+            this.controlPanel.setButtonColors(0, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(58, 52, 46),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(0, e -> type = "Barricade");          //Lerakas
+
+            this.controlPanel.setButtonText(1, "Kam");
+            this.controlPanel.setButtonColors(1, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(152, 145, 138),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(1, e -> type = "Shotgun");
+
+            this.controlPanel.setButtonText(2, "Ass");
+            this.controlPanel.setButtonColors(2, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(63, 60, 60),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(2, e -> type = "Sniper");
+
+            this.controlPanel.setButtonText(3, "Div");
+            this.controlPanel.setButtonColors(3, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(63, 60, 60),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+
+            this.controlPanel.setButtonText(4, "Cli");
+            this.controlPanel.setButtonColors(4, new Color[]{
+                    new Color(224, 136, 65),
+                    new Color(63, 60, 60),
+                    new Color(175, 100, 49)});
+            this.controlPanel.attachActionListener(4, e -> type = "Barracks");
+        }
+        controlPanel.updateButtonText();
+        repaint();
     }
 
     protected void placeBlock(int x, int y) { //Lerakas
