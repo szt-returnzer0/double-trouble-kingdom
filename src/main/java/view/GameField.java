@@ -73,6 +73,8 @@ public class GameField extends GameFieldRenderer {
         this.controlPanel.attachActionListener(5, e -> {
             game.getGameState().nextRoundState();
             updateButtons();
+            setSelection(null);
+            type = "NoSelection";
         });
     }
 
