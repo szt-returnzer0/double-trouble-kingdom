@@ -153,13 +153,15 @@ public class GameField extends GameFieldRenderer {
         return isEmpty;
     }
 
-    protected boolean isBuildable(int xIdx, int yIdx, Dimension size) { //Will probably be moved to GameFieldRenderer
+    protected boolean isBuildable(int xIdx, int yIdx, Dimension size, String side) {
         boolean isBuildable = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
                 isBuildable = isBuildable && mapRef[y][x].getEntities().isEmpty() && !mapRef[y][x].getType().equals("Mountain") && !mapRef[y][x].getType().equals("Swamp");
             }
         }
+        if (!((side.equals("left") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1) || (side.equals("right") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
+            isBuildable = false;
         return isBuildable;
     }
     //
@@ -202,7 +204,7 @@ public class GameField extends GameFieldRenderer {
             if (inverted)
                 b.invert();
 
-            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) && isBuildable(xIdx, yIdx, b.getSize())) {
+            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) && isBuildable(xIdx, yIdx, b.getSize(), side)) {
                 for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
                     for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
                         mapRef[y][x].addEntities(b);
