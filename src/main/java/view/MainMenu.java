@@ -4,14 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainMenu extends JPanel {
-    public MainMenu(MainWindow wnd) {
+    JLabel players;
+    JLabel mapName;
+
+    public MainMenu(MainWindow wnd, String p1Name, String p2Name, String loadedMapName) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel topBar = new JPanel();
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
-        JLabel players = new JLabel("Játékos1 vs Játékos2", SwingConstants.CENTER);
+        this.players = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         topBar.add(players);
-        JLabel mapName = new JLabel("Pálya: Kezdő", SwingConstants.CENTER);
+        this.mapName = new JLabel("Pálya: " + loadedMapName, SwingConstants.CENTER);
         topBar.add(mapName);
         this.add(topBar);
 
@@ -39,5 +42,13 @@ public class MainMenu extends JPanel {
         JButton mapSelect = new JButton("Pályaválasztás");
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
+    }
+
+    public void updateName(String p1Name, String p2Name) {
+        this.players = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
+    }
+
+    public void updateMapName(String loadedMapName) {
+        this.mapName = new JLabel("Pálya: " + loadedMapName, SwingConstants.CENTER);
     }
 }

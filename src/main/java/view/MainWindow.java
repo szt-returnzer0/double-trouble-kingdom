@@ -10,6 +10,9 @@ import java.awt.*;
 public class MainWindow {
     private final JFrame frame;
     private final MainMenu mainMenu;
+    Terrain[][] map;
+    String p1Name;
+    String p2Name;
 
     public MainWindow() {
         frame = new JFrame("Double Trouble Kingdom");
@@ -17,7 +20,10 @@ public class MainWindow {
         frame.setPreferredSize(windowSize);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        mainMenu = new MainMenu(this);
+        map = FileHandler.loadMap("test-map01");
+        p1Name = "P1";
+        p2Name = "P2";
+        mainMenu = new MainMenu(this, p1Name, p2Name, "Alapértelmezett");
 
         frame.add(mainMenu, BorderLayout.CENTER);
         frame.pack();
@@ -29,9 +35,6 @@ public class MainWindow {
 
         Database db = new Database();
         //Terrain[][] map = randomTerrain(xMax, yMax);
-        Terrain[][] map = FileHandler.loadMap("test-map01");
-        String p1Name = "Játékos1";
-        String p2Name = "Játékos2";
         Game game = new Game(db, map, p1Name, p2Name);
         GameField gameField = new GameField(game, frame);
 
