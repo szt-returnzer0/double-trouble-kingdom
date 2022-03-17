@@ -14,6 +14,7 @@ public class GameField extends GameFieldRenderer {
     protected String type = "Plains";
     protected Timer timer;
     protected Game game;
+    protected JLabel curPlayer;
 
 
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
@@ -110,6 +111,10 @@ public class GameField extends GameFieldRenderer {
                 new Color(63, 60, 60),
                 new Color(175, 100, 49)});
         this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+        this.controlPanel.attachActionListener(5, e -> {
+            game.getGameState().nextPlayer();
+            controlPanel.updateButtonText();
+        });
 
 
     }
@@ -206,8 +211,6 @@ public class GameField extends GameFieldRenderer {
                 game.getGameState().getCurrentPlayer().addEntity(b);
                 controlPanel.updateButtonText();
             }
-
-
         }
 
     }

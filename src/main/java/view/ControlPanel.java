@@ -62,16 +62,25 @@ public class ControlPanel extends JPanel {
             this.add(buttons[i]);
         }*/
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             buttons[i] = new JRoundedButton("", 50, 50);
             innerPanel.add(buttons[i]);
         }
+        buttons[5] = new JRoundedButton("" + game.getGameState().getCurrentPlayer().getPlayerNumber(), 100, 50, new Color[]{
+                new Color(100, 74, 34),
+                new Color(100, 74, 34),
+                new Color(100, 74, 34)}, 25, 25);
+
+        JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 45, 8));
+        sidePanel.add(buttons[5]);
+        sidePanel.setOpaque(false);
+        this.add(sidePanel, BorderLayout.LINE_END);
+
         buttons[6] = new JRoundedButton("" + game.getGameState().getCurrentPlayer().getGold(), 50, 50, new Color[]{
                 new Color(255, 205, 0),
                 new Color(255, 205, 0),
                 new Color(255, 205, 0)}, 50, 50);
 
-        JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 45, 8));
         sidePanel.add(buttons[6]);
         sidePanel.setOpaque(false);
         this.add(sidePanel, BorderLayout.LINE_END);
@@ -84,6 +93,7 @@ public class ControlPanel extends JPanel {
     }
 
     public void updateButtonText() {
+        buttons[5].setText("" + game.getGameState().getCurrentPlayer().getPlayerNumber());
         buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
     }
 
