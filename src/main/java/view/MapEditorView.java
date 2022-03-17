@@ -1,5 +1,6 @@
 package view;
 
+import model.Map;
 import model.*;
 import persistence.FileHandler;
 
@@ -70,7 +71,7 @@ public class MapEditorView extends GameField {
         boolean onBuilding = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                onBuilding = onBuilding && (hasMatchingTypes(mapRef[y][x].getEntities()) || mapRef[y][x].getEntities().isEmpty());//hasNoMatchingTypes(mapRef[y][x].getEntities(), type);
+                onBuilding = onBuilding && (hasMatchingTypes(mapRef.getTiles()[y][x].getEntities()) || mapRef.getTiles()[y][x].getEntities().isEmpty());//hasNoMatchingTypes(mapRef.getTiles()[y][x].getEntities(), type);
             }
         }
         return onBuilding;
@@ -101,7 +102,7 @@ public class MapEditorView extends GameField {
             }
             for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
                 for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                    mapRef[y][x].addEntities(b);
+                    mapRef.getTiles()[y][x].addEntities(b);
                 }
             }
 
@@ -112,16 +113,16 @@ public class MapEditorView extends GameField {
     protected void placeBlock(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
-        Terrain[][] map = mapRef;
+        Map map = mapRef;
 
         if (yIdx < yLength && xIdx < xLength)
             try {
-                ArrayList<Entity> ent = map[yIdx][xIdx].getEntities();
+                ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
                 switch (type) {
-                    case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
-                    case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
-                    case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
-                    case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
+                    case "Plains" -> map.getTiles()[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
+                    case "Swamp" -> map.getTiles()[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
+                    case "Mountain" -> map.getTiles()[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
+                    case "Desert" -> map.getTiles()[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
                     case "Castle" -> placeLimitedBuilding(new Castle(new Point(xIdx, yIdx), ""));
                     case "Barracks" -> placeLimitedBuilding(new Barracks(new Point(xIdx, yIdx), ""));
                     case "Delete" -> {
@@ -130,6 +131,7 @@ public class MapEditorView extends GameField {
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
     }
 
@@ -155,8 +157,8 @@ public class MapEditorView extends GameField {
         Set<Entity> buildings = new HashSet<>();
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
-                if (!mapRef[y][x].getEntities().isEmpty())
-                    buildings.add(mapRef[y][x].getEntities().get(0));
+                if (!mapRef.getTiles()[y][x].getEntities().isEmpty())
+                    buildings.add(mapRef.getTiles()[y][x].getEntities().get(0));
             }
         }
         for (Entity building : buildings) {

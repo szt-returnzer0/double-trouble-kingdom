@@ -6,11 +6,11 @@ import persistence.Database;
 import java.util.ArrayList;
 
 public class Game {
-    private final Terrain[][] map;
+    private final Map map;
     private final Database database;
     private final GameState gameState;
 
-    public Game(Database database, Terrain[][] map, String p1Name, String p2Name) {
+    public Game(Database database, Map map, String p1Name, String p2Name) {
         this.database = database;
         this.gameState = new GameState(p1Name, p2Name);
         this.map = map;
@@ -38,7 +38,7 @@ public class Game {
         this.gameState.nextPlayer();
     }
 
-    public Terrain[][] getMap() {
+    public Map getMap() {
         return this.map;
     }
 

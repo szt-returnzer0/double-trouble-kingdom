@@ -1,7 +1,7 @@
 package persistence;
 
 import model.Game;
-import model.Terrain;
+import model.Map;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,8 +20,8 @@ public class FileHandler {
         }
     }
 
-    public static Terrain[][] loadMap(String fileName) {
-        return (Terrain[][]) loadFromFile(fileName);
+    public static Map loadMap(String fileName) {
+        return (Map) loadFromFile(fileName);
     }
 
     public static Game loadGameState(String fileName) {

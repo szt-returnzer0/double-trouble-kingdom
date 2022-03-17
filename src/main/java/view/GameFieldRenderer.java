@@ -2,7 +2,7 @@ package view;
 
 import model.Entity;
 import model.Game;
-import model.Terrain;
+import model.Map;
 import persistence.FileHandler;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class GameFieldRenderer extends JPanel {
     protected final int yLength;
     protected final ControlPanel controlPanel;
     protected final HamburgerMenu hamburgerMenu;
-    protected Terrain[][] mapRef;
+    protected Map mapRef;
     protected int scale;
     protected Entity selection = null;
     protected JFrame frame;
@@ -24,8 +24,8 @@ public class GameFieldRenderer extends JPanel {
     public GameFieldRenderer(Game game, JFrame frame) {
         this.mapRef = game.getMap();
         this.frame = frame;
-        this.xLength = mapRef[0].length;
-        this.yLength = mapRef.length;
+        this.xLength = mapRef.getTiles()[0].length;
+        this.yLength = mapRef.getTiles().length;
         this.scale = (frame.getContentPane().getSize().width) / xLength;
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
 
@@ -105,13 +105,13 @@ public class GameFieldRenderer extends JPanel {
     }
 
     protected void drawObj(Graphics2D g2d, int x, int y) {
-        handleType(g2d, mapRef[y][x].getType());
+        handleType(g2d, mapRef.getTiles()[y][x].getType());
         //System.out.println("["+y+"]"+"["+x+"]");
         g2d.fillRect(x * scale, y * scale, scale, scale);
     }
 
     protected void drawEnt(Graphics2D g2d, int x, int y) {
-        for (Entity entity : mapRef[y][x].getEntities()) {
+        for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             // System.out.println(entity.getType());
             g2d.fillRect(x * scale, y * scale, scale, scale);

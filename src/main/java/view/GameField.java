@@ -159,16 +159,16 @@ public class GameField extends GameFieldRenderer {
     protected void placeBlock(int x, int y) { //Lerakas
         int yIdx = y / scale;
         int xIdx = x / scale;
-        Terrain[][] map = mapRef;
+        Map map = mapRef;
 
         if (yIdx < yLength && xIdx < xLength)
             try {
-                ArrayList<Entity> ent = map[yIdx][xIdx].getEntities();
+                ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
                 switch (type) {
-                    case "Plains" -> map[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
-                    case "Swamp" -> map[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
-                    case "Mountain" -> map[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
-                    case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
+                    case "Plains" -> map.getTiles()[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
+                    case "Swamp" -> map.getTiles()[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
+                    case "Mountain" -> map.getTiles()[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
+                    case "Desert" -> map.getTiles()[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
                     case "Barracks" -> placeBuilding(new Barracks(new Point(xIdx, yIdx), ""));
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
                     case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
@@ -189,7 +189,7 @@ public class GameField extends GameFieldRenderer {
         boolean isEmpty = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                isEmpty = isEmpty && mapRef[y][x].getEntities().isEmpty();
+                isEmpty = isEmpty && mapRef.getTiles()[y][x].getEntities().isEmpty();
             }
         }
         return isEmpty;
@@ -199,7 +199,7 @@ public class GameField extends GameFieldRenderer {
         boolean isBuildable = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                isBuildable = isBuildable && mapRef[y][x].getEntities().isEmpty() && !mapRef[y][x].getType().equals("Mountain") && !mapRef[y][x].getType().equals("Swamp");
+                isBuildable = isBuildable && mapRef.getTiles()[y][x].getEntities().isEmpty() && !mapRef.getTiles()[y][x].getType().equals("Mountain") && !mapRef.getTiles()[y][x].getType().equals("Swamp");
             }
         }
         if (!((side.equals("left") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1) || (side.equals("right") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
@@ -231,7 +231,7 @@ public class GameField extends GameFieldRenderer {
         if (b != null) {
             for (int y = b.getPosition().y; y < b.getPosition().y + b.getSize().height; y++) {
                 for (int x = b.getPosition().x; x < b.getPosition().x + b.getSize().width; x++) {
-                    mapRef[y][x].getEntities().clear();
+                    mapRef.getTiles()[y][x].getEntities().clear();
                 }
             }
         }
@@ -249,7 +249,7 @@ public class GameField extends GameFieldRenderer {
             if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) && isBuildable(xIdx, yIdx, b.getSize(), side)) {
                 for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
                     for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                        mapRef[y][x].addEntities(b);
+                        mapRef.getTiles()[y][x].addEntities(b);
                     }
                 }
                 game.getGameState().getCurrentPlayer().addEntity(b);
