@@ -112,7 +112,7 @@ public class GameField extends GameFieldRenderer {
                 new Color(175, 100, 49)});
         this.controlPanel.attachActionListener(3, e -> type = "Barracks");
         this.controlPanel.attachActionListener(5, e -> {
-            game.getGameState().nextPlayer();
+            game.getGameState().nextRoundState();
             controlPanel.updateButtonText();
         });
 

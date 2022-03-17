@@ -66,7 +66,7 @@ public class ControlPanel extends JPanel {
             buttons[i] = new JRoundedButton("", 50, 50);
             innerPanel.add(buttons[i]);
         }
-        buttons[5] = new JRoundedButton("" + game.getGameState().getCurrentPlayer().getPlayerNumber(), 100, 50, new Color[]{
+        buttons[5] = new JRoundedButton("" + game.getGameState().getRoundState() + " " + game.getGameState().getCurrentPlayer().getPlayerNumber(), 100, 50, new Color[]{
                 new Color(100, 74, 34),
                 new Color(100, 74, 34),
                 new Color(100, 74, 34)}, 25, 25);
@@ -93,7 +93,7 @@ public class ControlPanel extends JPanel {
     }
 
     public void updateButtonText() {
-        buttons[5].setText("" + game.getGameState().getCurrentPlayer().getPlayerNumber());
+        buttons[5].setText("" + game.getGameState().getRoundState() + " " + game.getGameState().getCurrentPlayer().getPlayerNumber());
         buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
     }
 
