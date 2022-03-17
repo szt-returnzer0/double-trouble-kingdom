@@ -2,7 +2,6 @@ package view;
 
 import model.*;
 import persistence.Database;
-import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,9 +9,6 @@ import java.awt.*;
 public class MainWindow {
     private final JFrame frame;
     private final MainMenu mainMenu;
-    Terrain[][] map;
-    String p1Name;
-    String p2Name;
 
     public MainWindow() {
         frame = new JFrame("Double Trouble Kingdom");
@@ -20,10 +16,7 @@ public class MainWindow {
         frame.setPreferredSize(windowSize);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        map = FileHandler.loadMap("test-map01");
-        p1Name = "P1";
-        p2Name = "P2";
-        mainMenu = new MainMenu(this, p1Name, p2Name, "Alapértelmezett");
+        mainMenu = new MainMenu(this);
 
         frame.add(mainMenu, BorderLayout.CENTER);
         frame.pack();
@@ -34,8 +27,7 @@ public class MainWindow {
         frame.remove(mainMenu);
 
         Database db = new Database();
-        //Terrain[][] map = randomTerrain(xMax, yMax);
-        Game game = new Game(db, map, p1Name, p2Name);
+        Game game = new Game(db, mainMenu.map, mainMenu.getP1Name(), mainMenu.getP2Name());
         GameField gameField = new GameField(game, frame);
 
         frame.add(gameField, BorderLayout.CENTER);
@@ -60,10 +52,17 @@ public class MainWindow {
     public void startEditor(int xMax, int yMax) {
         frame.remove(mainMenu);
 
-        Terrain[][] map = new Terrain[yMax][xMax];
+        Map map = new Map((String) JOptionPane.showInputDialog(
+                frame,
+                "Add meg a pálya nevét",
+                "Pályanév",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "Új Pálya"), new Terrain[yMax][xMax]);
         for (int y = 0; y < yMax; y++) {
             for (int x = 0; x < xMax; x++) {
-                map[y][x] = new Plains(new Point(x, y));
+                map.getTiles()[y][x] = new Plains(new Point(x, y));
             }
         }
         Game dummyGame = new Game(null, map, "", "");
