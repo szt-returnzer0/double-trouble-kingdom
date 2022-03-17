@@ -11,6 +11,11 @@ public class Soldier extends Entity {
 
     public Soldier(Point position, int speed) {
         super(position);
+        this.type = "Soldier";
+        this.isAnimated = true;
+        this.healthPoints = 10;
+        this.size = new Dimension(1, 1);
+        this.value = 2;
     }
 
     public int getSpeed() {

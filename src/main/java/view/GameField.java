@@ -112,35 +112,35 @@ public class GameField extends GameFieldRenderer {
                     new Color(224, 136, 65),
                     new Color(58, 52, 46),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(0, e -> type = "Barricade");          //Lerakas
+            this.controlPanel.attachActionListener(0, e -> type = "Soldier");          //Lerakas
 
             this.controlPanel.setButtonText(1, "Kam");
             this.controlPanel.setButtonColors(1, new Color[]{
                     new Color(224, 136, 65),
                     new Color(152, 145, 138),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(1, e -> type = "Shotgun");
+            this.controlPanel.attachActionListener(1, e -> type = "Kamikaze");
 
             this.controlPanel.setButtonText(2, "Ass");
             this.controlPanel.setButtonColors(2, new Color[]{
                     new Color(224, 136, 65),
                     new Color(63, 60, 60),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(2, e -> type = "Sniper");
+            this.controlPanel.attachActionListener(2, e -> type = "Assassin");
 
             this.controlPanel.setButtonText(3, "Div");
             this.controlPanel.setButtonColors(3, new Color[]{
                     new Color(224, 136, 65),
                     new Color(63, 60, 60),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+            this.controlPanel.attachActionListener(3, e -> type = "Diver");
 
             this.controlPanel.setButtonText(4, "Cli");
             this.controlPanel.setButtonColors(4, new Color[]{
                     new Color(224, 136, 65),
                     new Color(63, 60, 60),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(4, e -> type = "Barracks");
+            this.controlPanel.attachActionListener(4, e -> type = "Climber");
         }
         controlPanel.updateButtonText();
         repaint();
@@ -163,6 +163,11 @@ public class GameField extends GameFieldRenderer {
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
                     case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
                     case "Shotgun" -> placeBuilding(new Shotgun(new Point(xIdx, yIdx), ""));
+                    case "Soldier" -> placeBuilding(new Soldier(new Point(xIdx, yIdx), 0));
+                    case "Assassin" -> placeBuilding(new Assassin(new Point(xIdx, yIdx), 0));
+                    case "Kamikaze" -> placeBuilding(new Kamikaze(new Point(xIdx, yIdx), 0));
+                    case "Diver" -> placeBuilding(new Diver(new Point(xIdx, yIdx), 0));
+                    case "Climber" -> placeBuilding(new Climber(new Point(xIdx, yIdx), 0));
                 }
 
             } catch (Exception e) {
@@ -222,7 +227,7 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
-    protected void placeBuilding(Building b) {
+    protected void placeBuilding(Entity b) { // Entity switched building
         if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
             int xIdx = b.getPosition().x;
             int yIdx = b.getPosition().y;

@@ -7,6 +7,11 @@ public class Kamikaze extends Soldier {
 
     public Kamikaze(Point position, int speed) {
         super(position, speed);
+        this.type = "Kamikaze";
+        this.isAnimated = true;
+        this.healthPoints = 10;
+        this.size = new Dimension(1, 1);
+        this.value = 5;
     }
 
     @Override

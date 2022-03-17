@@ -104,8 +104,11 @@ public class ControlPanel extends JPanel {
     public void attachActionListener(int idx, ActionListener e) {
         if (buttons[idx].getActionListeners().length == 0)
             buttons[idx].addActionListener(e);
-        else
-            buttons[idx].getActionListeners()[0] = e;
+        else {
+            buttons[idx].removeActionListener(buttons[idx].getActionListeners()[0]);
+            buttons[idx].addActionListener(e);
+        }
+
     }
 
     public void setButtonColor(int idx, Color color, int idx2) {
