@@ -148,6 +148,9 @@ public class GameFieldRenderer extends JPanel {
             case "Castle" -> g2d.setColor(Color.lightGray);
             case "Barracks" -> g2d.setColor(new Color(64, 37, 19));
             case "Barricade" -> g2d.setColor(new Color(208, 146, 110));
+            case "Sniper" -> g2d.setColor(new Color(118, 110, 106));
+            case "Shotgun" -> g2d.setColor(new Color(63, 60, 60));
+
             default -> g2d.setColor(Color.GRAY);
         }
     }

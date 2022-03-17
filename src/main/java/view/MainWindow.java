@@ -2,6 +2,7 @@ package view;
 
 import model.*;
 import persistence.Database;
+import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,18 @@ public class MainWindow {
         frame.remove(mainMenu);
 
         Database db = new Database();
+        //Terrain[][] map = randomTerrain(xMax, yMax);
+        Terrain[][] map = FileHandler.loadMap("test-map01");
+        String p1Name = "Játékos1";
+        String p2Name = "Játékos2";
+        Game game = new Game(db, map, p1Name, p2Name);
+        GameField gameField = new GameField(game, frame);
+
+        frame.add(gameField, BorderLayout.CENTER);
+        frame.pack();
+    }
+
+    private Terrain[][] randomTerrain(int xMax, int yMax) {
         Terrain[][] map = new Terrain[yMax][xMax];
         for (int y = 0; y < yMax; y++) {
             for (int x = 0; x < xMax; x++) {
@@ -40,14 +53,7 @@ public class MainWindow {
                 }
             }
         }
-
-        String p1Name = "Játékos1";
-        String p2Name = "Játékos2";
-        Game game = new Game(db, map, p1Name, p2Name);
-        GameField gameField = new GameField(game, frame);
-
-        frame.add(gameField, BorderLayout.CENTER);
-        frame.pack();
+        return map;
     }
 
     public void startEditor(int xMax, int yMax) {

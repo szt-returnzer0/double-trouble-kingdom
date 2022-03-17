@@ -86,7 +86,29 @@ public class GameField extends GameFieldRenderer {
                 new Color(224, 136, 65),
                 new Color(58, 52, 46),
                 new Color(175, 100, 49)});
-        this.controlPanel.attachActionListener(0, e -> type = "Barricade"); //Lerakas
+        this.controlPanel.attachActionListener(0, e -> type = "Barricade");          //Lerakas
+
+        this.controlPanel.setButtonText(1, "Sho");
+        this.controlPanel.setButtonColors(1, new Color[]{
+                new Color(224, 136, 65),
+                new Color(152, 145, 138),
+                new Color(175, 100, 49)});
+        this.controlPanel.attachActionListener(1, e -> type = "Shotgun");
+
+        this.controlPanel.setButtonText(2, "Sni");
+        this.controlPanel.setButtonColors(2, new Color[]{
+                new Color(224, 136, 65),
+                new Color(63, 60, 60),
+                new Color(175, 100, 49)});
+        this.controlPanel.attachActionListener(2, e -> type = "Sniper");
+
+        this.controlPanel.setButtonText(3, "Brk");
+        this.controlPanel.setButtonColors(3, new Color[]{
+                new Color(224, 136, 65),
+                new Color(63, 60, 60),
+                new Color(175, 100, 49)});
+        this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+
 
     }
 
@@ -105,9 +127,12 @@ public class GameField extends GameFieldRenderer {
                     case "Desert" -> map[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
                     case "Barracks" -> placeBuilding(new Barracks(new Point(xIdx, yIdx), ""));
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
+                    case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
+                    case "Shotgun" -> placeBuilding(new Shotgun(new Point(xIdx, yIdx), ""));
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
     }
 
@@ -130,6 +155,8 @@ public class GameField extends GameFieldRenderer {
             case "Castle" -> tmp = new Castle(new Point(xIdx, yIdx), "");
             case "Barracks" -> tmp = new Barracks(new Point(xIdx, yIdx), "");
             case "Barricade" -> tmp = new Barricade(new Point(xIdx, yIdx), "");
+            case "Sniper" -> tmp = new Sniper(new Point(xIdx, yIdx), "");
+            case "Shotgun" -> tmp = new Shotgun(new Point(xIdx, yIdx), "");
             default -> tmp = null;
         }
 
