@@ -1,13 +1,8 @@
 package model;
 
-public class Map {
-    private final String name;
-    private final Terrain[][] tiles;
+import java.io.Serializable;
 
-    public Map(String name, Terrain[][] tiles) {
-        this.name = name;
-        this.tiles = tiles;
-    }
+public record Map(String name, Terrain[][] tiles) implements Serializable {
 
     public String getName() {
         return name;
