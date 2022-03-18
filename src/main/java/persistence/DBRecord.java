@@ -3,21 +3,21 @@ package persistence;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class Record {
+public final class DBRecord {
     private String p1Name;
     private String p2Name;
     private int winner;
     private int time;
     private int id;
 
-    public Record(String p1Name, String p2Name, int winner, int time) {
+    public DBRecord(String p1Name, String p2Name, int winner, int time) {
         this.p1Name = p1Name;
         this.p2Name = p2Name;
         this.winner = winner;
         this.time = time;
     }
 
-    public Record(ResultSet resultSet) {
+    public DBRecord(ResultSet resultSet) {
         try {
             this.id = resultSet.getInt("ID");
             this.p1Name = resultSet.getString("P1NAME");

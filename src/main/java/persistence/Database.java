@@ -35,7 +35,7 @@ public class Database implements Serializable {
         }
     }
 
-    public void saveRecord(Record record) {
+    public void saveRecord(DBRecord record) {
         try {
             Statement stmt = c.createStatement();
             String sql = "INSERT INTO RECORDS (P1NAME,P2NAME,WINNER,TIME) " +
@@ -69,14 +69,14 @@ public class Database implements Serializable {
         }
     }
 
-    public ArrayList<Record> getRecords() {
-        ArrayList<Record> resultArray = new ArrayList<>();
+    public ArrayList<DBRecord> getRecords() {
+        ArrayList<DBRecord> resultArray = new ArrayList<>();
         try {
             Statement stmt = c.createStatement();
             String sql = "SELECT * FROM RECORDS";
             ResultSet results = stmt.executeQuery(sql);
             while (results.next())
-                resultArray.add(new Record(results));
+                resultArray.add(new DBRecord(results));
             System.out.println(results);
             stmt.close();
         } catch (SQLException e) {
