@@ -13,15 +13,23 @@ public class FileDialog {
 
     public FileDialog() {
         this.fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
-        this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Save", "dtk"));
     }
 
-    public void saveDialog(Map mapRef) {
+    public void saveMapDialog(Map map) {
+        this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Map", "dtk"));
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
-            FileHandler.saveToFile(fileChooser.getSelectedFile(), mapRef);
+            FileHandler.saveMap(fileChooser.getSelectedFile(), map);
+    }
+
+
+    public void saveGameDialog(Game game) {
+        this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Save", "dtk_save"));
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+            FileHandler.saveGame(fileChooser.getSelectedFile(), game);
     }
 
     public Map loadMapDialog() {
+        this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Map", "dtk"));
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION)
             return FileHandler.loadMap(fileChooser.getSelectedFile());
@@ -30,9 +38,10 @@ public class FileDialog {
     }
 
     public Game loadGameDialog() {
+        this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Save", "dtk_save"));
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION)
-            return FileHandler.loadGameState(fileChooser.getSelectedFile());
+            return FileHandler.loadGame(fileChooser.getSelectedFile());
         else
             return null;
     }

@@ -72,8 +72,11 @@ public class GameField extends GameFieldRenderer {
         updateButtons();
 
         FileDialog fileDialog = new FileDialog();
-        this.hamburgerMenu.attachActionListener(0, e -> fileDialog.saveDialog(mapRef));
-        this.hamburgerMenu.attachActionListener(1, e -> game = fileDialog.loadGameDialog());
+        this.hamburgerMenu.attachActionListener(0, e -> fileDialog.saveGameDialog(this.game));
+        this.hamburgerMenu.attachActionListener(1, e -> {
+            refreshGameField();
+            repaint();
+        });
 
         this.controlPanel.attachActionListener(5, e -> {
             game.getGameState().nextRoundState();
@@ -82,6 +85,14 @@ public class GameField extends GameFieldRenderer {
             type = "NoSelection";
         });
         this.controlPanel.setButtonSize(5, new Dimension(100, 50));
+    }
+
+    public void refreshGameField() {
+        frame.remove(this);
+        FileDialog fileDialog = new FileDialog();
+        Game game = fileDialog.loadGameDialog();
+        frame.add(new GameField(game, frame));
+        frame.pack();
     }
 
     private void updateButtons() {
