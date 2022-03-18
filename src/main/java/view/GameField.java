@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class GameField extends GameFieldRenderer {
@@ -25,17 +26,18 @@ public class GameField extends GameFieldRenderer {
         this.game = game;
         setupButtons();
 
+        if (game.getDatabase() == null) {
+            addMouseMotionListener(new MouseAdapter() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
+                        setSelection(null);
+                        draw(e);
+                    }
 
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
-                    setSelection(null);
-                    draw(e);
                 }
-
-            }
-        });
+            });
+        }
 
         addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -190,11 +192,11 @@ public class GameField extends GameFieldRenderer {
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
                     case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
                     case "Shotgun" -> placeBuilding(new Shotgun(new Point(xIdx, yIdx), ""));
-                    case "Soldier" -> trainSoliders(new Soldier(new Point(xIdx, yIdx), 0));
-                    case "Assassin" -> trainSoliders(new Assassin(new Point(xIdx, yIdx), 0));
-                    case "Kamikaze" -> trainSoliders(new Kamikaze(new Point(xIdx, yIdx), 0));
-                    case "Diver" -> trainSoliders(new Diver(new Point(xIdx, yIdx), 0));
-                    case "Climber" -> trainSoliders(new Climber(new Point(xIdx, yIdx), 0));
+                    case "Soldier" -> trainSoldiers(new Soldier(new Point(xIdx, yIdx), 0));
+                    case "Assassin" -> trainSoldiers(new Assassin(new Point(xIdx, yIdx), 0));
+                    case "Kamikaze" -> trainSoldiers(new Kamikaze(new Point(xIdx, yIdx), 0));
+                    case "Diver" -> trainSoldiers(new Diver(new Point(xIdx, yIdx), 0));
+                    case "Climber" -> trainSoldiers(new Climber(new Point(xIdx, yIdx), 0));
                 }
 
             } catch (Exception e) {
@@ -202,7 +204,7 @@ public class GameField extends GameFieldRenderer {
             }
     }
 
-    protected boolean isEmpty(int xIdx, int yIdx, Dimension size) { //Will probably be moved to GameFieldRenderer
+    protected boolean isEmpty(int xIdx, int yIdx, Dimension size) {
         boolean isEmpty = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
@@ -261,51 +263,17 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
-    protected Point closestEmptyTitle(int xIdx, int yIdx) {
-        Dimension d = new Dimension(1, 1);
-        int px = xIdx;
-        int py = yIdx;
-        int distance = xLength + 1;
-        for (int x = xIdx; x <= xLength; ++x) {//Checking Right
-            if (isEmpty(x, yIdx, d)) {
-                px = x;
-                py = yIdx;
-                distance = x - xIdx;
-                break;
-            }
-        }
-        for (int x = xIdx; x >= 0; --x) {//Checking Left
-            if (isEmpty(x, yIdx, d)) {
-                if (xIdx - x < distance) {
-                    distance = xIdx - x;
-                    px = x;
-                    py = yIdx;
-                }
-                break;
-            }
-        }
-        for (int y = yIdx; y >= 0; ++y) {//Checking Up
-            if (isEmpty(xIdx, y, d)) {
-                if (yIdx - y < distance) {
-                    distance = y - yIdx;
-                    px = xIdx;
-                    py = y;
-                }
-                break;
-            }
-        }
-        for (int y = yIdx; y >= 0; --y) {//Checking Down
-            if (isEmpty(xIdx, y, d)) {
-                if (yIdx - y < distance) {
-                    distance = yIdx - y;
-                    px = xIdx;
-                    py = y;
-                }
-                break;
-            }
-        }
-        return new Point(px, py);
+    protected Point closestEmptyTile(int xIdx, int yIdx) {
+        Point[] directions = new Point[]{new Point(-1, 0), new Point(0, 1), new Point(1, 0), new Point(0, -1)};
+        Integer[] counts = Arrays.stream(directions).map(e -> countTiles(new Point(xIdx, yIdx), e, 0)).toArray(Integer[]::new);
+        int idx = Arrays.asList(counts).indexOf(Arrays.stream(counts).min(Integer::compare).get());
+        return new Point(xIdx + directions[idx].x * counts[idx], yIdx + directions[idx].y * counts[idx]);
+    }
 
+    private int countTiles(Point from, Point dir, int counter) {
+        if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
+            return counter;
+        return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
     }
 
 
@@ -319,14 +287,14 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
-    protected void trainSoliders(Soldier s) {
+    protected void trainSoldiers(Soldier s) {
         if (game.getGameState().getCurrentPlayer().getGold() >= s.getValue()) {
             int xIdx = s.getPosition().x;
             int yIdx = s.getPosition().y;
             String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, side)) {
-                Point point = closestEmptyTitle(xIdx, yIdx);
+                Point point = closestEmptyTile(xIdx, yIdx);
                 mapRef.getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
                 controlPanel.updateButtonText();
