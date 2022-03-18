@@ -66,17 +66,17 @@ public class ControlPanel extends JPanel {
             this.add(buttons[i]);
         }*/
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             buttons[i] = new JRoundedButton("", 50, 50);
             innerPanel.add(buttons[i]);
         }
-        buttons[5] = new JRoundedButton("" + game.getGameState().getRoundState() + " " + game.getGameState().getCurrentPlayer().getPlayerNumber(), 100, 50, new Color[]{
+        /*buttons[5] = new JRoundedButton("" + game.getGameState().getRoundState() + " " + game.getGameState().getCurrentPlayer().getPlayerNumber(), 100, 50, new Color[]{
                 new Color(100, 74, 34),
                 new Color(100, 74, 34),
-                new Color(100, 74, 34)}, 25, 25);
+                new Color(100, 74, 34)}, 25, 25);*/
 
         JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 45, 8));
-        sidePanel.add(buttons[5]);
+        //sidePanel.add(buttons[5]);
         sidePanel.setOpaque(false);
         this.add(sidePanel, BorderLayout.LINE_END);
 
@@ -121,6 +121,10 @@ public class ControlPanel extends JPanel {
 
     public void setButtonText(int idx, String text) {
         buttons[idx].setText(text);
+    }
+
+    public void setButtonSize(int idx, Dimension dim) {
+        buttons[idx].setPreferredSize(dim);
     }
 
     @Override

@@ -76,6 +76,7 @@ public class GameField extends GameFieldRenderer {
             setSelection(null);
             type = "NoSelection";
         });
+        this.controlPanel.setButtonSize(5, new Dimension(100, 50));
     }
 
     private void updateButtons() {
