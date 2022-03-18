@@ -174,11 +174,11 @@ public class GameField extends GameFieldRenderer {
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
                     case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
                     case "Shotgun" -> placeBuilding(new Shotgun(new Point(xIdx, yIdx), ""));
-                    case "Soldier" -> placeBuilding(new Soldier(new Point(xIdx, yIdx), 0));
-                    case "Assassin" -> placeBuilding(new Assassin(new Point(xIdx, yIdx), 0));
-                    case "Kamikaze" -> placeBuilding(new Kamikaze(new Point(xIdx, yIdx), 0));
-                    case "Diver" -> placeBuilding(new Diver(new Point(xIdx, yIdx), 0));
-                    case "Climber" -> placeBuilding(new Climber(new Point(xIdx, yIdx), 0));
+                    case "Soldier" -> trainSoliders(new Soldier(new Point(xIdx, yIdx), 0));
+                    case "Assassin" -> trainSoliders(new Assassin(new Point(xIdx, yIdx), 0));
+                    case "Kamikaze" -> trainSoliders(new Kamikaze(new Point(xIdx, yIdx), 0));
+                    case "Diver" -> trainSoliders(new Diver(new Point(xIdx, yIdx), 0));
+                    case "Climber" -> trainSoliders(new Climber(new Point(xIdx, yIdx), 0));
                 }
 
             } catch (Exception e) {
@@ -207,18 +207,36 @@ public class GameField extends GameFieldRenderer {
             isBuildable = false;
         return isBuildable;
     }
-    //
+
+    protected boolean isInTrainingGround(int xIdx, int yIdx, String side) {
+        ArrayList<Entity> entities = mapRef.getTiles()[yIdx][xIdx].getEntities();
+        boolean isInTrainingGround = false;
+        for (Entity entity : entities) {
+            if (entity.getType().equals("Castle") || entity.getType().equals("Barracks")) {
+                isInTrainingGround = true;
+                break;
+            }
+        }
+        if (!((side.equals("left") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1) || (side.equals("right") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
+            isInTrainingGround = false;
+        return isInTrainingGround;
+    }
 
     private void updateSelection(int x, int y) { //Lerakas
         int yIdx = y / scale;
         int xIdx = x / scale;
-        Building tmp;
+        Entity tmp; // Entity Switched Building
         switch (type) {
             case "Castle" -> tmp = new Castle(new Point(xIdx, yIdx), "");
             case "Barracks" -> tmp = new Barracks(new Point(xIdx, yIdx), "");
             case "Barricade" -> tmp = new Barricade(new Point(xIdx, yIdx), "");
             case "Sniper" -> tmp = new Sniper(new Point(xIdx, yIdx), "");
             case "Shotgun" -> tmp = new Shotgun(new Point(xIdx, yIdx), "");
+            case "Soldier" -> tmp = (new Soldier(new Point(xIdx, yIdx), 0));
+            case "Assassin" -> tmp = (new Assassin(new Point(xIdx, yIdx), 0));
+            case "Kamikaze" -> tmp = (new Kamikaze(new Point(xIdx, yIdx), 0));
+            case "Diver" -> tmp = (new Diver(new Point(xIdx, yIdx), 0));
+            case "Climber" -> tmp = (new Climber(new Point(xIdx, yIdx), 0));
             default -> tmp = null;
         }
 
@@ -238,7 +256,21 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
-    protected void placeBuilding(Entity b) { // Entity switched building
+    protected void trainSoliders(Soldier s) {
+        if (game.getGameState().getCurrentPlayer().getGold() >= s.getValue()) {
+            int xIdx = s.getPosition().x;
+            int yIdx = s.getPosition().y;
+            String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+            s.setSide(side);
+            if (isInTrainingGround(xIdx, yIdx, side)) {
+                mapRef.getTiles()[yIdx][xIdx].addEntities(s);
+                game.getGameState().getCurrentPlayer().addEntity(s);
+                controlPanel.updateButtonText();
+            }
+        }
+    }
+
+    protected void placeBuilding(Building b) { // Entity switched building
         if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
             int xIdx = b.getPosition().x;
             int yIdx = b.getPosition().y;
