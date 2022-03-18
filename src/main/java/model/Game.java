@@ -3,10 +3,16 @@ package model;
 
 import persistence.Database;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable {
     private final Map map;
+
+    public Database getDatabase() {
+        return database;
+    }
+
     private final Database database;
     private final GameState gameState;
 

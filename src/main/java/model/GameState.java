@@ -1,11 +1,12 @@
 package model;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class GameState {
+public class GameState implements Serializable {
     private final Timer elapsedTimer;
     private final ArrayList<Player> players;
     private Player currentPlayer;
