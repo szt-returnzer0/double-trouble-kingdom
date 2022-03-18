@@ -50,7 +50,7 @@ public class MainMenu extends JPanel {
         JPanel bottomButtons = new JPanel(new FlowLayout());
         JButton rename = new JButton("Átnevezés");
         rename.addActionListener(e -> {
-            String p1 = (String) JOptionPane.showInputDialog(
+            this.p1Name = (String) JOptionPane.showInputDialog(
                     null,
                     "1. Játékos neve",
                     "Átnevezés",
@@ -59,7 +59,7 @@ public class MainMenu extends JPanel {
                     null,
                     "név1");
 
-            String p2 = (String) JOptionPane.showInputDialog(
+            this.p2Name = (String) JOptionPane.showInputDialog(
                     null,
                     "2. Játékos neve",
                     "Átnevezés",
@@ -68,12 +68,18 @@ public class MainMenu extends JPanel {
                     null,
                     "név2");
 
-            updateName(p1, p2);
+            updateName();
             repaint();
 
         });
         bottomButtons.add(rename);
         JButton mapSelect = new JButton("Pályaválasztás");
+        FileDialog fileDialog = new FileDialog();
+        mapSelect.addActionListener(e -> {
+            this.map = fileDialog.loadDialog();
+            updateMapName();
+            repaint();
+        });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
     }
@@ -94,15 +100,13 @@ public class MainMenu extends JPanel {
         return mapName;
     }
 
-    public void updateName(String p1Name, String p2Name) {
-        this.p1Name = p1Name;
-        this.p2Name = p2Name;
+    public void updateName() {
         this.players.setText("" + p1Name + " vs " + p2Name);
         repaint();
     }
 
-    public void updateMapName(String loadedMapName) {
-        this.mapName.setText("Pálya: " + loadedMapName);
+    public void updateMapName() {
+        this.mapName.setText("Pálya: " + map.getName());
         repaint();
     }
 }
