@@ -47,7 +47,7 @@ public class Player implements Serializable {
     }
 
     public Tower transformTower(Tower tower, String type) {
-        this.gold -= 20;
+        this.gold += 20;
         return tower.transform(type);
     }
 

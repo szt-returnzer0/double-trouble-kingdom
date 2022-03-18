@@ -323,12 +323,27 @@ public class GameField extends GameFieldRenderer {
                     game.getGameState().getCurrentPlayer().addEntity(b);
                     controlPanel.updateButtonText();
                 } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    System.out.println("UPGRADE");
+                    game.getGameState().getCurrentPlayer().upgradeBuilding((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
+                    this.controlPanel.updateButtonText();
+                    repaint();
+                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Shotgun") && Objects.equals(b.getType(), "Sniper") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    TransformTower(b, xIdx, yIdx);
+                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Sniper") && Objects.equals(b.getType(), "Shotgun") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    TransformTower(b, xIdx, yIdx);
+                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Barricade") && (Objects.equals(b.getType(), "Shotgun") || Objects.equals(b.getType(), "Barricade")) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    TransformTower(b, xIdx, yIdx);
                 }
             }
         }
 
     }
 
+    private void TransformTower(Building b, int xIdx, int yIdx) {
+        System.out.println("TRANSFORM");
+        Building newTower = game.getGameState().getCurrentPlayer().transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
+        deleteBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
+        placeBuilding(newTower);
+        repaint();
+    }
 
 }
