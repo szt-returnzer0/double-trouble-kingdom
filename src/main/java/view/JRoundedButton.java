@@ -91,9 +91,11 @@ public class JRoundedButton extends JButton {
         }
         g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arcWidth, arcHeight);
         if (text.length() > 0) {
+            Font font = new Font("Roboto", Font.PLAIN, 20);
+            int width = g.getFontMetrics(font).stringWidth(text);
             g2d.setColor(Color.white);
-            g2d.setFont(new Font("Roboto", Font.PLAIN, 20));
-            g2d.drawString(text, getWidth() / 2 - (int) (text.length() * 5 * 1.2), getHeight() / 2 + 6);
+            g2d.setFont(font);
+            g2d.drawString(text, getWidth() / 2 - (int) Math.ceil(width / 2.0), getHeight() / 2 + 6);
         }
         g2d.dispose();
     }
