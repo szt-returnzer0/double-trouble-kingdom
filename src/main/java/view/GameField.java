@@ -245,6 +245,53 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    protected Point closestEmptyTitle(int xIdx, int yIdx) {
+        Dimension d = new Dimension(1, 1);
+        int px = xIdx;
+        int py = yIdx;
+        int distance = xLength + 1;
+        for (int x = xIdx; x <= xLength; ++x) {//Checking Right
+            if (isEmpty(x, yIdx, d)) {
+                px = x;
+                py = yIdx;
+                distance = x - xIdx;
+                break;
+            }
+        }
+        for (int x = xIdx; x >= 0; --x) {//Checking Left
+            if (isEmpty(x, yIdx, d)) {
+                if (xIdx - x < distance) {
+                    distance = xIdx - x;
+                    px = x;
+                    py = yIdx;
+                }
+                break;
+            }
+        }
+        for (int y = yIdx; y >= 0; ++y) {//Checking Up
+            if (isEmpty(xIdx, y, d)) {
+                if (yIdx - y < distance) {
+                    distance = y - yIdx;
+                    px = xIdx;
+                    py = y;
+                }
+                break;
+            }
+        }
+        for (int y = yIdx; y >= 0; --y) {//Checking Down
+            if (isEmpty(xIdx, y, d)) {
+                if (yIdx - y < distance) {
+                    distance = yIdx - y;
+                    px = xIdx;
+                    py = y;
+                }
+                break;
+            }
+        }
+        return new Point(px, py);
+
+    }
+
 
     protected void deleteBuilding(Building b) {
         if (b != null) {
@@ -263,7 +310,8 @@ public class GameField extends GameFieldRenderer {
             String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, side)) {
-                mapRef.getTiles()[yIdx][xIdx].addEntities(s);
+                Point point = closestEmptyTitle(xIdx, yIdx);
+                mapRef.getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
                 controlPanel.updateButtonText();
             }
