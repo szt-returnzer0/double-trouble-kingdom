@@ -1,5 +1,7 @@
 package view;
 
+import persistence.Database;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -30,6 +32,9 @@ public class HamburgerMenu extends JPanel {
             buttons[i] = new JRoundedButton(labels[i], 160, 50, colors);
             menuList.add(buttons[i]);
         }
+
+        attachActionListener(2, e -> new HallOfFame(new Database().getRecords(), null));
+
 
         menuList.setBounds(0, 50, 200, height);
         menuList.setOpaque(false);
