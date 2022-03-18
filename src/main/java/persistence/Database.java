@@ -1,15 +1,16 @@
 package persistence;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Database {
-    Connection c;
+public class Database implements Serializable {
+    private Connection c;
 
     public Database() {
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:game.db");
+            openConnection();
             ResultSet tables = c.getMetaData().getTables(null, null, "RECORDS", null);
             if (!tables.next()) createTable();
         } catch (Exception e) {
@@ -82,5 +83,23 @@ public class Database {
             e.printStackTrace();
         }
         return resultArray;
+    }
+
+    public void closeConnection() {
+        try {
+            c.close();
+            c = null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openConnection() {
+        try {
+            c = DriverManager.getConnection("jdbc:sqlite:game.db");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
