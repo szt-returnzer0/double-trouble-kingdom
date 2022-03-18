@@ -1,5 +1,6 @@
 package view;
 
+import model.Game;
 import model.Map;
 import persistence.FileHandler;
 
@@ -20,10 +21,18 @@ public class FileDialog {
             FileHandler.saveToFile(fileChooser.getSelectedFile(), mapRef);
     }
 
-    public Map loadDialog() {
+    public Map loadMapDialog() {
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION)
             return FileHandler.loadMap(fileChooser.getSelectedFile());
+        else
+            return null;
+    }
+
+    public Game loadGameDialog() {
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION)
+            return FileHandler.loadGameState(fileChooser.getSelectedFile());
         else
             return null;
     }

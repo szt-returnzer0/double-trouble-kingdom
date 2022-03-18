@@ -70,6 +70,11 @@ public class GameField extends GameFieldRenderer {
 
     protected void setupButtons() {
         updateButtons();
+
+        FileDialog fileDialog = new FileDialog();
+        this.hamburgerMenu.attachActionListener(0, e -> fileDialog.saveDialog(mapRef));
+        this.hamburgerMenu.attachActionListener(1, e -> game = fileDialog.loadGameDialog());
+
         this.controlPanel.attachActionListener(5, e -> {
             game.getGameState().nextRoundState();
             updateButtons();
