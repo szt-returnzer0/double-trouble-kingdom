@@ -3,7 +3,6 @@ package view;
 import model.Entity;
 import model.Game;
 import model.Map;
-import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,31 +48,6 @@ public class GameFieldRenderer extends JPanel {
         this.add(controlPanel);
         this.add(hamburgerMenu);
         this.hamburgerMenu.attachActionListener(4, e -> System.exit(0));
-        this.hamburgerMenu.attachActionListener(0, e -> {
-            String s = (String) JOptionPane.showInputDialog(
-                    frame,
-                    "Enter filename",
-                    "Save Dialog",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "filename");
-            System.out.println(s);
-            FileHandler.saveToFile(s, mapRef);
-        });
-
-        /*this.hamburgerMenu.attachActionListener(1, e -> {
-            String s = (String) JOptionPane.showInputDialog(
-                    frame,
-                    "Enter filename",
-                    "Load Dialog",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "filename");
-            System.out.println(s);
-            mapRef = FileHandler.loadMap(s);
-        });*/
     }
 
     @Override

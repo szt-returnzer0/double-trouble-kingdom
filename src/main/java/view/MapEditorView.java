@@ -2,7 +2,6 @@ package view;
 
 import model.Map;
 import model.*;
-import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,19 +42,11 @@ public class MapEditorView extends GameField {
                 new Color(166, 0, 0)});
         this.controlPanel.setButtonText(6, "X");
 
-        this.hamburgerMenu.attachActionListener(1, e -> {
-            String s = (String) JOptionPane.showInputDialog(
-                    frame,
-                    "Enter filename",
-                    "Load Dialog",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "filename");
-            System.out.println(s);
-            mapRef = FileHandler.loadMap(s);
-            checkForBuildings();
-        });
+        FileDialog fileDialog = new FileDialog();
+
+        this.hamburgerMenu.attachActionListener(0, e -> fileDialog.saveDialog(mapRef));
+
+        this.hamburgerMenu.attachActionListener(1, e -> mapRef = fileDialog.loadDialog());
 
     }
 
