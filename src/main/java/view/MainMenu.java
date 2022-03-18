@@ -5,6 +5,7 @@ import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class MainMenu extends JPanel {
     String p1Name;
@@ -20,7 +21,7 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        map = FileHandler.loadMap("test01");
+        map = FileHandler.loadMap(new File("test01.dtk"));
 
         this.players = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         topBar.add(players);

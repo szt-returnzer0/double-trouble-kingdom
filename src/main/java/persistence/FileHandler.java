@@ -3,15 +3,12 @@ package persistence;
 import model.Game;
 import model.Map;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class FileHandler {
-    public static void saveToFile(String fileName, Object obj) {
+    public static void saveToFile(File file, Object obj) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(fileName + ".dtk");
+            FileOutputStream fileOut = new FileOutputStream(file + ".dtk");
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(obj);
             objectOut.close();
@@ -20,17 +17,17 @@ public class FileHandler {
         }
     }
 
-    public static Map loadMap(String fileName) {
-        return (Map) loadFromFile(fileName);
+    public static Map loadMap(File file) {
+        return (Map) loadFromFile(file);
     }
 
-    public static Game loadGameState(String fileName) {
-        return (Game) loadFromFile(fileName);
+    public static Game loadGameState(File file) {
+        return (Game) loadFromFile(file);
     }
 
-    private static Object loadFromFile(String fileName) {
+    private static Object loadFromFile(File file) {
         try {
-            FileInputStream fileIn = new FileInputStream(fileName + ".dtk");
+            FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
             Object data = objectIn.readObject();
             fileIn.close();
