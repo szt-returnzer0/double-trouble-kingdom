@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 public class GameField extends GameFieldRenderer {
@@ -310,15 +311,20 @@ public class GameField extends GameFieldRenderer {
             b.setSide(side);
             if (inverted)
                 b.invert();
-
-            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && isEmpty(xIdx, yIdx, b.getSize()) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) && isBuildable(xIdx, yIdx, b.getSize(), side)) {
-                for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                    for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                        mapRef.getTiles()[y][x].addEntities(b);
+            System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
+            String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
+            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && /*isEmpty(xIdx, yIdx, b.getSize()) &&*/ !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) /*&& isBuildable(xIdx, yIdx, b.getSize(), side)*/) {
+                if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
+                    for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
+                        for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+                            mapRef.getTiles()[y][x].addEntities(b);
+                        }
                     }
+                    game.getGameState().getCurrentPlayer().addEntity(b);
+                    controlPanel.updateButtonText();
+                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    System.out.println("UPGRADE");
                 }
-                game.getGameState().getCurrentPlayer().addEntity(b);
-                controlPanel.updateButtonText();
             }
         }
 
