@@ -16,10 +16,9 @@ public class GameField extends GameFieldRenderer {
     protected String type = "Plains";
     protected Timer timer;
     protected JLabel curPlayer;
-
-
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
+    private boolean deleteState;
 
     public GameField(Game game, JFrame frame) {
         super(game, frame);
@@ -66,8 +65,22 @@ public class GameField extends GameFieldRenderer {
     private void draw(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        placeBlock(x, y);
+        if (!deleteState) placeBlock(x, y);
+        else delete(x, y);
+        System.out.println(deleteState);
         repaint();
+    }
+
+    private void delete(int x, int y) {
+        int yIdx = y / scale;
+        int xIdx = x / scale;
+        Building b = (Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0);
+        String pSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
+        if (Objects.equals(b.getSide(), pSide) &&
+                !Objects.equals(b.getType(), "Castle")) {
+            deleteBuilding(b);
+            game.getGameState().getCurrentPlayer().removeEntity(b);
+        }
     }
 
     protected void setupButtons() {
@@ -84,9 +97,18 @@ public class GameField extends GameFieldRenderer {
             game.getGameState().nextRoundState();
             updateButtons();
             setSelection(null);
+            if (deleteState) toggleDelete();
             type = "NoSelection";
         });
         this.controlPanel.setButtonSize(5, new Dimension(100, 50));
+
+        this.controlPanel.attachActionListener(6, e -> {
+                    toggleDelete();
+                    setSelection(null);
+                    type = "NoSelection";
+                }
+        );
+
     }
 
     public void refreshGameField() {
@@ -104,28 +126,40 @@ public class GameField extends GameFieldRenderer {
                     new Color(224, 136, 65),
                     new Color(58, 52, 46),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(0, e -> type = "Barricade");          //Lerakas
+            this.controlPanel.attachActionListener(0, e -> {
+                type = "Barricade";
+                if (deleteState) toggleDelete();
+            });          //Lerakas
 
             this.controlPanel.setButtonText(1, "Sho");
             this.controlPanel.setButtonColors(1, new Color[]{
                     new Color(224, 136, 65),
                     new Color(152, 145, 138),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(1, e -> type = "Shotgun");
+            this.controlPanel.attachActionListener(1, e -> {
+                type = "Shotgun";
+                if (deleteState) toggleDelete();
+            });
 
             this.controlPanel.setButtonText(2, "Sni");
             this.controlPanel.setButtonColors(2, new Color[]{
                     new Color(224, 136, 65),
                     new Color(63, 60, 60),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(2, e -> type = "Sniper");
+            this.controlPanel.attachActionListener(2, e -> {
+                type = "Sniper";
+                if (deleteState) toggleDelete();
+            });
 
             this.controlPanel.setButtonText(3, "Brk");
             this.controlPanel.setButtonColors(3, new Color[]{
                     new Color(224, 136, 65),
                     new Color(63, 60, 60),
                     new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(3, e -> type = "Barracks");
+            this.controlPanel.attachActionListener(3, e -> {
+                type = "Barracks";
+                if (deleteState) toggleDelete();
+            });
 
             this.controlPanel.setButtonText(4, "");
             this.controlPanel.setButtonColors(4, new Color[]{
@@ -326,23 +360,48 @@ public class GameField extends GameFieldRenderer {
                     this.controlPanel.updateButtonText();
                     repaint();
                 } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Shotgun") && Objects.equals(b.getType(), "Sniper") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    TransformTower(b, xIdx, yIdx);
+                    transformTower(b, xIdx, yIdx);
                 } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Sniper") && Objects.equals(b.getType(), "Shotgun") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    TransformTower(b, xIdx, yIdx);
+                    transformTower(b, xIdx, yIdx);
                 } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Barricade") && (Objects.equals(b.getType(), "Shotgun") || Objects.equals(b.getType(), "Barricade")) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    TransformTower(b, xIdx, yIdx);
+                    transformTower(b, xIdx, yIdx);
                 }
             }
         }
 
     }
 
-    private void TransformTower(Building b, int xIdx, int yIdx) {
+
+    private void transformTower(Building b, int xIdx, int yIdx) {
         System.out.println("TRANSFORM");
         Building newTower = game.getGameState().getCurrentPlayer().transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
         deleteBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
         placeBuilding(newTower);
         repaint();
     }
+
+    private void toggleDelete() {
+
+        if (Objects.equals(game.getGameState().getRoundState(), "Building")) {
+            if (!deleteState) {
+                this.controlPanel.setButtonColors(6, new Color[]{
+                        new Color(255, 142, 142),
+                        new Color(70, 0, 0),
+                        new Color(166, 0, 0)});
+                this.controlPanel.setButtonText(6, "X");
+                deleteState = true;
+                repaint();
+            } else {
+                this.controlPanel.setButtonColors(6, new Color[]{
+                        new Color(255, 205, 0),
+                        new Color(255, 205, 0),
+                        new Color(255, 205, 0)});
+                controlPanel.updateButtonText();
+                deleteState = false;
+                repaint();
+            }
+        }
+    }
+
 
 }

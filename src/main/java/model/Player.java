@@ -124,5 +124,6 @@ public class Player implements Serializable {
      */
     public void removeEntity(Entity entity) {
         this.entities.remove(entity);
+        addGold(entity.value / 3);
     }
 }
