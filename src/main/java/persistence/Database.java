@@ -4,9 +4,18 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Implementation of the Game's Database class, contains SQL queries, and SQLite connection opening and closing methods.
+ */
 public class Database implements Serializable {
+    /**
+     * Connection to the SQLite database.
+     */
     private Connection c;
 
+    /**
+     * Constructs the Database class. Opens a new SQLite connection, creates Game.db if it does not exist.
+     */
     public Database() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -15,10 +24,12 @@ public class Database implements Serializable {
             if (!tables.next()) createTable();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
         }
     }
 
+    /**
+     * SQL query to crate the Game.db database.
+     */
     public void createTable() {
         try {
             Statement stmt = c.createStatement();
@@ -35,6 +46,11 @@ public class Database implements Serializable {
         }
     }
 
+    /**
+     * SQL query to save a DBRecord to the Database.
+     *
+     * @param record to save
+     */
     public void saveRecord(DBRecord record) {
         try {
             Statement stmt = c.createStatement();
@@ -47,6 +63,11 @@ public class Database implements Serializable {
         }
     }
 
+    /**
+     * SQL query to delete a record by id.
+     *
+     * @param id the id of the record we want to delete
+     */
     public void deleteRecordByID(int id) {
         try {
             Statement stmt = c.createStatement();
@@ -58,6 +79,9 @@ public class Database implements Serializable {
         }
     }
 
+    /**
+     * SQL query to delete all the records in the database.
+     */
     public void deleteAllRecords() {
         try {
             Statement stmt = c.createStatement();
@@ -69,6 +93,11 @@ public class Database implements Serializable {
         }
     }
 
+    /**
+     * SQL query to select all the records, and returns it as an ArrayList containing DBRecords.
+     *
+     * @return an ArrayList containing DBRecords
+     */
     public ArrayList<DBRecord> getRecords() {
         ArrayList<DBRecord> resultArray = new ArrayList<>();
         try {
@@ -85,6 +114,9 @@ public class Database implements Serializable {
         return resultArray;
     }
 
+    /**
+     * Closes the Database connection.
+     */
     public void closeConnection() {
         try {
             c.close();
@@ -94,6 +126,9 @@ public class Database implements Serializable {
         }
     }
 
+    /**
+     * Opens the Database connection.
+     */
     public void openConnection() {
         try {
             c = DriverManager.getConnection("jdbc:sqlite:game.db");
