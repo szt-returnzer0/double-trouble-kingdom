@@ -323,7 +323,7 @@ public class GameField extends GameFieldRenderer {
                     game.getGameState().getCurrentPlayer().addEntity(b);
                     controlPanel.updateButtonText();
                 } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    game.getGameState().getCurrentPlayer().upgradeBuilding((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
+                    game.getGameState().getCurrentPlayer().upgradeBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
                     this.controlPanel.updateButtonText();
                     repaint();
                 } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Shotgun") && Objects.equals(b.getType(), "Sniper") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {

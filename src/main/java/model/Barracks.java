@@ -9,15 +9,21 @@ public class Barracks extends Building {
         super(position, side);
         this.type = "Barracks";
         this.size = new Dimension(2, 4);
-        //this.side = side;
         this.isUpgraded = false;
         this.canUpgrade = true;
         this.value = 50;
     }
 
+    public boolean isUpgraded() {
+        return this.isUpgraded;
+    }
+
     @Override
     public int upgrade() {
-        this.isUpgraded = true;
-        return 50;
+        if (!this.isUpgraded) {
+            this.isUpgraded = true;
+            return 30;
+        }
+        return 0;
     }
 }

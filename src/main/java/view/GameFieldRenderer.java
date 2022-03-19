@@ -1,13 +1,13 @@
 package view;
 
-import model.Entity;
-import model.Game;
-import model.Map;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameFieldRenderer extends JPanel {
 
@@ -89,8 +89,30 @@ public class GameFieldRenderer extends JPanel {
             handleType(g2d, entity.getType());
             // System.out.println(entity.getType());
             g2d.fillRect(x * scale, y * scale, scale, scale);
+            drawLevel(g2d, entity);
+
         }
 
+    }
+
+    protected void drawLevel(Graphics2D g2d, Entity ent) {
+        ArrayList<String> towerTypes = new ArrayList<>(Arrays.asList("Sniper", "Shotgun", "Barracks"));
+        if (towerTypes.contains(ent.getType())) {
+            Stroke def = g2d.getStroke();
+            Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, new float[]{9}, 0);
+            g2d.setStroke(dashed);
+
+            if (!ent.getType().equals("Barracks")) {
+                Tower tmp = (Tower) ent;
+                g2d.setColor(new Color(85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel()));
+            } else if (((Barracks) ent).isUpgraded()) {
+                g2d.setColor(new Color(139, 27, 27));
+            }
+            g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);
+
+            g2d.setStroke(def);
+        }
     }
 
     protected void drawCurrentSelection(Graphics2D g2d) {
