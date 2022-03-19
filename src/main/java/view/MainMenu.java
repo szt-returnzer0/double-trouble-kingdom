@@ -8,11 +8,12 @@ import java.awt.*;
 import java.io.File;
 
 public class MainMenu extends JPanel {
-    String p1Name;
-    String p2Name;
-    Map map;
-    JLabel players;
-    JLabel mapName;
+    private final String starterMap;
+    private final JLabel playersLabel;
+    private final JLabel mapNameLabel;
+    private String p1Name;
+    private String p2Name;
+    private Map map;
 
     public MainMenu(MainWindow wnd) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -21,12 +22,13 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        map = FileHandler.loadMap(new File("test01.dtk"));
+        starterMap = "test01.dtk";
 
-        this.players = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
-        topBar.add(players);
-        this.mapName = new JLabel("Pálya: " + map.name(), SwingConstants.CENTER);
-        topBar.add(mapName);
+        map = getFreshMap();
+        this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
+        topBar.add(playersLabel);
+        this.mapNameLabel = new JLabel("Pálya: " + map.name(), SwingConstants.CENTER);
+        topBar.add(mapNameLabel);
         this.add(topBar);
 
         JPanel centerPanel = new JPanel();
@@ -84,8 +86,8 @@ public class MainMenu extends JPanel {
         this.add(bottomButtons);
     }
 
-    public Map getMap() {
-        return map;
+    public Map getFreshMap() {
+        return FileHandler.loadMap(new File(starterMap));
     }
 
     public String getP1Name() {
@@ -96,17 +98,17 @@ public class MainMenu extends JPanel {
         return p2Name;
     }
 
-    public JLabel getMapName() {
-        return mapName;
+    public JLabel getMapNameLabel() {
+        return mapNameLabel;
     }
 
     public void updateName() {
-        this.players.setText("" + p1Name + " vs " + p2Name);
+        this.playersLabel.setText("" + p1Name + " vs " + p2Name);
         repaint();
     }
 
     public void updateMapName() {
-        this.mapName.setText("Pálya: " + map.getName());
+        this.mapNameLabel.setText("Pálya: " + map.getName());
         repaint();
     }
 }

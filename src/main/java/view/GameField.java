@@ -15,7 +15,6 @@ public class GameField extends GameFieldRenderer {
     protected final boolean pressed = false;
     protected String type = "Plains";
     protected Timer timer;
-    protected Game game;
     protected JLabel curPlayer;
 
 

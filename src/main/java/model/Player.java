@@ -34,6 +34,7 @@ public class Player implements Serializable {
      * @param name the name of the Player
      */
     public Player(String name) {
+        if (number == 2) number = 0;
         this.playerNumber = ++number;
         this.name = name;
         this.gold = 100;

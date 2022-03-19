@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class MainWindow {
     private final JFrame frame;
-    private final MainMenu mainMenu;
+    private static MainMenu mainMenu;
 
     public MainWindow() {
         frame = new JFrame("Double Trouble Kingdom");
@@ -17,17 +17,22 @@ public class MainWindow {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         mainMenu = new MainMenu(this);
-
         frame.add(mainMenu, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public static void startMainMenu(JFrame frame) {
+        frame.remove(frame);
+        frame.add(mainMenu, BorderLayout.CENTER);
+        frame.pack();
     }
 
     public void startGame(int xMax, int yMax) {
         frame.remove(mainMenu);
 
         Database db = new Database();
-        Game game = new Game(db, mainMenu.map, mainMenu.getP1Name(), mainMenu.getP2Name());
+        Game game = new Game(db, mainMenu.getFreshMap(), mainMenu.getP1Name(), mainMenu.getP2Name());
         GameField gameField = new GameField(game, frame);
 
         frame.add(gameField, BorderLayout.CENTER);

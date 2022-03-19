@@ -19,8 +19,10 @@ public class GameFieldRenderer extends JPanel {
     protected int scale;
     protected Entity selection = null;
     protected JFrame frame;
+    protected Game game;
 
     public GameFieldRenderer(Game game, JFrame frame) {
+        this.game = game;
         this.mapRef = game.getMap();
         this.frame = frame;
         this.xLength = mapRef.getTiles()[0].length;
@@ -47,7 +49,13 @@ public class GameFieldRenderer extends JPanel {
         //hamburgerMenu.setBounds(0,0,200,frame.getContentPane().getSize().width);
         this.add(controlPanel);
         this.add(hamburgerMenu);
-        this.hamburgerMenu.attachActionListener(4, e -> System.exit(0));
+        this.hamburgerMenu.attachActionListener(4, e -> {
+            this.game.pauseGame();
+            this.removeAll();
+            frame.getContentPane().removeAll();
+            frame.repaint();
+            MainWindow.startMainMenu(frame);
+        });
     }
 
     @Override
