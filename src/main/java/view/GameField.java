@@ -12,9 +12,9 @@ import java.util.Objects;
 
 
 public class GameField extends GameFieldRenderer {
-    protected final boolean pressed = false;
+    // protected final boolean pressed = false;
     protected String type = "Plains";
-    protected Timer timer;
+    protected String elapsedTime;
     protected JLabel curPlayer;
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
@@ -260,17 +260,27 @@ public class GameField extends GameFieldRenderer {
         return isBuildable;
     }
 
-    protected boolean isInTrainingGround(int xIdx, int yIdx, String side) {
+    protected boolean isInTrainingGround(int xIdx, int yIdx, Soldier s, String side) {
         ArrayList<Entity> entities = mapRef.getTiles()[yIdx][xIdx].getEntities();
         boolean isInTrainingGround = false;
         for (Entity entity : entities) {
-            if (entity.getType().equals("Castle") || entity.getType().equals("Barracks")) {
+
+            if ((entity.getType().equals("Castle") || entity.getType().equals("Barracks")) && s.getType().equals("Soldier")) {
                 isInTrainingGround = true;
-                break;
+            }
+
+            if (entity.getType().equals("Barracks") && !((Barracks) entity).isUpgraded() && s.getType().equals("Soldier")) {
+                isInTrainingGround = true;
+            }
+
+            if (entity.getType().equals("Barracks") && ((Barracks) entity).isUpgraded()) {
+                isInTrainingGround = true;
             }
         }
         if (!((side.equals("left") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1) || (side.equals("right") && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
             isInTrainingGround = false;
+
+
         return isInTrainingGround;
     }
 
@@ -327,7 +337,7 @@ public class GameField extends GameFieldRenderer {
             int yIdx = s.getPosition().y;
             String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
             s.setSide(side);
-            if (isInTrainingGround(xIdx, yIdx, side)) {
+            if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx);
                 mapRef.getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
