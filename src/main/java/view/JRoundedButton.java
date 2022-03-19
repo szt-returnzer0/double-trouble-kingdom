@@ -73,6 +73,12 @@ public class JRoundedButton extends JButton {
         }
     }
 
+    public void setTransparent() {
+        selectedColor = new Color(0, 0, 0, 0);
+        notEnabled_bgColor = new Color(0, 0, 0, 0);
+        enabled_bgColor = new Color(0, 0, 0, 0);
+    }
+
     public void setText(String text) {
         this.text = text;
     }

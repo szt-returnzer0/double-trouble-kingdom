@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Implementation of the Player class for Double Trouble Kingdom Game, contains the Player's name, entities and gold. Implements the methods of manipulating entities.
@@ -27,6 +28,10 @@ public class Player implements Serializable {
      * The player's gold amount.
      */
     private int gold;
+    /**
+     * Determines if the Player has unlocked all units.
+     */
+    private boolean isUnitRestricted;
 
     /**
      * Constructs the Player with starter gold, entities and name.
@@ -38,7 +43,17 @@ public class Player implements Serializable {
         this.playerNumber = ++number;
         this.name = name;
         this.gold = 100;
+        this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
+    }
+
+    /**
+     * Returns if the player has unlocked all unit types.
+     *
+     * @return if the player has unlocked all unit types
+     */
+    public boolean isUnitRestricted() {
+        return isUnitRestricted;
     }
 
     /**
@@ -103,6 +118,7 @@ public class Player implements Serializable {
      */
     public void upgradeBuilding(Building building) {
         this.gold -= building.upgrade();
+        if (Objects.equals(building.getType(), "Barracks")) isUnitRestricted = false;
     }
 
     /**

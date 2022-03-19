@@ -140,6 +140,7 @@ public class GameField extends GameFieldRenderer {
                 type = "Shotgun";
                 if (deleteState) toggleDelete();
             });
+            this.controlPanel.getButtons()[1].setEnabled(true);
 
             this.controlPanel.setButtonText(2, "Sni");
             this.controlPanel.setButtonColors(2, new Color[]{
@@ -150,6 +151,7 @@ public class GameField extends GameFieldRenderer {
                 type = "Sniper";
                 if (deleteState) toggleDelete();
             });
+            this.controlPanel.getButtons()[2].setEnabled(true);
 
             this.controlPanel.setButtonText(3, "Brk");
             this.controlPanel.setButtonColors(3, new Color[]{
@@ -160,14 +162,12 @@ public class GameField extends GameFieldRenderer {
                 type = "Barracks";
                 if (deleteState) toggleDelete();
             });
+            this.controlPanel.getButtons()[3].setEnabled(true);
 
-            this.controlPanel.setButtonText(4, "");
-            this.controlPanel.setButtonColors(4, new Color[]{
-                    new Color(185, 185, 185, 0),
-                    new Color(185, 185, 185, 0),
-                    new Color(185, 185, 185, 0)});
-            this.controlPanel.getButtons()[4].setEnabled(false);
+            this.controlPanel.hideButton(4);
+
         } else if (game.getGameState().getRoundState().equals("Training")) {
+
             this.controlPanel.setButtonText(0, "Sol");
             this.controlPanel.setButtonColors(0, new Color[]{
                     new Color(224, 136, 65),
@@ -175,35 +175,47 @@ public class GameField extends GameFieldRenderer {
                     new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(0, e -> type = "Soldier");          //Lerakas
 
-            this.controlPanel.setButtonText(1, "Kam");
-            this.controlPanel.setButtonColors(1, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(152, 145, 138),
-                    new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(1, e -> type = "Kamikaze");
 
-            this.controlPanel.setButtonText(2, "Ass");
-            this.controlPanel.setButtonColors(2, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(63, 60, 60),
-                    new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(2, e -> type = "Assassin");
-
-            this.controlPanel.setButtonText(3, "Div");
-            this.controlPanel.setButtonColors(3, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(63, 60, 60),
-                    new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(3, e -> type = "Diver");
+            if (!game.getGameState().getCurrentPlayer().isUnitRestricted()) {
+                this.controlPanel.setButtonText(1, "Kam");
+                this.controlPanel.setButtonColors(1, new Color[]{
+                        new Color(224, 136, 65),
+                        new Color(152, 145, 138),
+                        new Color(175, 100, 49)});
+                this.controlPanel.attachActionListener(1, e -> type = "Kamikaze");
+                this.controlPanel.getButtons()[1].setEnabled(true);
 
 
-            this.controlPanel.setButtonText(4, "Cli");
-            this.controlPanel.setButtonColors(4, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(63, 60, 60),
-                    new Color(175, 100, 49)});
-            this.controlPanel.attachActionListener(4, e -> type = "Climber");
-            this.controlPanel.getButtons()[4].setEnabled(true);
+                this.controlPanel.setButtonText(2, "Ass");
+                this.controlPanel.setButtonColors(2, new Color[]{
+                        new Color(224, 136, 65),
+                        new Color(63, 60, 60),
+                        new Color(175, 100, 49)});
+                this.controlPanel.attachActionListener(2, e -> type = "Assassin");
+                this.controlPanel.getButtons()[2].setEnabled(true);
+
+
+                this.controlPanel.setButtonText(3, "Div");
+                this.controlPanel.setButtonColors(3, new Color[]{
+                        new Color(224, 136, 65),
+                        new Color(63, 60, 60),
+                        new Color(175, 100, 49)});
+                this.controlPanel.attachActionListener(3, e -> type = "Diver");
+                this.controlPanel.getButtons()[3].setEnabled(true);
+
+
+                this.controlPanel.setButtonText(4, "Cli");
+                this.controlPanel.setButtonColors(4, new Color[]{
+                        new Color(224, 136, 65),
+                        new Color(63, 60, 60),
+                        new Color(175, 100, 49)});
+                this.controlPanel.attachActionListener(4, e -> type = "Climber");
+                this.controlPanel.getButtons()[4].setEnabled(true);
+            } else {
+                for (int i = 1; i < 5; i++) {
+                    this.controlPanel.hideButton(i);
+                }
+            }
         }
         controlPanel.updateButtonText();
         repaint();

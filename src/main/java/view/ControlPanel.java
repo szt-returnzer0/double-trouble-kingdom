@@ -119,6 +119,12 @@ public class ControlPanel extends JPanel {
         buttons[idx].setColors(colors);
     }
 
+    public void hideButton(int idx) {
+        buttons[idx].setText("");
+        buttons[idx].setTransparent();
+        buttons[idx].setEnabled(false);
+    }
+
     public void setButtonText(int idx, String text) {
         buttons[idx].setText(text);
     }
