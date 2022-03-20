@@ -18,6 +18,7 @@ public class GameField extends GameFieldRenderer {
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
     private boolean deleteState;
+    protected Timer tick;
 
     public GameField(Game game, JFrame frame) {
         super(game, frame);
@@ -27,7 +28,7 @@ public class GameField extends GameFieldRenderer {
         middleText = "0 sec";
         sideText = getRoundStateText();
 
-        Timer tick = new Timer(1000, (e) -> {
+        tick = new Timer(1000, (e) -> {
             middleText = "" + game.getGameState().getElapsedTime() + " sec";
             repaint();
         });

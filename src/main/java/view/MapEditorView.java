@@ -15,27 +15,29 @@ public class MapEditorView extends GameField {
 
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
-
+        tick.stop();
+        middleText = mapRef.getName();
+        sideText = "Selection: " + type;
     }
 
     @Override
     protected void setupButtons() {
 
         this.controlPanel.setButtonColor(0, Color.green, 2);
-        this.controlPanel.attachActionListener(0, e -> type = "Plains");
+        this.controlPanel.attachActionListener(0, e -> sideText = "Selection: " + (type = "Plains"));
         this.controlPanel.setButtonColor(1, Color.blue, 2);
-        this.controlPanel.attachActionListener(1, e -> type = "Swamp");
+        this.controlPanel.attachActionListener(1, e -> sideText = "Selection: " + (type = "Swamp"));
         this.controlPanel.setButtonColor(2, Color.darkGray, 2);
-        this.controlPanel.attachActionListener(2, e -> type = "Mountain");
+        this.controlPanel.attachActionListener(2, e -> sideText = "Selection: " + (type = "Mountain"));
         this.controlPanel.setButtonColor(3, Color.yellow, 2);
-        this.controlPanel.attachActionListener(3, e -> type = "Desert");
+        this.controlPanel.attachActionListener(3, e -> sideText = "Selection: " + (type = "Desert"));
 
         this.controlPanel.setButtonColor(4, Color.lightGray, 2);
-        this.controlPanel.attachActionListener(4, e -> type = "Castle");
+        this.controlPanel.attachActionListener(4, e -> sideText = "Selection: " + (type = "Castle"));
         this.controlPanel.setButtonColor(5, new Color(64, 37, 19), 2);
-        this.controlPanel.attachActionListener(5, e -> type = "Barracks");
+        this.controlPanel.attachActionListener(5, e -> sideText = "Selection: " + (type = "Barracks"));
 
-        this.controlPanel.attachActionListener(6, e -> type = "Delete");
+        this.controlPanel.attachActionListener(6, e -> sideText = "Selection: " + (type = "Delete"));
         this.controlPanel.setButtonColors(6, new Color[]{
                 new Color(255, 142, 142),
                 new Color(70, 0, 0),
