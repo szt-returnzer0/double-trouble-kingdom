@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class GameField extends GameFieldRenderer {
     // protected final boolean pressed = false;
-    protected String type = "Plains";
+    protected String type = "None";
     protected JLabel curPlayer;
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
@@ -235,10 +235,6 @@ public class GameField extends GameFieldRenderer {
             try {
                 ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
                 switch (type) {
-                    case "Plains" -> map.getTiles()[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
-                    case "Swamp" -> map.getTiles()[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
-                    case "Mountain" -> map.getTiles()[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
-                    case "Desert" -> map.getTiles()[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
                     case "Barracks" -> placeBuilding(new Barracks(new Point(xIdx, yIdx), ""));
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
                     case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
@@ -248,6 +244,8 @@ public class GameField extends GameFieldRenderer {
                     case "Kamikaze" -> trainSoldiers(new Kamikaze(new Point(xIdx, yIdx), 0));
                     case "Diver" -> trainSoldiers(new Diver(new Point(xIdx, yIdx), 0));
                     case "Climber" -> trainSoldiers(new Climber(new Point(xIdx, yIdx), 0));
+                    default -> {
+                    }
                 }
 
             } catch (Exception e) {
@@ -332,7 +330,7 @@ public class GameField extends GameFieldRenderer {
     }
 
     private int countTiles(Point from, Point dir, int counter) {
-        if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || hasNoBuilding(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
+        if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
             return counter;
         return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
     }
@@ -344,6 +342,16 @@ public class GameField extends GameFieldRenderer {
             l = l && !towerTypes.contains(entity.getType());
         }
         return l;
+    }
+
+    private boolean unitIsPlaceable(Terrain ter) {
+        boolean result;
+        switch (ter.getType()) {
+            case "Swamp" -> result = Objects.equals(type, "Diver");
+            case "Mountain" -> result = Objects.equals(type, "Climber");
+            default -> result = true;
+        }
+        return result;
     }
 
 

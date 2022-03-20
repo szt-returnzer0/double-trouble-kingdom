@@ -121,6 +121,8 @@ public class MapEditorView extends GameField {
                     case "Delete" -> {
                         if (!ent.isEmpty()) safeDeleteBuilding(ent.get(0));
                     }
+                    default -> {
+                    }
                 }
 
             } catch (Exception e) {
