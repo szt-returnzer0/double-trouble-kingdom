@@ -332,9 +332,18 @@ public class GameField extends GameFieldRenderer {
     }
 
     private int countTiles(Point from, Point dir, int counter) {
-        if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
+        if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || hasNoBuilding(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
             return counter;
         return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
+    }
+
+    private boolean hasNoBuilding(Terrain ter) {
+        boolean l = true;
+        String towerTypes = "Barricade Sniper Shotgun Barracks Castle";
+        for (Entity entity : ter.getEntities()) {
+            l = l && !towerTypes.contains(entity.getType());
+        }
+        return l;
     }
 
 

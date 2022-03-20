@@ -112,6 +112,16 @@ public class GameFieldRenderer extends JPanel {
 
         }
 
+        if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
+            String text = "" + mapRef.getTiles()[y][x].getEntities().size();
+            Font font = new Font("Roboto", Font.PLAIN, 20);
+            int width = g2d.getFontMetrics(font).stringWidth(text);
+            g2d.setColor(Color.white);
+            g2d.setFont(font);
+            g2d.drawString(text, x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035), y * scale + scale / 2 + (int) (scale * 0.3));
+
+        }
+
     }
 
     private void drawUnitOwner(Graphics2D g2d, int x, int y, String side, Entity entity) {
