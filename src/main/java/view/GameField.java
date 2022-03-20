@@ -422,24 +422,24 @@ public class GameField extends GameFieldRenderer {
 
     private void toggleDelete() {
 
-        if (Objects.equals(game.getGameState().getRoundState(), "Building")) {
-            if (!deleteState) {
-                this.controlPanel.setButtonColors(6, new Color[]{
-                        new Color(255, 142, 142),
-                        new Color(70, 0, 0),
-                        new Color(166, 0, 0)});
-                this.controlPanel.setButtonText(6, "X");
-                deleteState = true;
-                repaint();
-            } else {
-                this.controlPanel.setButtonColors(6, new Color[]{
-                        new Color(255, 205, 0),
-                        new Color(255, 205, 0),
-                        new Color(255, 205, 0)});
-                controlPanel.updateButtonText();
-                deleteState = false;
-                repaint();
-            }
+        if ("Building".equals(game.getGameState().getRoundState()) && !deleteState) {
+
+            this.controlPanel.setButtonColors(6, new Color[]{
+                    new Color(255, 142, 142),
+                    new Color(70, 0, 0),
+                    new Color(166, 0, 0)});
+            this.controlPanel.setButtonText(6, "X");
+            deleteState = true;
+            repaint();
+
+        } else {
+            this.controlPanel.setButtonColors(6, new Color[]{
+                    new Color(255, 205, 0),
+                    new Color(255, 205, 0),
+                    new Color(255, 205, 0)});
+            controlPanel.updateButtonText();
+            deleteState = false;
+            repaint();
         }
     }
 
