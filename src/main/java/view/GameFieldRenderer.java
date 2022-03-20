@@ -191,14 +191,18 @@ public class GameFieldRenderer extends JPanel {
     }
 
     public void drawLabels(Graphics2D g2d) {
+        Font font = new Font("Roboto", Font.PLAIN, 24);
+        g2d.setFont(font);
+        int middleWidth = g2d.getFontMetrics(font).stringWidth(middleText);
+        int sideWidth = g2d.getFontMetrics(font).stringWidth(sideText);
+
         g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Roboto", Font.PLAIN, 24));
-        g2d.drawString(middleText, getWidth() / 2 + 2, 40 + 1);
-        g2d.drawString(sideText, getWidth() - 360 + 2, 40 + 1);
+        g2d.drawString(middleText, getWidth() / 2 - (int) Math.ceil(middleWidth / 2.0) + 2, 40 + 1);
+        g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2) + 2, 40 + 1);
 
         g2d.setColor(Color.WHITE);
-        g2d.drawString(middleText, getWidth() / 2, 40);
-        g2d.drawString(sideText, getWidth() - 360, 40);
+        g2d.drawString(middleText, getWidth() / 2 - (int) Math.ceil(middleWidth / 2.0), 40);
+        g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2), 40);
     }
 
     protected void setSelection(Entity ent) {
