@@ -181,8 +181,12 @@ public class GameFieldRenderer extends JPanel {
     }
 
     public void drawLabels(Graphics2D g2d) {
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(Color.BLACK);
         g2d.setFont(new Font("Roboto", Font.PLAIN, 24));
+        g2d.drawString(middleText, getWidth() / 2 + 2, 40 + 1);
+        g2d.drawString(sideText, getWidth() - 360 + 2, 40 + 1);
+
+        g2d.setColor(Color.WHITE);
         g2d.drawString(middleText, getWidth() / 2, 40);
         g2d.drawString(sideText, getWidth() - 360, 40);
     }
