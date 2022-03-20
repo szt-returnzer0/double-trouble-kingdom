@@ -6,10 +6,22 @@ import persistence.Database;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Implementation of the game's main window.
+ */
 public class MainWindow {
-    private final JFrame frame;
+    /**
+     * Main menu dependency.
+     */
     private static MainMenu mainMenu;
+    /**
+     * The frame of the main window.
+     */
+    private final JFrame frame;
 
+    /**
+     * Constructs a MainWindow instance.
+     */
     public MainWindow() {
         frame = new JFrame("Double Trouble Kingdom");
         Dimension windowSize = new Dimension(1920, 1080);
@@ -22,12 +34,23 @@ public class MainWindow {
         frame.setVisible(true);
     }
 
+    /**
+     * Starts main menu.
+     *
+     * @param frame the parent frame
+     */
     public static void startMainMenu(JFrame frame) {
         frame.remove(frame);
         frame.add(mainMenu, BorderLayout.CENTER);
         frame.pack();
     }
 
+    /**
+     * Starts a new Game
+     *
+     * @param xMax the width of the game Map
+     * @param yMax the height of the game Map
+     */
     public void startGame(int xMax, int yMax) {
         frame.remove(mainMenu);
 
@@ -39,6 +62,13 @@ public class MainWindow {
         frame.pack();
     }
 
+    /**
+     * Test method to generate maps.
+     *
+     * @param xMax the width of the game Map
+     * @param yMax the height of the game Map
+     * @return a randomized map of tiles
+     */
     private Terrain[][] randomTerrain(int xMax, int yMax) {
         Terrain[][] map = new Terrain[yMax][xMax];
         for (int y = 0; y < yMax; y++) {
@@ -54,6 +84,12 @@ public class MainWindow {
         return map;
     }
 
+    /**
+     * Starts a new Map editor
+     *
+     * @param xMax the width of the game Map
+     * @param yMax the height of the game Map
+     */
     public void startEditor(int xMax, int yMax) {
         frame.remove(mainMenu);
 

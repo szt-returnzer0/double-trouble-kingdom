@@ -7,14 +7,40 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+/**
+ * Implementation of MainMenu panel.
+ */
 public class MainMenu extends JPanel {
+    /**
+     * The default map name.
+     */
     private final String starterMap;
+    /**
+     * The label to show the player names.
+     */
     private final JLabel playersLabel;
+    /**
+     * The label to the loaded map's name.
+     */
     private final JLabel mapNameLabel;
+    /**
+     * The name of player 1.
+     */
     private String p1Name;
+    /**
+     * The name of player 2.
+     */
     private String p2Name;
+    /**
+     * The loaded Map instance.
+     */
     private Map map;
 
+    /**
+     * Constructs a new MainMenu instance.
+     *
+     * @param wnd the parent window
+     */
     public MainMenu(MainWindow wnd) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -86,27 +112,44 @@ public class MainMenu extends JPanel {
         this.add(bottomButtons);
     }
 
+    /**
+     * Returns a freshly loaded Map instance.
+     *
+     * @return a freshly loaded Map instance
+     */
     public Map getFreshMap() {
         return FileHandler.loadMap(new File(starterMap));
     }
 
+    /**
+     * Returns player 1's name.
+     *
+     * @return player 1's name
+     */
     public String getP1Name() {
         return p1Name;
     }
 
+    /**
+     * Returns player 2's name.
+     *
+     * @return player 2's name
+     */
     public String getP2Name() {
         return p2Name;
     }
 
-    public JLabel getMapNameLabel() {
-        return mapNameLabel;
-    }
-
+    /**
+     * Updates the players' name
+     */
     public void updateName() {
         this.playersLabel.setText("" + p1Name + " vs " + p2Name);
         repaint();
     }
 
+    /**
+     * Changes the Map to be loaded.
+     */
     public void updateMapName() {
         this.mapNameLabel.setText("Pálya: " + map.getName());
         repaint();

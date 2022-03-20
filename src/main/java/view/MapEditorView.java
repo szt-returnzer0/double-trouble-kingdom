@@ -8,11 +8,26 @@ import java.awt.*;
 import java.util.Queue;
 import java.util.*;
 
+/**
+ * Implementation of the view of Map editor.
+ */
 public class MapEditorView extends GameField {
     //private final Castle[] castles = new Castle[]{null, null};
+    /**
+     * List to check if enough castles were placed.
+     */
     private final ArrayList<Queue<Building>> castles = new ArrayList<>(Arrays.asList(new LinkedList<>(), new LinkedList<>()));
+    /**
+     * List to check if enough barracks were placed.
+     */
     private final ArrayList<Queue<Building>> barracks = new ArrayList<>(Arrays.asList(new LinkedList<>(), new LinkedList<>()));
 
+    /**
+     * Constructs a new MapEditorView instance.
+     *
+     * @param dummyGame game dependency, because of inheritance
+     * @param frame     the parent frame
+     */
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
         tick.stop();
@@ -20,6 +35,9 @@ public class MapEditorView extends GameField {
         sideText = "Selection: " + type;
     }
 
+    /**
+     * Sets the view's buttons.
+     */
     @Override
     protected void setupButtons() {
 
@@ -52,6 +70,12 @@ public class MapEditorView extends GameField {
 
     }
 
+    /**
+     * Checks if an ArrayList has matching types.
+     *
+     * @param ent the ArrayList to check
+     * @return if it had matching types
+     */
     private boolean hasMatchingTypes(ArrayList<Entity> ent) {
         boolean result = false;
         for (Entity entity : ent) {
@@ -60,6 +84,14 @@ public class MapEditorView extends GameField {
         return result;
     }
 
+    /**
+     * Checks if we don't build on other buildings
+     *
+     * @param xIdx index of the row
+     * @param yIdx index of the column
+     * @param size the size of the building
+     * @return if we don't try to build on an existing building
+     */
     private boolean notOnOtherBuilding(int xIdx, int yIdx, Dimension size) {
         boolean onBuilding = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
@@ -70,6 +102,11 @@ public class MapEditorView extends GameField {
         return onBuilding;
     }
 
+    /**
+     * Places a building with placement rules.
+     *
+     * @param b the building to place
+     */
     private void placeLimitedBuilding(Building b) {
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
@@ -102,6 +139,12 @@ public class MapEditorView extends GameField {
         }
     }
 
+    /**
+     * Places a new tile.
+     *
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     */
     @Override
     protected void placeBlock(int x, int y) {
         int yIdx = y / scale;
@@ -130,6 +173,11 @@ public class MapEditorView extends GameField {
             }
     }
 
+    /**
+     * Deletes a building with placement rules.
+     *
+     * @param ent the building to delete
+     */
     private void safeDeleteBuilding(Entity ent) {
         switch (ent.getType()) {
             case "Castle" -> {
@@ -148,6 +196,9 @@ public class MapEditorView extends GameField {
         deleteBuilding((Building) ent);
     }
 
+    /**
+     * Checks if the necessary building were placed.
+     */
     private void checkForBuildings() {
         Set<Entity> buildings = new HashSet<>();
         for (int y = 0; y < yLength; y++) {

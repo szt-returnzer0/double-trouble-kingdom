@@ -9,21 +9,62 @@ import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Implements the game's rendering engine.
+ */
 public class GameFieldRenderer extends JPanel {
 
+    /**
+     * The height of the panel.
+     */
     protected final int xLength;
+    /**
+     * The width of the panel.
+     */
     protected final int yLength;
+    /**
+     * ControlPanel component.
+     */
     protected final ControlPanel controlPanel;
+    /**
+     * HamburgerMenu component.
+     */
     protected final HamburgerMenu hamburgerMenu;
+    /**
+     * Reference to a Map instance.
+     */
     protected Map mapRef;
+    /**
+     * The scaling of the game.
+     */
     protected int scale;
+    /**
+     * The selected Entity.
+     */
     protected Entity selection = null;
+    /**
+     * The parent frame.
+     */
     protected JFrame frame;
+    /**
+     * The Game dependency.
+     */
     protected Game game;
+    /**
+     * Text field 1 on the HUD.
+     */
     protected String middleText;
+    /**
+     * Text field 2 on the HUD.
+     */
     protected String sideText;
 
-
+    /**
+     * Constructs a GameFieldRenderer instance.
+     *
+     * @param game  Game dependency injection
+     * @param frame the parent frame
+     */
     public GameFieldRenderer(Game game, JFrame frame) {
         this.game = game;
         this.mapRef = game.getMap();
@@ -63,6 +104,11 @@ public class GameFieldRenderer extends JPanel {
         });
     }
 
+    /**
+     * The paintComponent method of the class.
+     *
+     * @param g graphics we use
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -78,6 +124,11 @@ public class GameFieldRenderer extends JPanel {
         //g.dispose(); //not needed as g wasn't created by us
     }
 
+    /**
+     * Renders the canvas
+     *
+     * @param g2d the graphics we use
+     */
     protected void renderField(Graphics2D g2d) {
 
 
@@ -92,12 +143,26 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws the selected tile.
+     *
+     * @param g2d the graphics we use
+     * @param x   the horizontal coordinate
+     * @param y   the vertical coordinate
+     */
     protected void drawObj(Graphics2D g2d, int x, int y) {
         handleType(g2d, mapRef.getTiles()[y][x].getType());
         //System.out.println("["+y+"]"+"["+x+"]");
         g2d.fillRect(x * scale, y * scale, scale, scale);
     }
 
+    /**
+     * Draws the selected Entity.
+     *
+     * @param g2d the graphics we use
+     * @param x   the horizontal coordinate
+     * @param y   the vertical coordinate
+     */
     protected void drawEnt(Graphics2D g2d, int x, int y) {
         String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
 
@@ -124,6 +189,15 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
+    /**
+     * Draws the unit's owner color
+     *
+     * @param g2d    the graphics we use
+     * @param x      the horizontal coordinate
+     * @param y      the vertical coordinate
+     * @param side   the side it belongs to
+     * @param entity the entity to draw to
+     */
     private void drawUnitOwner(Graphics2D g2d, int x, int y, String side, Entity entity) {
         ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
         if (units.contains(entity.getType())) {
@@ -133,6 +207,12 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws a building's visible attributes
+     *
+     * @param g2d the graphics we use
+     * @param ent the building to draw to
+     */
     protected void drawBldState(Graphics2D g2d, Entity ent) {
         String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
 
@@ -161,11 +241,24 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
+    /**
+     * Draws the building's owner
+     *
+     * @param g2d  the graphics we use
+     * @param ent  the building to draw to
+     * @param side the side it belongs to
+     */
     private void drawBldOwner(Graphics2D g2d, Entity ent, String side) {
         setSideColor(side, g2d);
         g2d.drawRect(ent.getPosition().x * scale + 4, ent.getPosition().y * scale + 4, ent.getSize().width * scale - 8, ent.getSize().height * scale - 8);
     }
 
+    /**
+     * Sets the side's color.
+     *
+     * @param side the side we are on
+     * @param g2d  the graphics we use
+     */
     private void setSideColor(String side, Graphics2D g2d) {
         if (side.equals("left")) {
             g2d.setColor(Color.cyan);
@@ -174,6 +267,11 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws the current selection
+     *
+     * @param g2d the graphics we use
+     */
     protected void drawCurrentSelection(Graphics2D g2d) {
         //System.out.println(selection);
         if (selection != null) {
@@ -190,6 +288,11 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
+    /**
+     * Draws the HUD's labels.
+     *
+     * @param g2d the graphics we use
+     */
     public void drawLabels(Graphics2D g2d) {
         Font font = new Font("Roboto", Font.PLAIN, 24);
         g2d.setFont(font);
@@ -205,10 +308,21 @@ public class GameFieldRenderer extends JPanel {
         g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2), 40);
     }
 
+    /**
+     * Sets the selection to a new Entity.
+     *
+     * @param ent the entity to set to
+     */
     protected void setSelection(Entity ent) {
         selection = ent;
     }
 
+    /**
+     * Defines which color to use when drawing an Entity.
+     *
+     * @param g2d  the graphics we use
+     * @param type the type to handle
+     */
     protected void handleType(Graphics2D g2d, String type) { //Lerakas
         switch (type) {
             case "Plains" -> g2d.setColor(Color.GREEN);

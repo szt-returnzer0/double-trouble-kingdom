@@ -10,16 +10,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-
+/**
+ * Implementation of the GameField class, which displays the game table.
+ */
 public class GameField extends GameFieldRenderer {
     // protected final boolean pressed = false;
+    /**
+     * The selection type.
+     */
     protected String type = "None";
+    /**
+     * The label of current player.
+     */
     protected JLabel curPlayer;
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
+    /**
+     * Determines if the selection is inverted.
+     */
     protected boolean inverted = false;
+    /**
+     * Timer to show the elapsed time.
+     */
     protected Timer tick;
+    /**
+     * Determines if delete mode is on.
+     */
     private boolean deleteState;
 
+    /**
+     * Constructs a new GameField instance.
+     *
+     * @param game  Game dependency injection
+     * @param frame the parent frame
+     */
     public GameField(Game game, JFrame frame) {
         super(game, frame);
         this.game = game;
@@ -75,6 +98,9 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    /**
+     * Draws or removes new Entities on the canvas.
+     */
     private void draw(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
@@ -84,6 +110,12 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    /**
+     * Deletes an Entity from the canvas and the player's entities
+     *
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     */
     private void delete(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
@@ -98,6 +130,9 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
+    /**
+     * Sets the panel's buttons
+     */
     protected void setupButtons() {
         updateButtons();
 
@@ -127,10 +162,18 @@ public class GameField extends GameFieldRenderer {
 
     }
 
+    /**
+     * Returns the Round state as a String.
+     *
+     * @return the Round state as a String
+     */
     private String getRoundStateText() {
         return !Objects.equals(game.getGameState().getRoundState(), "Attacking") ? ("Phase: " + game.getGameState().getRoundState() + " | Player: " + game.getGameState().getCurrentPlayer().getPlayerNumber()) : ("Phase: " + game.getGameState().getRoundState());
     }
 
+    /**
+     * Redraws the canvas.
+     */
     public void refreshGameField() {
         frame.remove(this);
         FileDialog fileDialog = new FileDialog();
@@ -139,6 +182,9 @@ public class GameField extends GameFieldRenderer {
         frame.pack();
     }
 
+    /**
+     * Updates the buttons' state.
+     */
     private void updateButtons() {
         if (game.getGameState().getRoundState().equals("Building")) {
             this.controlPanel.setButtonText(0, "Bar");
@@ -226,6 +272,12 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    /**
+     * Places the Entity.
+     *
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     */
     protected void placeBlock(int x, int y) { //Lerakas
         int yIdx = y / scale;
         int xIdx = x / scale;
@@ -253,6 +305,14 @@ public class GameField extends GameFieldRenderer {
             }
     }
 
+    /**
+     * Checks if the tile is empty.
+     *
+     * @param xIdx index of the row
+     * @param yIdx index of the column
+     * @param size the size of the Entity
+     * @return if the tile is empty
+     */
     protected boolean isEmpty(int xIdx, int yIdx, Dimension size) {
         boolean isEmpty = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
@@ -263,6 +323,15 @@ public class GameField extends GameFieldRenderer {
         return isEmpty;
     }
 
+    /**
+     * Check if we can build.
+     *
+     * @param xIdx index of the row
+     * @param yIdx index of the column
+     * @param size the size of the building
+     * @param side the side it belongs to
+     * @return if we can build
+     */
     protected boolean isBuildable(int xIdx, int yIdx, Dimension size, String side) {
         boolean isBuildable = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
@@ -275,6 +344,15 @@ public class GameField extends GameFieldRenderer {
         return isBuildable;
     }
 
+    /**
+     * Check if we can train a unit.
+     *
+     * @param xIdx index of the row
+     * @param yIdx index of the column
+     * @param s    the unit instance
+     * @param side the side it belongs to
+     * @return if we can train it
+     */
     protected boolean isInTrainingGround(int xIdx, int yIdx, Soldier s, String side) {
         ArrayList<Entity> entities = mapRef.getTiles()[yIdx][xIdx].getEntities();
         boolean isInTrainingGround = false;
@@ -299,6 +377,12 @@ public class GameField extends GameFieldRenderer {
         return isInTrainingGround;
     }
 
+    /**
+     * Updates the current selection to be drawn on the canvas.
+     *
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     */
     private void updateSelection(int x, int y) { //Lerakas
         int yIdx = y / scale;
         int xIdx = x / scale;
@@ -322,6 +406,13 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    /**
+     * Determines the closest empty tile.
+     *
+     * @param xIdx index of the row
+     * @param yIdx index of the column
+     * @return the location of the closest empty tile
+     */
     protected Point closestEmptyTile(int xIdx, int yIdx) {
         Point[] directions = new Point[]{new Point(-1, 0), new Point(0, 1), new Point(1, 0), new Point(0, -1)};
         Integer[] counts = Arrays.stream(directions).map(e -> countTiles(new Point(xIdx, yIdx), e, 0)).toArray(Integer[]::new);
@@ -329,12 +420,26 @@ public class GameField extends GameFieldRenderer {
         return new Point(xIdx + directions[idx].x * counts[idx], yIdx + directions[idx].y * counts[idx]);
     }
 
+    /**
+     * Counts the tiles from a position to a direction.
+     *
+     * @param from    the point the count from
+     * @param dir     the direction to go
+     * @param counter the count of tiles
+     * @return the count of tiles
+     */
     private int countTiles(Point from, Point dir, int counter) {
         if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
             return counter;
         return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
     }
 
+    /**
+     * Check if a tile has no building.
+     *
+     * @param ter the tile to check
+     * @return if it has no building
+     */
     private boolean hasNoBuilding(Terrain ter) {
         boolean l = true;
         String towerTypes = "Barricade Sniper Shotgun Barracks Castle";
@@ -344,6 +449,12 @@ public class GameField extends GameFieldRenderer {
         return l;
     }
 
+    /**
+     * Checks if a unit is placeable.
+     *
+     * @param ter the tile to check
+     * @return if its placeable
+     */
     private boolean unitIsPlaceable(Terrain ter) {
         boolean result;
         switch (ter.getType()) {
@@ -354,7 +465,11 @@ public class GameField extends GameFieldRenderer {
         return result;
     }
 
-
+    /**
+     * Deletes a building from the Map
+     *
+     * @param b the building to delete
+     */
     protected void deleteBuilding(Building b) {
         if (b != null) {
             for (int y = b.getPosition().y; y < b.getPosition().y + b.getSize().height; y++) {
@@ -365,6 +480,11 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
+    /**
+     * Trains soldiers.
+     *
+     * @param s the soldier to train.
+     */
     protected void trainSoldiers(Soldier s) {
         if (game.getGameState().getCurrentPlayer().getGold() >= s.getValue()) {
             int xIdx = s.getPosition().x;
@@ -380,6 +500,11 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
+    /**
+     * Places a building.
+     *
+     * @param b the building to place
+     */
     protected void placeBuilding(Building b) { // Entity switched building
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
@@ -433,7 +558,13 @@ public class GameField extends GameFieldRenderer {
 
     }
 
-
+    /**
+     * Transforms a Tower
+     *
+     * @param b    the tower to transform
+     * @param xIdx index of the row
+     * @param yIdx index of the column
+     */
     private void transformTower(Building b, int xIdx, int yIdx) {
         System.out.println("TRANSFORM");
         Building newTower = game.getGameState().getCurrentPlayer().transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
@@ -442,6 +573,9 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    /**
+     * Toggles the delete mode.
+     */
     private void toggleDelete() {
 
         if ("Building".equals(game.getGameState().getRoundState()) && !deleteState) {

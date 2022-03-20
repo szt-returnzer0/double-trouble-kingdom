@@ -33,7 +33,7 @@ public class JRoundedButton extends JButton {
     private int arcHeight = 25;
 
     /**
-     * Contructs a new JRoundedButton instance.
+     * Constructs a new JRoundedButton instance.
      *
      * @param text the text of the button
      * @param w    the width of the button
@@ -49,7 +49,7 @@ public class JRoundedButton extends JButton {
     }
 
     /**
-     * Contructs a new JRoundedButton instance with non-default colors.
+     * Constructs a new JRoundedButton instance with non-default colors.
      *
      * @param text   the text of the button
      * @param w      the width of the button
@@ -73,7 +73,7 @@ public class JRoundedButton extends JButton {
     }
 
     /**
-     * Contructs a new JRoundedButton instance with non-default colors and non-default rounding.
+     * Constructs a new JRoundedButton instance with non-default colors and non-default rounding.
      *
      * @param text   the text of the button
      * @param w      the width of the button
@@ -142,7 +142,7 @@ public class JRoundedButton extends JButton {
     /**
      * Returns the button's text.
      *
-     * @return he button's text
+     * @return the button's text
      */
     @Override
     public String getText() {
