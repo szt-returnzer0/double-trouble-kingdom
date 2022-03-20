@@ -2,7 +2,16 @@ package model;
 
 import java.awt.*;
 
+/**
+ * Implementation of Sniper Tower type.
+ */
 public class Sniper extends Tower {
+    /**
+     * Constructs a Sniper instance.
+     *
+     * @param position the sniper's position on the Map
+     * @param side     the side it belongs to
+     */
     public Sniper(Point position, String side) {
         super(position, side);
         this.type = "Sniper";
@@ -11,6 +20,9 @@ public class Sniper extends Tower {
         this.size = new Dimension(2, 2);
     }
 
+    /**
+     * Attacks the tower's target if nearby.
+     */
     public void attack() {
     }
 }

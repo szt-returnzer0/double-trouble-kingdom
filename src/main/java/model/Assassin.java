@@ -2,7 +2,16 @@ package model;
 
 import java.awt.*;
 
+/**
+ * Implementation of Assassin special soldier type.
+ */
 public class Assassin extends Soldier {
+    /**
+     * Constructs a new Assassin instance.
+     *
+     * @param position the assassin's position
+     * @param speed    the assassin's current speed
+     */
     public Assassin(Point position, int speed) {
         super(position, speed);
         this.type = "Assassin";
@@ -12,6 +21,9 @@ public class Assassin extends Soldier {
         this.value = 5;
     }
 
+    /**
+     * Attacks the unit's target if nearby.
+     */
     @Override
     public void attack() {
         super.attack();

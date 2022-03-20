@@ -2,9 +2,21 @@ package model;
 
 import java.awt.*;
 
+/**
+ * Implementation of Barracks Building type.
+ */
 public class Barracks extends Building {
+    /**
+     * Determines if the Barrack instance is upgraded to train special units.
+     */
     private boolean isUpgraded;
 
+    /**
+     * Constructs a new Barracks instance.
+     *
+     * @param position the barrack's position on the Map
+     * @param side     the side it belongs to
+     */
     public Barracks(Point position, String side) {
         super(position, side);
         this.type = "Barracks";
@@ -14,10 +26,20 @@ public class Barracks extends Building {
         this.value = 50;
     }
 
+    /**
+     * Returns if the Barrack instance is upgraded.
+     *
+     * @return if the Barrack instance is upgraded
+     */
     public boolean isUpgraded() {
         return this.isUpgraded;
     }
 
+    /**
+     * Upgrades the Barrack instance.
+     *
+     * @return the cost of the upgrade
+     */
     @Override
     public int upgrade() {
         if (!this.isUpgraded) {

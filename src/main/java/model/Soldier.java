@@ -3,12 +3,33 @@ package model;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Implementation of Soldier Entity type.
+ */
 public class Soldier extends Entity {
+    /**
+     * The current speed of the Soldier.
+     */
     protected int speed;
+    /**
+     * An ArrayList which contains which tiles the Solider can cross.
+     */
     protected ArrayList<String> terrains;
+    /**
+     * The Soldier's target Entity.
+     */
     protected Entity target;
+    /**
+     * An ArrayList containing the path of the Solider to the enemy Castle.
+     */
     protected ArrayList<Point> path;
 
+    /**
+     * Constructs a new Soldier instance.
+     *
+     * @param position the soldier's position
+     * @param speed    the soldier's current speed
+     */
     public Soldier(Point position, int speed) {
         super(position);
         this.type = "Soldier";
@@ -18,27 +39,54 @@ public class Soldier extends Entity {
         this.value = 2;
     }
 
+    /**
+     * Returns the current speed of the Soldier.
+     *
+     * @return the current speed of the Soldier
+     */
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     * Returns which tiles the Solider can cross in an ArrayList.
+     *
+     * @return which tiles the Solider can cross in an ArrayList
+     */
     public ArrayList<String> getTerrains() {
         return terrains;
     }
 
+    /**
+     * Returns the path of the Solider to the enemy Castle in an ArrayList.
+     *
+     * @return the path of the Solider to the enemy Castle in an ArrayList
+     */
     public ArrayList<Point> getPath() {
         return path;
     }
 
+    /**
+     * Selects a target for the Soldier to attack.
+     */
     protected void selectTarget() {
     }
 
+    /**
+     * Attacks the unit's target if nearby.
+     */
     public void attack() {
     }
 
+    /**
+     * Calculates the shortest path to the enemy Castle.
+     */
     protected void calculatePath() {
     }
 
+    /**
+     * Adds a waypoint to the Soldier's path.
+     */
     public void addWaypoint() {
     }
 }

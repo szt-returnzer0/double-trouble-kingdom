@@ -2,7 +2,16 @@ package model;
 
 import java.awt.*;
 
+/**
+ * Implementation of Climber Soldier type.
+ */
 public class Climber extends Soldier {
+    /**
+     * Constructs a new Climber instance.
+     *
+     * @param position the climber's position on the Map
+     * @param speed    the climber's current speed
+     */
     public Climber(Point position, int speed) {
         super(position, speed);
         this.type = "Climber";
