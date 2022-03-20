@@ -36,21 +36,22 @@ public abstract class Tower extends Building {
 
     @Override
     public int upgrade() {
-        if (this.canUpgrade && this.level < 3)
+        if (this.canUpgrade && this.level < 3) {
             this.level++;
 
-        switch (level) {
-            case 1 -> {
-                this.damage += this.damage / 2;
-                return 10;
-            }
-            case 2 -> {
-                this.attackSpeed += this.attackSpeed / 2;
-                return 15;
-            }
-            case 3 -> {
-                this.healthPoints += this.healthPoints / 3;
-                return 20;
+            switch (level) {
+                case 1 -> {
+                    this.damage += this.damage / 2;
+                    return 10;
+                }
+                case 2 -> {
+                    this.attackSpeed += this.attackSpeed / 2;
+                    return 15;
+                }
+                case 3 -> {
+                    this.healthPoints += this.healthPoints / 3;
+                    return 20;
+                }
             }
         }
 

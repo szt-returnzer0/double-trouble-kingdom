@@ -17,8 +17,8 @@ public class GameField extends GameFieldRenderer {
     protected JLabel curPlayer;
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
-    private boolean deleteState;
     protected Timer tick;
+    private boolean deleteState;
 
     public GameField(Game game, JFrame frame) {
         super(game, frame);
@@ -381,37 +381,55 @@ public class GameField extends GameFieldRenderer {
     }
 
     protected void placeBuilding(Building b) { // Entity switched building
-        if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
-            int xIdx = b.getPosition().x;
-            int yIdx = b.getPosition().y;
-            String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
-            b.setSide(side);
-            if (inverted)
-                b.invert();
-            System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
-            String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
-            if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && /*isEmpty(xIdx, yIdx, b.getSize()) &&*/ !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0) /*&& isBuildable(xIdx, yIdx, b.getSize(), side)*/) {
-                if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
-                    for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                        for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+        int xIdx = b.getPosition().x;
+        int yIdx = b.getPosition().y;
+        String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+        b.setSide(side);
+        if (inverted)
+            b.invert();
+        System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
+        String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+            if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
+                for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
+                    for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+                        if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
                             mapRef.getTiles()[y][x].addEntities(b);
                         }
                     }
+                }
+
+                if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
                     game.getGameState().getCurrentPlayer().addEntity(b);
                     controlPanel.updateButtonText();
-                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                }
+            } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType())
+                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                if ((game.getGameState().getCurrentPlayer().getGold() >= 30 && b.getType().equals("Barracks"))
+                        || (game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10) && "Shotgun Sniper".contains(b.getType()))) {
                     game.getGameState().getCurrentPlayer().upgradeBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
                     this.controlPanel.updateButtonText();
                     repaint();
-                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Shotgun") && Objects.equals(b.getType(), "Sniper") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    transformTower(b, xIdx, yIdx);
-                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Sniper") && Objects.equals(b.getType(), "Shotgun") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    transformTower(b, xIdx, yIdx);
-                } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Barricade") && (Objects.equals(b.getType(), "Shotgun") || Objects.equals(b.getType(), "Barricade")) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                    transformTower(b, xIdx, yIdx);
                 }
+
+            } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
+                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Shotgun")
+                    && Objects.equals(b.getType(), "Sniper") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                transformTower(b, xIdx, yIdx);
+
+            } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
+                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Sniper")
+                    && Objects.equals(b.getType(), "Shotgun") && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                transformTower(b, xIdx, yIdx);
+
+            } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
+                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains("Barricade")
+                    && (Objects.equals(b.getType(), "Shotgun") || Objects.equals(b.getType(), "Barricade"))
+                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                transformTower(b, xIdx, yIdx);
             }
         }
+
 
     }
 

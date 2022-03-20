@@ -129,7 +129,7 @@ public class Player implements Serializable {
      * @return new Tower Entity
      */
     public Tower transformTower(Tower tower, String type) { // rewrite with void method
-        this.gold += 20;
+        this.gold += 10;
         return tower.transform(type);
     }
 
