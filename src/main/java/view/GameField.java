@@ -87,12 +87,14 @@ public class GameField extends GameFieldRenderer {
     private void delete(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
-        Building b = (Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0);
-        String pSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
-        if (Objects.equals(b.getSide(), pSide) &&
-                !Objects.equals(b.getType(), "Castle")) {
-            deleteBuilding(b);
-            game.getGameState().getCurrentPlayer().removeEntity(b);
+        if (!mapRef.getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
+            Building b = (Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0);
+            String pSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
+            if (Objects.equals(b.getSide(), pSide) &&
+                    !Objects.equals(b.getType(), "Castle")) {
+                deleteBuilding(b);
+                game.getGameState().getCurrentPlayer().removeEntity(b);
+            }
         }
     }
 
