@@ -1,9 +1,6 @@
 package view;
 
-import model.Entity;
-import model.Game;
-import model.Map;
-import model.Tower;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,29 +99,33 @@ public class GameFieldRenderer extends JPanel {
     }
 
     protected void drawEnt(Graphics2D g2d, int x, int y) {
+        String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             // System.out.println(entity.getType());
             g2d.fillRect(x * scale, y * scale, scale, scale);
 
-            ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
-            if (units.contains(entity.getType())) {
-                String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
-                if (side.equals("left")) {
-                    g2d.setColor(Color.blue);
-                } else {
-                    g2d.setColor(Color.red);
-                }
-                g2d.drawRect(x * scale + 2, y * scale + 2, scale - 4, scale - 4);
+            drawUnitOwner(g2d, x, y, side, entity);
+            drawBldState(g2d, entity);
 
-            }
-            drawLevel(g2d, entity);
 
         }
 
     }
 
-    protected void drawLevel(Graphics2D g2d, Entity ent) {
+    private void drawUnitOwner(Graphics2D g2d, int x, int y, String side, Entity entity) {
+        ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
+        if (units.contains(entity.getType())) {
+            setSideColor(side, g2d);
+            g2d.drawRect(x * scale + 2, y * scale + 2, scale - 4, scale - 4);
+
+        }
+    }
+
+    protected void drawBldState(Graphics2D g2d, Entity ent) {
+        String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+
         ArrayList<String> towerTypes = new ArrayList<>(Arrays.asList("Sniper", "Shotgun", "Barracks"));
         if (towerTypes.contains(ent.getType())) {
             Stroke def = g2d.getStroke();
@@ -134,20 +135,32 @@ public class GameFieldRenderer extends JPanel {
 
             if (!ent.getType().equals("Barracks")) {
                 Tower tmp = (Tower) ent;
-                //    g2d.setColor(new Color(85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel()));
-                //} else if (((Barracks) ent).isUpgraded()) {
                 g2d.setColor(new Color(255, 225, 0, 85 * tmp.getLevel()));
+            } else if (((Barracks) ent).isUpgraded()) {
+                g2d.setColor(new Color(255, 225, 0));
             }
             g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);
-            String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
-            if (side.equals("left")) {
-                g2d.setColor(Color.blue);
-            } else {
-                g2d.setColor(Color.red);
-            }
+
             g2d.setStroke(def);
 
-            g2d.drawRect(ent.getPosition().x * scale + 4, ent.getPosition().y * scale + 4, ent.getSize().width * scale - 8, ent.getSize().height * scale - 8);
+            drawBldOwner(g2d, ent, side);
+
+        } else if (ent.getType().equals("Castle")) {
+            drawBldOwner(g2d, ent, side);
+        }
+
+    }
+
+    private void drawBldOwner(Graphics2D g2d, Entity ent, String side) {
+        setSideColor(side, g2d);
+        g2d.drawRect(ent.getPosition().x * scale + 4, ent.getPosition().y * scale + 4, ent.getSize().width * scale - 8, ent.getSize().height * scale - 8);
+    }
+
+    private void setSideColor(String side, Graphics2D g2d) {
+        if (side.equals("left")) {
+            g2d.setColor(Color.cyan);
+        } else {
+            g2d.setColor(Color.red);
         }
     }
 
