@@ -8,13 +8,34 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 
 //NEEDS CLEANUP!!!
+
+/**
+ * Implementation of HamburgerMenu component.
+ */
 public class HamburgerMenu extends JPanel {
+    /**
+     * The frame of the menu.
+     */
     private final JFrame frame;
+    /**
+     * The buttons of the menu.
+     */
     private final JRoundedButton[] buttons = new JRoundedButton[6]; //for multiple actionListener support
     // private Color bgColor = new Color(0, 0, 0, 0);
+    /**
+     * The background color of the menu.
+     */
     private final Color bgColor = new Color(224, 224, 224, 205);
+    /**
+     * Determines if the menu is opened.
+     */
     private boolean opened = false;
 
+    /**
+     * Constructs a new HamburgerMenu instance.
+     *
+     * @param frame the parent frame of the menu
+     */
     public HamburgerMenu(JFrame frame) {
         super();
         this.frame = frame;
@@ -65,6 +86,11 @@ public class HamburgerMenu extends JPanel {
         this.add(toggleButton);
     }
 
+    /**
+     * The paintComponent method of the class.
+     *
+     * @param g graphics we use
+     */
     @Override
     protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
@@ -81,14 +107,30 @@ public class HamburgerMenu extends JPanel {
         g2d.dispose();
     }
 
+    /**
+     * Adds an ActionListener to a button in the menu.
+     *
+     * @param idx the index of the button
+     * @param e   the ActionListener we want to add
+     */
     public void attachActionListener(int idx, ActionListener e) {
         buttons[idx].addActionListener(e);
     }
 
+    /**
+     * Sets a buttons color in the menu.
+     *
+     * @param idx   the index of the button
+     * @param color the color
+     * @param idx2  the index of the color type we set
+     */
     public void setButtonColor(int idx, Color color, int idx2) {
         buttons[idx].setColor(idx2, color);
     }
 
+    /**
+     * Inner class implementation of tripleStripeButton component.
+     */
     private static class tripleStripeButton extends JToggleButton {
         public tripleStripeButton() {
             super();
@@ -97,6 +139,11 @@ public class HamburgerMenu extends JPanel {
             setBorderPainted(false);
         }
 
+        /**
+         * The paintComponent method of the class.
+         *
+         * @param g graphics we use
+         */
         @Override
         protected void paintComponent(Graphics g) {
             //super.paintComponent(g);
