@@ -52,10 +52,7 @@ public class GameState implements Serializable {
      */
     public GameState(String p1Name, String p2Name) {
         this.isEnded = false;
-        this.elapsedTimer = new Timer(1000, (e) -> {
-            elapsedTime++;
-            System.out.println(elapsedTime);
-        });
+        this.elapsedTimer = new Timer(1000, (e) -> elapsedTime++);
         elapsedTimer.start();
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
         decideStarter();

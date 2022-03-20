@@ -14,7 +14,6 @@ import java.util.Objects;
 public class GameField extends GameFieldRenderer {
     // protected final boolean pressed = false;
     protected String type = "Plains";
-    protected String elapsedTime;
     protected JLabel curPlayer;
     //protected final Barracks[] barracks = new Barracks[]{null, null, null, null};
     protected boolean inverted = false;
@@ -24,6 +23,17 @@ public class GameField extends GameFieldRenderer {
         super(game, frame);
         this.game = game;
         setupButtons();
+
+        middleText = "0 sec";
+        sideText = getRoundStateText();
+
+        Timer tick = new Timer(1000, (e) -> {
+            middleText = "" + game.getGameState().getElapsedTime() + " sec";
+            repaint();
+        });
+
+        tick.start();
+
 
         if (game.getDatabase() == null) {
             addMouseMotionListener(new MouseAdapter() {
@@ -36,6 +46,8 @@ public class GameField extends GameFieldRenderer {
 
                 }
             });
+
+
         }
 
         addMouseMotionListener(new MouseAdapter() {
@@ -95,6 +107,7 @@ public class GameField extends GameFieldRenderer {
 
         this.controlPanel.attachActionListener(5, e -> {
             game.getGameState().nextRoundState();
+            sideText = getRoundStateText();
             updateButtons();
             setSelection(null);
             if (deleteState) toggleDelete();
@@ -109,6 +122,10 @@ public class GameField extends GameFieldRenderer {
                 }
         );
 
+    }
+
+    private String getRoundStateText() {
+        return !Objects.equals(game.getGameState().getRoundState(), "Attacking") ? ("Phase: " + game.getGameState().getRoundState() + " | Player: " + game.getGameState().getCurrentPlayer().getPlayerNumber()) : ("Phase: " + game.getGameState().getRoundState());
     }
 
     public void refreshGameField() {

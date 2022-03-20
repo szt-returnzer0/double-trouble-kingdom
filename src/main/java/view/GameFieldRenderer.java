@@ -20,6 +20,9 @@ public class GameFieldRenderer extends JPanel {
     protected Entity selection = null;
     protected JFrame frame;
     protected Game game;
+    protected String middleText;
+    protected String sideText;
+
 
     public GameFieldRenderer(Game game, JFrame frame) {
         this.game = game;
@@ -28,6 +31,8 @@ public class GameFieldRenderer extends JPanel {
         this.xLength = mapRef.getTiles()[0].length;
         this.yLength = mapRef.getTiles().length;
         this.scale = (frame.getContentPane().getSize().width) / xLength;
+        middleText = "";
+        sideText = "";
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
 
         setLayout(null);
@@ -68,6 +73,7 @@ public class GameFieldRenderer extends JPanel {
 
         renderField(g2d);
         drawCurrentSelection(g2d);
+        drawLabels(g2d);
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
     }
@@ -137,6 +143,13 @@ public class GameFieldRenderer extends JPanel {
 
         }
 
+    }
+
+    public void drawLabels(Graphics2D g2d) {
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("Roboto", Font.PLAIN, 24));
+        g2d.drawString(middleText, getWidth() / 2, 40);
+        g2d.drawString(sideText, getWidth() - 360, 40);
     }
 
     protected void setSelection(Entity ent) {

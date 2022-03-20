@@ -5,6 +5,7 @@ import model.Game;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class ControlPanel extends JPanel {
 
@@ -97,7 +98,7 @@ public class ControlPanel extends JPanel {
     }
 
     public void updateButtonText() {
-        buttons[5].setText("" + game.getGameState().getRoundState() + " " + game.getGameState().getCurrentPlayer().getPlayerNumber());
+        buttons[5].setText(Objects.equals(game.getGameState().getRoundState(), "Building") ? "Train" : "End turn");
         buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
     }
 
