@@ -142,20 +142,12 @@ public class GameField extends GameFieldRenderer {
     private void updateButtons() {
         if (game.getGameState().getRoundState().equals("Building")) {
             this.controlPanel.setButtonText(0, "Bar");
-            this.controlPanel.setButtonColors(0, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(58, 52, 46),
-                    new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(0, e -> {
                 type = "Barricade";
                 if (deleteState) toggleDelete();
             });          //Lerakas
 
             this.controlPanel.setButtonText(1, "Sho");
-            this.controlPanel.setButtonColors(1, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(152, 145, 138),
-                    new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(1, e -> {
                 type = "Shotgun";
                 if (deleteState) toggleDelete();
@@ -163,10 +155,6 @@ public class GameField extends GameFieldRenderer {
             this.controlPanel.getButtons()[1].setEnabled(true);
 
             this.controlPanel.setButtonText(2, "Sni");
-            this.controlPanel.setButtonColors(2, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(63, 60, 60),
-                    new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(2, e -> {
                 type = "Sniper";
                 if (deleteState) toggleDelete();
@@ -174,10 +162,6 @@ public class GameField extends GameFieldRenderer {
             this.controlPanel.getButtons()[2].setEnabled(true);
 
             this.controlPanel.setButtonText(3, "Brk");
-            this.controlPanel.setButtonColors(3, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(63, 60, 60),
-                    new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(3, e -> {
                 type = "Barracks";
                 if (deleteState) toggleDelete();
@@ -189,46 +173,26 @@ public class GameField extends GameFieldRenderer {
         } else if (game.getGameState().getRoundState().equals("Training")) {
 
             this.controlPanel.setButtonText(0, "Sol");
-            this.controlPanel.setButtonColors(0, new Color[]{
-                    new Color(224, 136, 65),
-                    new Color(58, 52, 46),
-                    new Color(175, 100, 49)});
             this.controlPanel.attachActionListener(0, e -> type = "Soldier");          //Lerakas
 
 
             if (!game.getGameState().getCurrentPlayer().isUnitRestricted()) {
                 this.controlPanel.setButtonText(1, "Kam");
-                this.controlPanel.setButtonColors(1, new Color[]{
-                        new Color(224, 136, 65),
-                        new Color(152, 145, 138),
-                        new Color(175, 100, 49)});
                 this.controlPanel.attachActionListener(1, e -> type = "Kamikaze");
                 this.controlPanel.getButtons()[1].setEnabled(true);
 
 
                 this.controlPanel.setButtonText(2, "Ass");
-                this.controlPanel.setButtonColors(2, new Color[]{
-                        new Color(224, 136, 65),
-                        new Color(63, 60, 60),
-                        new Color(175, 100, 49)});
                 this.controlPanel.attachActionListener(2, e -> type = "Assassin");
                 this.controlPanel.getButtons()[2].setEnabled(true);
 
 
                 this.controlPanel.setButtonText(3, "Div");
-                this.controlPanel.setButtonColors(3, new Color[]{
-                        new Color(224, 136, 65),
-                        new Color(63, 60, 60),
-                        new Color(175, 100, 49)});
                 this.controlPanel.attachActionListener(3, e -> type = "Diver");
                 this.controlPanel.getButtons()[3].setEnabled(true);
 
 
                 this.controlPanel.setButtonText(4, "Cli");
-                this.controlPanel.setButtonColors(4, new Color[]{
-                        new Color(224, 136, 65),
-                        new Color(63, 60, 60),
-                        new Color(175, 100, 49)});
                 this.controlPanel.attachActionListener(4, e -> type = "Climber");
                 this.controlPanel.getButtons()[4].setEnabled(true);
             } else {
@@ -236,6 +200,27 @@ public class GameField extends GameFieldRenderer {
                     this.controlPanel.hideButton(i);
                 }
             }
+        }
+
+
+        JRoundedButton[] buttons = this.controlPanel.getButtons();
+        for (int i = 0, buttonsLength = buttons.length - 2; i < buttonsLength; i++) {
+            JRoundedButton button = buttons[i];
+            Color tmp;
+            System.out.println(button.getText());
+            switch (button.getText()) {
+                case "Brk" -> tmp = new Color(64, 37, 19);
+                case "Bar" -> tmp = new Color(208, 146, 110);
+                case "Sni" -> tmp = new Color(118, 110, 106);
+                case "Sho" -> tmp = new Color(17, 15, 15);
+                case "Sol" -> tmp = new Color(190, 30, 30);
+                case "Ass" -> tmp = new Color(45, 15, 80);
+                case "Kam" -> tmp = new Color(72, 18, 25);
+                case "Div" -> tmp = new Color(22, 107, 107);
+                case "Cli" -> tmp = new Color(175, 112, 81);
+                default -> tmp = Color.gray;
+            }
+            button.setColors(new Color[]{new Color(Math.min(tmp.getRed() + 30, 255), Math.min(tmp.getGreen() + 30, 255), Math.min(tmp.getBlue() + 30, 255)), new Color(0, 0, 0, 0), tmp});
         }
         controlPanel.updateButtonText();
         repaint();
