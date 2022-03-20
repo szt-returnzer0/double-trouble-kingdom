@@ -1,6 +1,9 @@
 package view;
 
-import model.*;
+import model.Entity;
+import model.Game;
+import model.Map;
+import model.Tower;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,6 +106,18 @@ public class GameFieldRenderer extends JPanel {
             handleType(g2d, entity.getType());
             // System.out.println(entity.getType());
             g2d.fillRect(x * scale, y * scale, scale, scale);
+
+            ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
+            if (units.contains(entity.getType())) {
+                String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+                if (side.equals("left")) {
+                    g2d.setColor(Color.blue);
+                } else {
+                    g2d.setColor(Color.red);
+                }
+                g2d.drawRect(x * scale + 2, y * scale + 2, scale - 4, scale - 4);
+
+            }
             drawLevel(g2d, entity);
 
         }
@@ -119,13 +134,20 @@ public class GameFieldRenderer extends JPanel {
 
             if (!ent.getType().equals("Barracks")) {
                 Tower tmp = (Tower) ent;
-                g2d.setColor(new Color(85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel()));
-            } else if (((Barracks) ent).isUpgraded()) {
-                g2d.setColor(new Color(139, 27, 27));
+                //    g2d.setColor(new Color(85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel(), 85 * tmp.getLevel()));
+                //} else if (((Barracks) ent).isUpgraded()) {
+                g2d.setColor(new Color(255, 225, 0, 85 * tmp.getLevel()));
             }
             g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);
-
+            String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+            if (side.equals("left")) {
+                g2d.setColor(Color.blue);
+            } else {
+                g2d.setColor(Color.red);
+            }
             g2d.setStroke(def);
+
+            g2d.drawRect(ent.getPosition().x * scale + 4, ent.getPosition().y * scale + 4, ent.getSize().width * scale - 8, ent.getSize().height * scale - 8);
         }
     }
 
