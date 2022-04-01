@@ -26,3 +26,15 @@ test:
     paths:
       - build
       - .gradle
+
+pages:
+  stage: deploy
+  script:
+    - gradle javadoc
+    - cp -r build/docs/javadoc/. public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 day
+  only:
+    - main
