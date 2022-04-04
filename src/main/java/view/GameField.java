@@ -177,7 +177,7 @@ public class GameField extends GameFieldRenderer {
     public void refreshGameField() {
         frame.remove(this);
         FileDialog fileDialog = new FileDialog();
-        Game game = fileDialog.loadGameDialog();
+        Game game = fileDialog.loadGameDialog() == null ? this.game : fileDialog.loadGameDialog();
         frame.add(new GameField(game, frame));
         frame.pack();
     }

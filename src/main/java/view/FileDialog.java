@@ -33,6 +33,9 @@ public class FileDialog {
         this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Map", "dtk"));
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
             FileHandler.saveMap(fileChooser.getSelectedFile(), map);
+        else {
+            JOptionPane.showMessageDialog(null, "Kérem válassza ki az elmentendő pálya helyét.", "Hiba", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
@@ -45,6 +48,9 @@ public class FileDialog {
         this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Save", "dtk_save"));
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
             FileHandler.saveGame(fileChooser.getSelectedFile(), game);
+        else {
+            JOptionPane.showMessageDialog(null, "Kérem válassza ki az elmentendő állás helyét.", "Hiba", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -58,7 +64,8 @@ public class FileDialog {
         if (result == JFileChooser.APPROVE_OPTION)
             return FileHandler.loadMap(fileChooser.getSelectedFile());
         else
-            return null;
+            JOptionPane.showMessageDialog(null, "Kérem válassza ki a pályát, melyet be szeretne tölteni.", "Hiba", JOptionPane.ERROR_MESSAGE);
+        return null;
     }
 
     /**
@@ -72,6 +79,7 @@ public class FileDialog {
         if (result == JFileChooser.APPROVE_OPTION)
             return FileHandler.loadGame(fileChooser.getSelectedFile());
         else
-            return null;
+            JOptionPane.showMessageDialog(null, "Kérem válassza ki a betöltendő állást.", "Hiba", JOptionPane.ERROR_MESSAGE);
+        return null;
     }
 }

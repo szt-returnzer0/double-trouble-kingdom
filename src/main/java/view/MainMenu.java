@@ -104,7 +104,7 @@ public class MainMenu extends JPanel {
         JButton mapSelect = new JButton("Pályaválasztás");
         FileDialog fileDialog = new FileDialog();
         mapSelect.addActionListener(e -> {
-            this.map = fileDialog.loadMapDialog();
+            this.map = fileDialog.loadMapDialog() == null ? getFreshMap() : fileDialog.loadMapDialog();
             updateMapName();
             repaint();
         });
