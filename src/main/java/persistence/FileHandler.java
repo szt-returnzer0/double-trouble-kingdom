@@ -1,5 +1,8 @@
 package persistence;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import model.Game;
 import model.Map;
 
@@ -91,5 +94,16 @@ public class FileHandler {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void Serialize(Object obj) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
+        mapper.writeValue(System.out, obj);
+    }
+
+    public static Object Deserialize(String content, Object obj) throws IOException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+        return mapper.readValue(content, obj.getClass());
     }
 }
