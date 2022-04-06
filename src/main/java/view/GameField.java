@@ -29,14 +29,11 @@ public class GameField extends GameFieldRenderer {
      */
     protected boolean inverted = false;
     /**
-     * Timer to show the elapsed time.
-     */
-    protected Timer tick;
-    /**
      * Determines if delete mode is on.
      */
     private boolean deleteState;
 
+    private final long startTime;
     /**
      * Constructs a new GameField instance.
      *
@@ -51,14 +48,9 @@ public class GameField extends GameFieldRenderer {
         middleText = "0 sec";
         sideText = getRoundStateText();
 
-        tick = new Timer(1000, (e) -> {
-            middleText = "" + game.getGameState().getElapsedTime() + " sec";
-            repaint();
-        });
 
-        tick.start();
-
-
+        game.getGameState().linkGameField(this);
+        startTime = System.currentTimeMillis();
         if (game.getDatabase() == null) {
             addMouseMotionListener(new MouseAdapter() {
                 @Override
@@ -95,6 +87,11 @@ public class GameField extends GameFieldRenderer {
             }
         });
 
+        repaint();
+    }
+
+    public void updateCounter() {
+        middleText = "" + /*game.getGameState().getElapsedTime()*/(System.currentTimeMillis() - startTime) / 1000 + " sec";
         repaint();
     }
 
@@ -432,7 +429,10 @@ public class GameField extends GameFieldRenderer {
      * @return the count of tiles
      */
     private int countTiles(Point from, Point dir, int counter) {
-        if (from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 || hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
+        if (from.x < 0 || from.x > xLength - 1 || from.y < 0 || from.y > yLength - 1) {
+            return 10000;
+        }
+        if (/*from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 ||*/ hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
             return counter;
         return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
     }
@@ -496,6 +496,11 @@ public class GameField extends GameFieldRenderer {
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx);
+                s.setPosition(point);
+
+                game.getGameState().animBuffer.add(s.getAnimObj());
+                s.setIsAnimated(false);
+
                 mapRef.getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
                 controlPanel.updateButtonText();

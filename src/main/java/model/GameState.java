@@ -1,5 +1,7 @@
 package model;
 
+import view.GameField;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,10 @@ public class GameState {
      * The elapsed time in seconds.
      */
     private int elapsedTime;
+
+    public static double deltaTime = 1;
+    public ArrayList<Animator> animBuffer = new ArrayList<>();
+    private long prevTime = 1;
     /**
      * The current round phase.
      */
@@ -41,7 +47,9 @@ public class GameState {
      * The player number of the starter player,
      */
     private int starterPlayer;
+    private GameField linkedGameField = null;
 
+    private int fps = 60;
 
     /**
      * Constructs a class containing the Players, roundState, and elapsedTimer.
@@ -51,12 +59,45 @@ public class GameState {
      */
     public GameState(String p1Name, String p2Name) {
         this.isEnded = false;
-        this.elapsedTimer = new Timer(1000, (e) -> elapsedTime++);
+        this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> timerFunction());
         elapsedTimer.start();
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
         decideStarter();
         this.roundState = "Building";
+    }
 
+    private void setFps(int fps) {
+        this.fps = fps;
+        elapsedTimer.setDelay((int) (1000.0 / this.fps));
+    }
+
+    public void linkGameField(GameField gf) {
+        linkedGameField = gf;
+    }
+
+    private void timerFunction() {
+        elapsedTime += 50;
+        long curTime = System.currentTimeMillis();
+        deltaTime = (double) curTime - prevTime;
+
+        for (int i = 0; i < animBuffer.size(); i++) {
+            if (!animBuffer.get(i).ent.isAnimated) break;
+            if (animBuffer.get(i).animation()) {
+
+                linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().remove(animBuffer.get(i).ent);
+                System.out.println(animBuffer.get(i).ent.getPosition());
+                animBuffer.get(i).nextstep();
+                linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().add(animBuffer.get(i).ent);
+                if (animBuffer.get(i).getPath().isEmpty()) {
+                    animBuffer.get(i).stopanim();
+                    animBuffer.remove(i--);
+                }
+            }
+        }
+        if (linkedGameField != null) {
+            linkedGameField.updateCounter();
+        }
+        prevTime = curTime;
     }
 
     /**
@@ -98,8 +139,12 @@ public class GameState {
         } else if (this.roundState.equals("Attacking")) {
             nextPlayer();
             this.roundState = "Building";
-        } else
+        } else {
             this.roundState = "Attacking";
+            for (Animator animator : animBuffer) {
+                animator.startanim();
+            }
+        }
 
     }
 

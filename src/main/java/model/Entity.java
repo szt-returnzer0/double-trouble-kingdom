@@ -84,6 +84,7 @@ public abstract class Entity {
     protected Entity(Point position) {
         this.position = position;
         this.isAlive = true;
+        this.animObj = new Animator(this);
     }
 
     /**
@@ -96,6 +97,7 @@ public abstract class Entity {
         this.position = position;
         this.isAlive = true;
         this.side = side;
+        this.animObj = new Animator(this);
     }
 
     /**
@@ -221,5 +223,17 @@ public abstract class Entity {
      * @param y the vertical coordinate of the animation
      */
     public void animate(int x, int y) {
+    }
+
+    public Animator getAnimObj() {
+        return animObj;
+    }
+
+    public boolean isAnimated() {
+        return isAnimated;
+    }
+
+    public void setIsAnimated(boolean l) {
+        isAnimated = l;
     }
 }

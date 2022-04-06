@@ -8,6 +8,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Implements the game's rendering engine.
@@ -37,7 +38,7 @@ public class GameFieldRenderer extends JPanel {
     /**
      * The scaling of the game.
      */
-    protected int scale;
+    protected static int scale;
     /**
      * The selected Entity.
      */
@@ -59,12 +60,6 @@ public class GameFieldRenderer extends JPanel {
      */
     protected String sideText;
 
-    /*int cnt = 1;
-    Timer test = new Timer(1, e -> {
-        cnt = cnt < Pathfinder.foundPath.size() ? cnt + 1 : cnt;
-        repaint();
-    });*/
-
     /**
      * Constructs a GameFieldRenderer instance.
      *
@@ -77,7 +72,7 @@ public class GameFieldRenderer extends JPanel {
         this.frame = frame;
         this.xLength = mapRef.getTiles()[0].length;
         this.yLength = mapRef.getTiles().length;
-        this.scale = (frame.getContentPane().getSize().width) / xLength;
+        scale = (frame.getContentPane().getSize().width) / xLength;
         middleText = "";
         sideText = "";
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
@@ -108,44 +103,10 @@ public class GameFieldRenderer extends JPanel {
             frame.repaint();
             MainWindow.startMainMenu(frame);
         });
-        //test.start();
     }
 
-    /**
-     * The paintComponent method of the class.
-     *
-     * @param g graphics we use
-     */
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
-
-        renderField(g2d);
-        drawCurrentSelection(g2d);
-        /*for (int i = 0; i < cnt; i++) {
-            Point point = Pathfinder.foundPath.get(i);
-            g2d.setColor(Color.red);
-            g2d.fillRect(point.x * scale, point.y * scale, scale, scale);
-        }
-        for (int i = 0; i < yLength; i++) {
-            for (int j = 0; j < xLength; j++) {
-                String text = "N";
-                if (Pathfinder.Distance[i][j] < Integer.MAX_VALUE)
-                    text = "" + Pathfinder.Distance[i][j];
-                Font font = new Font("Roboto", Font.PLAIN, 15);
-                int width = g2d.getFontMetrics(font).stringWidth(text);
-                g2d.setColor(Color.BLACK);
-                g2d.setFont(font);
-                g2d.drawString(text, j * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035), i * scale + scale / 2 + (int) (scale * 0.3));
-            }
-        }*/
-        drawLabels(g2d);
-        g2d.dispose();
-        //g.dispose(); //not needed as g wasn't created by us
+    public static int getScale() {
+        return scale;
     }
 
     /**
@@ -181,6 +142,28 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
+     * The paintComponent method of the class.
+     *
+     * @param g graphics we use
+     */
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
+
+        renderField(g2d);
+        drawCurrentSelection(g2d);
+        drawLabels(g2d);
+        if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
+            drawAnimateds(g2d);
+        g2d.dispose();
+        //g.dispose(); //not needed as g wasn't created by us
+    }
+
+    /**
      * Draws the selected Entity.
      *
      * @param g2d the graphics we use
@@ -192,11 +175,12 @@ public class GameFieldRenderer extends JPanel {
 
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
-            // System.out.println(entity.getType());
-            g2d.fillRect(x * scale, y * scale, scale, scale);
+            if (!entity.isAnimated()) {
+                g2d.fillRect(x * scale, y * scale, scale, scale);
 
-            drawUnitOwner(g2d, x, y, side, entity);
-            drawBldState(g2d, entity);
+                drawUnitOwner(g2d, x, y, side, entity);
+                drawBldState(g2d, entity);
+            }
 
 
         }
@@ -228,6 +212,15 @@ public class GameFieldRenderer extends JPanel {
             setSideColor(side, g2d);
             g2d.drawRect(x * scale + 2, y * scale + 2, scale - 4, scale - 4);
 
+        }
+    }
+
+    protected void drawAnimateds(Graphics2D g2d) {
+        for (Animator animator : game.getGameState().animBuffer) {
+            handleType(g2d, animator.ent.getType());
+            g2d.fillRect((int) (animator.ent.getPosition().x * scale + animator.X), (int) (animator.ent.getPosition().y * scale + animator.Y), scale, scale);
+            String side = animator.ent.getPosition().x + 3 < xLength / 2 ? "left" : "right";
+            drawUnitOwnerMove(g2d, animator.ent.getPosition().x, animator.ent.getPosition().y, side, animator.ent, animator.X, animator.Y);
         }
     }
 
@@ -365,5 +358,18 @@ public class GameFieldRenderer extends JPanel {
             case "Climber" -> g2d.setColor(new Color(175, 112, 81));
             default -> g2d.setColor(Color.GRAY);
         }
+    }
+
+    private void drawUnitOwnerMove(Graphics2D g2d, int x, int y, String side, Entity entity, double mx, double my) {
+        ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
+        if (units.contains(entity.getType())) {
+            setSideColor(side, g2d);
+            g2d.drawRect((int) (x * scale + 2 + mx), (int) (y * scale + 2 + my), scale - 4, scale - 4);
+
+        }
+    }
+
+    public Map getMapRef() {
+        return mapRef;
     }
 }

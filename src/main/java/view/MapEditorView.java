@@ -30,7 +30,7 @@ public class MapEditorView extends GameField {
      */
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
-        tick.stop();
+        game.getGameState().linkGameField(null);
         middleText = mapRef.getName();
         sideText = "Selection: " + type;
     }
