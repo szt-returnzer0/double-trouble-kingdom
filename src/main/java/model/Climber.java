@@ -14,7 +14,7 @@ public class Climber extends Soldier {
      * @param position the climber's position on the Map
      * @param speed    the climber's current speed
      */
-    public Climber(Point position, int speed) {
+    public Climber(Point position, double speed) {
         super(position, speed);
         this.type = "Climber";
         this.isAnimated = true;

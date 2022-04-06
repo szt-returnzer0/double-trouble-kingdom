@@ -14,7 +14,7 @@ public class Assassin extends Soldier {
      * @param position the assassin's position
      * @param speed    the assassin's current speed
      */
-    public Assassin(Point position, int speed) {
+    public Assassin(Point position, double speed) {
         super(position, speed);
         this.type = "Assassin";
         this.isAnimated = true;

@@ -14,7 +14,7 @@ public class Diver extends Soldier {
      * @param position the diver's position on the Map
      * @param speed    the diver's current speed
      */
-    public Diver(Point position, int speed) {
+    public Diver(Point position, double speed) {
         super(position, speed);
         this.type = "Diver";
         this.isAnimated = true;

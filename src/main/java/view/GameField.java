@@ -291,11 +291,11 @@ public class GameField extends GameFieldRenderer {
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
                     case "Sniper" -> placeBuilding(new Sniper(new Point(xIdx, yIdx), ""));
                     case "Shotgun" -> placeBuilding(new Shotgun(new Point(xIdx, yIdx), ""));
-                    case "Soldier" -> trainSoldiers(new Soldier(new Point(xIdx, yIdx), 0));
-                    case "Assassin" -> trainSoldiers(new Assassin(new Point(xIdx, yIdx), 0));
-                    case "Kamikaze" -> trainSoldiers(new Kamikaze(new Point(xIdx, yIdx), 0));
-                    case "Diver" -> trainSoldiers(new Diver(new Point(xIdx, yIdx), 0));
-                    case "Climber" -> trainSoldiers(new Climber(new Point(xIdx, yIdx), 0));
+                    case "Soldier" -> trainSoldiers(new Soldier(new Point(xIdx, yIdx), 1));
+                    case "Assassin" -> trainSoldiers(new Assassin(new Point(xIdx, yIdx), 2));
+                    case "Kamikaze" -> trainSoldiers(new Kamikaze(new Point(xIdx, yIdx), 2));
+                    case "Diver" -> trainSoldiers(new Diver(new Point(xIdx, yIdx), 1));
+                    case "Climber" -> trainSoldiers(new Climber(new Point(xIdx, yIdx), 0.5));
                     default -> {
                     }
                 }
@@ -499,6 +499,7 @@ public class GameField extends GameFieldRenderer {
                 s.setPosition(point);
 
                 game.getGameState().animBuffer.add(s.getAnimObj());
+                s.getAnimObj().setSeconds(1 / s.getSpeed());
                 s.setIsAnimated(false);
 
                 mapRef.getTiles()[point.y][point.x].addEntities(s);

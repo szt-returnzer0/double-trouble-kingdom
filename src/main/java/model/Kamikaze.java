@@ -20,7 +20,7 @@ public class Kamikaze extends Soldier {
      * @param position the kamikaze's position on the Map
      * @param speed    the kamikaze's current speed
      */
-    public Kamikaze(Point position, int speed) {
+    public Kamikaze(Point position, double speed) {
         super(position, speed);
         this.type = "Kamikaze";
         this.isAnimated = true;

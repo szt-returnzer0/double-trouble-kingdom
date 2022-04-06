@@ -76,7 +76,7 @@ public class GameState {
     }
 
     private void timerFunction() {
-        elapsedTime += 50;
+        //elapsedTime += 50;
         long curTime = System.currentTimeMillis();
         deltaTime = (double) curTime - prevTime;
 
@@ -85,7 +85,7 @@ public class GameState {
             if (animBuffer.get(i).animation()) {
 
                 linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().remove(animBuffer.get(i).ent);
-                System.out.println(animBuffer.get(i).ent.getPosition());
+                //System.out.println(animBuffer.get(i).ent.getPosition());
                 animBuffer.get(i).nextstep();
                 linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().add(animBuffer.get(i).ent);
                 if (animBuffer.get(i).getPath().isEmpty()) {

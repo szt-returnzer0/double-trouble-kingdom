@@ -11,7 +11,7 @@ public class Soldier extends Entity {
     /**
      * The current speed of the Soldier.
      */
-    protected int speed;
+    protected double speed;
     /**
      * An ArrayList which contains which tiles the Solider can cross.
      */
@@ -35,13 +35,14 @@ public class Soldier extends Entity {
      * @param position the soldier's position
      * @param speed    the soldier's current speed
      */
-    public Soldier(Point position, int speed) {
+    public Soldier(Point position, double speed) {
         super(position);
         this.type = "Soldier";
         this.isAnimated = true;
         this.healthPoints = 10;
         this.size = new Dimension(1, 1);
         this.value = 2;
+        this.speed = speed;
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
         this.pf = new Pathfinder();
     }
@@ -51,7 +52,7 @@ public class Soldier extends Entity {
      *
      * @return the current speed of the Soldier
      */
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 

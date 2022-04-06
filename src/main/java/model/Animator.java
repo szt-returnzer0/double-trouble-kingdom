@@ -16,13 +16,14 @@ public class Animator {
     private double second = 0.5;
     private ArrayList<Point> path = new ArrayList<>(Arrays.asList(new Point(0, 1), new Point(1, 0), new Point(1, 0), new Point(1, 0), new Point(1, 0), new Point(0, -1), new Point(-1, 0)));
     private Point nextPoint;
+    int steps = 0;
 
     public Animator(Entity ent) {
         this.ent = ent;
     }
 
-    public void setSpeed(double speed) {
-        second = speed;
+    public void setSeconds(double second) {
+        this.second = second;
     }
 
     public double getX() {
@@ -51,9 +52,9 @@ public class Animator {
             ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
             path.remove(0);
         }
-        // cnt++;
-        //if(cnt>=path.size()){cnt=0;}
         X = Y = 0;
+        //steps++;
+        //if(steps>2) {stopanim();steps=0;}
     }
 
     public boolean animation() {
