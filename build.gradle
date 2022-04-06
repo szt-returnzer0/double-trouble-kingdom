@@ -18,6 +18,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.2'
+    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-parameter-names', version: '2.13.2'
 }
 
 test {
@@ -26,6 +28,7 @@ test {
 
 compileJava {
     options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
 }
 
 compileTestJava {
