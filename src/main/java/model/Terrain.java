@@ -1,5 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,6 +11,15 @@ import java.util.ArrayList;
 /**
  * Implementation of Terrain class.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Plains.class, name = "Plains"),
+        @JsonSubTypes.Type(value = Desert.class, name = "Desert"),
+        @JsonSubTypes.Type(value = Swamp.class, name = "Swamp"),
+        @JsonSubTypes.Type(value = Mountain.class, name = "Mountain"),
+})
 public abstract class Terrain implements Serializable {
     /**
      * The position of the tile.
@@ -35,6 +48,7 @@ public abstract class Terrain implements Serializable {
      * @param gridPos the position of the tile
      * @param type    the type of tile
      */
+    @JsonCreator
     protected Terrain(Point gridPos, String type) {
         this.gridPos = gridPos;
         this.entities = new ArrayList<>();
@@ -55,6 +69,7 @@ public abstract class Terrain implements Serializable {
         this.speedMod = 1;
         this.entities = entities;
     }
+
 
     /**
      * Returns the position of the tile.

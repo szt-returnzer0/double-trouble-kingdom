@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -12,6 +14,7 @@ public class Swamp extends Terrain {
      *
      * @param gridPos the tile's position on the Map
      */
+    @JsonCreator
     public Swamp(Point gridPos) {
         super(gridPos, "Swamp");
         this.speedMod = 0.3;

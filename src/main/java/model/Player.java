@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -23,7 +25,7 @@ public class Player implements Serializable {
     /**
      * ArrayList containing the player's entities.
      */
-    private final ArrayList<Entity> entities;
+    private ArrayList<Entity> entities;
     /**
      * The player's gold amount.
      */
@@ -38,11 +40,12 @@ public class Player implements Serializable {
      *
      * @param name the name of the Player
      */
+    @JsonCreator
     public Player(String name) {
         if (number == 2) number = 0;
         this.playerNumber = ++number;
         this.name = name;
-        this.gold = 100;
+        this.gold = 1000;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
     }
@@ -54,6 +57,10 @@ public class Player implements Serializable {
      */
     public boolean isUnitRestricted() {
         return isUnitRestricted;
+    }
+
+    public void setUnitRestricted(boolean isUnitRestricted) {
+        this.isUnitRestricted = isUnitRestricted;
     }
 
     /**
@@ -99,6 +106,11 @@ public class Player implements Serializable {
      */
     public ArrayList<Entity> getEntities() {
         return entities;
+    }
+
+    //set entities
+    public void setEntities(ArrayList<Entity> entities) {
+        this.entities = entities;
     }
 
     /**

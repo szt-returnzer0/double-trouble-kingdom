@@ -1,6 +1,7 @@
 package model;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import persistence.DBRecord;
 import persistence.Database;
 
@@ -31,6 +32,7 @@ public class Game implements Serializable {
      * @param p1Name   the name of Player1
      * @param p2Name   the name of Player2
      */
+    @JsonCreator
     public Game(Database database, Map map, String p1Name, String p2Name) {
         this.database = database;
         this.gameState = new GameState(p1Name, p2Name);

@@ -1,11 +1,23 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.awt.*;
 import java.io.Serializable;
 
 /**
  * Implements the Building Entity type.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Barracks.class, name = "Barracks"),
+        @JsonSubTypes.Type(value = Barricade.class, name = "Barricade"),
+        @JsonSubTypes.Type(value = Sniper.class, name = "Sniper"),
+        @JsonSubTypes.Type(value = Shotgun.class, name = "Shotgun"),
+})
 public abstract class Building extends Entity implements Serializable {
     protected boolean canUpgrade; // false
     protected boolean isDestroyed; // false
@@ -43,6 +55,10 @@ public abstract class Building extends Entity implements Serializable {
      */
     public boolean isDestroyed() {
         return isDestroyed;
+    }
+
+    public void setDestroyed(boolean destroyed) {
+        this.isDestroyed = destroyed;
     }
 
     /**

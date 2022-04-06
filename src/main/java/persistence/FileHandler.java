@@ -6,7 +6,8 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import model.Game;
 import model.Map;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Implementation of FileHandler class, contains static methods for saving and loading Map and Game state to and from files.
@@ -31,7 +32,7 @@ public class FileHandler {
      * @param game the Game instance we want to save
      */
     public static void saveGame(File file, Game game) {
-        game.getDatabase().closeConnection();
+        //game.getDatabase().closeConnection();
         saveToFile(file, game, ".dtk_save");
     }
 
@@ -44,12 +45,9 @@ public class FileHandler {
      */
     public static void saveToFile(File file, Object obj, String type) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(file + type);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(obj);
-            objectOut.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            Serialize(file, obj);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -60,7 +58,13 @@ public class FileHandler {
      * @return a Map instance from the specified file
      */
     public static Map loadMap(File file) {
-        return (Map) loadFromFile(file);
+        ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+        try {
+            return mapper.readValue(file, Map.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -70,10 +74,16 @@ public class FileHandler {
      * @return a Game instance from the specified file
      */
     public static Game loadGame(File file) {
-        Game game = (Game) loadFromFile(file);
-        if (game != null) {
-            game.getDatabase().openConnection();
+        Game game = null;
+        ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+        try {
+            game = mapper.readValue(file, Game.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        /*if (game != null) {
+            game.getDatabase().openConnection();
+        }*/
         return game;
     }
 
@@ -83,27 +93,29 @@ public class FileHandler {
      * @param file the file we want to load from
      * @return an Object instance from the specified file
      */
-    private static Object loadFromFile(File file) {
+    private static Object loadFromFile(File file, Object obj) {
         try {
-            FileInputStream fileIn = new FileInputStream(file);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-            Object data = objectIn.readObject();
-            fileIn.close();
-            return data;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            return Deserialize(file, obj);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    public static void Serialize(Object obj) throws IOException {
+    public static void Serialize(File file, Object obj) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
-        mapper.writeValue(System.out, obj);
+       /* PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType(Terrain.class)
+                .build();
+
+        mapper.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.NON_FINAL);*/
+
+        mapper.writeValue(file, obj);
     }
 
-    public static Object Deserialize(String content, Object obj) throws IOException {
+    public static Object Deserialize(File file, Object obj) throws IOException {
         ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
-        return mapper.readValue(content, obj.getClass());
+        return mapper.readValue(file, Game.class);
     }
 }

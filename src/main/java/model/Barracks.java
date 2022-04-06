@@ -35,6 +35,10 @@ public class Barracks extends Building {
         return this.isUpgraded;
     }
 
+    public void setUpgraded(boolean isUpgraded) {
+        this.isUpgraded = isUpgraded;
+    }
+
     /**
      * Upgrades the Barrack instance.
      *

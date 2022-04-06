@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -7,12 +9,12 @@ import java.util.ArrayList;
  * Implementation of Desert Terrain type.
  */
 public class Desert extends Terrain {
-
     /**
      * Constructs a new Desert instance without predefined entities.
      *
      * @param gridPos the tile's position on the Map
      */
+    @JsonCreator
     public Desert(Point gridPos) {
         super(gridPos, "Desert");
         this.speedMod = 0.5;

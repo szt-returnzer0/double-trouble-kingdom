@@ -48,12 +48,12 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        starterMap = "test01.dtk";
+        starterMap = "testSer";
 
-        map = getFreshMap();
+        //map = getFreshMap();
         this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         topBar.add(playersLabel);
-        this.mapNameLabel = new JLabel("Pálya: " + map.name(), SwingConstants.CENTER);
+        this.mapNameLabel = new JLabel(map != null ? map.getName() : starterMap, SwingConstants.CENTER);
         topBar.add(mapNameLabel);
         this.add(topBar);
 
