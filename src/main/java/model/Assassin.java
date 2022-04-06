@@ -1,6 +1,8 @@
 package model;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Implementation of Assassin special soldier type.
@@ -19,6 +21,7 @@ public class Assassin extends Soldier {
         this.healthPoints = 10;
         this.size = new Dimension(1, 1);
         this.value = 5;
+        this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
     }
 
     /**

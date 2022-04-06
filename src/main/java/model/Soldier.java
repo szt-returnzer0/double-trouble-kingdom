@@ -2,6 +2,7 @@ package model;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Implementation of Soldier Entity type.
@@ -37,6 +38,7 @@ public class Soldier extends Entity {
         this.healthPoints = 10;
         this.size = new Dimension(1, 1);
         this.value = 2;
+        this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
     }
 
     /**

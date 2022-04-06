@@ -14,7 +14,7 @@ public class Plains extends Terrain {
      */
     public Plains(Point gridPos) {
         super(gridPos, "Plains");
-        speedMod = 1;
+        this.speedMod = 1;
         // this.texture = path/to/texture
     }
 
