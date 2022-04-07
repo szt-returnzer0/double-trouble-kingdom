@@ -1,6 +1,8 @@
 package view;
 
+import model.Diver;
 import model.Map;
+import model.Pathfinder;
 import persistence.FileHandler;
 
 import javax.swing.*;
@@ -48,7 +50,7 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        map = FileHandler.loadMap(new File("Test.dtk"));
+        map = FileHandler.loadMap(new File("proba.dtk"));
         assert map != null;
         mapName = map.getName();
 
@@ -116,6 +118,11 @@ public class MainMenu extends JPanel {
         });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
+        Diver d = new Diver(new Point(0, 0), 0);
+        Pathfinder pathfinder = new Pathfinder(map);
+        int[][] graph = pathfinder.fieldToGraph(d);
+        int[] list = pathfinder.dijkstra(graph, 0, 800);
+        pathfinder.listToPath(list);
     }
 
     public Map getMap() {

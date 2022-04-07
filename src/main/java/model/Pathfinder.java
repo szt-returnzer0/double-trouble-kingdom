@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Pathfinder {
@@ -16,36 +17,33 @@ public class Pathfinder {
         this.terrain = this.map.getTiles();
     }
 
-    public static int[] dijkstra(int[][] graph, int source, int destination) {
+    public static int[] dijkstra(int[][] graph, int start, int end) {
         int n = graph.length;
         int[] distance = new int[n];
-        int[] previous = new int[n];
-        boolean[] visited = new boolean[n];
+        int[] path = new int[n];
         for (int i = 0; i < n; i++) {
             distance[i] = Integer.MAX_VALUE;
-            previous[i] = -1;
-            visited[i] = false;
+            path[i] = -1;
         }
-        distance[source] = 0;
-        previous[source] = source;
+        distance[start] = 0;
         for (int i = 0; i < n - 1; i++) {
-            int u = minDistance(distance, visited);
-            visited[u] = true;
+            int u = minDistance(distance, n);
             for (int v = 0; v < n; v++) {
-                if (!visited[v] && graph[u][v] != 0 && distance[u] != Integer.MAX_VALUE && distance[u] + graph[u][v] < distance[v]) {
+                if (graph[u][v] != 0 && distance[u] != Integer.MAX_VALUE
+                        && distance[u] + graph[u][v] < distance[v]) {
                     distance[v] = distance[u] + graph[u][v];
-                    previous[v] = u;
+                    path[v] = u;
                 }
             }
         }
-        return distance;
+        return path;
     }
 
-    private static int minDistance(int[] distance, boolean[] visited) {
+    public static int minDistance(int[] distance, int n) {
         int min = Integer.MAX_VALUE;
         int minIndex = -1;
-        for (int i = 0; i < distance.length; i++) {
-            if (!visited[i] && distance[i] <= min) {
+        for (int i = 0; i < n; i++) {
+            if (distance[i] < min && distance[i] != Integer.MAX_VALUE) {
                 min = distance[i];
                 minIndex = i;
             }
@@ -53,45 +51,29 @@ public class Pathfinder {
         return minIndex;
     }
 
-    //BFS
-    public static int[] bfs(int[][] graph, int source, int destination) {
-        int n = graph.length;
-        int[] distance = new int[n];
-        int[] previous = new int[n];
-        boolean[] visited = new boolean[n];
-        for (int i = 0; i < n; i++) {
-            distance[i] = Integer.MAX_VALUE;
-            previous[i] = -1;
-            visited[i] = false;
-        }
-        distance[source] = 0;
-        previous[source] = source;
-        for (int i = 0; i < n - 1; i++) {
-            int u = minDistance(distance, visited);
-            visited[u] = true;
-            for (int v = 0; v < n; v++) {
-                if (!visited[v] && graph[u][v] != 0 && distance[u] != Integer.MAX_VALUE && distance[u] + graph[u][v] < distance[v]) {
-                    distance[v] = distance[u] + graph[u][v];
-                    previous[v] = u;
-
-                }
+    public ArrayList<Point> listToPath(int[] list) {
+        ArrayList<Point> path = new ArrayList<>();
+        for (int i = 0; i < list.length; ++i) {
+            int posx = i % y;
+            int posy = (i - i % y) / y;
+            if (list[i] == 0) {
+                path.add(new Point(posx, posy));
             }
+
         }
-        return distance;
+        return path;
     }
 
     public int[][] fieldToGraph(Soldier s) {
         ArrayList<String> goodTiles = s.getTerrains();
         int pcs = x * y;
-        /*
-        P,P,M,D,P
-        P,P,M,D,P
-        P,P,M,D,P
-        P,P,M,D,P
-        P,P,M,D,P
-        */
         int a;
         graph = new int[pcs][pcs];
+        for (int i = 0; i < y; ++i) {
+            for (int j = 0; j < x; ++j) {
+                graph[j][i] = -1;
+            }
+        }
         for (int i = 0; i < y; ++i) {
             for (int j = 0; j < x; ++j) {
                 //Up
