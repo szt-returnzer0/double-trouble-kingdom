@@ -14,30 +14,37 @@ public class Pathfinder {
         this.map = map;
         this.xLength = map.getTiles()[0].length;
         this.yLength = map.getTiles().length;
-
-        this.terrain = this.map.getTiles();
     }
 
-    public static int[] dijkstra(int[][] graph, int start, int end) {
-        int n = graph.length;
-        int[] distance = new int[n];
-        int[] path = new int[n];
-        for (int i = 0; i < n; i++) {
-            distance[i] = Integer.MAX_VALUE;
-            path[i] = -1;
-        }
-        distance[start] = 0;
-        for (int i = 0; i < n - 1; i++) {
-            int u = minDistance(distance, n);
-            for (int v = 0; v < n; v++) {
-                if (graph[u][v] != 0 && distance[u] != Integer.MAX_VALUE
-                        && distance[u] + graph[u][v] < distance[v]) {
-                    distance[v] = distance[u] + graph[u][v];
-                    path[v] = u;
+    public ArrayList<Point> dijkstra(Soldier s, String side) {
+        fieldToGraph(s);
+        searchClosestCastlePiece(s, side);
+
+        return null;
+
+    }
+
+
+    private void searchClosestCastlePiece(Soldier s, String side) {
+        int x = s.getPosition().x;
+        int y = s.getPosition().y;
+        int minDist = Integer.MAX_VALUE;
+        int minX = -1;
+        int minY = -1;
+        for (int i = 0; i < yLength; i++) {
+            for (int j = 0; j < xLength; j++) {
+                if (map.getTiles()[i][j].getEntities().size() > 0 &&
+                        map.getTiles()[i][j].getEntities().get(0).getType().equals("Castle") && map.getTiles()[i][j].getEntities().get(0).getSide().equals(side)) {
+                    int dist = Math.abs(i - y) + Math.abs(j - x);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        minX = j;
+                        minY = i;
+                    }
                 }
             }
         }
-        return path;
+        graph[minY][minX] = 0;
     }
 
     public static int minDistance(int[] distance, int n) {
@@ -65,17 +72,18 @@ public class Pathfinder {
         return path;
     }
 
-    public int[][] fieldToGraph(Soldier s) {
+    public void fieldToGraph(Soldier s) {
         graph = new int[yLength][xLength];
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
-                if (s.getTerrains().contains(map.getTiles()[y][x].getType()) && !(map.getTiles()[y][x].getEntities().size() > 0 && "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType())))
+                if (s.getTerrains().contains(map.getTiles()[y][x].getType()) &&
+                        !(map.getTiles()[y][x].getEntities().size() > 0 &&
+                                "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType())))
                     graph[y][x] = map.getTiles()[y][x].getSpeedMod();
                 else
                     graph[y][x] = -1;
             }
         }
 
-        return graph;
     }
 }
