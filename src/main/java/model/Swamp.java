@@ -14,7 +14,7 @@ public class Swamp extends Terrain {
      */
     public Swamp(Point gridPos) {
         super(gridPos, "Swamp");
-        this.speedMod = 0.3;
+        this.speedMod = 3;
         // this.texture = path/to/texture
     }
 
@@ -26,6 +26,7 @@ public class Swamp extends Terrain {
      */
     public Swamp(Point gridPos, ArrayList<Entity> ent) {
         super(gridPos, "Swamp", ent);
+        this.speedMod = 3;
         // this.texture = path/to/texture
     }
 }

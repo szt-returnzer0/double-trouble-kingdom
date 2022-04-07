@@ -34,7 +34,7 @@ public abstract class Terrain {
     /**
      * The speed modifier of the tile.
      */
-    protected double speedMod;
+    protected int speedMod;
     /**
      * The texture of the tile.
      */
@@ -50,7 +50,6 @@ public abstract class Terrain {
         this.gridPos = gridPos;
         this.entities = new ArrayList<>();
         this.type = type;
-        this.speedMod = 1;
     }
 
     /**
@@ -63,7 +62,6 @@ public abstract class Terrain {
     protected Terrain(Point gridPos, String type, ArrayList<Entity> entities) {
         this.gridPos = gridPos;
         this.type = type;
-        this.speedMod = 1;
         this.entities = entities;
     }
 
@@ -118,7 +116,7 @@ public abstract class Terrain {
      *
      * @return the speed modifier of the tile
      */
-    public double getSpeedMod() {
+    public int getSpeedMod() {
         return speedMod;
     }
 

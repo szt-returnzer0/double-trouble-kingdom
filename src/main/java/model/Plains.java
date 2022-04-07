@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * Implementation of Mountain Terrain type.
  */
 public class Plains extends Terrain {
-
     /**
      * Constructs a new Plains instance without predefined entities.
      *
@@ -18,6 +17,7 @@ public class Plains extends Terrain {
         speedMod = 1;
         // this.texture = path/to/texture
     }
+
     /**
      * Constructs a new Plains instance with predefined entities.
      *
@@ -26,6 +26,7 @@ public class Plains extends Terrain {
      */
     public Plains(Point gridPos, ArrayList<Entity> ent) {
         super(gridPos, "Plains", ent);
+        speedMod = 1;
         // this.texture = path/to/texture
     }
 }
