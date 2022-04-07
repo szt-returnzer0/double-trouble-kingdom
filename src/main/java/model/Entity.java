@@ -1,17 +1,18 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.awt.*;
-import java.io.Serializable;
 
 /**
  * Implementation of Entity abstract class, containing the Entity types common fields and methods.
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "type")
+        property = "@type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Barracks.class, name = "Barracks"),
         @JsonSubTypes.Type(value = Castle.class, name = "Castle"),
@@ -24,7 +25,8 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
         @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
 })
-public abstract class Entity implements Serializable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+public abstract class Entity {
     /**
      * The health of the Entity.
      */

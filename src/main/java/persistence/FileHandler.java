@@ -7,6 +7,7 @@ import model.Game;
 import model.Map;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -14,6 +15,9 @@ import java.io.IOException;
  */
 // Simplify classes with Factory
 public class FileHandler {
+
+    static ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+
 
     /**
      * Saves a Map instance to a specified file.
@@ -32,7 +36,6 @@ public class FileHandler {
      * @param game the Game instance we want to save
      */
     public static void saveGame(File file, Game game) {
-        //game.getDatabase().closeConnection();
         saveToFile(file, game, ".dtk_save");
     }
 
@@ -45,7 +48,8 @@ public class FileHandler {
      */
     public static void saveToFile(File file, Object obj, String type) {
         try {
-            Serialize(file, obj);
+            FileOutputStream fileOut = new FileOutputStream(file + type);
+            Serialize(fileOut, obj);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +62,6 @@ public class FileHandler {
      * @return a Map instance from the specified file
      */
     public static Map loadMap(File file) {
-        ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
         try {
             return mapper.readValue(file, Map.class);
         } catch (IOException e) {
@@ -75,47 +78,16 @@ public class FileHandler {
      */
     public static Game loadGame(File file) {
         Game game = null;
-        ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
         try {
             game = mapper.readValue(file, Game.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*if (game != null) {
-            game.getDatabase().openConnection();
-        }*/
         return game;
     }
 
-    /**
-     * The logic of loading an Object state from a specified file.
-     *
-     * @param file the file we want to load from
-     * @return an Object instance from the specified file
-     */
-    private static Object loadFromFile(File file, Object obj) {
-        try {
-            return Deserialize(file, obj);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void Serialize(File file, Object obj) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    public static void Serialize(FileOutputStream file, Object obj) throws IOException {
         mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
-       /* PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType(Terrain.class)
-                .build();
-
-        mapper.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.NON_FINAL);*/
-
         mapper.writeValue(file, obj);
-    }
-
-    public static Object Deserialize(File file, Object obj) throws IOException {
-        ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
-        return mapper.readValue(file, Game.class);
     }
 }

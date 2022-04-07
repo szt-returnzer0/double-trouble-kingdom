@@ -2,14 +2,13 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  * Implementation of the Player class for Double Trouble Kingdom Game, contains the Player's name, entities and gold. Implements the methods of manipulating entities.
  */
-public class Player implements Serializable {
+public class Player {
     /**
      * Static counter to determine the player's playerNumber.
      */
@@ -45,7 +44,7 @@ public class Player implements Serializable {
         if (number == 2) number = 0;
         this.playerNumber = ++number;
         this.name = name;
-        this.gold = 1000;
+        this.gold = 100;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
     }
@@ -121,6 +120,10 @@ public class Player implements Serializable {
     public void addEntity(Entity entity) { // or string as parameter to create Factory
         this.entities.add(entity);
         this.gold -= entity.value;
+    }
+
+    public void addSavedEntity(Entity entity) {
+        this.entities.add(entity);
     }
 
     /**

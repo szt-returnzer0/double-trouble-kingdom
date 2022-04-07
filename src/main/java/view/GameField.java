@@ -177,7 +177,10 @@ public class GameField extends GameFieldRenderer {
     public void refreshGameField() {
         frame.remove(this);
         FileDialog fileDialog = new FileDialog();
-        Game game = fileDialog.loadGameDialog() == null ? this.game : fileDialog.loadGameDialog();
+        Game loadedGame = fileDialog.loadGameDialog();
+        if (loadedGame != null) {
+            this.game = loadedGame;
+        }
         frame.add(new GameField(game, frame));
         frame.pack();
     }
@@ -554,8 +557,6 @@ public class GameField extends GameFieldRenderer {
                 transformTower(b, xIdx, yIdx);
             }
         }
-
-
     }
 
     /**

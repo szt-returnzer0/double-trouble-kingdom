@@ -14,7 +14,7 @@ public class MainMenu extends JPanel {
     /**
      * The default map name.
      */
-    private final String starterMap;
+    private String mapName;
     /**
      * The label to show the player names.
      */
@@ -48,12 +48,13 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        starterMap = "testSer";
+        map = FileHandler.loadMap(new File("Test.dtk"));
+        assert map != null;
+        mapName = map.getName();
 
-        //map = getFreshMap();
         this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         topBar.add(playersLabel);
-        this.mapNameLabel = new JLabel(map != null ? map.getName() : starterMap, SwingConstants.CENTER);
+        this.mapNameLabel = new JLabel(map != null ? map.getName() : mapName, SwingConstants.CENTER);
         topBar.add(mapNameLabel);
         this.add(topBar);
 
@@ -104,21 +105,21 @@ public class MainMenu extends JPanel {
         JButton mapSelect = new JButton("Pályaválasztás");
         FileDialog fileDialog = new FileDialog();
         mapSelect.addActionListener(e -> {
-            this.map = fileDialog.loadMapDialog() == null ? getFreshMap() : fileDialog.loadMapDialog();
-            updateMapName();
-            repaint();
+            Map loadedMap = fileDialog.loadMapDialog();
+            if (loadedMap != null) {
+                this.map = loadedMap;
+                this.mapName = loadedMap.getName();
+
+                updateMapName();
+                repaint();
+            }
         });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
     }
 
-    /**
-     * Returns a freshly loaded Map instance.
-     *
-     * @return a freshly loaded Map instance
-     */
-    public Map getFreshMap() {
-        return FileHandler.loadMap(new File(starterMap));
+    public Map getMap() {
+        return map;
     }
 
     /**

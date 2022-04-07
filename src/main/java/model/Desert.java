@@ -1,7 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -14,7 +12,6 @@ public class Desert extends Terrain {
      *
      * @param gridPos the tile's position on the Map
      */
-    @JsonCreator
     public Desert(Point gridPos) {
         super(gridPos, "Desert");
         this.speedMod = 0.5;

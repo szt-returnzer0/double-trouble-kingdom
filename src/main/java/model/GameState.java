@@ -1,7 +1,6 @@
 package model;
 
 import javax.swing.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -9,7 +8,7 @@ import java.util.Random;
 /**
  * GameState class implementation for Double Trouble Kingdom game, contains the Players, playerNumbers, the roundState, and other fields and methods for managing the state of the Game.
  */
-public class GameState implements Serializable {
+public class GameState {
     /**
      * Timer to increment elapsedTime.
      */

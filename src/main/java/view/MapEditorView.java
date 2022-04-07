@@ -66,7 +66,12 @@ public class MapEditorView extends GameField {
 
         this.hamburgerMenu.attachActionListener(0, e -> fileDialog.saveMapDialog(mapRef));
 
-        this.hamburgerMenu.attachActionListener(1, e -> mapRef = fileDialog.loadMapDialog() != null ? fileDialog.loadMapDialog() : mapRef);
+        this.hamburgerMenu.attachActionListener(1, e -> {
+            Map loadedMap = fileDialog.loadMapDialog();
+            if (loadedMap != null) {
+                mapRef = loadedMap;
+            }
+        });
 
     }
 

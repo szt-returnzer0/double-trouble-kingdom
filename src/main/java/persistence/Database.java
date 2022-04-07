@@ -1,13 +1,12 @@
 package persistence;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
  * Implementation of the Game's Database class, contains SQL queries, and SQLite connection opening and closing methods.
  */
-public class Database implements Serializable {
+public class Database {
     /**
      * Connection to the SQLite database.
      */
