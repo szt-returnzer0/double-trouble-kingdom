@@ -119,6 +119,11 @@ public class GameFieldRenderer extends JPanel {
 
         renderField(g2d);
         drawCurrentSelection(g2d);
+        for (int i = 0; i < Pathfinder.foundPath.size(); i++) {
+            Point point = Pathfinder.foundPath.get(i);
+            g2d.setColor(Color.red);
+            g2d.fillRect(point.x * scale, point.y * scale, scale, scale);
+        }
         drawLabels(g2d);
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
