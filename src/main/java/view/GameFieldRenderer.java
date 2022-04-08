@@ -171,14 +171,14 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the vertical coordinate
      */
     protected void drawEnt(Graphics2D g2d, int x, int y) {
-        String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+        //String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
 
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             if (!entity.isAnimated()) {
                 g2d.fillRect(x * scale, y * scale, scale, scale);
 
-                drawUnitOwner(g2d, x, y, side, entity);
+                drawUnitOwner(g2d, x, y, entity.getSide(), entity);
                 drawBldState(g2d, entity);
             }
 
@@ -219,8 +219,8 @@ public class GameFieldRenderer extends JPanel {
         for (Animator animator : game.getGameState().animBuffer) {
             handleType(g2d, animator.ent.getType());
             g2d.fillRect((int) (animator.ent.getPosition().x * scale + animator.X), (int) (animator.ent.getPosition().y * scale + animator.Y), scale, scale);
-            String side = animator.ent.getPosition().x + 3 < xLength / 2 ? "left" : "right";
-            drawUnitOwnerMove(g2d, animator.ent.getPosition().x, animator.ent.getPosition().y, side, animator.ent, animator.X, animator.Y);
+
+            drawUnitOwnerMove(g2d, animator.ent.getPosition().x, animator.ent.getPosition().y, animator.ent.getSide(), animator.ent, animator.X, animator.Y);
         }
     }
 

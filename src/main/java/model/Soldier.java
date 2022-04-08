@@ -71,7 +71,7 @@ public class Soldier extends Entity {
      * @return the path of the Solider to the enemy Castle in an ArrayList
      */
     public ArrayList<Point> getPath() {
-        return path;
+        return pf.genPath(this, (side.equals("left") ? "right" : "left"));
     }
 
     /**

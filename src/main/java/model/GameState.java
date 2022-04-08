@@ -75,24 +75,29 @@ public class GameState {
         linkedGameField = gf;
     }
 
+    int step = 0;
+
     private void timerFunction() {
         //elapsedTime += 50;
         long curTime = System.currentTimeMillis();
         deltaTime = (double) curTime - prevTime;
 
         for (int i = 0; i < animBuffer.size(); i++) {
-            if (!animBuffer.get(i).ent.isAnimated) break;
-            if (animBuffer.get(i).animation()) {
+            if (!animBuffer.get(i).ent.isAnimated) continue;
+            //System.out.println(animBuffer);
+            animBuffer.get(i).animation(linkedGameField.getMapRef().getTiles());
 
-                linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().remove(animBuffer.get(i).ent);
+                /*linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().remove(animBuffer.get(i).ent);
                 //System.out.println(animBuffer.get(i).ent.getPosition());
                 animBuffer.get(i).nextstep();
                 linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().add(animBuffer.get(i).ent);
-                if (animBuffer.get(i).getPath().isEmpty()) {
-                    animBuffer.get(i).stopanim();
-                    animBuffer.remove(i--);
-                }
+                animBuffer.get(i).setSpeedMod(linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getSpeedMod());
+                */
+            if (animBuffer.get(i).getPath().isEmpty()) {
+                animBuffer.get(i).stopanim();
+                animBuffer.remove(i--);
             }
+
         }
         if (linkedGameField != null) {
             linkedGameField.updateCounter();
@@ -193,7 +198,7 @@ public class GameState {
      * Stops the elapsedTimer.
      */
     public void stopElapsedTimer() {
-        elapsedTimer.stop();
+        //elapsedTimer.stop();
     }
 
     /**

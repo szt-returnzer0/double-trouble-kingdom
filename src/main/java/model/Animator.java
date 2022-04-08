@@ -17,6 +17,7 @@ public class Animator {
     private ArrayList<Point> path = new ArrayList<>(Arrays.asList(new Point(0, 1), new Point(1, 0), new Point(1, 0), new Point(1, 0), new Point(1, 0), new Point(0, -1), new Point(-1, 0)));
     private Point nextPoint;
     int steps = 0;
+    double speedMod = 1;
 
     public Animator(Entity ent) {
         this.ent = ent;
@@ -31,6 +32,7 @@ public class Animator {
     }
 
     public void startanim() {
+        path = ((Soldier) ent).getPath();
         ent.isAnimated = true;
         //X=0;
     }
@@ -53,13 +55,34 @@ public class Animator {
             path.remove(0);
         }
         X = Y = 0;
-        //steps++;
-        //if(steps>2) {stopanim();steps=0;}
     }
 
-    public boolean animation() {
-        X += (GameFieldRenderer.getScale() / (second * 1000.0) * GameState.deltaTime) * path.get(0).x;
-        Y += (GameFieldRenderer.getScale() / (second * 1000.0) * GameState.deltaTime) * path.get(0).y;
-        return Math.abs(X) >= GameFieldRenderer.getScale() || Math.abs(Y) >= GameFieldRenderer.getScale();
+    public void animation(Terrain[][] mapEnts) {
+        setSpeedMod(mapEnts[ent.getPosition().y][ent.getPosition().x].getSpeedMod());
+        setSeconds(speedMod);
+        //setSeconds(1);
+        X += ((GameFieldRenderer.getScale() * ((Soldier) ent).getSpeed()) / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).x;
+        Y += ((GameFieldRenderer.getScale() * ((Soldier) ent).getSpeed()) / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).y;
+
+        if (Math.abs(X) >= GameFieldRenderer.getScale() || Math.abs(Y) >= GameFieldRenderer.getScale()) {
+            //System.out.println(ent.getType()+ " Scale: " + GameFieldRenderer.getScale() + " > "+X+" |"+Y);
+            if (!path.isEmpty()) {
+                mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().remove(ent);
+                mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().add(ent);
+                ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
+                path.remove(0);
+            }
+            X = 0;
+            Y = 0;
+            steps++;
+            if (steps >= 10) {
+                stopanim();
+                steps = 0;
+            }
+        }
+    }
+
+    public void setSpeedMod(double speedMod) {
+        this.speedMod = speedMod;
     }
 }

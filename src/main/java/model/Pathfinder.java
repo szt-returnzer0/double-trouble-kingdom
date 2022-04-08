@@ -84,6 +84,7 @@ public class Pathfinder {
                     graph[y][x] = map.getTiles()[y][x].getSpeedMod();
                 } else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().equals("Castle")) {
                     graph[y][x] = 1;
+                    if (map.getTiles()[y][x].getEntities().get(0).getSide().equals(s.getSide())) graph[y][x] = -1;
                 } else
                     graph[y][x] = -1;
             }
@@ -96,16 +97,18 @@ public class Pathfinder {
 
         ArrayList<Point> foundPath = new ArrayList<>();
 
-        foundPath.add(end);
+        //foundPath.add(end);
+        Point dir = new Point(0, 0);
         if (end != null) {
             while (Distance[end.y][end.x] != 0) {
                 cur = new Point(end);
                 for (int i = 0; i < 4; i++) {
                     if ((cur.x + dx[i] >= 0 && cur.y + dy[i] >= 0 && cur.x + dx[i] < xLength && cur.y + dy[i] < yLength) && Distance[cur.y + dy[i]][cur.x + dx[i]] < Distance[end.y][end.x]) {
                         end = new Point(cur.x + dx[i], cur.y + dy[i]);
+                        dir = new Point(dx[i] * -1, dy[i] * -1);
                     }
                 }
-                foundPath.add(end);
+                foundPath.add(dir);
             }
         }
         Collections.reverse(foundPath);
