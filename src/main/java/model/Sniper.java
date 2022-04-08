@@ -24,5 +24,12 @@ public class Sniper extends Tower {
      * Attacks the tower's target if nearby.
      */
     public void attack() {
+        int range = 10;
+        if (this.targets.size() != 0) {
+            if (this.targets.get(0).getPosition().distance(this.position) <= range) {
+                this.targets.get(0).takeDamage(this.damage);
+
+            }
+        }
     }
 }

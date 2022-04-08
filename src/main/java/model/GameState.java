@@ -5,6 +5,7 @@ import view.GameField;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -49,6 +50,8 @@ public class GameState {
     private int starterPlayer;
     private GameField linkedGameField = null;
 
+    private int eventStarter = 0;
+
     private int fps = 60;
 
     /**
@@ -79,6 +82,13 @@ public class GameState {
 
     private void timerFunction() {
         //elapsedTime += 50;
+        eventStarter++;
+        if (eventStarter == fps * 2) {
+            attacks();
+            eventStarter = 0;
+        }
+        System.out.println(eventStarter);
+
         long curTime = System.currentTimeMillis();
         deltaTime = (double) curTime - prevTime;
 
@@ -103,6 +113,23 @@ public class GameState {
             linkedGameField.updateCounter();
         }
         prevTime = curTime;
+    }
+
+    public void loadBuildings(Map map) {
+        HashSet<Building> buildings = new HashSet<>();
+        for (int i = 0; i < map.getTiles().length; i++) {
+            for (int j = 0; j < map.getTiles()[0].length; j++) {
+                if (map.getTiles()[i][j].getEntities().size() > 0) {
+                    if (map.getTiles()[i][j].getEntities().get(0) instanceof Building e) {
+                        buildings.add(e);
+                    }
+                }
+            }
+        }
+        for (Building b : buildings) {
+            players.get(b.side.equals("left") ? 0 : 1).addSavedEntity(b);
+
+        }
     }
 
     /**
@@ -153,6 +180,7 @@ public class GameState {
 
     }
 
+
 //    public int getWinner(){
 //        if(players.get(0).getEntities().size() == 0)
 //            return 2;
@@ -198,7 +226,7 @@ public class GameState {
      * Stops the elapsedTimer.
      */
     public void stopElapsedTimer() {
-        //elapsedTimer.stop();
+        elapsedTimer.stop();
     }
 
     /**
@@ -216,4 +244,44 @@ public class GameState {
     public void setEnded(boolean ended) {
         this.isEnded = ended;
     }
+
+    public Building getEnemyCastle() {
+        for (Entity entity : players.get(playerNumber == 0 ? 1 : 0).getEntities()) {
+            if (entity.getType().equals("Castle")) {
+                return (Building) entity;
+            }
+        }
+        return null;
+    }
+
+    public void setTargets() {
+        for (Player player : players) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Soldier s) {
+                    s.selectTarget(getEnemyCastle());
+                }
+            }
+        }
+    }
+
+    public void attacks() {
+        for (Player player : players) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Soldier s) {
+                    if (s.attack())
+                        player.removeEntity(s);
+                }
+            }
+        }
+    }
+
+   /* public void removeDead(){
+        for(Player player : players){
+            for(Entity entity : player.getEntities()){
+                if(entity.getHealthPoints() <= 0){
+                    player.removeEntity(entity);
+                }
+            }
+        }
+    }*/
 }

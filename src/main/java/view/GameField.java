@@ -44,6 +44,7 @@ public class GameField extends GameFieldRenderer {
         super(game, frame);
         this.game = game;
         setupButtons();
+        game.getGameState().loadBuildings(mapRef);
 
         middleText = "0 sec";
         sideText = getRoundStateText();
@@ -303,6 +304,7 @@ public class GameField extends GameFieldRenderer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        game.getGameState().setTargets();
     }
 
     /**

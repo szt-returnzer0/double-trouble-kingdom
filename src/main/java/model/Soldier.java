@@ -45,6 +45,7 @@ public class Soldier extends Entity {
         this.speed = speed;
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
         this.pf = new Pathfinder();
+        this.damage = 10;
     }
 
     /**
@@ -77,19 +78,42 @@ public class Soldier extends Entity {
     /**
      * Selects a target for the Soldier to attack.
      */
-    protected void selectTarget() {
+    public void selectTarget(Entity target) {
+        this.target = target;
     }
 
     /**
      * Attacks the unit's target if nearby.
      */
-    public void attack() {
+    public boolean attack() {
+        int radius = 1;
+        //get all points of target
+        ArrayList<Point> targetPoints = new ArrayList<>();
+        for (int i = 0; i < target.getSize().width; i++) {
+            for (int j = 0; j < target.getSize().height; j++) {
+                targetPoints.add(new Point(target.getPosition().x + i, target.getPosition().y + j));
+            }
+        }
+        if (target != null) {
+            if (targetPoints.contains(this.getPosition())) {
+                target.takeDamage(this.damage);
+                this.healthPoints = 0;
+                System.out.println("Soldier attacked");
+                System.out.println("Soldier health: " + this.healthPoints);
+                System.out.println("Target health: " + target.getHealthPoints());
+                return true;
+            }
+        }
+        System.out.println("Soldier attack called");
+        return false;
+
     }
 
     /**
      * Calculates the shortest path to the enemy Castle.
      */
     protected void calculatePath() {
+        pf.genPath(this, (side.equals("left") ? "right" : "left"));
     }
 
     /**
@@ -97,4 +121,6 @@ public class Soldier extends Entity {
      */
     public void addWaypoint() {
     }
+
+
 }

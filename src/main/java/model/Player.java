@@ -123,8 +123,9 @@ public class Player {
     }
 
     public void addSavedEntity(Entity entity) {
-        this.entities.add(entity);
+                this.entities.add(entity);
     }
+
 
     /**
      * Upgrades the selected Building, removes the upgrade cost from the player's gold.

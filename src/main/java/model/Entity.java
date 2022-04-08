@@ -236,4 +236,12 @@ public abstract class Entity {
     public void setIsAnimated(boolean l) {
         isAnimated = l;
     }
+
+    public void takeDamage(int damage) {
+        this.healthPoints -= damage;
+    }
+
+    public void setAnimated(boolean l) {
+        isAnimated = l;
+    }
 }

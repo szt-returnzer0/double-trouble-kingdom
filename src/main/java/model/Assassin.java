@@ -28,7 +28,8 @@ public class Assassin extends Soldier {
      * Attacks the unit's target if nearby.
      */
     @Override
-    public void attack() {
+    public boolean attack() {
         super.attack();
+        return true;
     }
 }

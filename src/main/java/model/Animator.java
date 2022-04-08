@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import view.GameFieldRenderer;
 
 import java.awt.*;
@@ -23,12 +24,40 @@ public class Animator {
         this.ent = ent;
     }
 
+    @JsonCreator
+    public Animator() {
+    }
+
     public void setSeconds(double second) {
         this.second = second;
     }
 
     public double getX() {
         return X;
+    }
+
+    public void setX(double x) {
+        X = x;
+    }
+
+    public void setY(double y) {
+        Y = y;
+    }
+
+    public void setEnt(Entity ent) {
+        this.ent = ent;
+    }
+
+    public void setSecond(double second) {
+        this.second = second;
+    }
+
+    public void setNextPoint(Point nextPoint) {
+        this.nextPoint = nextPoint;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
     }
 
     public void startanim() {
