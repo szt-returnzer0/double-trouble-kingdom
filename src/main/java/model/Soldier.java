@@ -20,6 +20,10 @@ public class Soldier extends Entity {
      * The Soldier's target Entity.
      */
     protected Entity target;
+
+    protected Pathfinder pf;
+
+
     /**
      * An ArrayList containing the path of the Solider to the enemy Castle.
      */
@@ -39,6 +43,7 @@ public class Soldier extends Entity {
         this.size = new Dimension(1, 1);
         this.value = 2;
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
+        this.pf = new Pathfinder();
     }
 
     /**

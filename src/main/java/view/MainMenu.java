@@ -1,6 +1,5 @@
 package view;
 
-import model.Diver;
 import model.Map;
 import model.Pathfinder;
 import persistence.FileHandler;
@@ -118,9 +117,11 @@ public class MainMenu extends JPanel {
         });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
-        Diver d = new Diver(new Point(1, 31), 0);
-        Pathfinder pathfinder = new Pathfinder(map);
-        pathfinder.genPath(d, "right");
+        Pathfinder.setMap(map);
+        //Diver d = new Diver(new Point(1, 31), 0);
+        //Pathfinder pathfinder = new Pathfinder(map);
+
+        //athfinder.genPath(d, "right");
         //pathfinder.startD3(d,"right");
         // int[][] graph = pathfinder.fieldToGraph(d);
         // int[] list = pathfinder.dijkstra(graph, 0, 800);
