@@ -2,8 +2,8 @@ package model;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Pathfinder {
     Map map;
@@ -14,65 +14,97 @@ public class Pathfinder {
     public static ArrayList<Point> foundPath = new ArrayList<>();
     public Node[][] visitedNodes;
 
+    public static int[][] Distance;
+    public int vCount = 0;
+
     public Pathfinder(Map map) {
         this.map = map;
         this.xLength = map.getTiles()[0].length;
         this.yLength = map.getTiles().length;
         visitedNodes = new Node[yLength][xLength];
-        for (int i = 0; i < yLength - 1; i++) {
-            for (int j = 0; j < xLength - 1; j++) {
+        for (int i = 0; i < yLength; i++) {
+            for (int j = 0; j < xLength; j++) {
                 visitedNodes[i][j] = new Node();
             }
         }
     }
 
-    public Node BFS(Soldier start, String side) {
+    public Point BFS(Soldier start, String side) {
         Point src = start.getPosition();
         Point end = null;
-
         fieldToGraph(start);
+        int vMax = 0;
 
-        int[] dx = {0, 0, 1, -1};
-        int[] dy = {1, -1, 0, 0};
+        Distance = new int[yLength][xLength];
+        for (int i = 0; i < yLength; i++) {
+            for (int j = 0; j < xLength; j++) {
+                Distance[i][j] = Integer.MAX_VALUE;
+                if (graph[i][j] != -1)
+                    vMax++;
+            }
+        }
+        System.out.println(vMax);
+
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {-1, 1, 0, 0};
+
         boolean[][] visited = new boolean[yLength][xLength];
-        visited[src.y][src.x] = true;
-        Queue<Point> path = new LinkedList<>();
+
+        PriorityQueue<Point> path = new PriorityQueue<>(Comparator.comparingInt(o -> Distance[o.y][o.x]));
+
         path.add(new Point(src.x, src.y));
-        visitedNodes[0][0] = (new Node(src, null, 0));
-        Node bestNode = new Node();
-        while (!path.isEmpty()) {
+
+        Distance[src.y][src.x] = 0;
+
+        while (vCount != vMax || path.isEmpty()) {
             Point pos = path.remove();
 
             if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") && map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
 
-                // return visitedNodes[pos.y][pos.x];
-                System.out.println(visitedNodes[pos.y][pos.x].toString());
-                if (visitedNodes[pos.y][pos.x].dist < bestNode.dist) {
-                    bestNode = new Node(visitedNodes[pos.y][pos.x].pos, visitedNodes[pos.y][pos.x].prev, visitedNodes[pos.y][pos.x].dist);
+
+                if (end == null || Distance[pos.y][pos.x] < Distance[end.y][end.x]) {
+                    end = new Point(pos);
                 }
             }
 
+            if (visited[pos.y][pos.x])
+                continue;
+
+            visited[pos.y][pos.x] = true;
+            vCount++;
+
+            //foundPath.add(pos);
+
             for (int i = 0; i < 4; i++) {
-                //System.out.println(new Point(pos.x+dx[i],pos.y+dy[i]));
                 if ((pos.x + dx[i] >= 0 && pos.y + dy[i] >= 0 && pos.x + dx[i] < xLength && pos.y + dy[i] < yLength) && !visited[pos.y + dy[i]][pos.x + dx[i]] && graph[pos.y + dy[i]][pos.x + dx[i]] > 0) {
+                    int newDist = Distance[pos.y][pos.x] + graph[pos.y + dy[i]][pos.x + dx[i]];
+
+                    if (newDist < Distance[pos.y + dy[i]][pos.x + dx[i]])
+                        Distance[pos.y + dy[i]][pos.x + dx[i]] = newDist;
+
                     path.add(new Point(pos.x + dx[i], pos.y + dy[i]));
-                    visitedNodes[pos.y + dy[i]][pos.x + dx[i]] = new Node(new Point(pos.x + dx[i], pos.y + dy[i]), pos, graph[pos.y + dy[i]][pos.x + dx[i]] + graph[pos.y][pos.x]);
-                    System.out.println(new Point(pos.x + dx[i], pos.y + dy[i]));
-                    visited[pos.y + dy[i]][pos.x + dx[i]] = true;
                 }
             }
         }
-        if (bestNode.dist != Integer.MAX_VALUE) {
-            return bestNode;
-        }
-        return null;
+        return end;
     }
 
     public void genPath(Soldier start, String side) {
-        Node n = BFS(start, side);
-        while (n != null) {
-            foundPath.add(n.prev);
-            n = visitedNodes[n.prev.y][n.prev.x];
+        Point end = BFS(start, side);
+        Point cur;
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+        foundPath.add(end);
+        if (end != null) {
+            while (Distance[end.y][end.x] != 0) {
+                cur = new Point(end);
+                for (int i = 0; i < 4; i++) {
+                    if ((cur.x + dx[i] >= 0 && cur.y + dy[i] >= 0 && cur.x + dx[i] < xLength && cur.y + dy[i] < yLength) && Distance[cur.y + dy[i]][cur.x + dx[i]] < Distance[end.y][end.x]) {
+                        end = new Point(cur.x + dx[i], cur.y + dy[i]);
+                    }
+                }
+                foundPath.add(end);
+            }
         }
 
     }
@@ -89,7 +121,7 @@ public class Pathfinder {
                     if (map.getTiles()[y][x].getType().equals("Desert"))
                         graph[y][x] = 100;
                 } else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().equals("Castle")) {
-                    graph[y][x] = 99;
+                    graph[y][x] = 1;
                 } else
                     graph[y][x] = -1;
             }

@@ -59,6 +59,12 @@ public class GameFieldRenderer extends JPanel {
      */
     protected String sideText;
 
+    int cnt = 1;
+    Timer test = new Timer(1, e -> {
+        cnt = cnt < Pathfinder.foundPath.size() ? cnt + 1 : cnt;
+        repaint();
+    });
+
     /**
      * Constructs a GameFieldRenderer instance.
      *
@@ -102,6 +108,7 @@ public class GameFieldRenderer extends JPanel {
             frame.repaint();
             MainWindow.startMainMenu(frame);
         });
+        test.start();
     }
 
     /**
@@ -119,10 +126,22 @@ public class GameFieldRenderer extends JPanel {
 
         renderField(g2d);
         drawCurrentSelection(g2d);
-        for (int i = 0; i < Pathfinder.foundPath.size(); i++) {
+        for (int i = 0; i < cnt; i++) {
             Point point = Pathfinder.foundPath.get(i);
             g2d.setColor(Color.red);
             g2d.fillRect(point.x * scale, point.y * scale, scale, scale);
+        }
+        for (int i = 0; i < yLength; i++) {
+            for (int j = 0; j < xLength; j++) {
+                String text = "N";
+                if (Pathfinder.Distance[i][j] < Integer.MAX_VALUE)
+                    text = "" + Pathfinder.Distance[i][j];
+                Font font = new Font("Roboto", Font.PLAIN, 15);
+                int width = g2d.getFontMetrics(font).stringWidth(text);
+                g2d.setColor(Color.BLACK);
+                g2d.setFont(font);
+                g2d.drawString(text, j * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035), i * scale + scale / 2 + (int) (scale * 0.3));
+            }
         }
         drawLabels(g2d);
         g2d.dispose();

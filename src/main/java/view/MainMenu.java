@@ -50,7 +50,7 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        map = FileHandler.loadMap(new File("Test.dtk"));
+        map = FileHandler.loadMap(new File("Test1.dtk"));
         assert map != null;
         mapName = map.getName();
 
