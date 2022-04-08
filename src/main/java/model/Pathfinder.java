@@ -38,24 +38,32 @@ public class Pathfinder {
         visited[src.y][src.x] = true;
         Queue<Point> path = new LinkedList<>();
         path.add(new Point(src.x, src.y));
-        visitedNodes[0][0] = (new Node(src, null));
+        visitedNodes[0][0] = (new Node(src, null, 0));
+        Node bestNode = new Node();
         while (!path.isEmpty()) {
             Point pos = path.remove();
 
             if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") && map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
 
-                return visitedNodes[pos.y][pos.x];
+                // return visitedNodes[pos.y][pos.x];
+                System.out.println(visitedNodes[pos.y][pos.x].toString());
+                if (visitedNodes[pos.y][pos.x].dist < bestNode.dist) {
+                    bestNode = new Node(visitedNodes[pos.y][pos.x].pos, visitedNodes[pos.y][pos.x].prev, visitedNodes[pos.y][pos.x].dist);
+                }
             }
 
             for (int i = 0; i < 4; i++) {
                 //System.out.println(new Point(pos.x+dx[i],pos.y+dy[i]));
                 if ((pos.x + dx[i] >= 0 && pos.y + dy[i] >= 0 && pos.x + dx[i] < xLength && pos.y + dy[i] < yLength) && !visited[pos.y + dy[i]][pos.x + dx[i]] && graph[pos.y + dy[i]][pos.x + dx[i]] > 0) {
                     path.add(new Point(pos.x + dx[i], pos.y + dy[i]));
-                    visitedNodes[pos.y + dy[i]][pos.x + dx[i]] = new Node(new Point(pos.x + dx[i], pos.y + dy[i]), pos);
+                    visitedNodes[pos.y + dy[i]][pos.x + dx[i]] = new Node(new Point(pos.x + dx[i], pos.y + dy[i]), pos, graph[pos.y + dy[i]][pos.x + dx[i]] + graph[pos.y][pos.x]);
                     System.out.println(new Point(pos.x + dx[i], pos.y + dy[i]));
                     visited[pos.y + dy[i]][pos.x + dx[i]] = true;
                 }
             }
+        }
+        if (bestNode.dist != Integer.MAX_VALUE) {
+            return bestNode;
         }
         return null;
     }
@@ -75,9 +83,12 @@ public class Pathfinder {
             for (int x = 0; x < xLength; x++) {
                 if (s.getTerrains().contains(map.getTiles()[y][x].getType()) &&
                         !(map.getTiles()[y][x].getEntities().size() > 0 &&
-                                "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType())))
+                                "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType()))) {
+
                     graph[y][x] = map.getTiles()[y][x].getSpeedMod();
-                else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().equals("Castle")) {
+                    if (map.getTiles()[y][x].getType().equals("Desert"))
+                        graph[y][x] = 100;
+                } else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().equals("Castle")) {
                     graph[y][x] = 99;
                 } else
                     graph[y][x] = -1;
@@ -89,15 +100,27 @@ public class Pathfinder {
     public static class Node {
         public Point pos;
         public Point prev;
+        public int dist;
 
         public Node() {
             pos = null;
             prev = null;
+            dist = Integer.MAX_VALUE;
         }
 
-        public Node(Point pos, Point prev) {
+        public Node(Point pos, Point prev, int dist) {
             this.pos = pos;
             this.prev = prev;
+            this.dist = dist;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "pos=" + pos +
+                    ", prev=" + prev +
+                    ", dist=" + dist +
+                    '}';
         }
     }
 
