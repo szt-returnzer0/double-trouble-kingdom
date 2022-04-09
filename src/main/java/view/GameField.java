@@ -91,7 +91,7 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
-    public void updateCounter() {
+    public void updateUIState() {
         middleText = "" + /*game.getGameState().getElapsedTime()*/(System.currentTimeMillis() - startTime) / 1000 + " sec";
         if (!game.getGameState().getRoundState().equals("Attacking")) {
             sideText = getRoundStateText();
@@ -99,8 +99,12 @@ public class GameField extends GameFieldRenderer {
             updateButtons();
         } else
             controlPanel.hideControlPanel();
+        if (game.getGameState().isEnded()) {
+            controlPanel.hideControlPanel();
+        }
         repaint();
     }
+
 
     /**
      * Draws or removes new Entities on the canvas.

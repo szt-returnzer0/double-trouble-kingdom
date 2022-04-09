@@ -16,6 +16,10 @@ import java.util.Objects;
 public class GameFieldRenderer extends JPanel {
 
     /**
+     * The scaling of the game.
+     */
+    protected static int scale;
+    /**
      * The height of the panel.
      */
     protected final int xLength;
@@ -35,10 +39,6 @@ public class GameFieldRenderer extends JPanel {
      * Reference to a Map instance.
      */
     protected Map mapRef;
-    /**
-     * The scaling of the game.
-     */
-    protected static int scale;
     /**
      * The selected Entity.
      */
@@ -359,7 +359,19 @@ public class GameFieldRenderer extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.drawString(middleText, getWidth() / 2 - (int) Math.ceil(middleWidth / 2.0), 40);
         g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2), 40);
+
+        if (game.getGameState().isEnded()) {
+            font = new Font("Roboto", Font.PLAIN, 64);
+            g2d.setFont(font);
+            String winner = game.getGameState().getWinner().getName() + " nyerte a játékot!";
+            int winnerWidth = g2d.getFontMetrics(font).stringWidth(winner);
+            g2d.setColor(Color.BLACK);
+            g2d.drawString(winner, getWidth() / 2 - (int) Math.ceil(winnerWidth / 2.0) + 2, getHeight() / 2 + 1);
+            g2d.setColor(Color.WHITE);
+            g2d.drawString(winner, getWidth() / 2 - (int) Math.ceil(winnerWidth / 2.0), getHeight() / 2);
+        }
     }
+
 
     /**
      * Sets the selection to a new Entity.

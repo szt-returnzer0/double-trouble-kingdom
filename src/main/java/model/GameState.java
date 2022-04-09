@@ -41,6 +41,10 @@ public class GameState {
      */
     private String roundState;
 
+    public boolean isEnded() {
+        return isEnded;
+    }
+
     private GameField linkedGameField = null;
     private int fps = 60;
 
@@ -96,7 +100,7 @@ public class GameState {
 
         }
         if (linkedGameField != null) {
-            linkedGameField.updateCounter();
+            linkedGameField.updateUIState();
         }
         prevTime = curTime;
     }
@@ -108,9 +112,9 @@ public class GameState {
                 attacks();
                 setTowerTargets();
                 towerAttack();
-                if (getWinner() != -1) {
+                if (getWinner() != null) {
                     isEnded = true;
-                    System.out.println("Winner: " + getWinner());
+                    System.out.println("Winner: " + getWinner().getName());
                 }
                 nextRoundState();
             }
@@ -176,13 +180,13 @@ public class GameState {
     }
 
 
-    public int getWinner() {
+    public Player getWinner() {
         if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0) {
-            return players.get(1).getPlayerNumber();
+            return players.get(1);
         } else if (players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0) {
-            return players.get(0).getPlayerNumber();
+            return players.get(0);
         }
-        return -1;
+        return null;
     }
 
 
