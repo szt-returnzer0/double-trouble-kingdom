@@ -45,7 +45,10 @@ public class Pathfinder {
         path.add(new Point(src.x, src.y));
         Distance[src.y][src.x] = 0;
 
+
         while (vCount != vMax || path.isEmpty()) {
+            if (path.size() == 0) return null;
+
             Point pos = path.remove();
 
             if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") && map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {

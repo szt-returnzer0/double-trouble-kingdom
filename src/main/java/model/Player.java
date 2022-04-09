@@ -36,6 +36,8 @@ public class Player {
 
     private int soldierCount;
 
+    private String side;
+
     /**
      * Constructs the Player with starter gold, entities and name.
      *
@@ -46,10 +48,15 @@ public class Player {
         if (number == 2) number = 0;
         this.playerNumber = ++number;
         this.name = name;
-        this.gold = 100;
+        this.gold = 10000;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
-        this.soldierCount = 0;
+
+        this.side = playerNumber == 1 ? "left" : "right";
+    }
+
+    public String getSide() {
+        return side;
     }
 
     /**

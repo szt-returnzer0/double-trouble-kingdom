@@ -83,8 +83,6 @@ public class GameState {
     }
 
     private void timerFunction() {
-
-
         gameLoop();
         long curTime = System.currentTimeMillis();
         deltaTime = (double) curTime - prevTime;
@@ -109,6 +107,7 @@ public class GameState {
     public void gameLoop() {
         if (roundState.equals("Attacking")) {
             if (animBuffer.stream().noneMatch(e -> e.getEnt().isAnimated())) {
+                calculatePaths();
                 setTowerTargets();
                 setSpecialTargets();
                 towerAttack();
@@ -339,5 +338,18 @@ public class GameState {
 
     public void setElapsedTime(int elapsedTime) {
         this.elapsedTime = elapsedTime;
+    }
+
+    public void calculatePaths() {
+        Pathfinder.setMap(linkedGameField.getMapRef());
+        for (Player player : players) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Soldier s) {
+                    s.calculatePath();
+                    s.animObj.setPath(s.getPath());
+                    System.out.println(s.getPath().size());
+                }
+            }
+        }
     }
 }

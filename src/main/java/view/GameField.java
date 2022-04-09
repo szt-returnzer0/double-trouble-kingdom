@@ -537,17 +537,16 @@ public class GameField extends GameFieldRenderer {
         b.setSide(side);
         if (inverted)
             b.invert();
+
+        if (destroyedOnPos(xIdx, yIdx)) return;
+
+        if (!DijsktraPasses(b, xIdx, yIdx)) return;
+
         System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
         String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
         if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
-                for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                    for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                        if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
-                            mapRef.getTiles()[y][x].addEntities(b);
-                        }
-                    }
-                }
+                placeOnEmptyField(yIdx, b, xIdx);
 
                 if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
                     game.getGameState().getCurrentPlayer().addEntity(b);
@@ -579,6 +578,58 @@ public class GameField extends GameFieldRenderer {
                 transformTower(b, xIdx, yIdx);
             }
         }
+    }
+
+    private boolean DijsktraPasses(Building b, int xIdx, int yIdx) {
+        boolean dijsktraGood = true;
+        placeOnEmptyField(yIdx, b, xIdx);
+        Soldier testSol = new Soldier(new Point(xIdx - 1, yIdx - 1), 1);
+        testSol.setSide(b.getSide());
+        if (testSol.getPath().size() == 0) {
+            dijsktraGood = false;
+            System.out.println("Dijsktra failed");
+        }
+        testSol.getPath();
+        game.getGameState().calculatePaths();
+        for (Player player : game.getGameState().getPlayers()) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Soldier s) {
+                    if (s.getPath().size() == 0) {
+                        dijsktraGood = false;
+                        System.out.println("Dijsktra failed");
+                    }
+                }
+            }
+        }
+        for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
+            for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+                if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
+                    mapRef.getTiles()[y][x].removeEntity(b);
+                }
+            }
+        }
+        return dijsktraGood;
+    }
+
+    private void placeOnEmptyField(int yIdx, Building b, int xIdx) {
+        for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
+            for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
+                if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
+                    mapRef.getTiles()[y][x].addEntities(b);
+                }
+            }
+        }
+    }
+
+    private boolean destroyedOnPos(int xIdx, int yIdx) {
+        if (mapRef.getTiles()[yIdx][xIdx].getEntities().size() > 0) {
+            for (Entity e : mapRef.getTiles()[yIdx][xIdx].getEntities()) {
+                if (e instanceof Tower t && t.isDestroyed()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

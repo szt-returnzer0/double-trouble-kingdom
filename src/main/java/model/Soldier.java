@@ -73,7 +73,8 @@ public class Soldier extends Entity {
      * @return the path of the Solider to the enemy Castle in an ArrayList
      */
     public ArrayList<Point> getPath() {
-        return pf.genPath(this, (side.equals("left") ? "right" : "left"));
+        calculatePath();
+        return this.path;
     }
 
     /**
@@ -113,7 +114,9 @@ public class Soldier extends Entity {
      * Calculates the shortest path to the enemy Castle.
      */
     protected void calculatePath() {
-        pf.genPath(this, (side.equals("left") ? "right" : "left"));
+
+        this.path = pf.genPath(this, (side.equals("left") ? "right" : "left"));
+        this.animObj.setPath(this.path);
     }
 
     /**
