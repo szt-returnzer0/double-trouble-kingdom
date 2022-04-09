@@ -67,6 +67,11 @@ public abstract class Entity {
      * The texture of the Entity.
      */
     protected Image texture;
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
     /**
      * Determines if the Entity is animated.
      */

@@ -36,6 +36,14 @@ public class Animator {
         return X;
     }
 
+    public double getY() {
+        return Y;
+    }
+
+    public Entity getEnt() {
+        return ent;
+    }
+
     public void setX(double x) {
         X = x;
     }
@@ -96,7 +104,14 @@ public class Animator {
         if (Math.abs(X) >= GameFieldRenderer.getScale() || Math.abs(Y) >= GameFieldRenderer.getScale()) {
             //System.out.println(ent.getType()+ " Scale: " + GameFieldRenderer.getScale() + " > "+X+" |"+Y);
             mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().remove(ent);
-            mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().add(ent);
+            if (mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().isEmpty() ||
+                    (!mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().isEmpty() &&
+                            !mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().get(0).getType().equals("Castle")))
+                mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().add(ent);
+            /*else {
+                mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().add(ent);
+
+            }*/
             ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
             path.remove(0);
             X = 0;

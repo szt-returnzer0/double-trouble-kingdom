@@ -110,7 +110,7 @@ public class GameField extends GameFieldRenderer {
         int y = e.getY();
         if (!deleteState) placeBlock(x, y);
         else delete(x, y);
-        System.out.println(deleteState);
+        //System.out.println(deleteState);
         repaint();
     }
 
@@ -260,7 +260,7 @@ public class GameField extends GameFieldRenderer {
         for (int i = 0, buttonsLength = buttons.length - 2; i < buttonsLength; i++) {
             JRoundedButton button = buttons[i];
             Color tmp;
-            System.out.println(button.getText());
+            //System.out.println(button.getText());
             switch (button.getText()) {
                 case "Brk" -> tmp = new Color(64, 37, 19);
                 case "Bar" -> tmp = new Color(208, 146, 110);
@@ -498,6 +498,7 @@ public class GameField extends GameFieldRenderer {
      */
     protected void trainSoldiers(Soldier s) {
         if (game.getGameState().getCurrentPlayer().getGold() >= s.getValue()) {
+            s.setOwner(game.getGameState().getCurrentPlayer());
             int xIdx = s.getPosition().x;
             int yIdx = s.getPosition().y;
             String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
@@ -523,7 +524,9 @@ public class GameField extends GameFieldRenderer {
      *
      * @param b the building to place
      */
-    protected void placeBuilding(Building b) { // Entity switched building
+    protected void placeBuilding(Building b) {
+        b.setOwner(game.getGameState().getCurrentPlayer());
+
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
         String side = xIdx + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side

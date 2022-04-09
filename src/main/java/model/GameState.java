@@ -95,6 +95,7 @@ public class GameState {
             if (animBuffer.get(i).getPath().isEmpty()) {
                 animBuffer.get(i).stopanim();
                 animBuffer.remove(i--);
+
             }
 
         }
@@ -116,6 +117,7 @@ public class GameState {
         }
         if (eventStarter % fps * 2 == 0) {
             attacks();
+            //removeDeadSoldiers();
         }
         // System.out.println(eventStarter);
     }
@@ -274,20 +276,26 @@ public class GameState {
 
     public void attacks() {
         for (Player player : players) {
-            for (Entity entity : player.getEntities()) {
-                if (entity instanceof Soldier s) {
+            for (int i = 0; i < player.getEntities().size(); i++) {
+                if (player.getEntities().get(i) instanceof Soldier s) {
+
                     s.attack();
+                    if (!s.isAlive()) {
+                        player.removeSoldier((Soldier) player.getEntities().get(i--));
+                    }
                 }
             }
         }
     }
 
     public void removeDeadSoldiers() {
+        //if(animBuffer.stream().anyMatch(e -> e.getEnt().isAnimated()));
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
                 if (entity instanceof Soldier s) {
-                    if (s.getHealthPoints() <= 0) {
-                        player.removeEntity(s);
+                    if (!s.isAlive()) {
+                        System.out.println("Soldier " + s.isAlive);
+                        player.removeSoldier(s);
                     }
                 }
             }

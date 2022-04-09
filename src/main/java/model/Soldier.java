@@ -98,13 +98,14 @@ public class Soldier extends Entity {
                 target.takeDamage(this.damage);
                 this.healthPoints = 0;
                 this.isAlive = false;
-                System.out.println("Soldier attacked");
+                //owner.removeSoldier(this);
+                /*System.out.println("Soldier attacked");
                 System.out.println("Soldier health: " + this.healthPoints);
-                System.out.println("Target health: " + target.getHealthPoints());
+                System.out.println("Target health: " + target.getHealthPoints());*/
                 return true;
             }
         }
-        System.out.println("Soldier attack called");
+        //System.out.println("Soldier attack called");
         return false;
 
     }

@@ -95,7 +95,7 @@ public class ControlPanel extends JPanel {
      * Creates the buttons in the panel.
      */
     private void createButtons() {
-        System.out.println("size: " + getSize());
+        //System.out.println("size: " + getSize());
 
         for (int i = 0; i < 6; i++) {
             buttons[i] = new JRoundedButton("", 50, 50);

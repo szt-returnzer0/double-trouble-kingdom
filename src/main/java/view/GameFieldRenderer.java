@@ -149,6 +149,8 @@ public class GameFieldRenderer extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        //game.getGameState().removeDeadSoldiers();
+        System.out.println(game.getGameState().getCurrentPlayer().getSoldierCount());
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -220,10 +222,10 @@ public class GameFieldRenderer extends JPanel {
 
     protected void drawAnimateds(Graphics2D g2d) {
         for (Animator animator : game.getGameState().animBuffer) {
-            handleType(g2d, animator.ent.getType());
-            g2d.fillRect((int) (animator.ent.getPosition().x * scale + animator.X), (int) (animator.ent.getPosition().y * scale + animator.Y), scale, scale);
+            handleType(g2d, animator.getEnt().getType());
+            g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
 
-            drawUnitOwnerMove(g2d, animator.ent.getPosition().x, animator.ent.getPosition().y, animator.ent.getSide(), animator.ent, animator.X, animator.Y);
+            drawUnitOwnerMove(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
         }
     }
 
