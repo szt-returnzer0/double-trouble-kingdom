@@ -24,6 +24,8 @@ public class Barracks extends Building {
         this.isUpgraded = false;
         this.canUpgrade = true;
         this.value = 50;
+        this.healthPoints = 50;
+        this.maxHealthPoints = this.healthPoints;
     }
 
     /**

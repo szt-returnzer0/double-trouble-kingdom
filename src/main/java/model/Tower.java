@@ -33,6 +33,8 @@ public abstract class Tower extends Building {
      */
     public Tower(Point position, String side) {
         super(position, side);
+        this.healthPoints = 20;
+        this.maxHealthPoints = this.healthPoints;
         attackSpeed = 1;
     }
 
