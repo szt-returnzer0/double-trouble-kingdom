@@ -175,6 +175,7 @@ public class GameState {
             case "Attacking" -> {
                 nextPlayer();
                 this.roundState = "Building";
+                currentPlayer.calculateGoldAtRound();
             }
         }
 
@@ -298,6 +299,7 @@ public class GameState {
                 if (player.getEntities().get(i) instanceof Soldier s) {
                     if (!s.isAlive()) {
                         player.removeSoldier((Soldier) player.getEntities().get(i--));
+                        players.get(player.getPlayerNumber() == 1 ? 1 : 0).addGold(6);
                     }
                 }
             }
@@ -352,4 +354,6 @@ public class GameState {
             }
         }
     }
+
+
 }

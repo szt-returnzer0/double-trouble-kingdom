@@ -36,7 +36,9 @@ public class Player {
 
     private int soldierCount;
 
-    private String side;
+    private final String side;
+
+    private int killCount;
 
     /**
      * Constructs the Player with starter gold, entities and name.
@@ -51,7 +53,6 @@ public class Player {
         this.gold = 100;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
-
         this.side = playerNumber == 1 ? "left" : "right";
     }
 
@@ -218,6 +219,13 @@ public class Player {
             }
         }
         return towers;
+
+    }
+
+    public void calculateGoldAtRound() {
+        gold += 25;
+        gold += soldierCount * 2;
+
 
     }
 
