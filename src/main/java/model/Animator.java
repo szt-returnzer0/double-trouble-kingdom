@@ -117,7 +117,7 @@ public class Animator {
             X = 0;
             Y = 0;
             steps++;
-            if (steps >= 10) {
+            if (steps >= (int) ((Soldier) ent).getSpeed()) {
                 stopanim();
                 steps = 0;
             }
