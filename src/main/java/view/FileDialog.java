@@ -2,6 +2,7 @@ package view;
 
 import model.Game;
 import model.Map;
+import model.Pair;
 import persistence.FileHandler;
 
 import javax.swing.*;
@@ -58,12 +59,13 @@ public class FileDialog {
      *
      * @return the loaded Map
      */
-    public Map loadMapDialog() {
+    public Pair<Map, File> loadMapDialog() {
         this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Map", "dtk"));
         int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION)
-            return FileHandler.loadMap(fileChooser.getSelectedFile());
-        else
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            return new Pair<>(FileHandler.loadMap(file), file);
+        } else
             JOptionPane.showMessageDialog(null, "Kérem válassza ki a pályát, melyet be szeretne tölteni.", "Hiba", JOptionPane.ERROR_MESSAGE);
         return null;
     }

@@ -2,6 +2,7 @@ package view;
 
 import model.*;
 import persistence.Database;
+import persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +56,7 @@ public class MainWindow {
         frame.remove(mainMenu);
 
         Database db = new Database();
-        Game game = new Game(db, mainMenu.getMap(), mainMenu.getP1Name(), mainMenu.getP2Name());
+        Game game = new Game(db, FileHandler.loadMap(mainMenu.getMap().getFile()), mainMenu.getP1Name(), mainMenu.getP2Name());
         GameField gameField = new GameField(game, frame);
 
         frame.add(gameField, BorderLayout.CENTER);

@@ -1,6 +1,7 @@
 package view;
 
 import model.Map;
+import model.Pair;
 import model.Pathfinder;
 import persistence.FileHandler;
 
@@ -35,7 +36,7 @@ public class MainMenu extends JPanel {
     /**
      * The loaded Map instance.
      */
-    private Map map;
+    private Pair<Map, File> map;
 
     /**
      * Constructs a new MainMenu instance.
@@ -50,13 +51,13 @@ public class MainMenu extends JPanel {
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        map = FileHandler.loadMap(new File("Test.dtk")) != null ? FileHandler.loadMap(new File("Test.dtk")) : fileDialog.loadMapDialog();
+        map = FileHandler.loadMap(new File("Test.dtk")) != null ? FileHandler.loadMapAndFile(new File("Test.dtk")) : fileDialog.loadMapDialog();
         assert map != null;
-        mapName = map.getName();
+        mapName = map.getMap().getName();
 
         this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         topBar.add(playersLabel);
-        this.mapNameLabel = new JLabel(map != null ? map.getName() : mapName, SwingConstants.CENTER);
+        this.mapNameLabel = new JLabel(map != null ? map.getMap().getName() : mapName, SwingConstants.CENTER);
         topBar.add(mapNameLabel);
         this.add(topBar);
 
@@ -106,21 +107,21 @@ public class MainMenu extends JPanel {
         bottomButtons.add(rename);
         JButton mapSelect = new JButton("Pályaválasztás");
         mapSelect.addActionListener(e -> {
-            Map loadedMap = fileDialog.loadMapDialog();
-            if (loadedMap != null) {
-                this.map = loadedMap;
-                this.mapName = loadedMap.getName();
-                Pathfinder.setMap(map);
+            Pair<Map, File> loaded = fileDialog.loadMapDialog();
+            if (map != null) {
+                this.map = loaded;
+                this.mapName = loaded.getMap().getName();
+                Pathfinder.setMap(map.getMap());
                 updateMapName();
                 repaint();
             }
         });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
-        Pathfinder.setMap(map);
+        Pathfinder.setMap(map.getMap());
     }
 
-    public Map getMap() {
+    public Pair<Map, File> getMap() {
         return map;
     }
 
@@ -154,7 +155,7 @@ public class MainMenu extends JPanel {
      * Changes the Map to be loaded.
      */
     public void updateMapName() {
-        this.mapNameLabel.setText("Pálya: " + map.getName());
+        this.mapNameLabel.setText("Pálya: " + map.getMap().getName());
         repaint();
     }
 }

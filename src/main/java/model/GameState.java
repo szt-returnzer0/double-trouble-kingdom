@@ -115,6 +115,7 @@ public class GameState {
                 if (getWinner() != null) {
                     isEnded = true;
                     System.out.println("Winner: " + getWinner().getName());
+                    elapsedTimer.stop();
                 }
                 nextRoundState();
             }

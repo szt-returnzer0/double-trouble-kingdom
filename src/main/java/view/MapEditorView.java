@@ -5,6 +5,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Queue;
 import java.util.*;
 
@@ -67,9 +68,9 @@ public class MapEditorView extends GameField {
         this.hamburgerMenu.attachActionListener(0, e -> fileDialog.saveMapDialog(mapRef));
 
         this.hamburgerMenu.attachActionListener(1, e -> {
-            Map loadedMap = fileDialog.loadMapDialog();
-            if (loadedMap != null) {
-                mapRef = loadedMap;
+            Pair<Map, File> loaded = fileDialog.loadMapDialog();
+            if (loaded != null) {
+                mapRef = loaded.getMap();
             }
         });
 

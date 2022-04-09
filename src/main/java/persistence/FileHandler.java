@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import model.Game;
 import model.Map;
+import model.Pair;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,6 +65,17 @@ public class FileHandler {
     public static Map loadMap(File file) {
         try {
             return mapper.readValue(file, Map.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Pair<Map, File> loadMapAndFile(File file) {
+        try {
+
+            Map map = mapper.readValue(file, Map.class);
+            return new Pair<>(map, file);
         } catch (IOException e) {
             e.printStackTrace();
         }
