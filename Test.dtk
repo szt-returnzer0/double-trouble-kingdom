@@ -1746,7 +1746,8 @@
     "entities" : [ {
       "@type" : "Barracks",
       "@id" : 1,
-      "healthPoints" : 0,
+      "healthPoints" : 50,
+      "maxHealthPoints" : 50,
       "position" : {
         "x" : 1.0,
         "y" : 3.0
@@ -1758,10 +1759,40 @@
       },
       "value" : 50,
       "owner" : null,
+      "animObj" : {
+        "X" : 0.0,
+        "Y" : 0.0,
+        "ent" : 1,
+        "path" : [ {
+          "x" : 0.0,
+          "y" : 1.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.0,
+          "y" : -1.0
+        }, {
+          "x" : -1.0,
+          "y" : 0.0
+        } ],
+        "x" : 0.0,
+        "y" : 0.0
+      },
       "side" : "left",
       "upgraded" : false,
       "destroyed" : false,
-      "alive" : true
+      "alive" : true,
+      "animated" : false
     } ],
     "type" : "Plains",
     "speedMod" : 1
@@ -2287,7 +2318,8 @@
     "entities" : [ {
       "@type" : "Barracks",
       "@id" : 2,
-      "healthPoints" : 0,
+      "healthPoints" : 50,
+      "maxHealthPoints" : 50,
       "position" : {
         "x" : 59.0,
         "y" : 3.0
@@ -2299,10 +2331,40 @@
       },
       "value" : 50,
       "owner" : null,
+      "animObj" : {
+        "X" : 0.0,
+        "Y" : 0.0,
+        "ent" : 2,
+        "path" : [ {
+          "x" : 0.0,
+          "y" : 1.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.0,
+          "y" : -1.0
+        }, {
+          "x" : -1.0,
+          "y" : 0.0
+        } ],
+        "x" : 0.0,
+        "y" : 0.0
+      },
       "side" : "right",
       "upgraded" : false,
       "destroyed" : false,
-      "alive" : true
+      "alive" : true,
+      "animated" : false
     } ],
     "type" : "Plains",
     "speedMod" : 1
@@ -4089,6 +4151,7 @@
       "@type" : "Castle",
       "@id" : 3,
       "healthPoints" : 100,
+      "maxHealthPoints" : 100,
       "position" : {
         "x" : 1.0,
         "y" : 7.0
@@ -4100,9 +4163,39 @@
       },
       "value" : 0,
       "owner" : null,
+      "animObj" : {
+        "X" : 0.0,
+        "Y" : 0.0,
+        "ent" : 3,
+        "path" : [ {
+          "x" : 0.0,
+          "y" : 1.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.0,
+          "y" : -1.0
+        }, {
+          "x" : -1.0,
+          "y" : 0.0
+        } ],
+        "x" : 0.0,
+        "y" : 0.0
+      },
       "side" : "left",
       "destroyed" : false,
-      "alive" : true
+      "alive" : true,
+      "animated" : false
     } ],
     "type" : "Plains",
     "speedMod" : 1
@@ -4620,6 +4713,7 @@
       "@type" : "Castle",
       "@id" : 4,
       "healthPoints" : 100,
+      "maxHealthPoints" : 100,
       "position" : {
         "x" : 58.0,
         "y" : 7.0
@@ -4631,9 +4725,39 @@
       },
       "value" : 0,
       "owner" : null,
+      "animObj" : {
+        "X" : 0.0,
+        "Y" : 0.0,
+        "ent" : 4,
+        "path" : [ {
+          "x" : 0.0,
+          "y" : 1.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.0,
+          "y" : -1.0
+        }, {
+          "x" : -1.0,
+          "y" : 0.0
+        } ],
+        "x" : 0.0,
+        "y" : 0.0
+      },
       "side" : "right",
       "destroyed" : false,
-      "alive" : true
+      "alive" : true,
+      "animated" : false
     } ],
     "type" : "Plains",
     "speedMod" : 1
@@ -13916,7 +14040,8 @@
     "entities" : [ {
       "@type" : "Barracks",
       "@id" : 5,
-      "healthPoints" : 0,
+      "healthPoints" : 50,
+      "maxHealthPoints" : 50,
       "position" : {
         "x" : 1.0,
         "y" : 24.0
@@ -13928,10 +14053,40 @@
       },
       "value" : 50,
       "owner" : null,
+      "animObj" : {
+        "X" : 0.0,
+        "Y" : 0.0,
+        "ent" : 5,
+        "path" : [ {
+          "x" : 0.0,
+          "y" : 1.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.0,
+          "y" : -1.0
+        }, {
+          "x" : -1.0,
+          "y" : 0.0
+        } ],
+        "x" : 0.0,
+        "y" : 0.0
+      },
       "side" : "left",
       "upgraded" : false,
       "destroyed" : false,
-      "alive" : true
+      "alive" : true,
+      "animated" : false
     } ],
     "type" : "Plains",
     "speedMod" : 1
@@ -14457,7 +14612,8 @@
     "entities" : [ {
       "@type" : "Barracks",
       "@id" : 6,
-      "healthPoints" : 0,
+      "healthPoints" : 50,
+      "maxHealthPoints" : 50,
       "position" : {
         "x" : 59.0,
         "y" : 24.0
@@ -14469,10 +14625,40 @@
       },
       "value" : 50,
       "owner" : null,
+      "animObj" : {
+        "X" : 0.0,
+        "Y" : 0.0,
+        "ent" : 6,
+        "path" : [ {
+          "x" : 0.0,
+          "y" : 1.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.0,
+          "y" : -1.0
+        }, {
+          "x" : -1.0,
+          "y" : 0.0
+        } ],
+        "x" : 0.0,
+        "y" : 0.0
+      },
       "side" : "right",
       "upgraded" : false,
       "destroyed" : false,
-      "alive" : true
+      "alive" : true,
+      "animated" : false
     } ],
     "type" : "Plains",
     "speedMod" : 1

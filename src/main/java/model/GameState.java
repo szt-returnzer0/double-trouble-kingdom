@@ -22,7 +22,6 @@ public class GameState {
      * ArrayList containing the Players.
      */
     private final ArrayList<Player> players;
-    int step = 0;
     /**
      * The current Player.
      */
@@ -35,21 +34,25 @@ public class GameState {
      * Check if the Game is ended.
      */
     private boolean isEnded;
-    /**
-     * The elapsed time in seconds.
-     */
-    private int elapsedTime;
+
     private long prevTime = 1;
     /**
      * The current round phase.
      */
     private String roundState;
-    /**
-     * The player number of the starter player,
-     */
-    private int starterPlayer;
+
     private GameField linkedGameField = null;
     private int fps = 60;
+
+    /**
+     * The starting player's number.
+     */
+    private int starterPlayer;
+
+    /**
+     * The elapsed time in seconds.
+     */
+    private int elapsedTime;
 
     /**
      * Constructs a class containing the Players, roundState, and elapsedTimer.
@@ -137,14 +140,7 @@ public class GameState {
         return players;
     }
 
-    /**
-     * Returns the elapsed Time in seconds.
-     *
-     * @return the elapsed Time in seconds
-     */
-    public int getElapsedTime() {
-        return elapsedTime;
-    }
+
 
     /**
      * Returns the roundState.
@@ -302,5 +298,13 @@ public class GameState {
                 }
             }
         }
+    }
+
+    public int getElapsedTime() {
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(int elapsedTime) {
+        this.elapsedTime = elapsedTime;
     }
 }

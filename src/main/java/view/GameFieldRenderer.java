@@ -172,7 +172,15 @@ public class GameFieldRenderer extends JPanel {
      */
     protected void drawEnt(Graphics2D g2d, int x, int y) {
         //String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+        //remove dead entities
+        if (!mapRef.getTiles()[y][x].getEntities().isEmpty()) {
+            for (int i = 0; i < mapRef.getTiles()[y][x].getEntities().size(); i++) {
+                if (mapRef.getTiles()[y][x].getEntities().get(i).getHealthPoints() <= 0) {
+                    mapRef.getTiles()[y][x].getEntities().remove(i--);
 
+                }
+            }
+        }
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             if (!entity.isAnimated() && entity.isAlive()) {
