@@ -259,6 +259,7 @@ public abstract class Entity {
 
     public void takeDamage(int damage) {
         this.healthPoints -= damage;
+        this.isAlive = this.healthPoints > 0;
     }
 
     public void setAnimated(boolean l) {

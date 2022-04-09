@@ -95,7 +95,9 @@ public abstract class Tower extends Building {
     /**
      * Selects the Tower's targets.
      */
-    protected void selectTargets() {
+    protected void selectTargets(ArrayList<Soldier> entities) {
+        targets = new ArrayList<>();
+        targets.addAll(entities);
     }
 
     /**
@@ -124,4 +126,7 @@ public abstract class Tower extends Building {
     public boolean isCanAttack() {
         return canAttack;
     }
+
+    public abstract void attack();
+
 }

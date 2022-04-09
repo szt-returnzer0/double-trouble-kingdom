@@ -12,6 +12,8 @@ import java.util.Random;
  * GameState class implementation for Double Trouble Kingdom game, contains the Players, playerNumbers, the roundState, and other fields and methods for managing the state of the Game.
  */
 public class GameState {
+    public static double deltaTime = 1;
+    public static ArrayList<Animator> animBuffer = new ArrayList<>();
     /**
      * Timer to increment elapsedTime.
      */
@@ -20,6 +22,7 @@ public class GameState {
      * ArrayList containing the Players.
      */
     private final ArrayList<Player> players;
+    int step = 0;
     /**
      * The current Player.
      */
@@ -36,9 +39,6 @@ public class GameState {
      * The elapsed time in seconds.
      */
     private int elapsedTime;
-
-    public static double deltaTime = 1;
-    public ArrayList<Animator> animBuffer = new ArrayList<>();
     private long prevTime = 1;
     /**
      * The current round phase.
@@ -49,7 +49,6 @@ public class GameState {
      */
     private int starterPlayer;
     private GameField linkedGameField = null;
-
     private int fps = 60;
 
     /**
@@ -76,8 +75,6 @@ public class GameState {
         linkedGameField = gf;
     }
 
-    int step = 0;
-
     private void timerFunction() {
 
 
@@ -86,7 +83,7 @@ public class GameState {
         deltaTime = (double) curTime - prevTime;
 
         for (int i = 0; i < animBuffer.size(); i++) {
-            if (!animBuffer.get(i).ent.isAnimated) continue;
+            if (!animBuffer.get(i).getEnt().isAnimated) continue;
             animBuffer.get(i).animation(linkedGameField.getMapRef().getTiles());
             if (animBuffer.get(i).getPath().isEmpty()) {
                 animBuffer.get(i).stopanim();
@@ -103,10 +100,11 @@ public class GameState {
 
 
     public void gameLoop() {
-
         if (roundState.equals("Attacking")) {
             if (animBuffer.stream().noneMatch(e -> e.getEnt().isAnimated())) {
                 attacks();
+                setTowerTargets();
+                towerAttack();
                 nextRoundState();
             }
         }
@@ -245,13 +243,12 @@ public class GameState {
         this.isEnded = ended;
     }
 
-    public Building getEnemyCastle() {
-        for (Entity entity : players.get(playerNumber == 0 ? 1 : 0).getEntities()) {
-            if (entity.getType().equals("Castle")) {
-                return (Building) entity;
-            }
-        }
-        return null;
+    public Building getEnemyCastle(int playerNumber) {
+        return players.get(playerNumber == 1 ? 1 : 0).getCastle();
+    }
+
+    public ArrayList<Soldier> getEnemySoldiers(int playerNumber) {
+        return players.get(playerNumber == 1 ? 1 : 0).getSoldiers();
     }
 
 
@@ -259,7 +256,7 @@ public class GameState {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
                 if (entity instanceof Soldier s) {
-                    s.selectTarget(getEnemyCastle());
+                    s.selectTarget(getEnemyCastle(player.getPlayerNumber()));
                 }
             }
         }
@@ -269,7 +266,6 @@ public class GameState {
         for (Player player : players) {
             for (int i = 0; i < player.getEntities().size(); i++) {
                 if (player.getEntities().get(i) instanceof Soldier s) {
-
                     s.attack();
                     if (!s.isAlive()) {
                         player.removeSoldier((Soldier) player.getEntities().get(i--));
@@ -279,15 +275,30 @@ public class GameState {
         }
     }
 
-    public void removeDeadSoldiers() {
-        //if(animBuffer.stream().anyMatch(e -> e.getEnt().isAnimated()));
+    public void towerAttack() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
-                if (entity instanceof Soldier s) {
+                if (entity instanceof Tower t) {
+                    t.attack();
+                }
+            }
+        }
+        for (Player player : players) {
+            for (int i = 0; i < player.getEntities().size(); i++) {
+                if (player.getEntities().get(i) instanceof Soldier s) {
                     if (!s.isAlive()) {
-                        System.out.println("Soldier " + s.isAlive);
-                        player.removeSoldier(s);
+                        player.removeSoldier((Soldier) player.getEntities().get(i--));
                     }
+                }
+            }
+        }
+    }
+
+    public void setTowerTargets() {
+        for (Player player : players) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Tower t) {
+                    t.selectTargets(getEnemySoldiers(player.getPlayerNumber()));
                 }
             }
         }

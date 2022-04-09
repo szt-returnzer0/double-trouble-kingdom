@@ -138,7 +138,9 @@ public class Player {
     public void removeSoldier(Soldier s) {
         soldierCount--;
         entities.remove(s);
-        System.out.println(soldierCount);
+        GameState.animBuffer.remove(s.getAnimObj());
+        s.getAnimObj().stopanim();
+        s.getAnimObj().removePath();
     }
 
 
@@ -182,12 +184,22 @@ public class Player {
     public Building getCastle() {
         for (Entity entity : entities) {
             if (entity instanceof Building) {
-                if (((Building) entity).getType().equals("Castle")) {
+                if (entity.getType().equals("Castle")) {
                     return (Building) entity;
                 }
             }
         }
         return null;
+    }
+
+    public ArrayList<Soldier> getSoldiers() {
+        ArrayList<Soldier> soldiers = new ArrayList<>();
+        for (Entity entity : entities) {
+            if (entity instanceof Soldier) {
+                soldiers.add((Soldier) entity);
+            }
+        }
+        return soldiers;
     }
 
 

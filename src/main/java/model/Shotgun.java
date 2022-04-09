@@ -18,17 +18,19 @@ public class Shotgun extends Tower {
         this.canUpgrade = true;
         this.value = 30;
         this.size = new Dimension(2, 2);
+        this.damage = 5;
     }
 
     /**
      * Attacks the tower's target if nearby.
      */
     public void attack() {
-        int range = 7;
+        int range = 3;
         if (this.targets.size() != 0) {
             for (Entity target : this.targets) {
                 if (target.getPosition().distance(this.position) <= range) {
                     target.takeDamage(this.damage);
+                    System.out.println("Shotgun tower shot " + target.getType() + " at " + target.getPosition());
                 }
             }
         }

@@ -86,6 +86,10 @@ public class Animator {
         this.path = path;
     }
 
+    public void removePath() {
+        setPath(null);
+    }
+
     public void nextstep() {
         if (!path.isEmpty()) {
             ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));

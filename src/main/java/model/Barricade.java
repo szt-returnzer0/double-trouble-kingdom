@@ -18,4 +18,8 @@ public class Barricade extends Tower {
         this.value = 10;
         this.size = new Dimension(2, 2);
     }
+
+    public void attack() {
+        //Cannot attack
+    }
 }

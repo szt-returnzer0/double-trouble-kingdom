@@ -149,8 +149,6 @@ public class GameFieldRenderer extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //game.getGameState().removeDeadSoldiers();
-        System.out.println(game.getGameState().getCurrentPlayer().getSoldierCount());
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -214,7 +212,7 @@ public class GameFieldRenderer extends JPanel {
             g2d.fillRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()) + width, (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), scale - width, 5);
             setSideColor(s.getSide(), g2d);
             g2d.drawRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()), (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), scale, 5);
-        } else if (ent instanceof Building b) {
+        } else if (ent instanceof Building b && !b.getType().equals("Barracks")) {
             int width = (int) ((b.getSize().width) * scale * b.getHealthPoints() / ((double) b.getMaxHealthPoints()));
             g2d.setColor(green);
             g2d.fillRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, width, 5);
