@@ -108,6 +108,10 @@ public class GameState {
                 attacks();
                 setTowerTargets();
                 towerAttack();
+                if (getWinner() != -1) {
+                    isEnded = true;
+                    System.out.println("Winner: " + getWinner());
+                }
                 nextRoundState();
             }
         }
