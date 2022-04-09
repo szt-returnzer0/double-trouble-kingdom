@@ -29,6 +29,9 @@ public class Sniper extends Tower {
         if (this.targets.size() != 0 && this.isAlive) {
             if (this.targets.get(0).getPosition().distance(this.position) <= range) {
                 this.targets.get(0).takeDamage(this.damage);
+                if (attackSpeed > 1)
+                    this.targets.get(0).takeDamage(this.damage);
+
             }
         }
     }

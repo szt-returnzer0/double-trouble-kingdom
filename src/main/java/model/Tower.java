@@ -75,15 +75,16 @@ public abstract class Tower extends Building {
 
             switch (level) {
                 case 1 -> {
-                    this.damage += this.damage / 2;
+                    this.damage += 2;
                     return 10;
                 }
                 case 2 -> {
-                    this.attackSpeed += this.attackSpeed / 2;
+                    this.attackSpeed += 1;
                     return 15;
                 }
                 case 3 -> {
-                    this.healthPoints += this.healthPoints / 3;
+                    this.healthPoints += 10;
+                    this.maxHealthPoints += 10;
                     return 20;
                 }
             }

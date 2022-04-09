@@ -30,7 +30,8 @@ public class Shotgun extends Tower {
             for (Entity target : this.targets) {
                 if (target.getPosition().distance(this.position) <= range) {
                     target.takeDamage(this.damage);
-                    System.out.println("Shotgun tower shot " + target.getType() + " at " + target.getPosition());
+                    if (attackSpeed > 1)
+                        this.targets.get(0).takeDamage(this.damage);
                 }
             }
         }

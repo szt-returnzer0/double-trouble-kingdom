@@ -114,7 +114,6 @@ public class GameField extends GameFieldRenderer {
         int y = e.getY();
         if (!deleteState) placeBlock(x, y);
         else delete(x, y);
-        //System.out.println(deleteState);
         repaint();
     }
 
@@ -264,7 +263,6 @@ public class GameField extends GameFieldRenderer {
         for (int i = 0, buttonsLength = buttons.length - 2; i < buttonsLength; i++) {
             JRoundedButton button = buttons[i];
             Color tmp;
-            //System.out.println(button.getText());
             switch (button.getText()) {
                 case "Brk" -> tmp = new Color(64, 37, 19);
                 case "Bar" -> tmp = new Color(208, 146, 110);
@@ -542,7 +540,7 @@ public class GameField extends GameFieldRenderer {
 
         if (!DijsktraPasses(b, xIdx, yIdx)) return;
 
-        System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
+        //System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
         String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
         if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
@@ -587,7 +585,6 @@ public class GameField extends GameFieldRenderer {
         testSol.setSide(b.getSide());
         if (testSol.getPath().size() == 0) {
             dijsktraGood = false;
-            System.out.println("Dijsktra failed");
         }
         testSol.getPath();
         game.getGameState().calculatePaths();
@@ -596,7 +593,6 @@ public class GameField extends GameFieldRenderer {
                 if (entity instanceof Soldier s) {
                     if (s.getPath().size() == 0) {
                         dijsktraGood = false;
-                        System.out.println("Dijsktra failed");
                     }
                 }
             }
@@ -640,7 +636,7 @@ public class GameField extends GameFieldRenderer {
      * @param yIdx index of the column
      */
     private void transformTower(Building b, int xIdx, int yIdx) {
-        System.out.println("TRANSFORM");
+
         Building newTower = game.getGameState().getCurrentPlayer().transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
         deleteBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
         placeBuilding(newTower);

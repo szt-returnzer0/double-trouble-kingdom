@@ -370,7 +370,6 @@ public class GameState {
                 if (entity instanceof Soldier s) {
                     s.calculatePath();
                     s.animObj.setPath(s.getPath());
-                    System.out.println(s.getPath().size());
                 }
             }
         }
