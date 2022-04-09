@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,6 +62,7 @@ public class GameFieldRenderer extends JPanel {
      * Text field 2 on the HUD.
      */
     protected String sideText;
+    private boolean texuresOn;
 
     /**
      * Constructs a GameFieldRenderer instance.
@@ -71,9 +71,10 @@ public class GameFieldRenderer extends JPanel {
      * @param frame the parent frame
      */
     public GameFieldRenderer(Game game, JFrame frame) {
-
+        texuresOn = false;
         this.game = game;
         this.mapRef = game.getMap();
+        setTextures();
         this.frame = frame;
         this.xLength = mapRef.getTiles()[0].length;
         this.yLength = mapRef.getTiles().length;
@@ -102,17 +103,25 @@ public class GameFieldRenderer extends JPanel {
         //hamburgerMenu.setBounds(0,0,200,frame.getContentPane().getSize().width);
         this.add(controlPanel);
         this.add(hamburgerMenu);
-        this.hamburgerMenu.attachActionListener(4, e -> {
+
+        this.hamburgerMenu.attachActionListener(5, e -> {
             this.game.pauseGame();
             this.removeAll();
             frame.getContentPane().removeAll();
             frame.repaint();
             MainWindow.startMainMenu(frame);
         });
+
+        this.hamburgerMenu.attachActionListener(4, e -> toggleTextures());
+
     }
 
     public static int getScale() {
         return scale;
+    }
+
+    public void toggleTextures() {
+        texuresOn = !texuresOn;
     }
 
     /**
@@ -145,8 +154,9 @@ public class GameFieldRenderer extends JPanel {
         handleType(g2d, mapRef.getTiles()[y][x].getType());
         //System.out.println("["+y+"]"+"["+x+"]");
         g2d.fillRect(x * scale, y * scale, scale, scale);
-        if (mapRef.getTiles()[y][x] != null)
-            drawImage(g2d, mapRef.getTiles()[y][x], x, y);
+        if (texuresOn)
+            if (mapRef.getTiles()[y][x] != null)
+                drawImage(g2d, mapRef.getTiles()[y][x], x, y);
     }
 
     /**
@@ -212,7 +222,6 @@ public class GameFieldRenderer extends JPanel {
 
             }
         }
-
 
 
     }
@@ -424,16 +433,23 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
-    //draw image
-    public void drawImage(Graphics2D g2d, Terrain ter, int x, int y) {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File("./src/main/resources/" + ter.getType() + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        g2d.drawImage(img, x * scale, y * scale, scale, scale, null);
+
+    public void setTextures() {
+        for (int i = 0; i < game.getMap().getTiles().length; i++) {
+            for (int j = 0; j < game.getMap().getTiles()[i].length; j++) {
+                try {
+                    game.getMap().getTiles()[i][j].setTexture(ImageIO.read(new File("./src/main/resources/" + game.getMap().getTiles()[i][j].getType() + ".png")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void drawImage(Graphics2D g2d, Terrain ter, int x, int y) {
+
+        g2d.drawImage(ter.getTexture(), x * scale, y * scale, scale, scale, null);
 
     }
 

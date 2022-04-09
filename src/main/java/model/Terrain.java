@@ -1,9 +1,15 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +24,7 @@ import java.util.ArrayList;
         @JsonSubTypes.Type(value = Swamp.class, name = "Swamp"),
         @JsonSubTypes.Type(value = Mountain.class, name = "Mountain"),
 })
+@JsonIgnoreProperties("texture")
 public abstract class Terrain {
     /**
      * The position of the tile.
@@ -39,9 +46,9 @@ public abstract class Terrain {
     /**
      * The texture of the tile.
      */
-    protected String texture;
+    protected BufferedImage texture;
 
-    public String getTexture() {
+    public BufferedImage getTexture() {
         return texture;
     }
 
@@ -55,7 +62,10 @@ public abstract class Terrain {
         this.gridPos = gridPos;
         this.entities = new ArrayList<>();
         this.type = type;
+
     }
+
+
 
     /**
      * Constructs a new Terrain instance without entities.
@@ -98,6 +108,10 @@ public abstract class Terrain {
         this.entities = entities;
     }
 
+    public void setTexture(BufferedImage texture) {
+        this.texture = texture;
+    }
+
     /**
      * Adds a new Entity to the tile
      *
@@ -138,4 +152,5 @@ public abstract class Terrain {
     public void removeEntity(Entity entity) {
         this.entities.remove(entity);
     }
+
 }

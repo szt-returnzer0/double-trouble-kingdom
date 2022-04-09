@@ -15,7 +15,6 @@ public class Plains extends Terrain {
     public Plains(Point gridPos) {
         super(gridPos, "Plains");
         this.speedMod = 1;
-        this.texture = "src/resources/terrain/plains.png";
     }
 
     /**
@@ -27,6 +26,5 @@ public class Plains extends Terrain {
     public Plains(Point gridPos, ArrayList<Entity> ent) {
         super(gridPos, "Plains", ent);
         speedMod = 1;
-        this.texture = "src/resources/terrain/plains.png";
     }
 }

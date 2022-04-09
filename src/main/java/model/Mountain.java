@@ -15,7 +15,6 @@ public class Mountain extends Terrain {
     public Mountain(Point gridPos) {
         super(gridPos, "Mountain");
         this.speedMod = 3;
-        this.texture = "src/resources/mountain.png";
     }
 
     /**
@@ -27,6 +26,5 @@ public class Mountain extends Terrain {
     public Mountain(Point gridPos, ArrayList<Entity> ent) {
         super(gridPos, "Mountain", ent);
         this.speedMod = 3;
-        this.texture = "src/resources/mountain.png";
     }
 }

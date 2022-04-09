@@ -20,7 +20,7 @@ public class HamburgerMenu extends JPanel {
     /**
      * The buttons of the menu.
      */
-    private final JRoundedButton[] buttons = new JRoundedButton[6]; //for multiple actionListener support
+    private final JRoundedButton[] buttons = new JRoundedButton[7]; //for multiple actionListener support
     // private Color bgColor = new Color(0, 0, 0, 0);
     /**
      * The background color of the menu.
@@ -47,7 +47,7 @@ public class HamburgerMenu extends JPanel {
 
         JPanel menuList = new JPanel(new FlowLayout(FlowLayout.CENTER, 80, 25));
         Color[] colors = new Color[]{new Color(77, 208, 255, 144), new Color(79, 104, 112, 108), new Color(5, 154, 197, 152)};
-        String[] labels = new String[]{"Mentés", "Betöltés", "Eredmények", "Felbontás", "Főmenü", "Kilépés"};
+        String[] labels = new String[]{"Mentés", "Betöltés", "Eredmények", "Felbontás", "Textúrák","Főmenü", "Kilépés"};
 
         for (int i = 0; i < labels.length; i++) {
             buttons[i] = new JRoundedButton(labels[i], 160, 50, colors);
@@ -55,7 +55,7 @@ public class HamburgerMenu extends JPanel {
         }
 
         attachActionListener(2, e -> new HallOfFame(new Database().getRecords(), null));
-        attachActionListener(5, e -> System.exit(0));
+        attachActionListener(6, e -> System.exit(0));
 
         menuList.setBounds(0, 50, 200, height);
         menuList.setOpaque(false);

@@ -1,6 +1,10 @@
 package model;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +19,7 @@ public class Desert extends Terrain {
     public Desert(Point gridPos) {
         super(gridPos, "Desert");
         this.speedMod = 2;
-        this.texture = "src/resources/terrain/desert.png";
+
     }
 
     /**
@@ -27,6 +31,5 @@ public class Desert extends Terrain {
     public Desert(Point gridPos, ArrayList<Entity> ent) {
         super(gridPos, "Desert", ent);
         this.speedMod = 2;
-        this.texture = "src/resources/terrain/desert.png";
     }
 }
