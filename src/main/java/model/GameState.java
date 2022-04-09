@@ -1,5 +1,7 @@
 package model;
 
+import persistence.DBRecord;
+import persistence.Database;
 import view.GameField;
 
 import javax.swing.*;
@@ -45,6 +47,8 @@ public class GameState {
         return isEnded;
     }
 
+    private final long startTime;
+
     private GameField linkedGameField = null;
     private int fps = 60;
 
@@ -52,6 +56,7 @@ public class GameState {
      * The starting player's number.
      */
     private int starterPlayer;
+    private Database DBRef;
 
     /**
      * The elapsed time in seconds.
@@ -71,6 +76,7 @@ public class GameState {
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
         decideStarter();
         this.roundState = "Building";
+        startTime = System.currentTimeMillis();
     }
 
     private void setFps(int fps) {
@@ -80,6 +86,10 @@ public class GameState {
 
     public void linkGameField(GameField gf) {
         linkedGameField = gf;
+    }
+
+    public void linkDBRef(Database db) {
+        DBRef = db;
     }
 
     private void timerFunction() {
@@ -101,7 +111,9 @@ public class GameState {
             linkedGameField.updateUIState();
         }
         prevTime = curTime;
+        elapsedTime = (int) ((System.currentTimeMillis() - startTime) / 1000);
     }
+
 
 
     public void gameLoop() {
@@ -116,6 +128,7 @@ public class GameState {
                     isEnded = true;
                     System.out.println("Winner: " + getWinner().getName());
                     elapsedTimer.stop();
+                    saveScore();
                 }
                 nextRoundState();
             }
@@ -184,13 +197,21 @@ public class GameState {
 
     public Player getWinner() {
         if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0) {
+            elapsedTimer.stop();
             return players.get(1);
         } else if (players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0) {
+            elapsedTimer.stop();
             return players.get(0);
         }
         return null;
     }
 
+    /**
+     * Saves a DBRecord to the Game's Database.
+     */
+    public void saveScore() {
+        DBRef.saveRecord(new DBRecord(getPlayers().get(0).getName(), getPlayers().get(1).getName(), getWinner().getPlayerNumber(), getElapsedTime()));
+    }
 
     /**
      * Determines the starting Player.

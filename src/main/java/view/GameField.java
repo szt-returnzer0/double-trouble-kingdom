@@ -92,7 +92,7 @@ public class GameField extends GameFieldRenderer {
     }
 
     public void updateUIState() {
-        middleText = "" + /*game.getGameState().getElapsedTime()*/(System.currentTimeMillis() - startTime) / 1000 + " sec";
+        middleText = "" + game.getGameState().getElapsedTime() + " sec";
         if (!game.getGameState().getRoundState().equals("Attacking")) {
             sideText = getRoundStateText();
             controlPanel.showControlPanel();
@@ -511,7 +511,7 @@ public class GameField extends GameFieldRenderer {
                 Point point = closestEmptyTile(xIdx, yIdx);
                 s.setPosition(point);
 
-                game.getGameState().animBuffer.add(s.getAnimObj());
+                GameState.animBuffer.add(s.getAnimObj());
                 s.getAnimObj().setSeconds(1 / s.getSpeed());
                 s.getAnimObj().setSpeedMod(mapRef.getTiles()[point.y][point.x].getSpeedMod());
                 s.setIsAnimated(false);

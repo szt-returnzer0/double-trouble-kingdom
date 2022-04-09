@@ -1,7 +1,6 @@
 package model;
 
 
-import persistence.DBRecord;
 import persistence.Database;
 
 /**
@@ -32,6 +31,7 @@ public class Game {
     public Game(Database database, Map map, String p1Name, String p2Name) {
         this.database = database;
         this.gameState = new GameState(p1Name, p2Name);
+        this.gameState.linkDBRef(database);
         this.map = map;
     }
 
@@ -84,10 +84,5 @@ public class Game {
         return database;
     }
 
-    /**
-     * Saves a DBRecord to the Game's Database.
-     */
-    public void saveScore() {
-        database.saveRecord(new DBRecord(gameState.getPlayers().get(0).getName(), gameState.getPlayers().get(1).getName(), -1, gameState.getElapsedTime())); // Implement gameEnd
-    }
+
 }
