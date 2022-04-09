@@ -129,4 +129,11 @@ public abstract class Tower extends Building {
 
     public abstract void attack();
 
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        this.isAlive = true;
+        this.isDestroyed = this.healthPoints <= 0;
+    }
+
 }

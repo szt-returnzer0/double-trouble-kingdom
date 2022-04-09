@@ -1,6 +1,5 @@
 package model;
 
-//generic pair
 public class Pair<T, U> {
     private T map;
     private U file;

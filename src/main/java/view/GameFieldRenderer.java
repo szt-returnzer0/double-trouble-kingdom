@@ -175,7 +175,7 @@ public class GameFieldRenderer extends JPanel {
         //remove dead entities
         if (!mapRef.getTiles()[y][x].getEntities().isEmpty()) {
             for (int i = 0; i < mapRef.getTiles()[y][x].getEntities().size(); i++) {
-                if (mapRef.getTiles()[y][x].getEntities().get(i).getHealthPoints() <= 0) {
+                if (!mapRef.getTiles()[y][x].getEntities().get(i).isAlive()) {
                     mapRef.getTiles()[y][x].getEntities().remove(i--);
 
                 }
@@ -290,6 +290,14 @@ public class GameFieldRenderer extends JPanel {
 
         } else if (ent.getType().equals("Castle")) {
             drawBldOwner(g2d, ent, side);
+        }
+
+        //draw destroyed towers in red
+        if (ent instanceof Tower t && t.isDestroyed()) {
+            g2d.setColor(Color.RED);
+            g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);
+
+
         }
 
     }

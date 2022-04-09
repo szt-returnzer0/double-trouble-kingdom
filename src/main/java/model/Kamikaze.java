@@ -14,6 +14,9 @@ public class Kamikaze extends Soldier {
      */
     private int splashPercent;
 
+    private ArrayList<Tower> towerTargets;
+
+
     /**
      * Constructs a new Kamikaze instance
      *
@@ -29,14 +32,34 @@ public class Kamikaze extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
+        this.splashPercent = 0;
     }
 
     /**
      * Attacks the unit's target if nearby.
      */
     @Override
-    public boolean attack() {
-        super.attack();
-        return true;
+    public void attack() {
+        if (this.isAlive) {
+            int range = 10;
+            super.attack();
+            this.splashPercent += 50;
+            if (this.splashPercent >= 100) {
+                this.splashPercent = 0;
+                if (this.towerTargets != null)
+                    for (Tower tower : this.towerTargets) {
+                        if (tower.getPosition().distance(this.getPosition()) <= range) {
+                            tower.takeDamage(this.damage);
+                            this.healthPoints = 0;
+                            this.isAlive = false;
+                            System.out.println("Kamikaze attacked tower");
+                        }
+                    }
+            }
+        }
+    }
+
+    public void selectTargets(ArrayList<Tower> targets) {
+        this.towerTargets = targets;
     }
 }

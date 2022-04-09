@@ -26,7 +26,7 @@ public class Shotgun extends Tower {
      */
     public void attack() {
         int range = 3;
-        if (this.targets.size() != 0) {
+        if (this.targets.size() != 0 && this.isAlive) {
             for (Entity target : this.targets) {
                 if (target.getPosition().distance(this.position) <= range) {
                     target.takeDamage(this.damage);

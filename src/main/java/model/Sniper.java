@@ -26,7 +26,7 @@ public class Sniper extends Tower {
      */
     public void attack() {
         int range = 7;
-        if (this.targets.size() != 0) {
+        if (this.targets.size() != 0 && this.isAlive) {
             if (this.targets.get(0).getPosition().distance(this.position) <= range) {
                 this.targets.get(0).takeDamage(this.damage);
             }

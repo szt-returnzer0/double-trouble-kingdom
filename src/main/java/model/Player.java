@@ -203,4 +203,14 @@ public class Player {
     }
 
 
+    public ArrayList<Tower> getTowers() {
+        ArrayList<Tower> towers = new ArrayList<>();
+        for (Entity entity : entities) {
+            if (entity instanceof Tower) {
+                towers.add((Tower) entity);
+            }
+        }
+        return towers;
+
+    }
 }

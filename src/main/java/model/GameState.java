@@ -109,9 +109,10 @@ public class GameState {
     public void gameLoop() {
         if (roundState.equals("Attacking")) {
             if (animBuffer.stream().noneMatch(e -> e.getEnt().isAnimated())) {
-                attacks();
                 setTowerTargets();
+                setSpecialTargets();
                 towerAttack();
+                soldierAttack();
                 if (getWinner() != null) {
                     isEnded = true;
                     System.out.println("Winner: " + getWinner().getName());
@@ -267,7 +268,7 @@ public class GameState {
         }
     }
 
-    public void attacks() {
+    public void soldierAttack() {
         for (Player player : players) {
             for (int i = 0; i < player.getEntities().size(); i++) {
                 if (player.getEntities().get(i) instanceof Soldier s) {
@@ -278,6 +279,7 @@ public class GameState {
                 }
             }
         }
+        removeDeadSoldiers();
     }
 
     public void towerAttack() {
@@ -288,6 +290,10 @@ public class GameState {
                 }
             }
         }
+        removeDeadSoldiers();
+    }
+
+    private void removeDeadSoldiers() {
         for (Player player : players) {
             for (int i = 0; i < player.getEntities().size(); i++) {
                 if (player.getEntities().get(i) instanceof Soldier s) {
@@ -307,6 +313,24 @@ public class GameState {
                 }
             }
         }
+    }
+
+    public void setSpecialTargets() {
+        for (Player player : players) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Assassin s) {
+                    s.selectTargets(getEnemySoldiers(player.getPlayerNumber()));
+                }
+                if (entity instanceof Kamikaze k) {
+                    k.selectTargets(getEnemyTowers(player.getPlayerNumber()));
+                }
+            }
+        }
+    }
+
+    public ArrayList<Tower> getEnemyTowers(int playerNumber) {
+        return players.get(playerNumber == 1 ? 1 : 0).getTowers();
+
     }
 
     public int getElapsedTime() {

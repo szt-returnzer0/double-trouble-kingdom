@@ -8,6 +8,9 @@ import java.util.Arrays;
  * Implementation of Assassin special soldier type.
  */
 public class Assassin extends Soldier {
+
+    private ArrayList<Soldier> soldierTargets;
+
     /**
      * Constructs a new Assassin instance.
      *
@@ -23,14 +26,29 @@ public class Assassin extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
+
     }
 
     /**
      * Attacks the unit's target if nearby.
      */
     @Override
-    public boolean attack() {
+    public void attack() {
+        int range = 20;
         super.attack();
-        return true;
+        if (soldierTargets != null)
+            for (Soldier soldier : soldierTargets) {
+                System.out.println(soldier.getPosition().distance(this.getPosition()));
+                if (soldier.getPosition().distance(this.getPosition()) <= range) {
+                    soldier.takeDamage(this.damage);
+                    System.out.println(this.type + " attacked " + soldier.getType() + " for " + this.damage + " damage.");
+                }
+            }
     }
+
+    public void selectTargets(ArrayList<Soldier> targets) {
+        this.soldierTargets = targets;
+    }
+
+
 }

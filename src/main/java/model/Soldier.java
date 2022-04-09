@@ -86,7 +86,7 @@ public class Soldier extends Entity {
     /**
      * Attacks the unit's target if nearby.
      */
-    public boolean attack() {
+    public void attack() {
         if (isAlive() && target != null && target.isAlive()) {
             ArrayList<Point> targetPoints = new ArrayList<>();
             for (int i = 0; i < target.getSize().width; i++) {
@@ -103,11 +103,9 @@ public class Soldier extends Entity {
                 /*System.out.println("Soldier attacked");
                 System.out.println("Soldier health: " + this.healthPoints);
                 System.out.println("Target health: " + target.getHealthPoints());*/
-                return true;
             }
         }
         //System.out.println("Soldier attack called");
-        return false;
 
     }
 
