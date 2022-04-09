@@ -35,10 +35,15 @@ public abstract class Terrain {
      * The speed modifier of the tile.
      */
     protected int speedMod;
+
     /**
      * The texture of the tile.
      */
-    protected Image texture;
+    protected String texture;
+
+    public String getTexture() {
+        return texture;
+    }
 
     /**
      * Constructs a new Terrain instance without entities.

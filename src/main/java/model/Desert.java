@@ -15,7 +15,7 @@ public class Desert extends Terrain {
     public Desert(Point gridPos) {
         super(gridPos, "Desert");
         this.speedMod = 2;
-        // this.texture = path/to/texture
+        this.texture = "src/resources/terrain/desert.png";
     }
 
     /**
@@ -27,6 +27,6 @@ public class Desert extends Terrain {
     public Desert(Point gridPos, ArrayList<Entity> ent) {
         super(gridPos, "Desert", ent);
         this.speedMod = 2;
-        // this.texture = path/to/texture
+        this.texture = "src/resources/terrain/desert.png";
     }
 }

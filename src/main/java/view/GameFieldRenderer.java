@@ -2,10 +2,14 @@ package view;
 
 import model.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -122,7 +126,7 @@ public class GameFieldRenderer extends JPanel {
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
                 //System.out.println("["+y+"]"+"["+x+"]");
-                drawObj(g2d, x, y);
+                drawTile(g2d, x, y);
                 drawEnt(g2d, x, y);
                 g2d.setColor(Color.GRAY);
                 g2d.drawRect(x * scale, y * scale, scale, scale);
@@ -137,10 +141,12 @@ public class GameFieldRenderer extends JPanel {
      * @param x   the horizontal coordinate
      * @param y   the vertical coordinate
      */
-    protected void drawObj(Graphics2D g2d, int x, int y) {
+    protected void drawTile(Graphics2D g2d, int x, int y) {
         handleType(g2d, mapRef.getTiles()[y][x].getType());
         //System.out.println("["+y+"]"+"["+x+"]");
         g2d.fillRect(x * scale, y * scale, scale, scale);
+        if (mapRef.getTiles()[y][x] != null)
+            drawImage(g2d, mapRef.getTiles()[y][x], x, y);
     }
 
     /**
@@ -160,7 +166,7 @@ public class GameFieldRenderer extends JPanel {
         drawCurrentSelection(g2d);
         drawLabels(g2d);
         if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
-            drawAnimateds(g2d);
+            drawAnimated(g2d);
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
     }
@@ -207,7 +213,7 @@ public class GameFieldRenderer extends JPanel {
             }
         }
 
-        //game.getGameState().removeDeadSoldiers();
+
 
     }
 
@@ -252,8 +258,8 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
-    protected void drawAnimateds(Graphics2D g2d) {
-        for (Animator animator : game.getGameState().animBuffer) {
+    protected void drawAnimated(Graphics2D g2d) {
+        for (Animator animator : GameState.animBuffer) {
             handleType(g2d, animator.getEnt().getType());
             g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
 
@@ -416,6 +422,19 @@ public class GameFieldRenderer extends JPanel {
             case "Climber" -> g2d.setColor(new Color(175, 112, 81));
             default -> g2d.setColor(Color.GRAY);
         }
+    }
+
+    //draw image
+    public void drawImage(Graphics2D g2d, Terrain ter, int x, int y) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("./src/main/resources/" + ter.getType() + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        g2d.drawImage(img, x * scale, y * scale, scale, scale, null);
+
     }
 
     private void drawUnitOwnerMove(Graphics2D g2d, int x, int y, String side, Entity entity, double mx, double my) {
