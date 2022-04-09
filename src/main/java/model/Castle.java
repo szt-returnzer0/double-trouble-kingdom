@@ -19,6 +19,7 @@ public class Castle extends Building {
         this.type = "Castle";
         this.isAnimated = false;
         this.healthPoints = 100;
+        this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(5, 15);
         //this.side = side;
     }

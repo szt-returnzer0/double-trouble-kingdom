@@ -40,6 +40,7 @@ public class Soldier extends Entity {
         this.type = "Soldier";
         this.isAnimated = true;
         this.healthPoints = 10;
+        this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 2;
         this.speed = speed;

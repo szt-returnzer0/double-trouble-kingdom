@@ -31,6 +31,12 @@ public abstract class Entity {
      * The health of the Entity.
      */
     protected int healthPoints;
+
+    /**
+     * The maximum health of the Entity.
+     */
+    protected int maxHealthPoints;
+
     /**
      * The position of the Entity.
      */
@@ -124,12 +130,21 @@ public abstract class Entity {
     }
 
     /**
-     * Retruns the remaining health of the Entity.
+     * Returns the remaining health of the Entity.
      *
-     * @return the remaining health of the Entit
+     * @return the remaining health of the Entity
      */
     public int getHealthPoints() {
         return healthPoints;
+    }
+
+    /**
+     * Returns the max health of the Entity.
+     *
+     * @return the max health of the Entity
+     */
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
     }
 
     /**
