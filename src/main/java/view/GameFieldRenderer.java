@@ -182,6 +182,7 @@ public class GameFieldRenderer extends JPanel {
 
                 drawUnitOwner(g2d, x, y, entity.getSide(), entity);
                 drawBldState(g2d, entity);
+                drawHealthBar(g2d, entity);
             }
 
 
@@ -199,6 +200,21 @@ public class GameFieldRenderer extends JPanel {
         }
 
         //game.getGameState().removeDeadSoldiers();
+
+    }
+
+    protected void drawHealthBar(Graphics2D g2d, Entity ent) {
+        if (ent instanceof Soldier s) {
+            Color green = new Color(0, 155, 35);
+            Color red = new Color(155, 0, 0);
+            int width = (int) (scale * s.getHealthPoints() / ((double) s.getMaxHealthPoints()));
+            g2d.setColor(green);
+            g2d.fillRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()), (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), width, 5);
+            g2d.setColor(red);
+            g2d.fillRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()) + width, (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), scale - width, 5);
+            setSideColor(s.getSide(), g2d);
+            g2d.drawRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()), (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), scale, 5);
+        }
 
     }
 
@@ -226,6 +242,7 @@ public class GameFieldRenderer extends JPanel {
             g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
 
             drawUnitOwnerMove(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
+            drawHealthBar(g2d, animator.getEnt());
         }
     }
 
