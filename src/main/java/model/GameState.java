@@ -50,10 +50,6 @@ public class GameState {
     private int starterPlayer;
     private GameField linkedGameField = null;
 
-    private int eventStarter = 0;
-
-    private int attackTick = 0;
-
     private int fps = 60;
 
     /**
@@ -107,19 +103,14 @@ public class GameState {
 
 
     public void gameLoop() {
-        eventStarter++;
+
         if (roundState.equals("Attacking")) {
-            attackTick++;
-            if (attackTick == 200) {
+            if (animBuffer.stream().noneMatch(e -> e.getEnt().isAnimated())) {
+                attacks();
                 nextRoundState();
-                attackTick = 0;
             }
         }
-        if (eventStarter % fps * 2 == 0) {
-            attacks();
-            //removeDeadSoldiers();
-        }
-        // System.out.println(eventStarter);
+
     }
 
     public void loadBuildings(Map map) {
