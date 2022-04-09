@@ -44,12 +44,13 @@ public class MainMenu extends JPanel {
      */
     public MainMenu(MainWindow wnd) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        FileDialog fileDialog = new FileDialog();
 
         JPanel topBar = new JPanel();
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
-        map = FileHandler.loadMap(new File("Test1.dtk"));
+        map = FileHandler.loadMap(new File("Test.dtk")) != null ? FileHandler.loadMap(new File("Test.dtk")) : fileDialog.loadMapDialog();
         assert map != null;
         mapName = map.getName();
 
@@ -104,13 +105,12 @@ public class MainMenu extends JPanel {
         });
         bottomButtons.add(rename);
         JButton mapSelect = new JButton("Pályaválasztás");
-        FileDialog fileDialog = new FileDialog();
         mapSelect.addActionListener(e -> {
             Map loadedMap = fileDialog.loadMapDialog();
             if (loadedMap != null) {
                 this.map = loadedMap;
                 this.mapName = loadedMap.getName();
-
+                Pathfinder.setMap(map);
                 updateMapName();
                 repaint();
             }
@@ -118,14 +118,6 @@ public class MainMenu extends JPanel {
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
         Pathfinder.setMap(map);
-        //Diver d = new Diver(new Point(1, 31), 0);
-        //Pathfinder pathfinder = new Pathfinder(map);
-
-        //athfinder.genPath(d, "right");
-        //pathfinder.startD3(d,"right");
-        // int[][] graph = pathfinder.fieldToGraph(d);
-        // int[] list = pathfinder.dijkstra(graph, 0, 800);
-        // pathfinder.listToPath(list);
     }
 
     public Map getMap() {

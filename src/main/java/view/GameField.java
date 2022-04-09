@@ -93,6 +93,12 @@ public class GameField extends GameFieldRenderer {
 
     public void updateCounter() {
         middleText = "" + /*game.getGameState().getElapsedTime()*/(System.currentTimeMillis() - startTime) / 1000 + " sec";
+        if (!game.getGameState().getRoundState().equals("Attacking")) {
+            sideText = getRoundStateText();
+            controlPanel.showControlPanel();
+            updateButtons();
+        } else
+            controlPanel.hideControlPanel();
         repaint();
     }
 

@@ -192,6 +192,15 @@ public class ControlPanel extends JPanel {
         buttons[idx].setPreferredSize(dim);
     }
 
+
+    public void hideControlPanel() {
+        setVisible(false);
+    }
+
+    public void showControlPanel() {
+        setVisible(true);
+    }
+
     /**
      * The paintComponent method of the class.
      *

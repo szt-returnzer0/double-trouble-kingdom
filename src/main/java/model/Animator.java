@@ -95,12 +95,10 @@ public class Animator {
 
         if (Math.abs(X) >= GameFieldRenderer.getScale() || Math.abs(Y) >= GameFieldRenderer.getScale()) {
             //System.out.println(ent.getType()+ " Scale: " + GameFieldRenderer.getScale() + " > "+X+" |"+Y);
-            if (!path.isEmpty()) {
-                mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().remove(ent);
-                mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().add(ent);
-                ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
-                path.remove(0);
-            }
+            mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().remove(ent);
+            mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().add(ent);
+            ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
+            path.remove(0);
             X = 0;
             Y = 0;
             steps++;

@@ -86,18 +86,18 @@ public class Soldier extends Entity {
      * Attacks the unit's target if nearby.
      */
     public boolean attack() {
-        int radius = 1;
-        //get all points of target
-        ArrayList<Point> targetPoints = new ArrayList<>();
-        for (int i = 0; i < target.getSize().width; i++) {
-            for (int j = 0; j < target.getSize().height; j++) {
-                targetPoints.add(new Point(target.getPosition().x + i, target.getPosition().y + j));
+        if (isAlive() && target != null && target.isAlive()) {
+            ArrayList<Point> targetPoints = new ArrayList<>();
+            for (int i = 0; i < target.getSize().width; i++) {
+                for (int j = 0; j < target.getSize().height; j++) {
+                    targetPoints.add(new Point(target.getPosition().x + i, target.getPosition().y + j));
+                }
             }
-        }
-        if (target != null) {
+
             if (targetPoints.contains(this.getPosition())) {
                 target.takeDamage(this.damage);
                 this.healthPoints = 0;
+                this.isAlive = false;
                 System.out.println("Soldier attacked");
                 System.out.println("Soldier health: " + this.healthPoints);
                 System.out.println("Target health: " + target.getHealthPoints());

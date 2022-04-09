@@ -52,6 +52,8 @@ public class GameState {
 
     private int eventStarter = 0;
 
+    private int attackTick = 0;
+
     private int fps = 60;
 
     /**
@@ -81,28 +83,15 @@ public class GameState {
     int step = 0;
 
     private void timerFunction() {
-        //elapsedTime += 50;
-        eventStarter++;
-        if (eventStarter == fps * 2) {
-            attacks();
-            eventStarter = 0;
-        }
-        System.out.println(eventStarter);
 
+
+        gameLoop();
         long curTime = System.currentTimeMillis();
         deltaTime = (double) curTime - prevTime;
 
         for (int i = 0; i < animBuffer.size(); i++) {
             if (!animBuffer.get(i).ent.isAnimated) continue;
-            //System.out.println(animBuffer);
             animBuffer.get(i).animation(linkedGameField.getMapRef().getTiles());
-
-                /*linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().remove(animBuffer.get(i).ent);
-                //System.out.println(animBuffer.get(i).ent.getPosition());
-                animBuffer.get(i).nextstep();
-                linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getEntities().add(animBuffer.get(i).ent);
-                animBuffer.get(i).setSpeedMod(linkedGameField.getMapRef().getTiles()[animBuffer.get(i).ent.getPosition().y][animBuffer.get(i).ent.getPosition().x].getSpeedMod());
-                */
             if (animBuffer.get(i).getPath().isEmpty()) {
                 animBuffer.get(i).stopanim();
                 animBuffer.remove(i--);
@@ -113,6 +102,22 @@ public class GameState {
             linkedGameField.updateCounter();
         }
         prevTime = curTime;
+    }
+
+
+    public void gameLoop() {
+        eventStarter++;
+        if (roundState.equals("Attacking")) {
+            attackTick++;
+            if (attackTick == 200) {
+                nextRoundState();
+                attackTick = 0;
+            }
+        }
+        if (eventStarter % fps * 2 == 0) {
+            attacks();
+        }
+        // System.out.println(eventStarter);
     }
 
     public void loadBuildings(Map map) {
@@ -163,30 +168,32 @@ public class GameState {
      * Switches the current roundState to the next one. Switches Player after Training roundState phase.
      */
     public void nextRoundState() {
-        if (this.roundState.equals("Building"))
-            this.roundState = "Training";
-        else if (this.roundState.equals("Training") && this.playerNumber == starterPlayer) {
-            nextPlayer();
-            this.roundState = "Building";
-        } else if (this.roundState.equals("Attacking")) {
-            nextPlayer();
-            this.roundState = "Building";
-        } else {
-            this.roundState = "Attacking";
-            for (Animator animator : animBuffer) {
-                animator.startanim();
+        switch (this.roundState) {
+            case "Building" -> this.roundState = "Training";
+            case "Training" -> {
+                this.roundState = "Attacking";
+                for (Animator animator : animBuffer) {
+                    animator.startanim();
+                }
+            }
+            case "Attacking" -> {
+                nextPlayer();
+                this.roundState = "Building";
             }
         }
 
     }
 
 
-//    public int getWinner(){
-//        if(players.get(0).getEntities().size() == 0)
-//            return 2;
-//        if(players.get(1).getEntities().size() == 0)
-//            return 1;
-//    }
+    public int getWinner() {
+        if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0) {
+            return players.get(1).getPlayerNumber();
+        } else if (players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0) {
+            return players.get(0).getPlayerNumber();
+        }
+        return -1;
+    }
+
 
     /**
      * Determines the starting Player.
@@ -254,6 +261,7 @@ public class GameState {
         return null;
     }
 
+
     public void setTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
@@ -268,20 +276,21 @@ public class GameState {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
                 if (entity instanceof Soldier s) {
-                    if (s.attack())
-                        player.removeEntity(s);
+                    s.attack();
                 }
             }
         }
     }
 
-   /* public void removeDead(){
-        for(Player player : players){
-            for(Entity entity : player.getEntities()){
-                if(entity.getHealthPoints() <= 0){
-                    player.removeEntity(entity);
+    public void removeDeadSoldiers() {
+        for (Player player : players) {
+            for (Entity entity : player.getEntities()) {
+                if (entity instanceof Soldier s) {
+                    if (s.getHealthPoints() <= 0) {
+                        player.removeEntity(s);
+                    }
                 }
             }
         }
-    }*/
+    }
 }

@@ -175,7 +175,7 @@ public class GameFieldRenderer extends JPanel {
 
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
-            if (!entity.isAnimated()) {
+            if (!entity.isAnimated() && entity.isAlive()) {
                 g2d.fillRect(x * scale, y * scale, scale, scale);
 
                 drawUnitOwner(g2d, x, y, entity.getSide(), entity);
@@ -184,16 +184,19 @@ public class GameFieldRenderer extends JPanel {
 
 
         }
+        if (!game.getGameState().getRoundState().equals("Attacking")) {
+            if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
+                String text = "" + mapRef.getTiles()[y][x].getEntities().size();
+                Font font = new Font("Roboto", Font.PLAIN, 20);
+                int width = g2d.getFontMetrics(font).stringWidth(text);
+                g2d.setColor(Color.white);
+                g2d.setFont(font);
+                g2d.drawString(text, x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035), y * scale + scale / 2 + (int) (scale * 0.3));
 
-        if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
-            String text = "" + mapRef.getTiles()[y][x].getEntities().size();
-            Font font = new Font("Roboto", Font.PLAIN, 20);
-            int width = g2d.getFontMetrics(font).stringWidth(text);
-            g2d.setColor(Color.white);
-            g2d.setFont(font);
-            g2d.drawString(text, x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035), y * scale + scale / 2 + (int) (scale * 0.3));
-
+            }
         }
+
+        //game.getGameState().removeDeadSoldiers();
 
     }
 
@@ -365,7 +368,16 @@ public class GameFieldRenderer extends JPanel {
         if (units.contains(entity.getType())) {
             setSideColor(side, g2d);
             g2d.drawRect((int) (x * scale + 2 + mx), (int) (y * scale + 2 + my), scale - 4, scale - 4);
+            if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
+                String text = "" + mapRef.getTiles()[y][x].getEntities().size();
+                Font font = new Font("Roboto", Font.PLAIN, 20);
+                int width = g2d.getFontMetrics(font).stringWidth(text);
+                g2d.setColor(Color.white);
+                g2d.setFont(font);
+                g2d.drawString(text, (int) (x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035) + mx), (int) (y * scale + scale / 2 + (int) (scale * 0.3) + my));
 
+
+            }
         }
     }
 

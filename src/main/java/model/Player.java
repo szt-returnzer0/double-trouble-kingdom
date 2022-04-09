@@ -34,6 +34,8 @@ public class Player {
      */
     private boolean isUnitRestricted;
 
+    private int soldierCount;
+
     /**
      * Constructs the Player with starter gold, entities and name.
      *
@@ -47,6 +49,7 @@ public class Player {
         this.gold = 100;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
+        this.soldierCount = 0;
     }
 
     /**
@@ -120,10 +123,27 @@ public class Player {
     public void addEntity(Entity entity) { // or string as parameter to create Factory
         this.entities.add(entity);
         this.gold -= entity.value;
+        if (entity instanceof Soldier)
+            soldierCount++;
     }
 
+    public int getSoldierCount() {
+        return soldierCount;
+    }
+
+    public void setSoldierCount(int soldierCount) {
+        this.soldierCount = soldierCount;
+    }
+
+    public void removeSoldier(Soldier s) {
+        soldierCount--;
+        entities.remove(s);
+        System.out.println(soldierCount);
+    }
+
+
     public void addSavedEntity(Entity entity) {
-                this.entities.add(entity);
+        this.entities.add(entity);
     }
 
 
@@ -158,4 +178,17 @@ public class Player {
         this.entities.remove(entity);
         addGold(entity.value / 3);
     }
+
+    public Building getCastle() {
+        for (Entity entity : entities) {
+            if (entity instanceof Building) {
+                if (((Building) entity).getType().equals("Castle")) {
+                    return (Building) entity;
+                }
+            }
+        }
+        return null;
+    }
+
+
 }
