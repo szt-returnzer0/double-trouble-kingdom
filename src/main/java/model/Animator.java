@@ -28,6 +28,7 @@ public class Animator {
     public Animator() {
     }
 
+
     public void setSeconds(double second) {
         this.second = second;
     }

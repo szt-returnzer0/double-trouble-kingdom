@@ -67,6 +67,7 @@ public class GameFieldRenderer extends JPanel {
      * @param frame the parent frame
      */
     public GameFieldRenderer(Game game, JFrame frame) {
+
         this.game = game;
         this.mapRef = game.getMap();
         this.frame = frame;
@@ -75,6 +76,7 @@ public class GameFieldRenderer extends JPanel {
         scale = (frame.getContentPane().getSize().width) / xLength;
         middleText = "";
         sideText = "";
+        GameState.animBuffer.clear();
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
 
         setLayout(null);
@@ -437,4 +439,6 @@ public class GameFieldRenderer extends JPanel {
     public Map getMapRef() {
         return mapRef;
     }
+
+
 }
