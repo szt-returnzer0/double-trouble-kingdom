@@ -91,6 +91,18 @@ public class ControlPanel extends JPanel {
         return buttons;
     }
 
+    //void resize button and panel
+
+    /**
+     * Resizes the panel and buttons.
+     */
+    public void resize() {
+        setPreferredSize(new Dimension(getWidth(), getHeight()));
+        for (JRoundedButton button : buttons) {
+            button.setPreferredSize(new Dimension(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20));
+        }
+    }
+
     /**
      * Creates the buttons in the panel.
      */
@@ -98,11 +110,11 @@ public class ControlPanel extends JPanel {
         //System.out.println("size: " + getSize());
 
         for (int i = 0; i < 6; i++) {
-            buttons[i] = new JRoundedButton("", 50, 50);
+            buttons[i] = new JRoundedButton("", GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
             innerPanel.add(buttons[i]);
         }
 
-        JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 45, 8));
+        JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, GameFieldRenderer.scale + 15, 8));
         sidePanel.setOpaque(false);
         this.add(sidePanel, BorderLayout.LINE_END);
 

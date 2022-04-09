@@ -18,13 +18,13 @@ public class MainWindow {
     /**
      * The frame of the main window.
      */
-    private final JFrame frame;
+    private static final JFrame frame = new JFrame("Double Trouble Kingdom");
+
 
     /**
      * Constructs a MainWindow instance.
      */
     public MainWindow() {
-        frame = new JFrame("Double Trouble Kingdom");
         Dimension windowSize = new Dimension(1920, 1080);
         frame.setPreferredSize(windowSize);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -112,5 +112,17 @@ public class MainWindow {
 
         frame.add(mapEditor, BorderLayout.CENTER);
         frame.pack();
+    }
+
+    public static void repack() {
+        frame.pack();
+    }
+
+    public static Dimension getDimension() {
+        return frame.getPreferredSize();
+    }
+
+    public static void setDimension(Dimension dimension) {
+        frame.setPreferredSize(dimension);
     }
 }

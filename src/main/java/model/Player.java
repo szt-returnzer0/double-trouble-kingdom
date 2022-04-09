@@ -48,7 +48,7 @@ public class Player {
         if (number == 2) number = 0;
         this.playerNumber = ++number;
         this.name = name;
-        this.gold = 10000;
+        this.gold = 100;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
 

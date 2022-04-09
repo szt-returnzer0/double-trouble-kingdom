@@ -111,6 +111,7 @@ public class GameFieldRenderer extends JPanel {
             frame.repaint();
             MainWindow.startMainMenu(frame);
         });
+        this.hamburgerMenu.attachActionListener(3, e -> toggleScale());
 
         this.hamburgerMenu.attachActionListener(4, e -> toggleTextures());
 
@@ -118,6 +119,25 @@ public class GameFieldRenderer extends JPanel {
 
     public static int getScale() {
         return scale;
+    }
+
+    public void toggleScale() {
+
+        if (MainWindow.getDimension().width <= 1100 && MainWindow.getDimension().height <= 810) {
+            MainWindow.setDimension(new Dimension(1920, 1080));
+            MainWindow.repack();
+
+        } else if (MainWindow.getDimension().width <= 1700 && MainWindow.getDimension().height <= 1000) {
+            MainWindow.setDimension(new Dimension(1024, 768));
+            MainWindow.repack();
+
+        } else if (MainWindow.getDimension().width <= 2000 && MainWindow.getDimension().height <= 1100) {
+            MainWindow.setDimension(new Dimension(1600, 900));
+            MainWindow.repack();
+
+        }
+        System.out.println(MainWindow.getDimension().width + " " + MainWindow.getDimension().height);
+        repaint();
     }
 
     public void toggleTextures() {
