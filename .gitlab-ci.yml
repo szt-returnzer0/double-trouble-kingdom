@@ -8,8 +8,9 @@ before_script:
   - GRADLE_USER_HOME="$(pwd)/.gradle"
   - export GRADLE_USER_HOME
   - apk update
-  - apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+  - apk --no-cache add openjdk17
   - apk add xvfb-run
+  - apk add gradle
 
 build:
   stage: build
