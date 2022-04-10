@@ -115,7 +115,7 @@ public class Soldier extends Entity {
      */
     protected void calculatePath() {
 
-        this.path = pf.genPath(this, (side.equals("left") ? "right" : "left"));
+        this.path = pf.genPath(this, (side.equals("left") ? "right" : "left"), null, "rel");
         this.animObj.setPath(this.path);
     }
 

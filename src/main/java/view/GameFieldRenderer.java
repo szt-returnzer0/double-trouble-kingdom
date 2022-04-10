@@ -197,6 +197,11 @@ public class GameFieldRenderer extends JPanel {
         drawLabels(g2d);
         if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
             drawAnimated(g2d);
+
+        /*g2d.setColor(Color.red);
+        for (Point point : GameField.testpath) {
+            g2d.fillRect(point.x*scale,point.y*scale,scale,scale);
+        }*/ //VISUALIZATION
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
     }

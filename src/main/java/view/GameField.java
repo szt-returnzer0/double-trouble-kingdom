@@ -521,6 +521,8 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
+    //public static ArrayList<Point> testpath = new ArrayList<>(); //visualization
+
     /**
      * Places a building.
      *
@@ -538,7 +540,18 @@ public class GameField extends GameFieldRenderer {
 
         if (destroyedOnPos(xIdx, yIdx)) return;
 
-        if (!DijsktraPasses(b, xIdx, yIdx)) return;
+        //if (!DijsktraPasses(b, xIdx, yIdx)) return;
+        //Building c = b.getOwner().getCastle();
+
+        Building enemyCastle = game.getGameState().getEnemyCastle(b.getOwner().getPlayerNumber());
+        Soldier testUnit = new Soldier(closestEmptyTile(enemyCastle.getPosition().x + enemyCastle.getSize().width / 2 + (b.getSide().equals("left") ? 1 : -1), enemyCastle.getPosition().y + enemyCastle.getSize().height / 2), 2);
+        testUnit.setSide(enemyCastle.getSide());
+        Pathfinder pf = new Pathfinder();
+        Pathfinder.setMap(mapRef);
+        /*testpath = new ArrayList<>(pf.genPath(testUnit,enemyCastle.getSide().equals("right")?"left":"right", b, "abs"));
+        if(testpath.isEmpty()) return;*/ //visualization
+
+        if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals("right") ? "left" : "right", b) == null) return;
 
         //System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
         String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
@@ -576,35 +589,6 @@ public class GameField extends GameFieldRenderer {
                 transformTower(b, xIdx, yIdx);
             }
         }
-    }
-
-    private boolean DijsktraPasses(Building b, int xIdx, int yIdx) {
-        boolean dijsktraGood = true;
-        placeOnEmptyField(yIdx, b, xIdx);
-        Soldier testSol = new Soldier(new Point(xIdx - 1, yIdx - 1), 1);
-        testSol.setSide(b.getSide());
-        if (testSol.getPath().size() == 0) {
-            dijsktraGood = false;
-        }
-        testSol.getPath();
-        game.getGameState().calculatePaths();
-        for (Player player : game.getGameState().getPlayers()) {
-            for (Entity entity : player.getEntities()) {
-                if (entity instanceof Soldier s) {
-                    if (s.getPath().size() == 0) {
-                        dijsktraGood = false;
-                    }
-                }
-            }
-        }
-        for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-            for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
-                    mapRef.getTiles()[y][x].removeEntity(b);
-                }
-            }
-        }
-        return dijsktraGood;
     }
 
     private void placeOnEmptyField(int yIdx, Building b, int xIdx) {
