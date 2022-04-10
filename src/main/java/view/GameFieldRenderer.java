@@ -104,7 +104,7 @@ public class GameFieldRenderer extends JPanel {
         this.add(controlPanel);
         this.add(hamburgerMenu);
 
-        this.hamburgerMenu.attachActionListener(5, e -> {
+        this.hamburgerMenu.attachActionListener(6, e -> {
             this.game.pauseGame();
             this.removeAll();
             frame.getContentPane().removeAll();
