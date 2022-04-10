@@ -83,7 +83,8 @@ gradle test
 
 
 ## További információ
-A projekt tervei és a játék részletes leírása a repository [Wiki](../../wikis/Home) oldalán található.
+A projekt tervei és a játék részletes leírása a repository [Wiki](../../wikis/Home) oldalán található. \
+A project javadoc dokumentációja a [GitLab Pages](https://szt-c-2022.szofttech.gitlab-pages.hu/group-02/double-trouble-kingdom/index.html) oldalon található.
 
 ## A Csapat
 - Berecz Dániel 
