@@ -185,7 +185,7 @@ public class Pathfinder {
             start.getWayPoints().remove(0);
 
         if (!start.getWayPoints().isEmpty()) {
-            System.out.println("Waypoint" + start.getWayPoints().get(0).getLocation().x + " " + start.getWayPoints().get(0).getLocation().y);
+            //System.out.println("Waypoint" + start.getWayPoints().get(0).getLocation().x + " " + start.getWayPoints().get(0).getLocation().y);
             wayPoint = start.getWayPoints().get(0);
             end = Dijkstra(start, "waypoint", null);
         } else {

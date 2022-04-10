@@ -5,6 +5,7 @@ import persistence.Database;
 import view.GameField;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -374,6 +375,13 @@ public class GameState {
                 }
             }
         }
+    }
+
+    public ArrayList<Point> getWayPoints() {
+        if (linkedGameField != null) {
+            return linkedGameField.getWayPoints();
+        }
+        return null;
     }
 
 

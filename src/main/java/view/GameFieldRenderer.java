@@ -179,6 +179,8 @@ public class GameFieldRenderer extends JPanel {
                 drawImage(g2d, mapRef.getTiles()[y][x], x, y);
     }
 
+    private int bevelCnt = 0;
+
     /**
      * The paintComponent method of the class.
      *
@@ -197,13 +199,30 @@ public class GameFieldRenderer extends JPanel {
         drawLabels(g2d);
         if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
             drawAnimated(g2d);
-
+        drawWayPoints(g2d);
         /*g2d.setColor(Color.red);
         for (Point point : GameField.testpath) {
             g2d.fillRect(point.x*scale,point.y*scale,scale,scale);
         }*/ //VISUALIZATION
+        bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
+    }
+
+
+    protected void drawWayPoints(Graphics2D g2d) {
+        if (game.getGameState().getWayPoints() != null && !game.getGameState().getWayPoints().isEmpty()) {
+            System.out.println("NEMNULL");
+            setSideColor(game.getGameState().getCurrentPlayer().getSide(), g2d);
+            Stroke def = g2d.getStroke();
+            Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, new float[]{9}, bevelCnt);
+            g2d.setStroke(dashed);
+            for (Point wayPoint : game.getGameState().getWayPoints()) {
+                g2d.drawRoundRect(wayPoint.x * scale, wayPoint.y * scale, scale, scale, 200, 200);
+            }
+            g2d.setStroke(def);
+        }
     }
 
     /**
@@ -412,7 +431,7 @@ public class GameFieldRenderer extends JPanel {
         if (selection != null) {
             handleType(g2d, selection.getType());
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[]{9}, 0);
+                    0, new float[]{9}, bevelCnt);
             g2d.setStroke(dashed);
             Color col = g2d.getColor();
             g2d.drawRect(selection.getPosition().x * scale, selection.getPosition().y * scale, selection.getSize().width * scale, selection.getSize().height * scale);

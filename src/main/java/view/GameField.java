@@ -33,7 +33,10 @@ public class GameField extends GameFieldRenderer {
      */
     private boolean deleteState;
 
+    private final ArrayList<Point> wayPoints = new ArrayList<>();
+
     private final long startTime;
+
     /**
      * Constructs a new GameField instance.
      *
@@ -78,7 +81,10 @@ public class GameField extends GameFieldRenderer {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    inverted = !inverted;
+                    if ("Soldier Kamikaze Assasin Climber Diver".contains(type)) {
+                        handleWayPoint(e.getX(), e.getY());
+                    } else
+                        inverted = !inverted;
                     updateSelection(e.getX(), e.getY());
                 } else if (e.getButton() == MouseEvent.BUTTON1) {
                     setSelection(null);
@@ -89,6 +95,21 @@ public class GameField extends GameFieldRenderer {
         });
 
         repaint();
+    }
+
+    private void handleWayPoint(int x, int y) {
+        int yIdx = y / scale;
+        int xIdx = x / scale;
+        if (wayPoints.contains(new Point(xIdx, yIdx))) {
+            wayPoints.remove(new Point(xIdx, yIdx));
+        } else
+            wayPoints.add(new Point(xIdx, yIdx));
+
+        //System.out.println(wayPoints);
+    }
+
+    public ArrayList<Point> getWayPoints() {
+        return wayPoints;
     }
 
     public void updateUIState() {
@@ -513,7 +534,8 @@ public class GameField extends GameFieldRenderer {
                 s.getAnimObj().setSeconds(1 / s.getSpeed());
                 s.getAnimObj().setSpeedMod(mapRef.getTiles()[point.y][point.x].getSpeedMod());
                 s.setIsAnimated(false);
-                s.addWaypoint(new Point(0, 0));
+                wayPoints.forEach(s::addWaypoint);
+                wayPoints.clear();
                 mapRef.getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
                 controlPanel.updateButtonText();
