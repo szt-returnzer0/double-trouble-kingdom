@@ -230,9 +230,6 @@ public class GameFieldRenderer extends JPanel {
                                     (t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale);
                         }
                     }
-                    /*g2d.drawLine((t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale,
-                            (target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale);*/
-
                 }
             }
         }

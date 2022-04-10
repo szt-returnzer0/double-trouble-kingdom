@@ -29,11 +29,13 @@ public class Sniper extends Tower {
     public void attack() {
         this.range = 7;
         if (this.targets.size() != 0 && this.isAlive) {
-            if (this.targets.get(0).getPosition().distance(this.position) <= range) {
-                this.targets.get(0).takeDamage(this.damage);
-                if (attackSpeed > 1)
-                    this.targets.get(0).takeDamage(this.damage);
-
+            for (Entity target : this.targets) {
+                if (target.getPosition().distance(this.position) <= range) {
+                    target.takeDamage(this.damage);
+                    if (attackSpeed > 1)
+                        target.takeDamage(this.damage);
+                    return;
+                }
             }
         }
     }

@@ -33,7 +33,7 @@ public class Shotgun extends Tower {
                 if (target.getPosition().distance(this.position) <= range) {
                     target.takeDamage(this.damage);
                     if (attackSpeed > 1)
-                        this.targets.get(0).takeDamage(this.damage);
+                        target.takeDamage(this.damage);
                 }
             }
         }
