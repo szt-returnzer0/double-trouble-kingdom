@@ -287,7 +287,7 @@ public abstract class Entity {
      * @param damage the damage to take
      */
     public void takeDamage(int damage) {
-        this.healthPoints -= damage;
+        this.healthPoints = Math.max(0, healthPoints - damage);
         this.isAlive = this.healthPoints > 0;
     }
 }
