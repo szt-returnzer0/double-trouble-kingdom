@@ -181,7 +181,6 @@ public class GameFieldRenderer extends JPanel {
     }
 
     private int bevelCnt = 0;
-
     /**
      * The paintComponent method of the class.
      *
@@ -206,6 +205,16 @@ public class GameFieldRenderer extends JPanel {
             g2d.fillRect(point.x*scale,point.y*scale,scale,scale);
         }*/ //VISUALIZATION
         bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
+        if (game.getGameState().isPathVisualization()) {
+            for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
+                if (entity instanceof Soldier s) {
+                    if (s.isAnimated())
+                        s.visStartPoint = s.visEndPoint = 0;
+                    else
+                        drawPath(g2d, s);
+                }
+            }
+        }
         g2d.dispose();
         //g.dispose(); //not needed as g wasn't created by us
     }
@@ -269,6 +278,25 @@ public class GameFieldRenderer extends JPanel {
         }
 
 
+    }
+
+    protected void drawPath(Graphics2D g2d, Soldier s) {
+        setSideColor(s.getSide(), g2d);
+        Color c = g2d.getColor();
+        int alpha = s.getSide().equals("left") ? 200 : 150;
+        g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
+        ArrayList<Point> path = s.getAbsPath();
+        s.visEndPoint = Math.min(s.visEndPoint + 1, path.size());
+        if (s.visEndPoint >= path.size()) {
+            s.visStartPoint = Math.min(s.visStartPoint + 1, path.size());
+            if (s.visStartPoint >= path.size())
+                s.visStartPoint = s.visEndPoint = 0;
+        }
+
+        for (int i = s.visStartPoint; i < s.visEndPoint; i++) {
+            Point p = path.get(i);
+            g2d.fillRect(p.x * scale, p.y * scale, scale, scale);
+        }
     }
 
     protected void drawHealthBar(Graphics2D g2d, Entity ent) {

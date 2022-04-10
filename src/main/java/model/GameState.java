@@ -116,7 +116,7 @@ public class GameState {
         elapsedTime = (int) ((System.currentTimeMillis() - startTime) / 1000);
     }
 
-
+    private boolean pathVisualization = false;
 
     public void gameLoop() {
         if (roundState.equals("Attacking")) {
@@ -385,5 +385,15 @@ public class GameState {
         return null;
     }
 
+    public long getStartTime() {
+        return startTime;
+    }
 
+    public void togglePathVisualization() {
+        pathVisualization = !pathVisualization;
+    }
+
+    public boolean isPathVisualization() {
+        return pathVisualization;
+    }
 }

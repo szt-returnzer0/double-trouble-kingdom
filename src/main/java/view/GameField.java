@@ -174,6 +174,8 @@ public class GameField extends GameFieldRenderer {
             repaint();
         });
 
+        this.hamburgerMenu.attachActionListener(5, e -> game.getGameState().togglePathVisualization());
+
         this.controlPanel.attachActionListener(5, e -> {
             game.getGameState().nextRoundState();
             sideText = getRoundStateText();

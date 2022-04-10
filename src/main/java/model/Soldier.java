@@ -80,6 +80,8 @@ public class Soldier extends Entity {
         return this.path;
     }
 
+    public int visStartPoint = 0;
+
     /**
      * Selects a target for the Soldier to attack.
      */
@@ -127,5 +129,11 @@ public class Soldier extends Entity {
 
     public ArrayList<Point> getWayPoints() {
         return wayPoints;
+    }
+
+    public int visEndPoint = 0;
+
+    public ArrayList<Point> getAbsPath() {
+        return pf.genPath(this, (side.equals("left") ? "right" : "left"), null, "abs");
     }
 }
