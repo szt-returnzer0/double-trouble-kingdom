@@ -220,15 +220,19 @@ public class GameFieldRenderer extends JPanel {
 
         if (game.getGameState().getRoundState().equals("Attacking")) {
             g2d.setColor(Color.white);
-            g2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, new float[]{9}, bevelCnt * 2));
             for (Tower t : towers) {
                 if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack()) {
                     for (Entity target : t.getTargets()) {
                         if (t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive()) {
-                            g2d.drawLine((t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale,
-                                    (target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale);
+                            g2d.drawLine((target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale,
+                                    (t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale);
                         }
                     }
+                    /*g2d.drawLine((t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale,
+                            (target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale);*/
+
                 }
             }
         }
@@ -239,7 +243,6 @@ public class GameFieldRenderer extends JPanel {
 
     protected void drawWayPoints(Graphics2D g2d) {
         if (game.getGameState().getWayPoints() != null && !game.getGameState().getWayPoints().isEmpty()) {
-            System.out.println("NEMNULL");
             setSideColor(game.getGameState().getCurrentPlayer().getSide(), g2d);
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
