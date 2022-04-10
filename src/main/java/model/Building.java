@@ -56,6 +56,11 @@ public abstract class Building extends Entity {
         return isDestroyed;
     }
 
+    /**
+     * Sets if the Building instance is destroyed.
+     *
+     * @param destroyed if the Building instance is destroyed
+     */
     public void setDestroyed(boolean destroyed) {
         this.isDestroyed = destroyed;
     }

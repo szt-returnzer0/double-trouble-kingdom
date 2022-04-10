@@ -21,6 +21,7 @@ public class Player {
      * The player's name.
      */
     private final String name;
+    private final String side;
     /**
      * ArrayList containing the player's entities.
      */
@@ -33,11 +34,7 @@ public class Player {
      * Determines if the Player has unlocked all units.
      */
     private boolean isUnitRestricted;
-
     private int soldierCount;
-
-    private final String side;
-
     private int killCount;
 
     /**
@@ -135,14 +132,29 @@ public class Player {
             soldierCount++;
     }
 
+    /**
+     * Returns the number of soldiers the player has.
+     *
+     * @return the number of soldiers the player has
+     */
     public int getSoldierCount() {
         return soldierCount;
     }
 
+    /**
+     * Sets the number of soldiers the player has.
+     *
+     * @param soldierCount the number of soldiers the player has
+     */
     public void setSoldierCount(int soldierCount) {
         this.soldierCount = soldierCount;
     }
 
+    /**
+     * Remove a soldier from the player's entity ArrayList.
+     *
+     * @param s the soldier to remove
+     */
     public void removeSoldier(Soldier s) {
         soldierCount--;
         entities.remove(s);
@@ -151,7 +163,11 @@ public class Player {
         s.getAnimObj().removePath();
     }
 
-
+    /**
+     * Adds an entity to the player's entity ArrayList from a save.
+     *
+     * @param entity the entity to add
+     */
     public void addSavedEntity(Entity entity) {
         this.entities.add(entity);
     }
@@ -189,6 +205,11 @@ public class Player {
         addGold(entity.value / 3);
     }
 
+    /**
+     * Returns the player's castle
+     *
+     * @return the player's castle
+     */
     public Building getCastle() {
         for (Entity entity : entities) {
             if (entity instanceof Building) {
@@ -200,6 +221,11 @@ public class Player {
         return null;
     }
 
+    /**
+     * Returns the player's soldiers
+     *
+     * @return the player's soldiers
+     */
     public ArrayList<Soldier> getSoldiers() {
         ArrayList<Soldier> soldiers = new ArrayList<>();
         for (Entity entity : entities) {
@@ -210,7 +236,11 @@ public class Player {
         return soldiers;
     }
 
-
+    /**
+     * Returns the player's towers
+     *
+     * @return the player's towers
+     */
     public ArrayList<Tower> getTowers() {
         ArrayList<Tower> towers = new ArrayList<>();
         for (Entity entity : entities) {
@@ -222,6 +252,9 @@ public class Player {
 
     }
 
+    /**
+     * Calculates the player's gold at round start.
+     */
     public void calculateGoldAtRound() {
         gold += 25;
         gold += soldierCount * 2;

@@ -9,6 +9,9 @@ import java.util.Arrays;
  */
 public class Assassin extends Soldier {
 
+    /**
+     * The soldier targets of the Assassin.
+     */
     private ArrayList<Soldier> soldierTargets;
 
     /**
@@ -36,16 +39,20 @@ public class Assassin extends Soldier {
     public void attack() {
         int range = 20;
         super.attack();
-        if (soldierTargets != null)
-            for (Soldier soldier : soldierTargets) {
-                System.out.println(soldier.getPosition().distance(this.getPosition()));
-                if (soldier.getPosition().distance(this.getPosition()) <= range) {
-                    soldier.takeDamage(this.damage);
-                    System.out.println(this.type + " attacked " + soldier.getType() + " for " + this.damage + " damage.");
-                }
+        if (soldierTargets != null) for (Soldier soldier : soldierTargets) {
+            System.out.println(soldier.getPosition().distance(this.getPosition()));
+            if (soldier.getPosition().distance(this.getPosition()) <= range) {
+                soldier.takeDamage(this.damage);
+                System.out.println(this.type + " attacked " + soldier.getType() + " for " + this.damage + " damage.");
             }
+        }
     }
 
+    /**
+     * Sets the soldier's targets.
+     *
+     * @param targets the soldier's targets
+     */
     public void selectTargets(ArrayList<Soldier> targets) {
         this.soldierTargets = targets;
     }

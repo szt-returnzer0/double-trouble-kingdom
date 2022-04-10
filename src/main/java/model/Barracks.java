@@ -37,6 +37,11 @@ public class Barracks extends Building {
         return this.isUpgraded;
     }
 
+    /**
+     * Sets if the Barrack instance is upgraded.
+     *
+     * @param isUpgraded if the Barrack instance is upgraded
+     */
     public void setUpgraded(boolean isUpgraded) {
         this.isUpgraded = isUpgraded;
     }

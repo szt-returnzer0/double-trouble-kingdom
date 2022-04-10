@@ -1,15 +1,11 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -146,11 +142,6 @@ public abstract class Terrain {
      */
     public String typeToString() {
         return "( " + type + getEntities() + " ) ";
-    }
-
-    //remove entity
-    public void removeEntity(Entity entity) {
-        this.entities.remove(entity);
     }
 
 }

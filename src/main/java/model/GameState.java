@@ -25,6 +25,7 @@ public class GameState {
      * ArrayList containing the Players.
      */
     private final ArrayList<Player> players;
+    private final long startTime;
     /**
      * The current Player.
      */
@@ -37,28 +38,14 @@ public class GameState {
      * Check if the Game is ended.
      */
     private boolean isEnded;
-
     private long prevTime = 1;
     /**
      * The current round phase.
      */
     private String roundState;
-
-    public boolean isEnded() {
-        return isEnded;
-    }
-
-    private final long startTime;
-
     private GameField linkedGameField = null;
     private int fps = 60;
-
-    /**
-     * The starting player's number.
-     */
-    private int starterPlayer;
     private Database DBRef;
-
     /**
      * The elapsed time in seconds.
      */
@@ -80,19 +67,55 @@ public class GameState {
         startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Returns if the Game is ended.
+     *
+     * @return if the Game is ended
+     */
+    public boolean isEnded() {
+        return isEnded;
+    }
+
+    /**
+     * Sets the Game's end to a boolean value.
+     *
+     * @param ended if the Game has ended
+     */
+    public void setEnded(boolean ended) {
+        this.isEnded = ended;
+    }
+
+    /**
+     * Sets the frame rate of the game.
+     *
+     * @param fps the frame rate
+     */
     private void setFps(int fps) {
         this.fps = fps;
         elapsedTimer.setDelay((int) (1000.0 / this.fps));
     }
 
+    /**
+     * Link the GameField to the GameState.
+     *
+     * @param gf the GameField
+     */
     public void linkGameField(GameField gf) {
         linkedGameField = gf;
     }
 
+    /**
+     * Link the Database to the GameState.
+     *
+     * @param db the Database
+     */
     public void linkDBRef(Database db) {
         DBRef = db;
     }
 
+    /**
+     * The tick function for the elapsedTimer.
+     */
     private void timerFunction() {
         gameLoop();
         long curTime = System.currentTimeMillis();
@@ -118,6 +141,9 @@ public class GameState {
 
     private boolean pathVisualization = false;
 
+    /**
+     * The game loop for the GameState.
+     */
     public void gameLoop() {
         if (roundState.equals("Attacking")) {
             if (animBuffer.stream().noneMatch(e -> e.getEnt().isAnimated())) {
@@ -138,6 +164,11 @@ public class GameState {
 
     }
 
+    /**
+     * Loads the buildings from a map file after load.
+     *
+     * @param map the map file
+     */
     public void loadBuildings(Map map) {
         HashSet<Building> buildings = new HashSet<>();
         for (int i = 0; i < map.getTiles().length; i++) {
@@ -163,8 +194,6 @@ public class GameState {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
-
 
     /**
      * Returns the roundState.
@@ -197,7 +226,11 @@ public class GameState {
 
     }
 
-
+    /**
+     * Returns the winner of the game.
+     *
+     * @return the winner of the game
+     */
     public Player getWinner() {
         if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0) {
             elapsedTimer.stop();
@@ -205,6 +238,8 @@ public class GameState {
         } else if (players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0) {
             elapsedTimer.stop();
             return players.get(0);
+        } else if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(1).getCastle().getHealthPoints() <= 0) {
+            //even
         }
         return null;
     }
@@ -222,7 +257,6 @@ public class GameState {
     public void decideStarter() {
         Random rnd = new Random();
         this.playerNumber = rnd.nextInt(2);
-        this.starterPlayer = this.playerNumber;
         this.currentPlayer = players.get(this.playerNumber);
     }
 
@@ -265,23 +299,28 @@ public class GameState {
     }
 
     /**
-     * Sets the Game's end to a boolean value.
+     * Returns the enemy's Castle.
      *
-     * @param ended if the Game has ended
+     * @param playerNumber the Player's number
+     * @return the enemy's Castle
      */
-    public void setEnded(boolean ended) {
-        this.isEnded = ended;
-    }
-
     public Building getEnemyCastle(int playerNumber) {
         return players.get(playerNumber == 1 ? 1 : 0).getCastle();
     }
 
+    /**
+     * Returns the enemy's Soldiers.
+     *
+     * @param playerNumber the Player's number
+     * @return the enemy's Soldiers
+     */
     public ArrayList<Soldier> getEnemySoldiers(int playerNumber) {
         return players.get(playerNumber == 1 ? 1 : 0).getSoldiers();
     }
 
-
+    /**
+     * Sets the soldier's target.
+     */
     public void setTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
@@ -292,6 +331,9 @@ public class GameState {
         }
     }
 
+    /**
+     * Attack with each Soldier.
+     */
     public void soldierAttack() {
         for (Player player : players) {
             for (int i = 0; i < player.getEntities().size(); i++) {
@@ -306,6 +348,9 @@ public class GameState {
         removeDeadSoldiers();
     }
 
+    /**
+     * Attack with each Tower.
+     */
     public void towerAttack() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
@@ -317,6 +362,9 @@ public class GameState {
         removeDeadSoldiers();
     }
 
+    /**
+     * Removes dead Soldiers.
+     */
     private void removeDeadSoldiers() {
         for (Player player : players) {
             for (int i = 0; i < player.getEntities().size(); i++) {
@@ -330,6 +378,9 @@ public class GameState {
         }
     }
 
+    /**
+     * Sets the Towers' targets.
+     */
     public void setTowerTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
@@ -340,6 +391,9 @@ public class GameState {
         }
     }
 
+    /**
+     * Sets the special Soldiers' targets.
+     */
     public void setSpecialTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
@@ -353,19 +407,38 @@ public class GameState {
         }
     }
 
+    /**
+     * Returns the enemy's Towers.
+     *
+     * @param playerNumber the Player's number
+     * @return the enemy's Towers
+     */
     public ArrayList<Tower> getEnemyTowers(int playerNumber) {
         return players.get(playerNumber == 1 ? 1 : 0).getTowers();
 
     }
 
+    /**
+     * Returns elapsed time.
+     *
+     * @return elapsed time
+     */
     public int getElapsedTime() {
         return elapsedTime;
     }
 
+    /**
+     * Sets the elapsed time.
+     *
+     * @param elapsedTime the elapsed time
+     */
     public void setElapsedTime(int elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
 
+    /**
+     * Calculates the soldier' path.
+     */
     public void calculatePaths() {
         Pathfinder.setMap(linkedGameField.getMapRef());
         for (Player player : players) {
@@ -378,6 +451,11 @@ public class GameState {
         }
     }
 
+    /**
+     * Returns the waypoints.
+     *
+     * @return the waypoints
+     */
     public ArrayList<Point> getWayPoints() {
         if (linkedGameField != null) {
             return linkedGameField.getWayPoints();

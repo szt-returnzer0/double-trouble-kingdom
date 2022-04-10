@@ -138,8 +138,16 @@ public abstract class Tower extends Building {
         return range;
     }
 
+    /**
+     * Attacks the targets.
+     */
     public abstract void attack();
 
+    /**
+     * Takes damage from an attack.
+     *
+     * @param damage the damage to take
+     */
     @Override
     public void takeDamage(int damage) {
         super.takeDamage(damage);

@@ -1,16 +1,18 @@
 package model;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Implementation of Map class as a record.
  */
 public final class Map implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 0L;
+    /**
+     * The name of the map.
+     */
     private final String name;
+    /**
+     * The tiles of the map.
+     */
     private final Terrain[][] tiles;
 
     /**
@@ -22,6 +24,11 @@ public final class Map implements Serializable {
         this.tiles = tiles;
     }
 
+    /**
+     * Copy constructor for Map class.
+     *
+     * @param map the Map to copy
+     */
     public Map(Map map) {
         this.name = map.name;
         this.tiles = map.tiles;
@@ -45,28 +52,11 @@ public final class Map implements Serializable {
         return tiles;
     }
 
-    public String name() {
-        return name;
-    }
-
-    public Terrain[][] tiles() {
-        return tiles;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Map) obj;
-        return Objects.equals(this.name, that.name) &&
-                Objects.equals(this.tiles, that.tiles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, tiles);
-    }
-
+    /**
+     * To string method for Map class.
+     *
+     * @return the Map instance as a string
+     */
     @Override
     public String toString() {
         return "Map[" +

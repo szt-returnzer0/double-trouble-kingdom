@@ -50,7 +50,7 @@ public abstract class Entity {
      */
     protected boolean isAlive;
     /**
-     * The damage of the Entity's weapon.
+     * The damage the Entity deals.
      */
     protected int damage;
     /**
@@ -69,14 +69,6 @@ public abstract class Entity {
      * The Animator of the Entity.
      */
     protected Animator animObj;
-    /**
-     * The texture of the Entity.
-     */
-    protected Image texture;
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
 
     /**
      * Determines if the Entity is animated.
@@ -86,7 +78,6 @@ public abstract class Entity {
      * Determines which side the Entity belongs to.
      */
     protected String side;
-
     /**
      * Constructs an Entity instance without side.
      *
@@ -183,6 +174,11 @@ public abstract class Entity {
         return isAlive;
     }
 
+    /**
+     * Sets if the Entity is alive.
+     *
+     * @param alive if the Entity is alive
+     */
     public void setAlive(boolean alive) {
         isAlive = alive;
     }
@@ -205,8 +201,12 @@ public abstract class Entity {
         return owner;
     }
 
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
     /**
-     * Decreeases the Entity's healthPoints.
+     * Decreases the Entity's healthPoints.
      *
      * @param value the amount we want to decrease
      */
@@ -236,33 +236,50 @@ public abstract class Entity {
     public void destroy() {
     }
 
-    /**
-     * Animates the Entity
-     *
-     * @param x the horizontal coordinate of the animation
-     * @param y the vertical coordinate of the animation
-     */
-    public void animate(int x, int y) {
-    }
 
+    /**
+     * Gets the Entity's animator.
+     *
+     * @return the Entity's animator
+     */
     public Animator getAnimObj() {
         return animObj;
     }
 
+    /**
+     * Gets if the Entity is animated.
+     *
+     * @return if the Entity is animated
+     */
     public boolean isAnimated() {
         return isAnimated;
     }
 
+    /**
+     * Sets if the Entity is animated.
+     *
+     * @param l if the Entity is animated
+     */
+    public void setAnimated(boolean l) {
+        isAnimated = l;
+    }
+
+    /**
+     * Sets if the Entity is animated.
+     *
+     * @param l if the Entity is animated
+     */
     public void setIsAnimated(boolean l) {
         isAnimated = l;
     }
 
+    /**
+     * The Entity takes the passed damage.
+     *
+     * @param damage the damage to take
+     */
     public void takeDamage(int damage) {
         this.healthPoints -= damage;
         this.isAlive = this.healthPoints > 0;
-    }
-
-    public void setAnimated(boolean l) {
-        isAnimated = l;
     }
 }

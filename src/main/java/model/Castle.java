@@ -21,7 +21,6 @@ public class Castle extends Building {
         this.healthPoints = 100;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(5, 15);
-        //this.side = side;
     }
 
     /**

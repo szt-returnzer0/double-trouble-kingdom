@@ -21,6 +21,9 @@ public class Soldier extends Entity {
      */
     protected Entity target;
 
+    /**
+     * The soldier's pathfinder
+     */
     protected Pathfinder pf;
 
 
@@ -29,6 +32,9 @@ public class Soldier extends Entity {
      */
     protected ArrayList<Point> path;
 
+    /**
+     * The soldier's waypoints.
+     */
     protected ArrayList<Point> wayPoints;
 
     /**
@@ -127,6 +133,11 @@ public class Soldier extends Entity {
         this.wayPoints.add(waypoint);
     }
 
+    /**
+     * Returns the waypoints of the Soldier in an ArrayList.
+     *
+     * @return the waypoints of the Soldier in an ArrayList
+     */
     public ArrayList<Point> getWayPoints() {
         return wayPoints;
     }

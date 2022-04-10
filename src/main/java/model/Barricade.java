@@ -19,6 +19,9 @@ public class Barricade extends Tower {
         this.size = new Dimension(2, 2);
     }
 
+    /**
+     * Attack method for the Barricade.
+     */
     public void attack() {
         //Cannot attack
     }
