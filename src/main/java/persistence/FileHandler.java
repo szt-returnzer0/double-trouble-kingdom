@@ -71,6 +71,12 @@ public class FileHandler {
         return null;
     }
 
+    /**
+     * Loads a Map and a File from a specified file.
+     *
+     * @param file the file we want to load from
+     * @return a Pair of Map and File instances from the specified file
+     */
     public static Pair<Map, File> loadMapAndFile(File file) {
         try {
 
@@ -98,6 +104,13 @@ public class FileHandler {
         return game;
     }
 
+    /**
+     * Serializes an Object to a specified file.
+     *
+     * @param file the file we want to serialize to
+     * @param obj  the Object we want to serialize
+     * @throws IOException if an error occurs
+     */
     public static void Serialize(FileOutputStream file, Object obj) throws IOException {
         mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
         mapper.writeValue(file, obj);
