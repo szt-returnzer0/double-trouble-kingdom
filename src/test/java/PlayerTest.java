@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerTest {
     @Test
-    @DisplayName("Construct test")
-    void ConstructTest() {
+    @DisplayName("Simulation test")
+    void SimulationTest() {
         Game game = new Game(null, FileHandler.loadMap(new File("Test.dtk")), "test1", "test2");
         Pathfinder.setMap(game.getMap());
 

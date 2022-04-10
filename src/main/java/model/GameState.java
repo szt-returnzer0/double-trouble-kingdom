@@ -195,6 +195,16 @@ public class GameState {
     }
 
     /**
+     * Sets the current player number.
+     *
+     * @param p the current player number
+     */
+    public void setCurrentPlayer(Player p) {
+        currentPlayer = p;
+        playerNumber = p.getPlayerNumber() == 1 ? 0 : 1;
+    }
+
+    /**
      * Returns the Players in an ArrayList.
      *
      * @return the Players in an ArrayList
