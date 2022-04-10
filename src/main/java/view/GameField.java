@@ -191,6 +191,7 @@ public class GameField extends GameFieldRenderer {
         this.hamburgerMenu.attachActionListener(5, e -> game.getGameState().togglePathVisualization());
 
         this.controlPanel.attachActionListener(5, e -> {
+            getWayPoints().clear();
             game.getGameState().nextRoundState();
             sideText = getRoundStateText();
             updateButtons();

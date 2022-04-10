@@ -226,7 +226,6 @@ public class GameState {
      * Switches the current roundState to the next one. Switches Player after Training roundState phase.
      */
     public void nextRoundState() {
-        linkedGameField.getWayPoints().clear();
         switch (this.roundState) {
             case "Building" -> this.roundState = "Training";
             case "Training" -> {

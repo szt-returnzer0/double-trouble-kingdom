@@ -1,5 +1,4 @@
-image: alpine:latest
-
+image: gradle:alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
@@ -7,14 +6,10 @@ variables:
 before_script:
   - GRADLE_USER_HOME="$(pwd)/.gradle"
   - export GRADLE_USER_HOME
-  - apk update
-  - apk --no-cache add openjdk17
-  - apk add xvfb-run
-  - apk add gradle
 
 build:
   stage: build
-  script: xvfb-run gradle build --build-cache assemble
+  script: gradle --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push

@@ -14,7 +14,6 @@ public class GameStateTest {
     @DisplayName("RoundSwitch test")
     void RoundSwitchTest() {
         Game game = new Game(null, FileHandler.loadMap(new File("Test.dtk")), null, null);
-        game.getGameState().linkGameField(new GameField(game, new JFrame()));
         game.getGameState().setCurrentPlayer(game.getGameState().getPlayers().get(0));
         assertEquals(1, game.getGameState().getCurrentPlayer().getPlayerNumber(), "Player 1 should be the current player");
         game.getGameState().nextPlayer();
