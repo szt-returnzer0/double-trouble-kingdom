@@ -5,9 +5,12 @@ import model.Pair;
 import model.Pathfinder;
 import persistence.FileHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Implementation of MainMenu panel.
@@ -17,14 +20,11 @@ public class MainMenu extends JPanel {
      * The default map name.
      */
     private String mapName;
+    BufferedImage background;
     /**
      * The label to show the player names.
      */
-    private final JLabel playersLabel;
-    /**
-     * The label to the loaded map's name.
-     */
-    private final JLabel mapNameLabel;
+    private JLabel playersLabel;
     /**
      * The name of player 1.
      */
@@ -37,6 +37,10 @@ public class MainMenu extends JPanel {
      * The loaded Map instance.
      */
     private Pair<Map, File> map;
+    /**
+     * The label to the loaded map's name.
+     */
+    private JLabel mapNameLabel;
 
     /**
      * Constructs a new MainMenu instance.
@@ -44,10 +48,16 @@ public class MainMenu extends JPanel {
      * @param wnd the parent window
      */
     public MainMenu(MainWindow wnd) {
+        try {
+            background = ImageIO.read(new File("./src/main/resources/MainMenu.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         FileDialog fileDialog = new FileDialog();
 
         JPanel topBar = new JPanel();
+
         topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         p1Name = "Játékos1";
         p2Name = "Játékos2";
@@ -55,6 +65,8 @@ public class MainMenu extends JPanel {
         assert map != null;
         mapName = map.getMap().getName();
 
+        setOpaque(false);
+        topBar.setOpaque(false);
         this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         topBar.add(playersLabel);
         this.mapNameLabel = new JLabel(map != null ? map.getMap().getName() : mapName, SwingConstants.CENTER);
@@ -62,12 +74,14 @@ public class MainMenu extends JPanel {
         this.add(topBar);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        JLabel title = new JLabel("Double Trouble Kingdom");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        centerPanel.add(title);
+        centerPanel.setOpaque(false);
+        //centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        //JLabel title = new JLabel("Double Trouble Kingdom");
+        //title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //centerPanel.add(title);
 
         JPanel centerButtons = new JPanel();
+        centerButtons.setOpaque(false);
         centerButtons.setLayout(new FlowLayout());
         JButton start = new JButton("Start");
         centerButtons.add(start);
@@ -80,6 +94,7 @@ public class MainMenu extends JPanel {
         editor.addActionListener(e -> wnd.startEditor(64, 32));
 
         JPanel bottomButtons = new JPanel(new FlowLayout());
+        bottomButtons.setOpaque(false);
         JButton rename = new JButton("Átnevezés");
         rename.addActionListener(e -> {
             this.p1Name = (String) JOptionPane.showInputDialog(
@@ -157,5 +172,12 @@ public class MainMenu extends JPanel {
     public void updateMapName() {
         this.mapNameLabel.setText("Pálya: " + map.getMap().getName());
         repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+
     }
 }
