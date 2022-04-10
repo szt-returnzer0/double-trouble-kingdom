@@ -1,5 +1,6 @@
 package view;
 
+import model.Map;
 import model.*;
 
 import javax.imageio.ImageIO;
@@ -9,9 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Implements the game's rendering engine.
@@ -212,6 +211,24 @@ public class GameFieldRenderer extends JPanel {
                         s.visStartPoint = s.visEndPoint = 0;
                     else
                         drawPath(g2d, s);
+                }
+            }
+        }
+        Set<Tower> towers = new HashSet<>();
+        towers.addAll(game.getGameState().getEnemyTowers(1));
+        towers.addAll(game.getGameState().getEnemyTowers(2));
+
+        if (game.getGameState().getRoundState().equals("Attacking")) {
+            g2d.setColor(Color.white);
+            g2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            for (Tower t : towers) {
+                if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack()) {
+                    for (Entity target : t.getTargets()) {
+                        if (t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive()) {
+                            g2d.drawLine((t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale,
+                                    (target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale);
+                        }
+                    }
                 }
             }
         }

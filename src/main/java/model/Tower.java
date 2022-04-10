@@ -20,6 +20,10 @@ public abstract class Tower extends Building {
      * Determines if the Tower can attack.
      */
     protected boolean canAttack;
+
+    protected int range;
+
+
     /**
      * The Tower's attacking speed.
      */
@@ -36,6 +40,8 @@ public abstract class Tower extends Building {
         this.healthPoints = 20;
         this.maxHealthPoints = this.healthPoints;
         attackSpeed = 1;
+        this.range = 0;
+        this.canAttack = false;
     }
 
     /**
@@ -126,6 +132,10 @@ public abstract class Tower extends Building {
      */
     public boolean isCanAttack() {
         return canAttack;
+    }
+
+    public int getRange() {
+        return range;
     }
 
     public abstract void attack();
