@@ -24,7 +24,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    jvmArgs "-Djava.awt.headless=true"
 }
 
 compileJava {
