@@ -68,8 +68,13 @@ public class MainMenu extends JPanel {
         setOpaque(false);
         topBar.setOpaque(false);
         this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
+        this.playersLabel.setFont(new Font("Roboto", Font.PLAIN, 16));
+        this.playersLabel.setForeground(Color.WHITE);
+
         topBar.add(playersLabel);
         this.mapNameLabel = new JLabel(map != null ? map.getMap().getName() : mapName, SwingConstants.CENTER);
+        this.mapNameLabel.setFont(new Font("Roboto", Font.PLAIN, 16));
+        this.mapNameLabel.setForeground(Color.WHITE);
         topBar.add(mapNameLabel);
         this.add(topBar);
 
@@ -83,11 +88,11 @@ public class MainMenu extends JPanel {
         JPanel centerButtons = new JPanel();
         centerButtons.setOpaque(false);
         centerButtons.setLayout(new FlowLayout());
-        JButton start = new JButton("Start");
+        JRoundedButton start = new JRoundedButton("Start", 100, 50);
         centerButtons.add(start);
         start.addActionListener(e -> wnd.startGame(64, 32));
 
-        JButton editor = new JButton("Térképszerkesztő");
+        JRoundedButton editor = new JRoundedButton("Térképszerkesztő", 200, 50);
         centerButtons.add(editor);
         centerPanel.add(centerButtons);
         this.add(centerPanel);
@@ -95,7 +100,7 @@ public class MainMenu extends JPanel {
 
         JPanel bottomButtons = new JPanel(new FlowLayout());
         bottomButtons.setOpaque(false);
-        JButton rename = new JButton("Átnevezés");
+        JRoundedButton rename = new JRoundedButton("Átnevezés", 110, 50);
         rename.addActionListener(e -> {
             this.p1Name = (String) JOptionPane.showInputDialog(
                     null,
@@ -120,7 +125,7 @@ public class MainMenu extends JPanel {
 
         });
         bottomButtons.add(rename);
-        JButton mapSelect = new JButton("Pályaválasztás");
+        JRoundedButton mapSelect = new JRoundedButton("Pályaválasztás", 150, 50);
         mapSelect.addActionListener(e -> {
             Pair<Map, File> loaded = fileDialog.loadMapDialog();
             if (map != null) {
@@ -133,6 +138,10 @@ public class MainMenu extends JPanel {
         });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
+        setColors(start, new Color(116, 231, 4));
+        setColors(editor, new Color(180, 26, 26));
+        setColors(rename, new Color(208, 198, 10));
+        setColors(mapSelect, new Color(124, 7, 201));
         Pathfinder.setMap(map.getMap());
     }
 
@@ -179,5 +188,9 @@ public class MainMenu extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 
+    }
+
+    private void setColors(JRoundedButton button, Color color) {
+        button.setColors(new Color[]{new Color(Math.min(color.getRed() + 30, 255), Math.min(color.getGreen() + 30, 255), Math.min(color.getBlue() + 30, 255)), new Color(0, 0, 0, 0), color});
     }
 }
