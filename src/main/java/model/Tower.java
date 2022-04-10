@@ -102,7 +102,7 @@ public abstract class Tower extends Building {
     /**
      * Selects the Tower's targets.
      */
-    protected void selectTargets(ArrayList<Soldier> entities) {
+    public void selectTargets(ArrayList<Soldier> entities) {
         targets = new ArrayList<>();
         targets.addAll(entities);
     }
@@ -155,4 +155,7 @@ public abstract class Tower extends Building {
         this.isDestroyed = this.healthPoints <= 0;
     }
 
+    public int getAttackSpeed() {
+        return attackSpeed;
+    }
 }
