@@ -236,7 +236,7 @@ public class GameFieldRenderer extends JPanel {
             g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, bevelCnt * 2));
             for (Tower t : towers) {
-                if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack()) {
+                if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack() && !t.isDestroyed()) {
                     for (Entity target : t.getTargets()) {
                         if (t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive()) {
                             g2d.drawLine((target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale,
