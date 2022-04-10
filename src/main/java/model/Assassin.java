@@ -37,7 +37,7 @@ public class Assassin extends Soldier {
      */
     @Override
     public void attack() {
-        int range = 20;
+        int range = 3;
         super.attack();
         if (soldierTargets != null) for (Soldier soldier : soldierTargets) {
             System.out.println(soldier.getPosition().distance(this.getPosition()));

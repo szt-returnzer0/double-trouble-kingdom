@@ -41,7 +41,7 @@ public class Kamikaze extends Soldier {
     @Override
     public void attack() {
         if (this.isAlive) {
-            int range = 10;
+            int range = 2;
             super.attack();
             this.splashPercent += 50;
             if (this.splashPercent >= 100) {

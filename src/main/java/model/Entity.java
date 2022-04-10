@@ -236,6 +236,14 @@ public abstract class Entity {
     public void destroy() {
     }
 
+    /**
+     * Returns the Entity's damage.
+     *
+     * @return the Entity's damage
+     */
+    public int getDamage() {
+        return damage;
+    }
 
     /**
      * Gets the Entity's animator.
