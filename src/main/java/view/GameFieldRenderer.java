@@ -115,6 +115,7 @@ public class GameFieldRenderer extends JPanel {
 
         this.hamburgerMenu.attachActionListener(4, e -> toggleTextures());
 
+
     }
 
     public static int getScale() {

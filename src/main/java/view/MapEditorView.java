@@ -3,11 +3,13 @@ package view;
 import model.Map;
 import model.*;
 
+import javax.swing.Timer;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Queue;
 import java.util.*;
+
 
 /**
  * Implementation of the view of Map editor.
@@ -34,6 +36,15 @@ public class MapEditorView extends GameField {
         game.getGameState().linkGameField(null);
         middleText = mapRef.getName();
         sideText = "Selection: " + type;
+        Timer reP = new Timer(17, e ->
+                this.repaint()
+        );
+
+        this.hamburgerMenu.attachActionListener(6, e ->
+                reP.stop()
+        );
+        reP.start();
+
     }
 
     /**
