@@ -33,9 +33,10 @@ public class GameField extends GameFieldRenderer {
      */
     private boolean deleteState;
 
+    /**
+     * The list of waypoints.
+     */
     private final ArrayList<Point> wayPoints = new ArrayList<>();
-
-    private final long startTime;
 
     /**
      * Constructs a new GameField instance.
@@ -54,7 +55,6 @@ public class GameField extends GameFieldRenderer {
 
 
         game.getGameState().linkGameField(this);
-        startTime = System.currentTimeMillis();
         if (game.getDatabase() == null) {
             addMouseMotionListener(new MouseAdapter() {
                 @Override
@@ -97,6 +97,12 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
+    /**
+     * Handle a waypoint.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     */
     private void handleWayPoint(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
@@ -111,10 +117,18 @@ public class GameField extends GameFieldRenderer {
         //System.out.println(wayPoints);
     }
 
+    /**
+     * Returns the waypoints.
+     *
+     * @return the waypoints
+     */
     public ArrayList<Point> getWayPoints() {
         return wayPoints;
     }
 
+    /**
+     * Updates the UIState.
+     */
     public void updateUIState() {
         middleText = "" + game.getGameState().getElapsedTime() + " sec";
         if (!game.getGameState().getRoundState().equals("Attacking")) {
@@ -618,6 +632,13 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
+    /**
+     * Checks if the building can be placed on the given tile
+     *
+     * @param yIdx the y-coordinate of the tile
+     * @param b    the building to be placed
+     * @param xIdx the x-coordinate of the tile
+     */
     private void placeOnEmptyField(int yIdx, Building b, int xIdx) {
         for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
             for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
@@ -628,6 +649,13 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
+    /**
+     * Check if a building is destroyed on the position
+     *
+     * @param xIdx the x-coordinate of the tile
+     * @param yIdx the y-coordinate of the tile
+     * @return true if the building is destroyed
+     */
     private boolean destroyedOnPos(int xIdx, int yIdx) {
         if (mapRef.getTiles()[yIdx][xIdx].getEntities().size() > 0) {
             for (Entity e : mapRef.getTiles()[yIdx][xIdx].getEntities()) {

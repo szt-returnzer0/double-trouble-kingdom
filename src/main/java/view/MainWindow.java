@@ -114,14 +114,27 @@ public class MainWindow {
         frame.pack();
     }
 
+    /**
+     * Repacks the windows
+     */
     public static void repack() {
         frame.pack();
     }
 
+    /**
+     * Returns the dimensions of the main window.
+     *
+     * @return the dimensions of the main window
+     */
     public static Dimension getDimension() {
         return frame.getPreferredSize();
     }
 
+    /**
+     * Sets the dimensions of the main window.
+     *
+     * @param dimension the dimensions of the main window
+     */
     public static void setDimension(Dimension dimension) {
         frame.setPreferredSize(dimension);
     }

@@ -204,11 +204,16 @@ public class ControlPanel extends JPanel {
         buttons[idx].setPreferredSize(dim);
     }
 
-
+    /**
+     * Hides the panel.
+     */
     public void hideControlPanel() {
         setVisible(false);
     }
 
+    /**
+     * Shows the panel.
+     */
     public void showControlPanel() {
         setVisible(true);
     }

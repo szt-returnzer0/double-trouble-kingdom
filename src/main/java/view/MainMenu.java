@@ -24,7 +24,7 @@ public class MainMenu extends JPanel {
     /**
      * The label to show the player names.
      */
-    private JLabel playersLabel;
+    private final JLabel playersLabel;
     /**
      * The name of player 1.
      */
@@ -40,7 +40,7 @@ public class MainMenu extends JPanel {
     /**
      * The label to the loaded map's name.
      */
-    private JLabel mapNameLabel;
+    private final JLabel mapNameLabel;
 
     /**
      * Constructs a new MainMenu instance.
@@ -183,6 +183,11 @@ public class MainMenu extends JPanel {
         repaint();
     }
 
+    /**
+     * Draws the background.
+     *
+     * @param g graphics
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -190,6 +195,12 @@ public class MainMenu extends JPanel {
 
     }
 
+    /**
+     * Sets the colors of the buttons.
+     *
+     * @param button the button to be changed
+     * @param color  the color to be set
+     */
     private void setColors(JRoundedButton button, Color color) {
         button.setColors(new Color[]{new Color(Math.min(color.getRed() + 30, 255), Math.min(color.getGreen() + 30, 255), Math.min(color.getBlue() + 30, 255)), new Color(0, 0, 0, 0), color});
     }

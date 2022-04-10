@@ -61,6 +61,9 @@ public class GameFieldRenderer extends JPanel {
      * Text field 2 on the HUD.
      */
     protected String sideText;
+    /**
+     * If the textures are on or off.
+     */
     private boolean texuresOn;
 
     /**
@@ -118,10 +121,18 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
+    /**
+     * Returns the current scale.
+     *
+     * @return the current scale
+     */
     public static int getScale() {
         return scale;
     }
 
+    /**
+     * Toggles the scale.
+     */
     public void toggleScale() {
 
         if (MainWindow.getDimension().width <= 1100 && MainWindow.getDimension().height <= 810) {
@@ -239,6 +250,11 @@ public class GameFieldRenderer extends JPanel {
     }
 
 
+    /**
+     * Draws the waypoints
+     *
+     * @param g2d the graphics we use
+     */
     protected void drawWayPoints(Graphics2D g2d) {
         if (game.getGameState().getWayPoints() != null && !game.getGameState().getWayPoints().isEmpty()) {
             setSideColor(game.getGameState().getCurrentPlayer().getSide(), g2d);
@@ -298,6 +314,12 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
+    /**
+     * Draws the paths
+     *
+     * @param g2d the graphics we use
+     * @param s   the path we want to draw
+     */
     protected void drawPath(Graphics2D g2d, Soldier s) {
         setSideColor(s.getSide(), g2d);
         Color c = g2d.getColor();
@@ -317,6 +339,12 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws the health bar of the unit
+     *
+     * @param g2d the graphics we use
+     * @param ent the unit we want to draw the health bar of
+     */
     protected void drawHealthBar(Graphics2D g2d, Entity ent) {
 
         Color green = new Color(0, 155, 35);
@@ -330,6 +358,14 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
+    /**
+     * Draws the health bar of the building
+     *
+     * @param g2d   the graphics we use
+     * @param green the color of the health bar
+     * @param red   the color of the health bar
+     * @param b     the building we want to draw the health bar of
+     */
     private void drawBuildingHealth(Graphics2D g2d, Color green, Color red, Building b) {
         int width = (int) ((b.getSize().width) * scale * b.getHealthPoints() / ((double) b.getMaxHealthPoints()));
         g2d.setColor(green);
@@ -341,6 +377,12 @@ public class GameFieldRenderer extends JPanel {
     }
 
 
+    /**
+     * Draws the avg health bar of the units
+     *
+     * @param g2d  the graphics we use
+     * @param ents the units we want to draw the avg health bar of
+     */
     protected void drawAvgHealthBar(Graphics2D g2d, ArrayList<Entity> ents) {
         int avgHealth = 0;
         for (Entity ent : ents) {
@@ -361,6 +403,17 @@ public class GameFieldRenderer extends JPanel {
         drawUnitHealth(g2d, ent, green, red, width, ent.getAnimObj(), ent.getSide());
     }
 
+    /**
+     * Draws the health bar of the unit
+     *
+     * @param g2d     the graphics we use
+     * @param ent     the unit we want to draw the health bar of
+     * @param green   the color of the health bar
+     * @param red     the color of the health bar
+     * @param width   the width of the health bar
+     * @param animObj the animation object of the unit
+     * @param side    the side of the unit
+     */
     private void drawUnitHealth(Graphics2D g2d, Entity ent, Color green, Color red, int width, Animator animObj, String side) {
         g2d.setColor(green);
         g2d.fillRect((int) (ent.getPosition().x * scale + animObj.getX()), (int) (ent.getPosition().y * scale - 6 + animObj.getY()), width, 5);
@@ -389,6 +442,11 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws the animated units
+     *
+     * @param g2d the graphics we use
+     */
     protected void drawAnimated(Graphics2D g2d) {
         for (Animator animator : GameState.animBuffer) {
             handleType(g2d, animator.getEnt().getType());
@@ -557,7 +615,9 @@ public class GameFieldRenderer extends JPanel {
     }
 
 
-
+    /**
+     * Sets textures
+     */
     public void setTextures() {
         for (int i = 0; i < game.getMap().getTiles().length; i++) {
             for (int j = 0; j < game.getMap().getTiles()[i].length; j++) {
@@ -570,12 +630,31 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws the textures.
+     *
+     * @param g2d the graphics we use
+     * @param ter the terrain to draw
+     * @param x   the x coordinate
+     * @param y   the y coordinate
+     */
     public void drawImage(Graphics2D g2d, Terrain ter, int x, int y) {
 
         g2d.drawImage(ter.getTexture(), x * scale, y * scale, scale, scale, null);
 
     }
 
+    /**
+     * Draws the animated information.
+     *
+     * @param g2d    the graphics we use
+     * @param x      the x coordinate
+     * @param y      the y coordinate
+     * @param side   the side of the entity
+     * @param entity the entity to draw
+     * @param mx     the mouse x coordinate
+     * @param my     the mouse y coordinate
+     */
     private void drawUnitAnimatedInformation(Graphics2D g2d, int x, int y, String side, Entity entity, double mx, double my) {
         ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
         if (units.contains(entity.getType())) {
@@ -594,6 +673,11 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Returns a map reference.
+     *
+     * @return the map
+     */
     public Map getMapRef() {
         return mapRef;
     }
