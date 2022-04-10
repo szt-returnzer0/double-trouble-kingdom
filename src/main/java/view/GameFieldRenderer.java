@@ -454,7 +454,7 @@ public class GameFieldRenderer extends JPanel {
             g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
 
             drawUnitAnimatedInformation(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
-            drawHealthBar(g2d, animator.getEnt());
+            //drawHealthBar(g2d, animator.getEnt());
 
         }
     }
