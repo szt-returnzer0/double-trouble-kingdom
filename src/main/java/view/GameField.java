@@ -81,7 +81,7 @@ public class GameField extends GameFieldRenderer {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    if ("Soldier Kamikaze Assasin Climber Diver".contains(type)) {
+                    if ("Soldier Kamikaze Assassin Climber Diver".contains(type)) {
                         handleWayPoint(e.getX(), e.getY());
                     } else
                         inverted = !inverted;
@@ -100,11 +100,14 @@ public class GameField extends GameFieldRenderer {
     private void handleWayPoint(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
-        if (wayPoints.contains(new Point(xIdx, yIdx))) {
-            wayPoints.remove(new Point(xIdx, yIdx));
-        } else
-            wayPoints.add(new Point(xIdx, yIdx));
-
+        if (mapRef.getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
+            if (selection instanceof Soldier s && s.getTerrains().contains(mapRef.getTiles()[yIdx][xIdx].getType())) {
+                if (wayPoints.contains(new Point(xIdx, yIdx))) {
+                    wayPoints.remove(new Point(xIdx, yIdx));
+                } else
+                    wayPoints.add(new Point(xIdx, yIdx));
+            }
+        }
         //System.out.println(wayPoints);
     }
 
