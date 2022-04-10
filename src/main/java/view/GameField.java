@@ -513,7 +513,7 @@ public class GameField extends GameFieldRenderer {
                 s.getAnimObj().setSeconds(1 / s.getSpeed());
                 s.getAnimObj().setSpeedMod(mapRef.getTiles()[point.y][point.x].getSpeedMod());
                 s.setIsAnimated(false);
-
+                s.addWaypoint(new Point(0, 0));
                 mapRef.getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
                 controlPanel.updateButtonText();

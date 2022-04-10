@@ -14,6 +14,7 @@ public class Pathfinder {
     private final int[] dy = {0, 0, -1, 1};
     private int[][] graph;
     private int[][] Distance;
+    private Point wayPoint;
 
     public Pathfinder() {
         this.xLength = map.getTiles()[0].length;
@@ -51,9 +52,17 @@ public class Pathfinder {
 
             Point pos = path.remove();
 
-            if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") && map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
-                if (end == null || Distance[pos.y][pos.x] < Distance[end.y][end.x]) {
-                    end = new Point(pos);
+            if (side.equals("waypoint")) {
+                if (pos.x == wayPoint.x && pos.y == wayPoint.y) {
+                    if (end == null || Distance[pos.y][pos.x] < Distance[end.y][end.x]) {
+                        end = new Point(pos);
+                    }
+                }
+            } else {
+                if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") && map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
+                    if (end == null || Distance[pos.y][pos.x] < Distance[end.y][end.x]) {
+                        end = new Point(pos);
+                    }
                 }
             }
 
@@ -170,12 +179,23 @@ public class Pathfinder {
     }*/
 
     public ArrayList<Point> genPath(Soldier start, String side, Building b, String mode) {
-        Point end = Dijkstra(start, side, b);
-        Point cur;
+        Point end; //= Dijkstra(start, side, b);
+
+        if (!start.getWayPoints().isEmpty() && start.getPosition().equals(start.getWayPoints().get(0).getLocation()))
+            start.getWayPoints().remove(0);
+
+        if (!start.getWayPoints().isEmpty()) {
+            System.out.println("Waypoint" + start.getWayPoints().get(0).getLocation().x + " " + start.getWayPoints().get(0).getLocation().y);
+            wayPoint = start.getWayPoints().get(0);
+            end = Dijkstra(start, "waypoint", null);
+        } else {
+            end = Dijkstra(start, side, null);
+        }
 
         ArrayList<Point> foundPath = new ArrayList<>();
 
         //foundPath.add(end);
+        Point cur;
         Point dir = new Point(0, 0);
         if (end != null) {
             while (Distance[end.y][end.x] != 0) {
