@@ -43,8 +43,17 @@ public class GameState {
      * The current round phase.
      */
     private String roundState;
+    /**
+     * Linked gamefield.
+     */
     private GameField linkedGameField = null;
+    /**
+     * Frames per second.
+     */
     private int fps = 60;
+    /**
+     * DB reference.
+     */
     private Database DBRef;
     /**
      * The elapsed time in seconds.
@@ -161,7 +170,6 @@ public class GameState {
                 nextRoundState();
             }
         }
-
     }
 
     /**
