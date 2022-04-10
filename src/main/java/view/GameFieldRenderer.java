@@ -252,29 +252,29 @@ public class GameFieldRenderer extends JPanel {
     }
 
     protected void drawHealthBar(Graphics2D g2d, Entity ent) {
+
         Color green = new Color(0, 155, 35);
         Color red = new Color(155, 0, 0);
         if (ent instanceof Soldier s) {
             int width = (int) (scale * s.getHealthPoints() / ((double) s.getMaxHealthPoints()));
-            g2d.setColor(green);
-            g2d.fillRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()), (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), width, 5);
-            g2d.setColor(red);
-            g2d.fillRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()) + width, (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), scale - width, 5);
-            setSideColor(s.getSide(), g2d);
-            g2d.drawRect((int) (ent.getPosition().x * scale + s.getAnimObj().getX()), (int) (ent.getPosition().y * scale - 6 + s.getAnimObj().getY()), scale, 5);
+            drawUnitHealth(g2d, ent, green, red, width, s.getAnimObj(), s.getSide());
         } else if (ent instanceof Building b && !b.getType().equals("Barracks")) {
-            int width = (int) ((b.getSize().width) * scale * b.getHealthPoints() / ((double) b.getMaxHealthPoints()));
-            g2d.setColor(green);
-            g2d.fillRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, width, 5);
-            g2d.setColor(red);
-            g2d.fillRect(b.getPosition().x * scale + width, b.getPosition().y * scale - 6, (b.getSize().width) * scale - width, 5);
-            setSideColor(b.getSide(), g2d);
-            g2d.drawRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, (b.getSize().width) * scale, 5);
+            drawBuildingHealth(g2d, green, red, b);
         }
 
     }
 
-    //
+    private void drawBuildingHealth(Graphics2D g2d, Color green, Color red, Building b) {
+        int width = (int) ((b.getSize().width) * scale * b.getHealthPoints() / ((double) b.getMaxHealthPoints()));
+        g2d.setColor(green);
+        g2d.fillRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, width, 5);
+        g2d.setColor(red);
+        g2d.fillRect(b.getPosition().x * scale + width, b.getPosition().y * scale - 6, (b.getSize().width) * scale - width, 5);
+        setSideColor(b.getSide(), g2d);
+        g2d.drawRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, (b.getSize().width) * scale, 5);
+    }
+
+
     protected void drawAvgHealthBar(Graphics2D g2d, ArrayList<Entity> ents) {
         int avgHealth = 0;
         for (Entity ent : ents) {
@@ -287,17 +287,21 @@ public class GameFieldRenderer extends JPanel {
             avgMaxHealth += ent.getMaxHealthPoints();
         }
         avgMaxHealth /= ents.size();
-
+        Entity ent = ents.get(0);
 
         Color green = new Color(0, 155, 35);
         Color red = new Color(155, 0, 0);
         int width = ((ents.get(0).getSize().width) * scale * avgHealth / avgMaxHealth);
+        drawUnitHealth(g2d, ent, green, red, width, ent.getAnimObj(), ent.getSide());
+    }
+
+    private void drawUnitHealth(Graphics2D g2d, Entity ent, Color green, Color red, int width, Animator animObj, String side) {
         g2d.setColor(green);
-        g2d.fillRect(ents.get(0).getPosition().x * scale, ents.get(0).getPosition().y * scale - 6, width, 5);
+        g2d.fillRect((int) (ent.getPosition().x * scale + animObj.getX()), (int) (ent.getPosition().y * scale - 6 + animObj.getY()), width, 5);
         g2d.setColor(red);
-        g2d.fillRect(ents.get(0).getPosition().x * scale + width, ents.get(0).getPosition().y * scale - 6, (ents.get(0).getSize().width) * scale - width, 5);
-        setSideColor(ents.get(0).getSide(), g2d);
-        g2d.drawRect(ents.get(0).getPosition().x * scale, ents.get(0).getPosition().y * scale - 6, (ents.get(0).getSize().width) * scale, 5);
+        g2d.fillRect((int) (ent.getPosition().x * scale + animObj.getX()) + width, (int) (ent.getPosition().y * scale - 6 + animObj.getY()), scale - width, 5);
+        setSideColor(side, g2d);
+        g2d.drawRect((int) (ent.getPosition().x * scale + animObj.getX()), (int) (ent.getPosition().y * scale - 6 + animObj.getY()), scale, 5);
     }
 
 
@@ -326,6 +330,7 @@ public class GameFieldRenderer extends JPanel {
 
             drawUnitAnimatedInformation(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
             drawHealthBar(g2d, animator.getEnt());
+
         }
     }
 
@@ -517,8 +522,7 @@ public class GameFieldRenderer extends JPanel {
                 g2d.setColor(Color.white);
                 g2d.setFont(font);
                 g2d.drawString(text, (int) (x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035) + mx), (int) (y * scale + scale / 2 + (int) (scale * 0.3) + my));
-                drawAvgHealthBar(g2d, mapRef.getTiles()[y][x].getEntities());
-
+                drawAvgHealthBar(g2d, mapRef.getTiles()[entity.getPosition().y][entity.getPosition().x].getEntities());
 
             }
         }

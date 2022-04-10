@@ -102,7 +102,8 @@ public class GameState {
             animBuffer.get(i).animation(linkedGameField.getMapRef().getTiles());
             if (animBuffer.get(i).getPath().isEmpty()) {
                 animBuffer.get(i).stopanim();
-                animBuffer.remove(i--);
+                if (animBuffer.get(i).getEnt() instanceof Soldier s && s.getWayPoints().isEmpty())
+                    animBuffer.remove(i--);
 
             }
 

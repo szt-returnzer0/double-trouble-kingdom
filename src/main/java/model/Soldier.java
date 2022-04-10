@@ -29,6 +29,8 @@ public class Soldier extends Entity {
      */
     protected ArrayList<Point> path;
 
+    protected ArrayList<Point> wayPoints;
+
     /**
      * Constructs a new Soldier instance.
      *
@@ -47,6 +49,7 @@ public class Soldier extends Entity {
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
         this.pf = new Pathfinder();
         this.damage = 10;
+        this.wayPoints = new ArrayList<>();
     }
 
     /**
@@ -100,13 +103,9 @@ public class Soldier extends Entity {
                 target.takeDamage(this.damage);
                 this.healthPoints = 0;
                 this.isAlive = false;
-                //owner.removeSoldier(this);
-                /*System.out.println("Soldier attacked");
-                System.out.println("Soldier health: " + this.healthPoints);
-                System.out.println("Target health: " + target.getHealthPoints());*/
+
             }
         }
-        //System.out.println("Soldier attack called");
 
     }
 
@@ -122,8 +121,11 @@ public class Soldier extends Entity {
     /**
      * Adds a waypoint to the Soldier's path.
      */
-    public void addWaypoint() {
+    public void addWaypoint(Point waypoint) {
+        this.wayPoints.add(waypoint);
     }
 
-
+    public ArrayList<Point> getWayPoints() {
+        return wayPoints;
+    }
 }
