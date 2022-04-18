@@ -615,6 +615,64 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Gets a Tile art type
+     *
+     * @param x    tile x coordinate
+     * @param y    tile y coordinate
+     * @param type tile type
+     * @return The tile art type
+     */
+    public String getTileType(int x, int y, String type) {
+        String tileType;
+        boolean left = true;
+        boolean down = true;
+        boolean right = true;
+        boolean up = true;
+
+        if (y != 0)
+            left = game.getMap().getTiles()[x][y - 1].getType().equals(type);
+        if (x + 1 != game.getMap().getTiles().length)
+            down = game.getMap().getTiles()[x + 1][y].getType().equals(type);
+        if (y + 1 != game.getMap().getTiles()[0].length)
+            right = game.getMap().getTiles()[x][y + 1].getType().equals(type);
+        if (x != 0)
+            up = game.getMap().getTiles()[x - 1][y].getType().equals(type);
+
+        if (up && right && down && left) {
+            tileType = "51";
+        } else if (left && right && down) {
+            tileType = "2";
+        } else if (up && left && down) {
+            tileType = "6";
+        } else if (up && right && left) {
+            tileType = "8";
+        } else if (up && right && down) {
+            tileType = "4";
+        } else if (up && right) {
+            tileType = "7";
+        } else if (up && down) {
+            tileType = "e";
+        } else if (up && left) {
+            tileType = "9";
+        } else if (right && down) {
+            tileType = "1";
+        } else if (right && left) {
+            tileType = "e";
+        } else if (down && left) {
+            tileType = "3";
+        } else if (up) {
+            tileType = "10";
+        } else if (right) {
+            tileType = "11";
+        } else if (down) {
+            tileType = "12";
+        } else if (left) {
+            tileType = "13";
+        } else
+            tileType = "14";
+        return tileType;
+    }
 
     /**
      * Sets textures
@@ -623,7 +681,13 @@ public class GameFieldRenderer extends JPanel {
         for (int i = 0; i < game.getMap().getTiles().length; i++) {
             for (int j = 0; j < game.getMap().getTiles()[i].length; j++) {
                 try {
-                    game.getMap().getTiles()[i][j].setTexture(ImageIO.read(new File("./src/main/resources/" + game.getMap().getTiles()[i][j].getType() + ".png")));
+                    String path = "./src/main/resources/Tiles/";
+                    String type = game.getMap().getTiles()[i][j].getType();
+                    String pos = getTileType(i, j, type);
+                    path += type + "/";
+                    path += pos;
+                    path += ".png";
+                    game.getMap().getTiles()[i][j].setTexture(ImageIO.read(new File(path)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
