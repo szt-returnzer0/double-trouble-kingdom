@@ -652,13 +652,13 @@ public class GameFieldRenderer extends JPanel {
         } else if (up && right) {
             tileType = "7";
         } else if (up && down) {
-            tileType = "e";
+            tileType = "16";
         } else if (up && left) {
             tileType = "9";
         } else if (right && down) {
             tileType = "1";
         } else if (right && left) {
-            tileType = "e";
+            tileType = "15";
         } else if (down && left) {
             tileType = "3";
         } else if (up) {
