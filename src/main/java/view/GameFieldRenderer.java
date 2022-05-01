@@ -67,6 +67,20 @@ public class GameFieldRenderer extends JPanel {
     private boolean texuresOn;
 
     /**
+     * Index of current resolution.
+     */
+    private int resolutionState = 0;
+
+    /**
+     * Returns the current scale.
+     *
+     * @return the current scale
+     */
+    public static int getScale() {
+        return scale;
+    }
+
+    /**
      * Constructs a GameFieldRenderer instance.
      *
      * @param game  Game dependency injection
@@ -85,7 +99,6 @@ public class GameFieldRenderer extends JPanel {
         sideText = "";
         GameState.animBuffer.clear();
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
-
         setLayout(null);
         this.controlPanel = new ControlPanel(game);
         controlPanel.setSize((int) (frame.getSize().getWidth() / 3), (int) (frame.getSize().getHeight() * 0.07));
@@ -98,6 +111,7 @@ public class GameFieldRenderer extends JPanel {
                 int w = panelX / 3;
                 int h = (int) (panelY * 0.07);
                 controlPanel.setBounds(panelX / 2 - w / 2, (int) (panelY * 0.85), w, h);
+                controlPanel.resize();
                 repaint();
             }
         });
@@ -123,33 +137,31 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
-     * Returns the current scale.
-     *
-     * @return the current scale
-     */
-    public static int getScale() {
-        return scale;
-    }
-
-    /**
      * Toggles the scale.
      */
     public void toggleScale() {
-
-        if (MainWindow.getDimension().width <= 1100 && MainWindow.getDimension().height <= 810) {
-            MainWindow.setDimension(new Dimension(1920, 1080));
-            MainWindow.repack();
-
-        } else if (MainWindow.getDimension().width <= 1700 && MainWindow.getDimension().height <= 1000) {
-            MainWindow.setDimension(new Dimension(1024, 768));
-            MainWindow.repack();
-
-        } else if (MainWindow.getDimension().width <= 2000 && MainWindow.getDimension().height <= 1100) {
-            MainWindow.setDimension(new Dimension(1600, 900));
-            MainWindow.repack();
-
+        switch (resolutionState) {
+            case 0 -> {
+                MainWindow.setDimension(new Dimension(1680, 872));
+                MainWindow.repack();
+                resolutionState++;
+            }
+            case 1 -> {
+                MainWindow.setDimension(new Dimension(1553, 808));
+                MainWindow.repack();
+                resolutionState++;
+            }
+            case 2 -> {
+                MainWindow.setDimension(new Dimension(1361, 711));
+                MainWindow.repack();
+                resolutionState++;
+            }
+            case 3 -> {
+                MainWindow.setDimension(new Dimension(1873, 968));
+                MainWindow.repack();
+                resolutionState = 0;
+            }
         }
-        System.out.println(MainWindow.getDimension().width + " " + MainWindow.getDimension().height);
         repaint();
     }
 

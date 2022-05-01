@@ -34,6 +34,11 @@ public class ControlPanel extends JPanel {
     private Game game;
 
     /**
+     * GridBagLayout for panels.
+     */
+    GridBagLayout gbl = new GridBagLayout();
+
+    /**
      * Constructs a new ControlPanel instance with dependency injection.
      *
      * @param game Game dependency injection
@@ -42,14 +47,14 @@ public class ControlPanel extends JPanel {
         super();
         this.game = game;
         setLayout(new BorderLayout());
-        innerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 8));
-        add(innerPanel, BorderLayout.CENTER);
+        innerPanel.setLayout(gbl);
+        add(innerPanel, BorderLayout.WEST);
         innerPanel.setOpaque(false);
         backgroundColor = new Color(185, 185, 185, 200);
         borderColor = Color.white;
         setOpaque(false);
         createButtons();
-        repaint();
+        resize();
     }
 
     /**
@@ -91,37 +96,54 @@ public class ControlPanel extends JPanel {
         return buttons;
     }
 
-    //void resize button and panel
 
     /**
      * Resizes the panel and buttons.
      */
     public void resize() {
         setPreferredSize(new Dimension(getWidth(), getHeight()));
-        for (JRoundedButton button : buttons) {
-            button.setPreferredSize(new Dimension(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20));
+        for (int i = 0; i < buttons.length; i++) {
+            JRoundedButton button = buttons[i];
+            button.setPreferredSize(new Dimension((i == 5 ? 2 : 1) * (GameFieldRenderer.scale + 20), GameFieldRenderer.scale + 20));
         }
+        validate();
     }
 
     /**
      * Creates the buttons in the panel.
      */
     private void createButtons() {
-        //System.out.println("size: " + getSize());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(0, 10, 0, 10);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
+            if (i == 0)
+                c.insets.left = 20;
+            else if (i == 1)
+                c.insets.left = 5;
+
             buttons[i] = new JRoundedButton("", GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
+            gbl.setConstraints(buttons[i], c);
             innerPanel.add(buttons[i]);
         }
 
-        JPanel sidePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, GameFieldRenderer.scale + 15, 8));
+        JPanel sidePanel = new JPanel();
+        sidePanel.setLayout(gbl);
         sidePanel.setOpaque(false);
         this.add(sidePanel, BorderLayout.LINE_END);
+
+        c.insets.right = 13;
+        buttons[5] = new JRoundedButton("", GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
+        gbl.setConstraints(buttons[5], c);
+        sidePanel.add(buttons[5]);
 
         buttons[6] = new JRoundedButton("" + game.getGameState().getCurrentPlayer().getGold(), 50, 50, new Color[]{
                 new Color(255, 205, 0),
                 new Color(255, 205, 0),
                 new Color(255, 205, 0)}, 50, 50);
+
+        c.insets.right = 20;
+        gbl.setConstraints(buttons[6], c);
 
         sidePanel.add(buttons[6]);
         sidePanel.setOpaque(false);

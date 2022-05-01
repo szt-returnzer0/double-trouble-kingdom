@@ -33,6 +33,7 @@ public class MainWindow {
         frame.add(mainMenu, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
     /**
