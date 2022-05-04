@@ -315,6 +315,17 @@ public class GameFieldRenderer extends JPanel {
                 drawUnitOwner(g2d, x, y, entity.getSide(), entity);
                 drawBldState(g2d, entity);
                 drawHealthBar(g2d, entity);
+                if (texuresOn) {
+                    if (entity instanceof Soldier s) {
+
+                        //       Back
+                        // Left   1    Right
+                        //       Front
+                        String[][] Directions = new String[][]{(new String[]{"Front", "Back", "Front"}), (new String[]{"Left", "Front", "Right"}), (new String[]{"Front", "Front", "Front"})};
+                        g2d.drawImage(textureHolders.get(s.getType()).get((s.getSide().equals("left") ? "Blue" : "Red") + Directions[1 + s.getPath().get(0).y][1 + s.getPath().get(0).x] + "0.png"), x * scale, y * scale, scale, scale, null);
+                    }
+                }
+
             }
 
 
@@ -469,8 +480,17 @@ public class GameFieldRenderer extends JPanel {
      */
     protected void drawAnimated(Graphics2D g2d) {
         for (Animator animator : GameState.animBuffer) {
-            handleType(g2d, animator.getEnt().getType());
-            g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
+            if (!texuresOn) {
+                handleType(g2d, animator.getEnt().getType());
+                g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
+            } else if (animator.getEnt() instanceof Soldier s) {
+
+                //       Back
+                // Left   1    Right
+                //       Front
+                String[][] Directions = new String[][]{(new String[]{"Front", "Back", "Front"}), (new String[]{"Left", "Front", "Right"}), (new String[]{"Front", "Front", "Front"})};
+                g2d.drawImage(textureHolders.get(s.getType()).get((s.getSide().equals("left") ? "Blue" : "Red") + Directions[1 + s.getPath().get(0).y][1 + s.getPath().get(0).x] + animator.getFrame() + ".png"), (int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale, null);
+            }
 
             drawUnitAnimatedInformation(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
             //drawHealthBar(g2d, animator.getEnt());
@@ -697,21 +717,28 @@ public class GameFieldRenderer extends JPanel {
      * Sets textures
      */
     public void setTextures() {
-        File tiles = new File("./src/main/resources/Tiles");
-        String[] tileTypes = tiles.list();
+        File resources = new File("./src/main/resources");
+        String[] classNames = Arrays.stream(Objects.requireNonNull(resources.list())).filter(e -> !e.contains(".")).toArray(String[]::new);
 
-        for (String type : Objects.requireNonNull(tileTypes)) {
-            textureHolders.put(type, new HashMap<>());
-            File tileImages = new File("./src/main/resources/Tiles/" + type);
-            String[] images = tileImages.list();
-            for (String imageName : Objects.requireNonNull(images)) {
-                try {
-                    BufferedImage tex = ImageIO.read(new File("./src/main/resources/Tiles/" + type + "/" + imageName));
-                    textureHolders.get(type).put(imageName, tex);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        for (String className : Objects.requireNonNull(classNames)) {
+
+            File classFolder = new File("./src/main/resources/" + className);
+            String[] classTypes = classFolder.list();
+
+            for (String type : Objects.requireNonNull(classTypes)) {
+                textureHolders.put(type, new HashMap<>());
+                File tileImages = new File("./src/main/resources/" + className + "/" + type);
+                String[] images = tileImages.list();
+                for (String imageName : Objects.requireNonNull(images)) {
+                    try {
+                        BufferedImage tex = ImageIO.read(new File("./src/main/resources/" + className + "/" + type + "/" + imageName));
+                        textureHolders.get(type).put(imageName, tex);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
         }
     }
 

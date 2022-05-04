@@ -40,6 +40,11 @@ public class Animator {
     private double speedMod = 1;
 
     /**
+     * Sprite frame.
+     */
+    private int frame = 0;
+
+    /**
      * Constructor for Animator class.
      *
      * @param ent The animated Entity.
@@ -185,6 +190,22 @@ public class Animator {
     }
 
     /**
+     * Cycles sprite frames.
+     */
+    private void nextFrame() {
+        frame = frame == 3 ? 0 : (frame + 1);
+    }
+
+    /**
+     * Gets the sprite frame number.
+     *
+     * @return frame.
+     */
+    public int getFrame() {
+        return frame;
+    }
+
+    /**
      * Animate the entity.
      *
      * @param mapEnts The map entities.
@@ -195,7 +216,6 @@ public class Animator {
         //setSeconds(1);
         x += ((GameFieldRenderer.getScale() * ((Soldier) ent).getSpeed()) / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).x;
         y += ((GameFieldRenderer.getScale() * ((Soldier) ent).getSpeed()) / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).y;
-
         if (Math.abs(x) >= GameFieldRenderer.getScale() || Math.abs(y) >= GameFieldRenderer.getScale()) {
             //System.out.println(ent.getType()+ " Scale: " + GameFieldRenderer.getScale() + " > "+X+" |"+Y);
             mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().remove(ent);
@@ -211,6 +231,7 @@ public class Animator {
             path.remove(0);
             x = 0;
             y = 0;
+            nextFrame();
             steps++;
             if (steps >= (int) ((Soldier) ent).getSpeed()) {
                 stopanim();
