@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -38,15 +37,6 @@ public abstract class Terrain {
      * The speed modifier of the tile.
      */
     protected int speedMod;
-
-    /**
-     * The texture of the tile.
-     */
-    protected BufferedImage texture;
-
-    public BufferedImage getTexture() {
-        return texture;
-    }
 
     /**
      * Constructs a new Terrain instance without entities.
@@ -104,9 +94,6 @@ public abstract class Terrain {
         this.entities = entities;
     }
 
-    public void setTexture(BufferedImage texture) {
-        this.texture = texture;
-    }
 
     /**
      * Adds a new Entity to the tile
