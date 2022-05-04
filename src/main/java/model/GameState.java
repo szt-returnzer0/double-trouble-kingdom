@@ -153,7 +153,7 @@ public class GameState {
     /**
      * The game loop for the GameState.
      */
-    public void gameLoop() {
+    private void gameLoop() {
         if (roundState.equals("Attacking")) {
             if (animBuffer.stream().noneMatch(e -> e.getEnt().isAnimated())) {
                 calculatePaths();
@@ -264,7 +264,7 @@ public class GameState {
     /**
      * Saves a DBRecord to the Game's Database.
      */
-    public void saveScore() {
+    private void saveScore() {
         DBRef.saveRecord(new DBRecord(getPlayers().get(0).getName(), getPlayers().get(1).getName(), getWinner().getPlayerNumber(), getElapsedTime()));
     }
 
@@ -280,7 +280,7 @@ public class GameState {
     /**
      * Ends a Player's turn. Switches the Player and playerNumber to next Player.
      */
-    public void nextPlayer() {
+    private void nextPlayer() {
         this.playerNumber = this.playerNumber == 0 ? 1 : 0;
         this.currentPlayer = players.get(this.playerNumber);
     }
@@ -351,7 +351,7 @@ public class GameState {
     /**
      * Attack with each Soldier.
      */
-    public void soldierAttack() {
+    private void soldierAttack() {
         for (Player player : players) {
             for (int i = 0; i < player.getEntities().size(); i++) {
                 if (player.getEntities().get(i) instanceof Soldier s) {
@@ -368,7 +368,7 @@ public class GameState {
     /**
      * Attack with each Tower.
      */
-    public void towerAttack() {
+    private void towerAttack() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
                 if (entity instanceof Tower t) {
@@ -398,7 +398,7 @@ public class GameState {
     /**
      * Sets the Towers' targets.
      */
-    public void setTowerTargets() {
+    private void setTowerTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
                 if (entity instanceof Tower t) {
@@ -411,7 +411,7 @@ public class GameState {
     /**
      * Sets the special Soldiers' targets.
      */
-    public void setSpecialTargets() {
+    private void setSpecialTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
                 if (entity instanceof Assassin s) {
@@ -456,7 +456,7 @@ public class GameState {
     /**
      * Calculates the soldier' path.
      */
-    public void calculatePaths() {
+    private void calculatePaths() {
         Pathfinder.setMap(linkedGameField.getMapRef());
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
