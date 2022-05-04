@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -72,6 +73,11 @@ public class GameFieldRenderer extends JPanel {
     private int resolutionState = 0;
 
     /**
+     * Texture indexer.
+     */
+    private final java.util.Map<String, java.util.Map<String, BufferedImage>> textureHolders = new HashMap<>();
+
+    /**
      * Returns the current scale.
      *
      * @return the current scale
@@ -91,6 +97,7 @@ public class GameFieldRenderer extends JPanel {
         this.game = game;
         this.mapRef = game.getMap();
         setTextures();
+
         this.frame = frame;
         this.xLength = mapRef.getTiles()[0].length;
         this.yLength = mapRef.getTiles().length;
@@ -196,12 +203,12 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the vertical coordinate
      */
     protected void drawTile(Graphics2D g2d, int x, int y) {
-        handleType(g2d, mapRef.getTiles()[y][x].getType());
-        //System.out.println("["+y+"]"+"["+x+"]");
-        g2d.fillRect(x * scale, y * scale, scale, scale);
-        if (texuresOn)
-            if (mapRef.getTiles()[y][x] != null)
-                drawImage(g2d, mapRef.getTiles()[y][x], x, y);
+        if (!texuresOn) {
+            handleType(g2d, mapRef.getTiles()[y][x].getType());
+            //System.out.println("["+y+"]"+"["+x+"]");
+            g2d.fillRect(x * scale, y * scale, scale, scale);
+        } else if (mapRef.getTiles()[y][x] != null)
+            drawImage(g2d, mapRef.getTiles()[y][x], x, y);
     }
 
     private int bevelCnt = 0;
@@ -642,14 +649,14 @@ public class GameFieldRenderer extends JPanel {
         boolean right = true;
         boolean up = true;
 
-        if (y != 0)
-            left = game.getMap().getTiles()[x][y - 1].getType().equals(type);
-        if (x + 1 != game.getMap().getTiles().length)
-            down = game.getMap().getTiles()[x + 1][y].getType().equals(type);
-        if (y + 1 != game.getMap().getTiles()[0].length)
-            right = game.getMap().getTiles()[x][y + 1].getType().equals(type);
         if (x != 0)
-            up = game.getMap().getTiles()[x - 1][y].getType().equals(type);
+            left = game.getMap().getTiles()[y][x - 1].getType().equals(type);
+        if (y + 1 != game.getMap().getTiles().length)
+            down = game.getMap().getTiles()[y + 1][x].getType().equals(type);
+        if (x + 1 != game.getMap().getTiles()[0].length)
+            right = game.getMap().getTiles()[y][x + 1].getType().equals(type);
+        if (y != 0)
+            up = game.getMap().getTiles()[y - 1][x].getType().equals(type);
 
         if (up && right && down && left) {
             tileType = "51";
@@ -690,16 +697,17 @@ public class GameFieldRenderer extends JPanel {
      * Sets textures
      */
     public void setTextures() {
-        for (int i = 0; i < game.getMap().getTiles().length; i++) {
-            for (int j = 0; j < game.getMap().getTiles()[i].length; j++) {
+        File tiles = new File("./src/main/resources/Tiles");
+        String[] tileTypes = tiles.list();
+
+        for (String type : Objects.requireNonNull(tileTypes)) {
+            textureHolders.put(type, new HashMap<>());
+            File tileImages = new File("./src/main/resources/Tiles/" + type);
+            String[] images = tileImages.list();
+            for (String imageName : Objects.requireNonNull(images)) {
                 try {
-                    String path = "./src/main/resources/Tiles/";
-                    String type = game.getMap().getTiles()[i][j].getType();
-                    String pos = getTileType(i, j, type);
-                    path += type + "/";
-                    path += pos;
-                    path += ".png";
-                    game.getMap().getTiles()[i][j].setTexture(ImageIO.read(new File(path)));
+                    BufferedImage tex = ImageIO.read(new File("./src/main/resources/Tiles/" + type + "/" + imageName));
+                    textureHolders.get(type).put(imageName, tex);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -716,9 +724,7 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the y coordinate
      */
     public void drawImage(Graphics2D g2d, Terrain ter, int x, int y) {
-
-        g2d.drawImage(ter.getTexture(), x * scale, y * scale, scale, scale, null);
-
+        g2d.drawImage(textureHolders.get(ter.getType()).get(getTileType(x, y, ter.getType()) + ".png"), x * scale, y * scale, scale, scale, null);
     }
 
     /**
