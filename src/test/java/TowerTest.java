@@ -105,4 +105,15 @@ class TowerTest {
         assertEquals(30, shotgun.getHealthPoints(), "Health point is 30");
         assertEquals(30, shotgun.getMaxHealthPoints(), "Max health point is 30");
     }
+
+    @Test
+    @DisplayName("Take Damage")
+    void takeDamageTest() {
+        Barricade barricade = new Barricade(new Point(0, 0), null);
+        int damage = 20;
+        barricade.takeDamage(damage);
+        assertEquals(barricade.getMaxHealthPoints() - damage, barricade.getHealthPoints(), "Barricade' hp should be reduced by damage");
+
+
+    }
 }

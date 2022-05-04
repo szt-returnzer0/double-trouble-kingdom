@@ -87,4 +87,36 @@ public class PlayerTest {
 
 
     }
+
+    @Test
+    @DisplayName("Add Gold Test")
+    void addGoldTest() {
+        Player player = new Player("Player");
+        int startingGold = player.getGold();
+        int addedGold = 20;
+        player.addGold(addedGold);
+        assertEquals(startingGold + addedGold, player.getGold(), "Player gold should be equal with addedGold+startingGold");
+    }
+
+    @Test
+    @DisplayName("Add Saved Entity Test")
+    void addSavedEntityTest() {
+        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Player player = new Player("Player");
+        Soldier soldier = new Soldier(new Point(0, 0), 0);
+        player.addSavedEntity(soldier);
+        assertEquals(1, player.getEntities().size(), "Player Entity Array size should be 1");
+    }
+
+    @Test
+    @DisplayName("Remove Entity Test")
+    void removeEntityTest() {
+        Sniper sniper = new Sniper(new Point(0, 0), null);
+        Player player = new Player("Player");
+        int startingGold = player.getGold();
+        player.addSavedEntity(sniper);
+        player.removeEntity(sniper);
+        assertEquals(startingGold + sniper.getValue() / 3, player.getGold(), "Player gold should be equal 110");
+        assertEquals(0, player.getEntities().size(), "Player Entity Array should be empty");
+    }
 }
