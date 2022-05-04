@@ -41,7 +41,7 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Reference to a Map instance.
      */
-    protected Map mapRef;
+    protected static Map mapRef;
     /**
      * The selected Entity.
      */
@@ -138,7 +138,6 @@ public class GameFieldRenderer extends JPanel {
         this.hamburgerMenu.attachActionListener(3, e -> toggleScale());
 
         this.hamburgerMenu.attachActionListener(4, e -> toggleTextures());
-
 
     }
 
@@ -473,9 +472,9 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
-     * Draws the animated units
+     * Returns a map reference.
      *
-     * @param g2d the graphics we use
+     * @return the map
      */
     protected void drawAnimated(Graphics2D g2d) {
         for (Animator animator : GameState.animBuffer) {
@@ -489,6 +488,8 @@ public class GameFieldRenderer extends JPanel {
             drawUnitAnimatedInformation(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
 
         }
+    public static Map getMapRef() {
+        return mapRef;
     }
 
     /**
@@ -799,12 +800,19 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
-     * Returns a map reference.
+     * Draws the animated units
      *
-     * @return the map
+     * @param g2d the graphics we use
      */
-    public Map getMapRef() {
-        return mapRef;
+    protected void drawAnimated(Graphics2D g2d) {
+        for (Animator animator : GameState.animBuffer) {
+            handleType(g2d, animator.getEntity().getType());
+            g2d.fillRect((int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale);
+
+            drawUnitAnimatedInformation(g2d, animator.getEntity().getPosition().x, animator.getEntity().getPosition().y, animator.getEntity().getSide(), animator.getEntity(), animator.getX(), animator.getY());
+            //drawHealthBar(g2d, animator.getEnt());
+
+        }
     }
 
 

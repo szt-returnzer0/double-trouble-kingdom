@@ -21,7 +21,7 @@ public class Animator {
     /**
      * The animated Entity.
      */
-    private Entity ent;
+    private Entity entity;
     /**
      * The time spent to travel 1 block.
      */
@@ -29,7 +29,7 @@ public class Animator {
     /**
      * The animation path.
      */
-    private ArrayList<Point> path = new ArrayList<>();// = new ArrayList<>(Arrays.asList(new Point(0, 1), new Point(1, 0), new Point(1, 0), new Point(1, 0), new Point(1, 0), new Point(0, -1), new Point(-1, 0)));
+    private ArrayList<Point> path = new ArrayList<>();
     /**
      * The steps taken in the round.
      */
@@ -37,7 +37,7 @@ public class Animator {
     /**
      * The speed modifier.
      */
-    private double speedMod = 1;
+    private double speedModifier = 1;
 
     /**
      * Sprite frame.
@@ -47,10 +47,10 @@ public class Animator {
     /**
      * Constructor for Animator class.
      *
-     * @param ent The animated Entity.
+     * @param entity The animated Entity.
      */
-    public Animator(Entity ent) {
-        this.ent = ent;
+    public Animator(Entity entity) {
+        this.entity = entity;
     }
 
     /**
@@ -92,15 +92,15 @@ public class Animator {
      *
      * @return The entity to animate.
      */
-    public Entity getEnt() {
-        return ent;
+    public Entity getEntity() {
+        return entity;
     }
 
     /**
      * Set the entity to animate.
      */
-    public void setEnt(Entity ent) {
-        this.ent = ent;
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 
     /**
@@ -140,17 +140,16 @@ public class Animator {
     /**
      * Start the animation.
      */
-    public void startanim() {
-        path = ((Soldier) ent).getPath();
-        ent.isAnimated = true;
-        //X=0;
+    public void startAnimation() {
+        path = ((Soldier) entity).getPath();
+        entity.isAnimated = true;
     }
 
     /**
      * Stop the animation.
      */
-    public void stopanim() {
-        ent.isAnimated = false;
+    public void stopAnimation() {
+        entity.isAnimated = false;
     }
 
     /**
@@ -179,17 +178,43 @@ public class Animator {
     }
 
     /**
-     * Set the next point to move to.
+     * Animate an entity.
      */
-    public void nextstep() {
-        if (!path.isEmpty()) {
-            ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
+    public void animate() {
+        Terrain[][] entities = GameFieldRenderer.getMapRef().getTiles();
+        setSpeedModifier(entities[entity.getPosition().y][entity.getPosition().x].getSpeedMod());
+        setSeconds(speedModifier);
+
+        x += (GameFieldRenderer.getScale() * ((Soldier) entity).getSpeed() / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).x;
+        y += (GameFieldRenderer.getScale() * ((Soldier) entity).getSpeed() / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).y;
+
+        if (isInScale()) {
+            entities[entity.getPosition().y][entity.getPosition().x].getEntities().remove(entity);
+            if (isEmpty(entities) || (!isEmpty(entities) && !isCastle(entities)))
+                entities[entity.getPosition().y + path.get(0).y][entity.getPosition().x + path.get(0).x].getEntities().add(entity);
+
+            entity.setPosition(new Point(entity.getPosition().x + path.get(0).x, entity.getPosition().y + path.get(0).y));
             path.remove(0);
+
+            performSteps();
         }
-        x = y = 0;
     }
 
     /**
+     * Perform the number of steps, allowed by the unit type
+     */
+    private void performSteps() {
+        x = 0;
+        y = 0;
+        steps++;
+        if (steps >= ((Soldier) entity).getSpeed()) {
+            stopAnimation();
+            steps = 0;
+        }
+    }
+
+    /**
+     * Check if the coordinates are in a grid.
      * Cycles sprite frames.
      */
     private void nextFrame() {
@@ -208,44 +233,38 @@ public class Animator {
     /**
      * Animate the entity.
      *
-     * @param mapEnts The map entities.
+     * @return if the coordinates are in a grid
      */
-    public void animation(Terrain[][] mapEnts) {
-        setSpeedMod(mapEnts[ent.getPosition().y][ent.getPosition().x].getSpeedMod());
-        setSeconds(speedMod);
-        //setSeconds(1);
-        x += ((GameFieldRenderer.getScale() * ((Soldier) ent).getSpeed()) / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).x;
-        y += ((GameFieldRenderer.getScale() * ((Soldier) ent).getSpeed()) / (second * 1000.0) * GameState.deltaTime) * (double) path.get(0).y;
-        if (Math.abs(x) >= GameFieldRenderer.getScale() || Math.abs(y) >= GameFieldRenderer.getScale()) {
-            //System.out.println(ent.getType()+ " Scale: " + GameFieldRenderer.getScale() + " > "+X+" |"+Y);
-            mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().remove(ent);
-            if (mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().isEmpty() ||
-                    (!mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().isEmpty() &&
-                            !mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().get(0).getType().equals("Castle")))
-                mapEnts[ent.getPosition().y + path.get(0).y][ent.getPosition().x + path.get(0).x].getEntities().add(ent);
-            /*else {
-                mapEnts[ent.getPosition().y][ent.getPosition().x].getEntities().add(ent);
+    private boolean isInScale() {
+        return Math.abs(x) >= GameFieldRenderer.getScale() || Math.abs(y) >= GameFieldRenderer.getScale();
+    }
 
-            }*/
-            ent.setPosition(new Point(ent.getPosition().x + path.get(0).x, ent.getPosition().y + path.get(0).y));
-            path.remove(0);
-            x = 0;
-            y = 0;
-            nextFrame();
-            steps++;
-            if (steps >= (int) ((Soldier) ent).getSpeed()) {
-                stopanim();
-                steps = 0;
-            }
-        }
+    /**
+     * Check if the entity is on a Castle instance
+     *
+     * @param entities 2D array containing the entities
+     * @return if the entity is on a Castle instance
+     */
+    private boolean isCastle(Terrain[][] entities) {
+        return entities[entity.getPosition().y + path.get(0).y][entity.getPosition().x + path.get(0).x].getEntities().get(0).getType().equals("Castle");
+    }
+
+    /**
+     * Check if tile the entity stands on is empty.
+     *
+     * @param entities 2D array containing the entities
+     * @return if tile the entity stands on is empty
+     */
+    private boolean isEmpty(Terrain[][] entities) {
+        return entities[entity.getPosition().y + path.get(0).y][entity.getPosition().x + path.get(0).x].getEntities().isEmpty();
     }
 
     /**
      * Set the speed modifier.
      *
-     * @param speedMod The speed modifier.
+     * @param speedModifier The speed modifier.
      */
-    public void setSpeedMod(double speedMod) {
-        this.speedMod = speedMod;
+    public void setSpeedModifier(double speedModifier) {
+        this.speedModifier = speedModifier;
     }
 }
