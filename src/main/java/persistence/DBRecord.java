@@ -16,17 +16,13 @@ public final class DBRecord {
      */
     private String p2Name;
     /**
-     * Determines the Winner. 1 -> Player1 won | 2 -> Player2 won | 0 -> draw
+     * Determines the Winner.
      */
     private int winner;
     /**
      * The length of the game in seconds.
      */
     private int time;
-    /**
-     * The id of the Record.
-     */
-    private int id;
 
     /**
      * Constructs a new record from String and int parameters.
@@ -50,7 +46,6 @@ public final class DBRecord {
      */
     public DBRecord(ResultSet resultSet) {
         try {
-            this.id = resultSet.getInt("ID");
             this.p1Name = resultSet.getString("P1NAME");
             this.p2Name = resultSet.getString("P2NAME");
             this.winner = resultSet.getInt("WINNER");
@@ -85,15 +80,6 @@ public final class DBRecord {
      */
     public int getWinner() {
         return winner;
-    }
-
-    /**
-     * Returns the id of the record.
-     *
-     * @return the id of the record
-     */
-    public int getId() {
-        return id;
     }
 
     /**
