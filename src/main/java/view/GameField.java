@@ -46,6 +46,7 @@ public class GameField extends GameFieldRenderer {
      */
     public GameField(Game game, JFrame frame) {
         super(game, frame);
+        GameFieldModel gameFieldModel = new GameFieldModel();
         this.game = game;
         setupButtons();
         game.getGameState().loadBuildings(mapRef);

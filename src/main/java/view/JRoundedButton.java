@@ -1,5 +1,7 @@
 package view;
 
+import model.GameFieldModel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -182,6 +184,15 @@ public class JRoundedButton extends JButton {
             g2d.setColor(Color.white);
             g2d.setFont(font);
             g2d.drawString(text, getWidth() / 2 - (int) Math.ceil(width / 2.0), getHeight() / 2 + 6);
+
+            Font priceFont = new Font("Roboto", Font.PLAIN, 12);
+
+            if (GameFieldModel.getPrice(text) != null) {
+                String price = GameFieldModel.getPrice(text);
+                int priceWidth = g.getFontMetrics(priceFont).stringWidth(price);
+                g2d.setFont(priceFont);
+                g2d.drawString(price, getWidth() / 2 - (int) Math.ceil(priceWidth / 2.0), getHeight() / 2 + 18);
+            }
         }
         g2d.dispose();
     }
