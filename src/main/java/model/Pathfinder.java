@@ -132,7 +132,7 @@ public class Pathfinder {
      * @param s The soldier that is moving.
      * @param b The building to check when searching path at building phase.
      */
-    public void fieldToGraph(Soldier s, Building b) {
+    private void fieldToGraph(Soldier s, Building b) {
         graph = new int[yLength][xLength];
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
