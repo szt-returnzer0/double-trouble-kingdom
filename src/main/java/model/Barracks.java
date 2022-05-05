@@ -6,10 +6,7 @@ import java.awt.*;
  * Implementation of Barracks Building type.
  */
 public class Barracks extends Building {
-    /**
-     * Determines if the Barrack instance is upgraded to train special units.
-     */
-    private boolean isUpgraded;
+
 
     /**
      * Constructs a new Barracks instance.

@@ -86,6 +86,16 @@ public class Soldier extends Entity {
         return this.path;
     }
 
+    @Override
+    public String getImage() {
+        String color = (side.equals("left") ? "Blue" : "Red");
+        if (path == null || path.isEmpty()) {
+            return color + "Front0.png";
+        }
+        String[][] Directions = new String[][]{(new String[]{"Front", "Back", "Front"}), (new String[]{"Left", "Front", "Right"}), (new String[]{"Front", "Front", "Front"})};
+        return color + Directions[1 + path.get(0).y][1 + path.get(0).x] + animObj.getFrame() + ".png";
+    }
+
     public int visStartPoint = 0;
 
     /**

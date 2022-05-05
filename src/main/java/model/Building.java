@@ -22,6 +22,11 @@ public abstract class Building extends Entity {
     protected boolean isDestroyed; // false
 
     /**
+     * Determines if the Barrack instance is upgraded to train special units.
+     */
+    protected boolean isUpgraded;
+
+    /**
      * Constructs a new Building instance.
      *
      * @param position the building's position on the Map
@@ -29,6 +34,7 @@ public abstract class Building extends Entity {
      */
     public Building(Point position, String side) {
         super(position, side);
+        isUpgraded = false;
     }
 
     /**
@@ -63,6 +69,14 @@ public abstract class Building extends Entity {
      */
     public void setDestroyed(boolean destroyed) {
         this.isDestroyed = destroyed;
+    }
+
+    @Override
+    public String getImage() {
+        int invert = size.width > size.height ? 2 : 0;
+        int upgrade = isUpgraded ? 1 : 0;
+        String color = (side.equals("left") ? "Blue" : "Red");
+        return type + color + (upgrade + invert) + ".png";
     }
 
     /**
