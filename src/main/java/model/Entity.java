@@ -224,6 +224,15 @@ public abstract class Entity {
     }
 
     /**
+     * Gets the name of correct sprite.
+     *
+     * @return name of image.
+     */
+    public String getImage() {
+        return "empty.png";
+    }
+
+    /**
      * Rotates the Entity.
      */
     public void invert() {
