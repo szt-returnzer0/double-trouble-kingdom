@@ -120,6 +120,8 @@ public abstract class Tower extends Building {
     @Override
     public String getImage() {
         String color = (side.equals("left") ? "Blue" : "Red");
+        if (isDestroyed)
+            return color + "Destroyed.png";
         return type + color + level + ".png";
     }
 
