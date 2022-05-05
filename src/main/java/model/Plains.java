@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -9,22 +8,19 @@ import java.util.ArrayList;
 public class Plains extends Terrain {
     /**
      * Constructs a new Plains instance without predefined entities.
-     *
-     * @param gridPos the tile's position on the Map
      */
-    public Plains(Point gridPos) {
-        super(gridPos, "Plains");
+    public Plains() {
+        super("Plains");
         this.speedMod = 1;
     }
 
     /**
      * Constructs a new Plains instance with predefined entities.
      *
-     * @param gridPos the tile's position on the Map
-     * @param ent     an ArrayList containing the entities
+     * @param entities an ArrayList containing the entities
      */
-    public Plains(Point gridPos, ArrayList<Entity> ent) {
-        super(gridPos, "Plains", ent);
+    public Plains(ArrayList<Entity> entities) {
+        super("Plains", entities);
         speedMod = 1;
     }
 }

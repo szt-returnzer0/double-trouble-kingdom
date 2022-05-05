@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,10 +21,6 @@ import java.util.Random;
 })
 @JsonIgnoreProperties("texture")
 public abstract class Terrain {
-    /**
-     * The position of the tile.
-     */
-    protected Point gridPos;
     /**
      * An ArrayList of Entities on the tile.
      */
@@ -50,26 +45,23 @@ public abstract class Terrain {
     /**
      * Constructs a new Terrain instance without entities.
      *
-     * @param gridPos the position of the tile
-     * @param type    the type of tile
+     * @param type the type of tile
      */
-    protected Terrain(Point gridPos, String type) {
-        this.gridPos = gridPos;
+    protected Terrain(String type) {
         this.entities = new ArrayList<>();
         this.type = type;
         int randomInt = Terrain.random.nextInt(28);
         this.tileVersion = randomInt > 2 ? 0 : randomInt;
     }
 
+
     /**
      * Constructs a new Terrain instance without entities.
      *
-     * @param gridPos  the position of the tile
      * @param type     the type of tile
      * @param entities an ArrayList containing the entities
      */
-    protected Terrain(Point gridPos, String type, ArrayList<Entity> entities) {
-        this.gridPos = gridPos;
+    protected Terrain(String type, ArrayList<Entity> entities) {
         this.type = type;
         this.entities = entities;
         int randomInt = Terrain.random.nextInt(28);
@@ -85,15 +77,6 @@ public abstract class Terrain {
         return tileVersion;
     }
 
-
-    /**
-     * Returns the position of the tile.
-     *
-     * @return the position of the tile
-     */
-    public Point getGridPos() {
-        return gridPos;
-    }
 
     /**
      * Returns the entities on the tile in an ArrayList.
@@ -141,13 +124,5 @@ public abstract class Terrain {
         return speedMod;
     }
 
-    /**
-     * Converts the tile's state to a String.
-     *
-     * @return the tile's state as a String
-     */
-    public String typeToString() {
-        return "( " + type + getEntities() + " ) ";
-    }
 
 }

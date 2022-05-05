@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -9,22 +8,19 @@ import java.util.ArrayList;
 public class Swamp extends Terrain {
     /**
      * Constructs a new Swamp instance without predefined entities.
-     *
-     * @param gridPos the tile's position on the Map
      */
-    public Swamp(Point gridPos) {
-        super(gridPos, "Swamp");
+    public Swamp() {
+        super("Swamp");
         this.speedMod = 3;
     }
 
     /**
      * Constructs a new Swamp instance with predefined entities.
      *
-     * @param gridPos the tile's position on the Map
-     * @param ent     an ArrayList containing the entities
+     * @param entities an ArrayList containing the entities
      */
-    public Swamp(Point gridPos, ArrayList<Entity> ent) {
-        super(gridPos, "Swamp", ent);
+    public Swamp(ArrayList<Entity> entities) {
+        super("Swamp", entities);
         this.speedMod = 3;
     }
 }
