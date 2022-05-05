@@ -122,7 +122,7 @@ public class ControlPanel extends JPanel {
             else if (i == 1)
                 c.insets.left = 5;
 
-            buttons[i] = new JRoundedButton("", GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
+            buttons[i] = new JRoundedButton(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
             gbl.setConstraints(buttons[i], c);
             innerPanel.add(buttons[i]);
         }
@@ -133,11 +133,11 @@ public class ControlPanel extends JPanel {
         this.add(sidePanel, BorderLayout.LINE_END);
 
         c.insets.right = 13;
-        buttons[5] = new JRoundedButton("", GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
+        buttons[5] = new JRoundedButton(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
         gbl.setConstraints(buttons[5], c);
         sidePanel.add(buttons[5]);
 
-        buttons[6] = new JRoundedButton("" + game.getGameState().getCurrentPlayer().getGold(), 50, 50, new Color[]{
+        buttons[6] = new JRoundedButton(String.valueOf(game.getGameState().getCurrentPlayer().getGold()), 50, 50, new Color[]{
                 new Color(255, 205, 0),
                 new Color(255, 205, 0),
                 new Color(255, 205, 0)}, 50, 50);

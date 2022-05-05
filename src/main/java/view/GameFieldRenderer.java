@@ -95,7 +95,7 @@ public class GameFieldRenderer extends JPanel {
     public GameFieldRenderer(Game game, JFrame frame) {
         texturesOn = true;
         this.game = game;
-        this.mapRef = game.getMap();
+        mapRef = game.getMap();
         setTextures();
 
         this.frame = frame;
@@ -212,61 +212,14 @@ public class GameFieldRenderer extends JPanel {
     }
 
     private int bevelCnt = 0;
+
     /**
-     * The paintComponent method of the class.
+     * Returns a map reference.
      *
-     * @param g graphics we use
+     * @return the map
      */
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
-
-        renderField(g2d);
-        drawCurrentSelection(g2d);
-        drawLabels(g2d);
-        if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
-            drawAnimated(g2d);
-        drawWayPoints(g2d);
-        /*g2d.setColor(Color.red);
-        for (Point point : GameField.testpath) {
-            g2d.fillRect(point.x*scale,point.y*scale,scale,scale);
-        }*/ //VISUALIZATION
-        bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
-        if (game.getGameState().isPathVisualization()) {
-            for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
-                if (entity instanceof Soldier s) {
-                    if (s.isAnimated())
-                        s.visStartPoint = s.visEndPoint = 0;
-                    else
-                        drawPath(g2d, s);
-                }
-            }
-        }
-        Set<Tower> towers = new HashSet<>();
-        towers.addAll(game.getGameState().getEnemyTowers(1));
-        towers.addAll(game.getGameState().getEnemyTowers(2));
-
-        if (game.getGameState().getRoundState().equals("Attacking")) {
-            g2d.setColor(Color.white);
-            g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[]{9}, bevelCnt * 2));
-            for (Tower t : towers) {
-                if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack() && !t.isDestroyed()) {
-                    for (Entity target : t.getTargets()) {
-                        if (t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive()) {
-                            g2d.drawLine((target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale,
-                                    (t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale);
-                        }
-                    }
-                }
-            }
-        }
-        g2d.dispose();
-        //g.dispose(); //not needed as g wasn't created by us
+    public static Map getMapRef() {
+        return mapRef;
     }
 
 
@@ -344,28 +297,60 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
-     * Draws the paths
+     * The paintComponent method of the class.
      *
-     * @param g2d the graphics we use
-     * @param s   the path we want to draw
+     * @param g graphics we use
      */
-    protected void drawPath(Graphics2D g2d, Soldier s) {
-        setSideColor(s.getSide(), g2d);
-        Color c = g2d.getColor();
-        int alpha = s.getSide().equals("left") ? 200 : 150;
-        g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
-        ArrayList<Point> path = s.getAbsPath();
-        s.visEndPoint = Math.min(s.visEndPoint + 1, path.size());
-        if (s.visEndPoint >= path.size()) {
-            s.visStartPoint = Math.min(s.visStartPoint + 1, path.size());
-            if (s.visStartPoint >= path.size())
-                s.visStartPoint = s.visEndPoint = 0;
-        }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
 
-        for (int i = s.visStartPoint; i < s.visEndPoint; i++) {
-            Point p = path.get(i);
-            g2d.fillRect(p.x * scale, p.y * scale, scale, scale);
+        renderField(g2d);
+        drawCurrentSelection(g2d);
+        drawLabels(g2d);
+        if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
+            drawAnimated(g2d);
+        drawWayPoints(g2d);
+        /*g2d.setColor(Color.red);
+        for (Point point : GameField.testpath) {
+            g2d.fillRect(point.x*scale,point.y*scale,scale,scale);
+        }*/ //VISUALIZATION
+        bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
+        if (game.getGameState().isPathVisualization()) {
+            for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
+                if (entity instanceof Soldier s) {
+                    if (s.isAnimated())
+                        s.visualizationStart = s.visualizationEnd = 0;
+                    else
+                        drawPath(g2d, s);
+                }
+            }
         }
+        Set<Tower> towers = new HashSet<>();
+        towers.addAll(game.getGameState().getEnemyTowers(1));
+        towers.addAll(game.getGameState().getEnemyTowers(2));
+
+        if (game.getGameState().getRoundState().equals("Attacking")) {
+            g2d.setColor(Color.white);
+            g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, new float[]{9}, bevelCnt * 2));
+            for (Tower t : towers) {
+                if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack() && !t.isDestroyed()) {
+                    for (Entity target : t.getTargets()) {
+                        if (t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive()) {
+                            g2d.drawLine((target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale,
+                                    (t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale);
+                        }
+                    }
+                }
+            }
+        }
+        g2d.dispose();
+        //g.dispose(); //not needed as g wasn't created by us
     }
 
     /**
@@ -472,24 +457,43 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
-     * Returns a map reference.
+     * Draws the paths
      *
-     * @return the map
+     * @param g2d the graphics we use
+     * @param s   the path we want to draw
      */
+    protected void drawPath(Graphics2D g2d, Soldier s) {
+        setSideColor(s.getSide(), g2d);
+        Color c = g2d.getColor();
+        int alpha = s.getSide().equals("left") ? 200 : 150;
+        g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
+        ArrayList<Point> path = s.getAbsPath();
+        s.visualizationEnd = Math.min(s.visualizationEnd + 1, path.size());
+        if (s.visualizationEnd >= path.size()) {
+            s.visualizationStart = Math.min(s.visualizationStart + 1, path.size());
+            if (s.visualizationStart >= path.size())
+                s.visualizationStart = s.visualizationEnd = 0;
+        }
+
+        for (int i = s.visualizationStart; i < s.visualizationEnd; i++) {
+            Point p = path.get(i);
+            g2d.fillRect(p.x * scale, p.y * scale, scale, scale);
+        }
+    }
+
     protected void drawAnimated(Graphics2D g2d) {
         for (Animator animator : GameState.animBuffer) {
             if (!texturesOn) {
-                handleType(g2d, animator.getEnt().getType());
-                g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
-            } else if (animator.getEnt() instanceof Soldier s) {
-                g2d.drawImage(textureHolders.get(s.getType()).get(s.getImage()), (int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale, null);
+                handleType(g2d, animator.getEntity().getType());
+                g2d.fillRect((int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale);
+            } else if (animator.getEntity() instanceof Soldier s) {
+                g2d.drawImage(textureHolders.get(s.getType()).get(s.getImage()), (int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale, null);
             }
 
-            drawUnitAnimatedInformation(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
+            drawUnitAnimatedInformation(g2d, animator.getEntity().getPosition().x, animator.getEntity().getPosition().y, animator.getEntity().getSide(), animator.getEntity(), animator.getX(), animator.getY());
 
         }
-    public static Map getMapRef() {
-        return mapRef;
+
     }
 
     /**
@@ -799,21 +803,7 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
-    /**
-     * Draws the animated units
-     *
-     * @param g2d the graphics we use
-     */
-    protected void drawAnimated(Graphics2D g2d) {
-        for (Animator animator : GameState.animBuffer) {
-            handleType(g2d, animator.getEntity().getType());
-            g2d.fillRect((int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale);
 
-            drawUnitAnimatedInformation(g2d, animator.getEntity().getPosition().x, animator.getEntity().getPosition().y, animator.getEntity().getSide(), animator.getEntity(), animator.getX(), animator.getY());
-            //drawHealthBar(g2d, animator.getEnt());
-
-        }
-    }
 
 
 }

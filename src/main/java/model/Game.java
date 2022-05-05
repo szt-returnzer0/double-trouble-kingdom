@@ -14,7 +14,7 @@ public class Game {
     /**
      * The Database of the game.
      */
-    private final Database database;
+    private Database database;
     /**
      * The GameState of the game.
      */
@@ -35,6 +35,11 @@ public class Game {
         this.map = map;
     }
 
+    public Game(Map map) {
+        this.map = map;
+        this.gameState = new GameState();
+    }
+
     /**
      * Start a new Game.
      */
@@ -48,13 +53,6 @@ public class Game {
      */
     public void pauseGame() {
         this.gameState.stopElapsedTimer();
-    }
-
-    /**
-     * Resume the running Game.
-     */
-    public void resumeGame() {
-        this.gameState.startElapsedTimer();
     }
 
     /**
@@ -83,6 +81,5 @@ public class Game {
     public Database getDatabase() {
         return database;
     }
-
 
 }

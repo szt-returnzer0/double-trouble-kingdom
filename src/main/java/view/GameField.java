@@ -551,7 +551,7 @@ public class GameField extends GameFieldRenderer {
 
                 GameState.animBuffer.add(s.getAnimObj());
                 s.getAnimObj().setSeconds(1 / s.getSpeed());
-                s.getAnimObj().setSpeedMod(mapRef.getTiles()[point.y][point.x].getSpeedMod());
+                s.getAnimObj().setSpeedModifier(mapRef.getTiles()[point.y][point.x].getSpeedMod());
                 s.setIsAnimated(false);
                 wayPoints.forEach(s::addWaypoint);
                 wayPoints.clear();

@@ -50,6 +50,14 @@ public class JRoundedButton extends JButton {
         setBorderPainted(false);
     }
 
+    public JRoundedButton(int w, int h) {
+        super("");
+        setPreferredSize(new Dimension(w, h));
+        setOpaque(false);
+        setFocusPainted(false);
+        setBorderPainted(false);
+    }
+
     /**
      * Constructs a new JRoundedButton instance with non-default colors.
      *

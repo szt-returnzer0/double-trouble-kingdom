@@ -1,6 +1,9 @@
 package view;
 
-import model.*;
+import model.Game;
+import model.Map;
+import model.Plains;
+import model.Terrain;
 import persistence.Database;
 import persistence.FileHandler;
 
@@ -49,11 +52,8 @@ public class MainWindow {
 
     /**
      * Starts a new Game
-     *
-     * @param xMax the width of the game Map
-     * @param yMax the height of the game Map
      */
-    public void startGame(int xMax, int yMax) {
+    public void startGame() {
         frame.remove(mainMenu);
 
         Database db = new Database();
@@ -62,28 +62,6 @@ public class MainWindow {
 
         frame.add(gameField, BorderLayout.CENTER);
         frame.pack();
-    }
-
-    /**
-     * Test method to generate maps.
-     *
-     * @param xMax the width of the game Map
-     * @param yMax the height of the game Map
-     * @return a randomized map of tiles
-     */
-    private Terrain[][] randomTerrain(int xMax, int yMax) {
-        Terrain[][] map = new Terrain[yMax][xMax];
-        for (int y = 0; y < yMax; y++) {
-            for (int x = 0; x < xMax; x++) {
-                switch ((int) (Math.random() * 4)) {
-                    case 0 -> map[y][x] = new Plains(new Point(x, y));
-                    case 1 -> map[y][x] = new Swamp(new Point(x, y));
-                    case 2 -> map[y][x] = new Desert(new Point(x, y));
-                    case 3 -> map[y][x] = new Mountain(new Point(x, y));
-                }
-            }
-        }
-        return map;
     }
 
     /**
@@ -103,16 +81,20 @@ public class MainWindow {
                 null,
                 null,
                 "Új Pálya"), new Terrain[yMax][xMax]);
-        for (int y = 0; y < yMax; y++) {
-            for (int x = 0; x < xMax; x++) {
-                map.getTiles()[y][x] = new Plains(new Point(x, y));
-            }
-        }
-        Game dummyGame = new Game(null, map, "", "");
-        MapEditorView mapEditor = new MapEditorView(dummyGame, frame);
+        generateBlankMap(xMax, yMax, map);
+        Game editor = new Game(map);
+        MapEditorView mapEditor = new MapEditorView(editor, frame);
 
         frame.add(mapEditor, BorderLayout.CENTER);
         frame.pack();
+    }
+
+    private void generateBlankMap(int xMax, int yMax, Map map) {
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                map.getTiles()[y][x] = new Plains();
+            }
+        }
     }
 
     /**

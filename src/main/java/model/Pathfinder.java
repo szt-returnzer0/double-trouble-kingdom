@@ -22,11 +22,11 @@ public class Pathfinder {
     /**
      * The horizontal directions.
      */
-    private final int[] dx = {-1, 1, 0, 0};
+    private final int[] horizontalDirections = {-1, 1, 0, 0};
     /**
      * The vertical directions.
      */
-    private final int[] dy = {0, 0, -1, 1};
+    private final int[] verticalDirections = {0, 0, -1, 1};
     /**
      * The graph of routes.
      */
@@ -34,7 +34,7 @@ public class Pathfinder {
     /**
      * The distance from the start to the end.
      */
-    private int[][] Distance;
+    private int[][] distance;
     /**
      * The waypoint to factor in.
      */
@@ -72,19 +72,19 @@ public class Pathfinder {
 
         int vCount = 0;
         int vMax = 0;
-        Distance = new int[yLength][xLength];
+        distance = new int[yLength][xLength];
         for (int i = 0; i < yLength; i++) {
             for (int j = 0; j < xLength; j++) {
-                Distance[i][j] = Integer.MAX_VALUE;
+                distance[i][j] = Integer.MAX_VALUE;
                 if (graph[i][j] != -1)
                     vMax++;
             }
         }
 
         boolean[][] visited = new boolean[yLength][xLength];
-        PriorityQueue<Point> path = new PriorityQueue<>(Comparator.comparingInt(o -> Distance[o.y][o.x]));
+        PriorityQueue<Point> path = new PriorityQueue<>(Comparator.comparingInt(o -> distance[o.y][o.x]));
         path.add(new Point(src.x, src.y));
-        Distance[src.y][src.x] = 0;
+        distance[src.y][src.x] = 0;
 
 
         while (vCount != vMax || path.isEmpty()) {
@@ -94,13 +94,14 @@ public class Pathfinder {
 
             if (side.equals("waypoint")) {
                 if (pos.x == wayPoint.x && pos.y == wayPoint.y) {
-                    if (end == null || Distance[pos.y][pos.x] < Distance[end.y][end.x]) {
+                    if (end == null || distance[pos.y][pos.x] < distance[end.y][end.x]) {
                         end = new Point(pos);
                     }
                 }
             } else {
-                if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") && map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
-                    if (end == null || Distance[pos.y][pos.x] < Distance[end.y][end.x]) {
+                if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") &&
+                        map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
+                    if (end == null || distance[pos.y][pos.x] < distance[end.y][end.x]) {
                         end = new Point(pos);
                     }
                 }
@@ -113,13 +114,14 @@ public class Pathfinder {
             vCount++;
 
             for (int i = 0; i < 4; i++) {
-                if ((pos.x + dx[i] >= 0 && pos.y + dy[i] >= 0 && pos.x + dx[i] < xLength && pos.y + dy[i] < yLength) && !visited[pos.y + dy[i]][pos.x + dx[i]] && graph[pos.y + dy[i]][pos.x + dx[i]] > 0) {
-                    int newDist = Distance[pos.y][pos.x] + graph[pos.y + dy[i]][pos.x + dx[i]];
+                if ((pos.x + horizontalDirections[i] >= 0 && pos.y + verticalDirections[i] >= 0 && pos.x + horizontalDirections[i] < xLength && pos.y + verticalDirections[i] < yLength) &&
+                        !visited[pos.y + verticalDirections[i]][pos.x + horizontalDirections[i]] && graph[pos.y + verticalDirections[i]][pos.x + horizontalDirections[i]] > 0) {
+                    int newDist = distance[pos.y][pos.x] + graph[pos.y + verticalDirections[i]][pos.x + horizontalDirections[i]];
 
-                    if (newDist < Distance[pos.y + dy[i]][pos.x + dx[i]])
-                        Distance[pos.y + dy[i]][pos.x + dx[i]] = newDist;
+                    if (newDist < distance[pos.y + verticalDirections[i]][pos.x + horizontalDirections[i]])
+                        distance[pos.y + verticalDirections[i]][pos.x + horizontalDirections[i]] = newDist;
 
-                    path.add(new Point(pos.x + dx[i], pos.y + dy[i]));
+                    path.add(new Point(pos.x + horizontalDirections[i], pos.y + verticalDirections[i]));
                 }
             }
         }
@@ -161,13 +163,12 @@ public class Pathfinder {
      * @return The path.
      */
     public ArrayList<Point> genPath(Soldier start, String side, Building b, String mode) {
-        Point end; //= Dijkstra(start, side, b);
+        Point end;
 
         if (!start.getWayPoints().isEmpty() && start.getPosition().equals(start.getWayPoints().get(0).getLocation()))
             start.getWayPoints().remove(0);
 
         if (!start.getWayPoints().isEmpty()) {
-            //System.out.println("Waypoint" + start.getWayPoints().get(0).getLocation().x + " " + start.getWayPoints().get(0).getLocation().y);
             wayPoint = start.getWayPoints().get(0);
             end = Dijkstra(start, "waypoint", null);
         } else {
@@ -176,16 +177,16 @@ public class Pathfinder {
 
         ArrayList<Point> foundPath = new ArrayList<>();
 
-        //foundPath.add(end);
         Point cur;
         Point dir = new Point(0, 0);
         if (end != null) {
-            while (Distance[end.y][end.x] != 0) {
+            while (distance[end.y][end.x] != 0) {
                 cur = new Point(end);
                 for (int i = 0; i < 4; i++) {
-                    if ((cur.x + dx[i] >= 0 && cur.y + dy[i] >= 0 && cur.x + dx[i] < xLength && cur.y + dy[i] < yLength) && Distance[cur.y + dy[i]][cur.x + dx[i]] < Distance[end.y][end.x]) {
-                        end = new Point(cur.x + dx[i], cur.y + dy[i]);
-                        dir = new Point(dx[i] * -1, dy[i] * -1);
+                    if ((cur.x + horizontalDirections[i] >= 0 && cur.y + verticalDirections[i] >= 0 && cur.x + horizontalDirections[i] < xLength && cur.y + verticalDirections[i] < yLength) &&
+                            distance[cur.y + verticalDirections[i]][cur.x + horizontalDirections[i]] < distance[end.y][end.x]) {
+                        end = new Point(cur.x + horizontalDirections[i], cur.y + verticalDirections[i]);
+                        dir = new Point(horizontalDirections[i] * -1, verticalDirections[i] * -1);
                     }
                 }
                 if (mode.equals("rel"))

@@ -80,17 +80,14 @@ public class MainMenu extends JPanel {
 
         JPanel centerPanel = new JPanel();
         centerPanel.setOpaque(false);
-        //centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        //JLabel title = new JLabel("Double Trouble Kingdom");
-        //title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //centerPanel.add(title);
+
 
         JPanel centerButtons = new JPanel();
         centerButtons.setOpaque(false);
         centerButtons.setLayout(new FlowLayout());
         JRoundedButton start = new JRoundedButton("Start", 100, 50);
         centerButtons.add(start);
-        start.addActionListener(e -> wnd.startGame(64, 32));
+        start.addActionListener(e -> wnd.startGame());
 
         JRoundedButton editor = new JRoundedButton("Térképszerkesztő", 200, 50);
         centerButtons.add(editor);

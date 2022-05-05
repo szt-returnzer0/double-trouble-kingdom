@@ -135,11 +135,9 @@ public class MapEditorView extends GameField {
         if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), "Castle") || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (side.equals("left") && arr.get(0).size() >= maxSize) {
                 deleteBuilding(arr.get(0).remove());
-                //arr.get(0).add(b);
 
             } else if (side.equals("right") && arr.get(1).size() >= maxSize) {
                 deleteBuilding(arr.get(1).remove());
-                //arr.get(1).add(b);
             }
             if (side.equals("left")) {
                 arr.get(0).add(b);
@@ -171,10 +169,10 @@ public class MapEditorView extends GameField {
             try {
                 ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
                 switch (type) {
-                    case "Plains" -> map.getTiles()[yIdx][xIdx] = new Plains(new Point(xIdx, yIdx), ent);
-                    case "Swamp" -> map.getTiles()[yIdx][xIdx] = new Swamp(new Point(xIdx, yIdx), ent);
-                    case "Mountain" -> map.getTiles()[yIdx][xIdx] = new Mountain(new Point(xIdx, yIdx), ent);
-                    case "Desert" -> map.getTiles()[yIdx][xIdx] = new Desert(new Point(xIdx, yIdx), ent);
+                    case "Plains" -> map.getTiles()[yIdx][xIdx] = new Plains(ent);
+                    case "Swamp" -> map.getTiles()[yIdx][xIdx] = new Swamp(ent);
+                    case "Mountain" -> map.getTiles()[yIdx][xIdx] = new Mountain(ent);
+                    case "Desert" -> map.getTiles()[yIdx][xIdx] = new Desert(ent);
                     case "Castle" -> placeLimitedBuilding(new Castle(new Point(xIdx, yIdx), ""));
                     case "Barracks" -> placeLimitedBuilding(new Barracks(new Point(xIdx, yIdx), ""));
                     case "Delete" -> {
@@ -212,33 +210,4 @@ public class MapEditorView extends GameField {
         deleteBuilding((Building) ent);
     }
 
-    /**
-     * Checks if the necessary building were placed.
-     */
-    private void checkForBuildings() {
-        Set<Entity> buildings = new HashSet<>();
-        for (int y = 0; y < yLength; y++) {
-            for (int x = 0; x < xLength; x++) {
-                if (!mapRef.getTiles()[y][x].getEntities().isEmpty())
-                    buildings.add(mapRef.getTiles()[y][x].getEntities().get(0));
-            }
-        }
-        for (Entity building : buildings) {
-            System.out.println(building.getType() + " " + building.getSide());
-            switch (building.getType()) {
-                case "Castle" -> {
-                    switch (building.getSide()) {
-                        case "left" -> castles.get(0).add((Building) building);
-                        case "right" -> castles.get(1).add((Building) building);
-                    }
-                }
-                case "Barracks" -> {
-                    switch (building.getSide()) {
-                        case "left" -> barracks.get(0).add((Building) building);
-                        case "right" -> barracks.get(1).add((Building) building);
-                    }
-                }
-            }
-        }
-    }
 }
