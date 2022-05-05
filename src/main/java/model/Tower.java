@@ -29,6 +29,11 @@ public abstract class Tower extends Building {
      */
     protected int attackSpeed;
 
+    protected int targetCount;
+
+    protected int targetsPerAttack;
+
+
     /**
      * Constructs a new Tower instance.
      *
@@ -39,9 +44,11 @@ public abstract class Tower extends Building {
         super(position, side);
         this.healthPoints = 20;
         this.maxHealthPoints = this.healthPoints;
-        attackSpeed = 1;
+        this.attackSpeed = 1;
         this.range = 0;
         this.canAttack = false;
+        this.targets = new ArrayList<>();
+
     }
 
     /**
@@ -71,39 +78,35 @@ public abstract class Tower extends Building {
 
     /**
      * Upgrades the Tower.
-     *
-     * @return the cost of the upgrade
      */
     @Override
-    public int upgrade() {
-        if (this.canUpgrade && this.level < 3) {
+    public void upgrade() {
+        if (this.level < 3) {
             this.level++;
 
             switch (level) {
-                case 1 -> {
-                    this.damage += 2;
-                    return 10;
-                }
-                case 2 -> {
-                    this.attackSpeed += 1;
-                    return 15;
-                }
+                case 1 -> this.damage += 2;
+
+                case 2 -> this.attackSpeed += 1;
+
                 case 3 -> {
                     this.healthPoints += 10;
                     this.maxHealthPoints += 10;
-                    return 20;
                 }
             }
         }
 
-        return 0;
     }
+
+    public int getUpgradeCost() {
+        return (this.level + 1) * 5;
+    }
+
 
     /**
      * Selects the Tower's targets.
      */
     public void selectTargets(ArrayList<Soldier> entities) {
-        targets = new ArrayList<>();
         targets.addAll(entities);
     }
 
@@ -150,7 +153,17 @@ public abstract class Tower extends Building {
     /**
      * Attacks the targets.
      */
-    public abstract void attack();
+    public void attack() {
+        targetCount = 0;
+        for (Entity target : this.targets) {
+            if (target.getPosition().distance(this.position) <= range && targetCount < targetsPerAttack) {
+                target.takeDamage(this.damage);
+                if (attackSpeed > 1)
+                    target.takeDamage(this.damage);
+                targetCount++;
+            }
+        }
+    }
 
     /**
      * Takes damage from an attack.

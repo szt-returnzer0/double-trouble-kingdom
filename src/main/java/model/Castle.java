@@ -1,6 +1,5 @@
 package model;
 
-import javax.naming.OperationNotSupportedException;
 import java.awt.*;
 
 /**
@@ -25,15 +24,11 @@ public class Castle extends Building {
 
     /**
      * Upgrades the Building instance, Castles cannot be upgraded
-     *
-     * @return the cost of the upgrade
      */
-    public int upgrade() {
-        try {
-            throw new OperationNotSupportedException();
-        } catch (OperationNotSupportedException e) {
-            e.printStackTrace();
-        }
+    public void upgrade() {
+    }
+
+    public int getUpgradeCost() {
         return 0;
     }
 }

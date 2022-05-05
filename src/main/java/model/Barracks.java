@@ -6,8 +6,6 @@ import java.awt.*;
  * Implementation of Barracks Building type.
  */
 public class Barracks extends Building {
-
-
     /**
      * Constructs a new Barracks instance.
      *
@@ -45,15 +43,14 @@ public class Barracks extends Building {
 
     /**
      * Upgrades the Barrack instance.
-     *
-     * @return the cost of the upgrade
      */
-    @Override
-    public int upgrade() {
-        if (!this.isUpgraded) {
-            this.isUpgraded = true;
-            return 30;
-        }
-        return 0;
+    public void upgrade() {
+        this.isUpgraded = true;
     }
+
+    public int getUpgradeCost() {
+        return 40;
+    }
+
+
 }

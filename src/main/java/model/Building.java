@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -18,8 +19,8 @@ import java.awt.*;
         @JsonSubTypes.Type(value = Shotgun.class, name = "Shotgun"),
 })
 public abstract class Building extends Entity {
-    protected boolean canUpgrade; // false
-    protected boolean isDestroyed; // false
+    protected boolean canUpgrade;
+    protected boolean isDestroyed;
 
     /**
      * Determines if the Barrack instance is upgraded to train special units.
@@ -40,18 +41,10 @@ public abstract class Building extends Entity {
     /**
      * Destroys the Building instance, converts it to a ruin.
      */
-    @Override
     public void destroy() {
         this.isDestroyed = true;
     }
 
-    /**
-     * Cleans up the Building after it became a ruin.
-     */
-    public void cleanup() {
-        if (isDestroyed)
-            super.destroy();
-    }
 
     /**
      * Returns if the Building instance is a ruin.
@@ -81,8 +74,9 @@ public abstract class Building extends Entity {
 
     /**
      * Upgrades the Building instance, implementation depends on Building type.
-     *
-     * @return the cost of the upgrade
      */
-    public abstract int upgrade();
+    public abstract void upgrade();
+
+    @JsonIgnore
+    public abstract int getUpgradeCost();
 }

@@ -6,6 +6,7 @@ import java.awt.*;
  * Implementation of Shotgun Tower type.
  */
 public class Shotgun extends Tower {
+
     /**
      * Constructs a Shotgun instance.
      *
@@ -21,23 +22,8 @@ public class Shotgun extends Tower {
         this.damage = 5;
         this.range = 3;
         this.canAttack = true;
+        this.targetsPerAttack = 5;
     }
 
-    /**
-     * Attacks the tower's target if nearby.
-     */
-    public void attack() {
-        this.range = 3;
-        if (this.targets.size() != 0 && !this.isDestroyed) {
-            int cnt = 0;
-            for (Entity target : this.targets) {
-                if (target.getPosition().distance(this.position) <= range && cnt <= 5) {
-                    target.takeDamage(this.damage);
-                    ++cnt;
-                    if (attackSpeed > 1)
-                        target.takeDamage(this.damage);
-                }
-            }
-        }
-    }
+
 }
