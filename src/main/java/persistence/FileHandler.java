@@ -14,9 +14,11 @@ import java.io.IOException;
 /**
  * Implementation of FileHandler class, contains static methods for saving and loading Map and Game state to and from files.
  */
-// Simplify classes with Factory
 public class FileHandler {
 
+    /**
+     * Jackson objectMapper for serializing data.
+     */
     static ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
 
 
@@ -49,7 +51,8 @@ public class FileHandler {
      */
     public static void saveToFile(File file, Object obj, String type) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(file + type);
+            String fileName = file.getName().split("\\.")[0] + type;
+            FileOutputStream fileOut = new FileOutputStream(fileName);
             Serialize(fileOut, obj);
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,14 +81,13 @@ public class FileHandler {
      * @return a Pair of Map and File instances from the specified file
      */
     public static Pair<Map, File> loadMapAndFile(File file) {
+        Map map = null;
         try {
-
-            Map map = mapper.readValue(file, Map.class);
-            return new Pair<>(map, file);
+            map = mapper.readValue(file, Map.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return new Pair<>(map, file);
     }
 
     /**
