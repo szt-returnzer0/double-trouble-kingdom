@@ -1,9 +1,6 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import java.awt.*;
 
@@ -53,6 +50,13 @@ public abstract class Entity {
      * The damage the Entity deals.
      */
     protected int damage;
+
+
+    /**
+     * The attack range of the Entity.
+     */
+    protected int range;
+
     /**
      * The size of the Entity.
      */
@@ -205,14 +209,6 @@ public abstract class Entity {
         this.owner = owner;
     }
 
-    /**
-     * Decreases the Entity's healthPoints.
-     *
-     * @param value the amount we want to decrease
-     */
-    public void decreaseHealthPoints(int value) {
-        this.healthPoints -= value;
-    }
 
     /**
      * Returns the Entity's size.
@@ -228,6 +224,7 @@ public abstract class Entity {
      *
      * @return name of image.
      */
+    @JsonIgnore
     public String getImage() {
         return "empty.png";
     }
@@ -237,12 +234,6 @@ public abstract class Entity {
      */
     public void invert() {
         this.size = new Dimension(this.size.height, this.size.width);
-    }
-
-    /**
-     * Destroys the Entity.
-     */
-    public void destroy() {
     }
 
     /**
@@ -299,4 +290,10 @@ public abstract class Entity {
         this.healthPoints = Math.max(0, healthPoints - damage);
         this.isAlive = this.healthPoints > 0;
     }
+
+    protected void killUnit() {
+        this.healthPoints = 0;
+        this.isAlive = false;
+    }
+
 }
