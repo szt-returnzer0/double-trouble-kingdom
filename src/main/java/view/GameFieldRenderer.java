@@ -65,7 +65,7 @@ public class GameFieldRenderer extends JPanel {
     /**
      * If the textures are on or off.
      */
-    private boolean texuresOn;
+    private boolean texturesOn;
 
     /**
      * Index of current resolution.
@@ -93,7 +93,7 @@ public class GameFieldRenderer extends JPanel {
      * @param frame the parent frame
      */
     public GameFieldRenderer(Game game, JFrame frame) {
-        texuresOn = false;
+        texturesOn = true;
         this.game = game;
         this.mapRef = game.getMap();
         setTextures();
@@ -173,7 +173,7 @@ public class GameFieldRenderer extends JPanel {
     }
 
     public void toggleTextures() {
-        texuresOn = !texuresOn;
+        texturesOn = !texturesOn;
     }
 
     /**
@@ -189,8 +189,10 @@ public class GameFieldRenderer extends JPanel {
                 //System.out.println("["+y+"]"+"["+x+"]");
                 drawTile(g2d, x, y);
                 drawEnt(g2d, x, y);
-                g2d.setColor(Color.GRAY);
-                g2d.drawRect(x * scale, y * scale, scale, scale);
+                if (!texturesOn) {
+                    g2d.setColor(Color.GRAY);
+                    g2d.drawRect(x * scale, y * scale, scale, scale);
+                }
             }
         }
     }
@@ -203,7 +205,7 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the vertical coordinate
      */
     protected void drawTile(Graphics2D g2d, int x, int y) {
-        if (!texuresOn) {
+        if (!texturesOn) {
             handleType(g2d, mapRef.getTiles()[y][x].getType());
             //System.out.println("["+y+"]"+"["+x+"]");
             g2d.fillRect(x * scale, y * scale, scale, scale);
@@ -310,36 +312,34 @@ public class GameFieldRenderer extends JPanel {
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             if (!entity.isAnimated() && entity.isAlive()) {
-                g2d.fillRect(x * scale, y * scale, scale, scale);
+                if (!texturesOn) {
+                    g2d.fillRect(x * scale, y * scale, scale, scale);
 
-                drawUnitOwner(g2d, x, y, entity.getSide(), entity);
-                drawBldState(g2d, entity);
-                drawHealthBar(g2d, entity);
-                if (texuresOn) {
-                    if (entity instanceof Soldier s) {
+                    drawUnitOwner(g2d, x, y, entity.getSide(), entity);
+                    drawBldState(g2d, entity);
+                    drawHealthBar(g2d, entity);
+                } else {
+                    if (entity instanceof Building b) {
+                        Point start = new Point(b.getPosition().x, b.getPosition().y);
+                        Dimension size = b.getSize();
+                        if (x == start.x + size.width - 1 && y == start.y + size.height - 1)
+                            g2d.drawImage(textureHolders.get(b.getType()).get(b.getImage()), start.x * scale, start.y * scale, size.width * scale, size.height * scale, null);
 
-                        //       Back
-                        // Left   1    Right
-                        //       Front
-                        String[][] Directions = new String[][]{(new String[]{"Front", "Back", "Front"}), (new String[]{"Left", "Front", "Right"}), (new String[]{"Front", "Front", "Front"})};
-                        g2d.drawImage(textureHolders.get(s.getType()).get((s.getSide().equals("left") ? "Blue" : "Red") + Directions[1 + s.getPath().get(0).y][1 + s.getPath().get(0).x] + "0.png"), x * scale, y * scale, scale, scale, null);
+                        drawHealthBar(g2d, entity);
+                    } else if (entity instanceof Soldier s) {
+                        //System.out.println(s.getAnimObj().getImage());
+                        g2d.drawImage(textureHolders.get(s.getType()).get(s.getImage()), x * scale, y * scale, scale, scale, null);
+                        drawAvgHealthBar(g2d, mapRef.getTiles()[y][x].getEntities());
                     }
                 }
+
 
             }
 
 
         }
         if (!game.getGameState().getRoundState().equals("Attacking")) {
-            if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
-                String text = "" + mapRef.getTiles()[y][x].getEntities().size();
-                Font font = new Font("Roboto", Font.PLAIN, 20);
-                int width = g2d.getFontMetrics(font).stringWidth(text);
-                g2d.setColor(Color.white);
-                g2d.setFont(font);
-                g2d.drawString(text, x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035), y * scale + scale / 2 + (int) (scale * 0.3));
-                drawAvgHealthBar(g2d, mapRef.getTiles()[y][x].getEntities());
-            }
+            drawUnitNumber(g2d, x, y, 0, 0);
         }
 
 
@@ -480,20 +480,14 @@ public class GameFieldRenderer extends JPanel {
      */
     protected void drawAnimated(Graphics2D g2d) {
         for (Animator animator : GameState.animBuffer) {
-            if (!texuresOn) {
+            if (!texturesOn) {
                 handleType(g2d, animator.getEnt().getType());
                 g2d.fillRect((int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale);
             } else if (animator.getEnt() instanceof Soldier s) {
-
-                //       Back
-                // Left   1    Right
-                //       Front
-                String[][] Directions = new String[][]{(new String[]{"Front", "Back", "Front"}), (new String[]{"Left", "Front", "Right"}), (new String[]{"Front", "Front", "Front"})};
-                g2d.drawImage(textureHolders.get(s.getType()).get((s.getSide().equals("left") ? "Blue" : "Red") + Directions[1 + s.getPath().get(0).y][1 + s.getPath().get(0).x] + animator.getFrame() + ".png"), (int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale, null);
+                g2d.drawImage(textureHolders.get(s.getType()).get(s.getImage()), (int) (animator.getEnt().getPosition().x * scale + animator.getX()), (int) (animator.getEnt().getPosition().y * scale + animator.getY()), scale, scale, null);
             }
 
             drawUnitAnimatedInformation(g2d, animator.getEnt().getPosition().x, animator.getEnt().getPosition().y, animator.getEnt().getSide(), animator.getEnt(), animator.getX(), animator.getY());
-            //drawHealthBar(g2d, animator.getEnt());
 
         }
     }
@@ -755,6 +749,31 @@ public class GameFieldRenderer extends JPanel {
     }
 
     /**
+     * Draws the number of units on terrain.
+     *
+     * @param g2d the graphics we use
+     * @param x   the x coordinate
+     * @param y   the y coordinate
+     * @param mx  the move x coordinate
+     * @param my  the move y coordinate
+     */
+    private void drawUnitNumber(Graphics2D g2d, int x, int y, double mx, double my) {
+        if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
+            String text = "" + mapRef.getTiles()[y][x].getEntities().size();
+            Font font = new Font("Roboto", Font.PLAIN, 20);
+            int width = g2d.getFontMetrics(font).stringWidth(text);
+
+            g2d.setFont(font);
+
+            g2d.setColor(Color.black);
+            g2d.drawString(text, (int) (x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035) + mx) + 2, (int) (y * scale + scale / 2 + (int) (scale * 0.3) + my) + 2);
+
+            g2d.setColor(Color.white);
+            g2d.drawString(text, (int) (x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035) + mx), (int) (y * scale + scale / 2 + (int) (scale * 0.3) + my));
+        }
+    }
+
+    /**
      * Draws the animated information.
      *
      * @param g2d    the graphics we use
@@ -762,24 +781,19 @@ public class GameFieldRenderer extends JPanel {
      * @param y      the y coordinate
      * @param side   the side of the entity
      * @param entity the entity to draw
-     * @param mx     the mouse x coordinate
-     * @param my     the mouse y coordinate
+     * @param mx     the move x coordinate
+     * @param my     the move y coordinate
      */
     private void drawUnitAnimatedInformation(Graphics2D g2d, int x, int y, String side, Entity entity, double mx, double my) {
-        ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
-        if (units.contains(entity.getType())) {
-            setSideColor(side, g2d);
-            g2d.drawRect((int) (x * scale + 2 + mx), (int) (y * scale + 2 + my), scale - 4, scale - 4);
-            if (mapRef.getTiles()[y][x].getEntities().size() > 1) {
-                String text = "" + mapRef.getTiles()[y][x].getEntities().size();
-                Font font = new Font("Roboto", Font.PLAIN, 20);
-                int width = g2d.getFontMetrics(font).stringWidth(text);
-                g2d.setColor(Color.white);
-                g2d.setFont(font);
-                g2d.drawString(text, (int) (x * scale + scale / 2 - (int) Math.floor(width / 2.0) + (int) (scale * 0.035) + mx), (int) (y * scale + scale / 2 + (int) (scale * 0.3) + my));
-                drawAvgHealthBar(g2d, mapRef.getTiles()[entity.getPosition().y][entity.getPosition().x].getEntities());
+        if (entity instanceof Soldier) {
 
+            if (!texturesOn) {
+                setSideColor(side, g2d);
+                g2d.drawRect((int) (x * scale + 2 + mx), (int) (y * scale + 2 + my), scale - 4, scale - 4);
             }
+
+            drawUnitNumber(g2d, x, y, mx, my);
+            drawAvgHealthBar(g2d, mapRef.getTiles()[entity.getPosition().y][entity.getPosition().x].getEntities());
         }
     }
 

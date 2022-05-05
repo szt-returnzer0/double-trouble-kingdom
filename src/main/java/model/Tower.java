@@ -116,6 +116,13 @@ public abstract class Tower extends Building {
         return level;
     }
 
+
+    @Override
+    public String getImage() {
+        String color = (side.equals("left") ? "Blue" : "Red");
+        return type + color + level + ".png";
+    }
+
     /**
      * Returns the Tower's targets in an ArrayList.
      *
