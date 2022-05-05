@@ -703,6 +703,7 @@ public class GameField extends GameFieldRenderer {
                     new Color(255, 205, 0),
                     new Color(255, 205, 0),
                     new Color(255, 205, 0)});
+            this.controlPanel.setButtonText(6, "0");
             controlPanel.updateButtonText();
             deleteState = false;
             repaint();

@@ -155,7 +155,8 @@ public class ControlPanel extends JPanel {
      */
     public void updateButtonText() {
         buttons[5].setText(Objects.equals(game.getGameState().getRoundState(), "Building") ? "Train" : "End turn");
-        buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
+        if (!buttons[6].getText().equals("X"))
+            buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
     }
 
     /**
