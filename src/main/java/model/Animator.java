@@ -141,6 +141,7 @@ public class Animator {
      * Start the animation.
      */
     public void startAnimation() {
+        ((Soldier) entity).calculatePath();
         path = ((Soldier) entity).getPath();
         entity.isAnimated = true;
     }
@@ -196,6 +197,7 @@ public class Animator {
             entity.setPosition(new Point(entity.getPosition().x + path.get(0).x, entity.getPosition().y + path.get(0).y));
             path.remove(0);
 
+            nextFrame();
             performSteps();
         }
     }
