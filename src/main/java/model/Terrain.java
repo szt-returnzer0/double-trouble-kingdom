@@ -57,7 +57,8 @@ public abstract class Terrain {
         this.gridPos = gridPos;
         this.entities = new ArrayList<>();
         this.type = type;
-        this.tileVersion = Terrain.random.nextInt(4);
+        int randomInt = Terrain.random.nextInt(28);
+        this.tileVersion = randomInt > 2 ? 0 : randomInt;
     }
 
     /**

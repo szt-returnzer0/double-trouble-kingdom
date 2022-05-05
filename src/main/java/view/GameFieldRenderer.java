@@ -123,7 +123,6 @@ public class GameFieldRenderer extends JPanel {
             }
         });
         this.hamburgerMenu = new HamburgerMenu(frame);
-        //hamburgerMenu.setBounds(0,0,200,frame.getContentPane().getSize().width);
         this.add(controlPanel);
         this.add(hamburgerMenu);
 

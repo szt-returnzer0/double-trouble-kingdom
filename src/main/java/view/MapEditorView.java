@@ -15,7 +15,6 @@ import java.util.*;
  * Implementation of the view of Map editor.
  */
 public class MapEditorView extends GameField {
-    //private final Castle[] castles = new Castle[]{null, null};
     /**
      * List to check if enough castles were placed.
      */
@@ -168,7 +167,7 @@ public class MapEditorView extends GameField {
         int xIdx = x / scale;
         Map map = mapRef;
 
-        if (yIdx < yLength && xIdx < xLength)
+        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0)
             try {
                 ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
                 switch (type) {

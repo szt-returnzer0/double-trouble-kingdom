@@ -329,14 +329,12 @@ public class GameField extends GameFieldRenderer {
      * @param x the horizontal coordinate
      * @param y the vertical coordinate
      */
-    protected void placeBlock(int x, int y) { //Lerakas
+    protected void placeBlock(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
-        Map map = mapRef;
 
-        if (yIdx < yLength && xIdx < xLength)
+        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0)
             try {
-                ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
                 switch (type) {
                     case "Barracks" -> placeBuilding(new Barracks(new Point(xIdx, yIdx), ""));
                     case "Barricade" -> placeBuilding(new Barricade(new Point(xIdx, yIdx), ""));
@@ -484,7 +482,7 @@ public class GameField extends GameFieldRenderer {
         if (from.x < 0 || from.x > xLength - 1 || from.y < 0 || from.y > yLength - 1) {
             return 10000;
         }
-        if (/*from.x <= 0 || from.x >= xLength - 1 || from.y <= 0 || from.y >= yLength - 1 ||*/ hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))//mapRef.getTiles()[from.y][from.x].getEntities().isEmpty())
+        if (hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))
             return counter;
         return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
     }
@@ -583,20 +581,16 @@ public class GameField extends GameFieldRenderer {
 
         if (destroyedOnPos(xIdx, yIdx)) return;
 
-        //if (!DijsktraPasses(b, xIdx, yIdx)) return;
-        //Building c = b.getOwner().getCastle();
 
         Building enemyCastle = game.getGameState().getEnemyCastle(b.getOwner().getPlayerNumber());
         Soldier testUnit = new Soldier(closestEmptyTile(enemyCastle.getPosition().x + enemyCastle.getSize().width / 2 + (b.getSide().equals("left") ? 1 : -1), enemyCastle.getPosition().y + enemyCastle.getSize().height / 2), 2);
         testUnit.setSide(enemyCastle.getSide());
         Pathfinder pf = new Pathfinder();
         Pathfinder.setMap(mapRef);
-        /*testpath = new ArrayList<>(pf.genPath(testUnit,enemyCastle.getSide().equals("right")?"left":"right", b, "abs"));
-        if(testpath.isEmpty()) return;*/ //visualization
+
 
         if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals("right") ? "left" : "right", b) == null) return;
 
-        //System.out.println(mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType()));
         String playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? "left" : "right";
         if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
