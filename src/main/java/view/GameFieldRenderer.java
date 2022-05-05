@@ -656,7 +656,7 @@ public class GameFieldRenderer extends JPanel {
      * @param type tile type
      * @return The tile art type
      */
-    public String getTileType(int x, int y, String type) {
+    private String getTileType(int x, int y, String type) {
         String tileType;
         boolean left = true;
         boolean down = true;
@@ -673,7 +673,9 @@ public class GameFieldRenderer extends JPanel {
             up = game.getMap().getTiles()[y - 1][x].getType().equals(type);
 
         if (up && right && down && left) {
-            tileType = "51";
+            Random random = new Random();
+            int version = random.nextInt(4);
+            tileType = "5" + version;
         } else if (left && right && down) {
             tileType = "2";
         } else if (up && left && down) {
@@ -704,6 +706,8 @@ public class GameFieldRenderer extends JPanel {
             tileType = "13";
         } else
             tileType = "14";
+
+
         return tileType;
     }
 
