@@ -35,7 +35,6 @@ public class Player {
      */
     private boolean isUnitRestricted;
     private int soldierCount;
-    private int killCount;
 
     /**
      * Constructs the Player with starter gold, entities and name.
@@ -49,7 +48,7 @@ public class Player {
         this.name = name;
         this.gold = 100;
         this.isUnitRestricted = true;
-        this.entities = new ArrayList<>(); // 1x Castle 2x Barrack
+        this.entities = new ArrayList<>();
         this.side = playerNumber == 1 ? "left" : "right";
     }
 
@@ -115,7 +114,6 @@ public class Player {
         return entities;
     }
 
-    //set entities
     public void setEntities(ArrayList<Entity> entities) {
         this.entities = entities;
     }
@@ -125,11 +123,13 @@ public class Player {
      *
      * @param entity the entity to add
      */
-    public void addEntity(Entity entity) { // or string as parameter to create Factory
-        this.entities.add(entity);
-        this.gold -= entity.value;
-        if (entity instanceof Soldier)
-            soldierCount++;
+    public void addEntity(Entity entity) {
+        if (entity.value < this.gold) {
+            this.entities.add(entity);
+            this.gold -= entity.value;
+            if (entity instanceof Soldier)
+                soldierCount++;
+        }
     }
 
     /**
@@ -159,7 +159,7 @@ public class Player {
         soldierCount--;
         entities.remove(s);
         GameState.animBuffer.remove(s.getAnimObj());
-        s.getAnimObj().stopanim();
+        s.getAnimObj().stopAnimation();
         s.getAnimObj().removePath();
     }
 
@@ -179,8 +179,13 @@ public class Player {
      * @param building the Building to upgrade
      */
     public void upgradeBuilding(Building building) {
-        this.gold -= building.upgrade();
-        if (Objects.equals(building.getType(), "Barracks")) isUnitRestricted = false;
+        if (building.canUpgrade) {
+            if (building.getUpgradeCost() < this.gold) {
+                building.upgrade();
+                this.gold -= building.getUpgradeCost();
+                if (Objects.equals(building.getType(), "Barracks")) isUnitRestricted = false;
+            }
+        }
     }
 
     /**
@@ -249,7 +254,6 @@ public class Player {
             }
         }
         return towers;
-
     }
 
     /**
@@ -258,9 +262,5 @@ public class Player {
     public void calculateGoldAtRound() {
         gold += 25;
         gold += soldierCount * 2;
-
-
     }
-
-
 }
