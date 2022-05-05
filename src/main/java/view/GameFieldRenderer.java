@@ -673,9 +673,8 @@ public class GameFieldRenderer extends JPanel {
             up = game.getMap().getTiles()[y - 1][x].getType().equals(type);
 
         if (up && right && down && left) {
-            Random random = new Random();
-            int version = random.nextInt(4);
-            tileType = "5" + version;
+            System.out.println(game.getMap().getTiles()[y][x].getTileVersion());
+            tileType = "5" + game.getMap().getTiles()[y][x].getTileVersion();
         } else if (left && right && down) {
             tileType = "2";
         } else if (up && left && down) {

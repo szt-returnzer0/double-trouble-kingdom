@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Implementation of Terrain class.
@@ -37,6 +38,14 @@ public abstract class Terrain {
      * The speed modifier of the tile.
      */
     protected int speedMod;
+    /**
+     * The Random class for version generation for the tile.
+     */
+    private static final Random random = new Random();
+    /**
+     * The version of the tile.
+     */
+    protected int tileVersion;
 
     /**
      * Constructs a new Terrain instance without entities.
@@ -48,10 +57,8 @@ public abstract class Terrain {
         this.gridPos = gridPos;
         this.entities = new ArrayList<>();
         this.type = type;
-
+        this.tileVersion = Terrain.random.nextInt(4);
     }
-
-
 
     /**
      * Constructs a new Terrain instance without entities.
@@ -64,6 +71,17 @@ public abstract class Terrain {
         this.gridPos = gridPos;
         this.type = type;
         this.entities = entities;
+        int randomInt = Terrain.random.nextInt(30);
+        this.tileVersion = randomInt > 2 ? 0 : randomInt;
+    }
+
+    /**
+     * Returns the version of the tile.
+     *
+     * @return the version of the tile
+     */
+    public int getTileVersion() {
+        return tileVersion;
     }
 
 
