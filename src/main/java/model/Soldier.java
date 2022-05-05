@@ -9,6 +9,14 @@ import java.util.Arrays;
  */
 public class Soldier extends Entity {
     /**
+     * The start of visualization highlighting.
+     */
+    public int visualizationStart;
+    /**
+     * The end of visualization highlighting.
+     */
+    public int visualizationEnd;
+    /**
      * The current speed of the Soldier.
      */
     protected double speed;
@@ -20,22 +28,20 @@ public class Soldier extends Entity {
      * The Soldier's target Entity.
      */
     protected Entity target;
-
     /**
      * The soldier's pathfinder
      */
     protected Pathfinder pf;
-
-
     /**
      * An ArrayList containing the path of the Solider to the enemy Castle.
      */
     protected ArrayList<Point> path;
-
     /**
      * The soldier's waypoints.
      */
     protected ArrayList<Point> wayPoints;
+
+    protected ArrayList<Point> castleParts;
 
     /**
      * Constructs a new Soldier instance.
@@ -56,6 +62,8 @@ public class Soldier extends Entity {
         this.pf = new Pathfinder();
         this.damage = 10;
         this.wayPoints = new ArrayList<>();
+        this.visualizationStart = this.visualizationEnd = 0;
+        this.castleParts = new ArrayList<>();
     }
 
     /**
@@ -82,7 +90,6 @@ public class Soldier extends Entity {
      * @return the path of the Solider to the enemy Castle in an ArrayList
      */
     public ArrayList<Point> getPath() {
-        calculatePath();
         return this.path;
     }
 
@@ -109,29 +116,29 @@ public class Soldier extends Entity {
      * Attacks the unit's target if nearby.
      */
     public void attack() {
-        if (isAlive() && target != null && target.isAlive()) {
-            ArrayList<Point> targetPoints = new ArrayList<>();
-            for (int i = 0; i < target.getSize().width; i++) {
-                for (int j = 0; j < target.getSize().height; j++) {
-                    targetPoints.add(new Point(target.getPosition().x + i, target.getPosition().y + j));
-                }
-            }
+        if (target != null && target.isAlive()) {
+            calculateCastleParts();
 
-            if (targetPoints.contains(this.getPosition())) {
+            if (castleParts.contains(this.getPosition())) {
                 target.takeDamage(this.damage);
-                this.healthPoints = 0;
-                this.isAlive = false;
-
+                killUnit();
             }
         }
 
+    }
+
+    private void calculateCastleParts() {
+        for (int i = 0; i < target.getSize().width; i++) {
+            for (int j = 0; j < target.getSize().height; j++) {
+                castleParts.add(new Point(target.getPosition().x + i, target.getPosition().y + j));
+            }
+        }
     }
 
     /**
      * Calculates the shortest path to the enemy Castle.
      */
     protected void calculatePath() {
-
         this.path = pf.genPath(this, (side.equals("left") ? "right" : "left"), null, "rel");
         this.animObj.setPath(this.path);
     }
@@ -151,8 +158,6 @@ public class Soldier extends Entity {
     public ArrayList<Point> getWayPoints() {
         return wayPoints;
     }
-
-    public int visEndPoint = 0;
 
     public ArrayList<Point> getAbsPath() {
         return pf.genPath(this, (side.equals("left") ? "right" : "left"), null, "abs");

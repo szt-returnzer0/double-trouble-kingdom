@@ -10,15 +10,12 @@ import java.util.Arrays;
 public class Kamikaze extends Soldier {
 
     /**
-     * The percentage of attacking a nearby Tower.
+     * The towers the Kamikaze can target.
      */
-    private int splashPercent;
-
     private ArrayList<Tower> towerTargets;
 
-
     /**
-     * Constructs a new Kamikaze instance
+     * Constructs a new Kamikaze instance.
      *
      * @param position the kamikaze's position on the Map
      * @param speed    the kamikaze's current speed
@@ -31,8 +28,9 @@ public class Kamikaze extends Soldier {
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 5;
+        this.range = 4;
         this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
-        this.splashPercent = 0;
+        this.towerTargets = new ArrayList<>();
     }
 
     /**
@@ -40,24 +38,21 @@ public class Kamikaze extends Soldier {
      */
     @Override
     public void attack() {
-        if (this.isAlive) {
-            int range = 4;
-            super.attack();
-            //this.splashPercent += 50;
-            this.splashPercent = (int) (Math.random() * 150);
-            if (this.splashPercent >= 100) {
-                this.splashPercent = 0;
-                if (this.towerTargets != null)
-                    for (Tower tower : this.towerTargets) {
-                        if (tower.getPosition().distance(this.getPosition()) <= range && !tower.isDestroyed) {
-                            tower.takeDamage(this.damage);
-                            this.healthPoints = 0;
-                            this.isAlive = false;
-                            System.out.println("Kamikaze attacked tower");
-                        }
+        super.attack();
+        if (canSplash()) {
+            if (!this.towerTargets.isEmpty()) {
+                for (Tower tower : this.towerTargets) {
+                    if (!tower.isDestroyed && tower.getPosition().distance(this.getPosition()) <= range) {
+                        tower.takeDamage(this.damage);
+                        killUnit();
                     }
+                }
             }
         }
+    }
+
+    private boolean canSplash() {
+        return (Math.random() * 150) >= 100;
     }
 
     public void selectTargets(ArrayList<Tower> targets) {
