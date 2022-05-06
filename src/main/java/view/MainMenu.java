@@ -102,7 +102,7 @@ public class MainMenu extends JPanel {
         bottomButtons.setOpaque(false);
         JRoundedButton rename = new JRoundedButton("Átnevezés", 110, 50);
         rename.addActionListener(e -> {
-            this.p1Name = (String) JOptionPane.showInputDialog(
+            String name1 = (String) JOptionPane.showInputDialog(
                     null,
                     "1. Játékos neve",
                     "Átnevezés",
@@ -110,8 +110,11 @@ public class MainMenu extends JPanel {
                     null,
                     null,
                     "név1");
-
-            this.p2Name = (String) JOptionPane.showInputDialog(
+            if (name1 != null) {
+                this.p1Name = name1;
+            } else
+                JOptionPane.showMessageDialog(null, "Nem adta meg az 1. Játékos nevét!", "Hiba", JOptionPane.ERROR_MESSAGE);
+            String name2 = (String) JOptionPane.showInputDialog(
                     null,
                     "2. Játékos neve",
                     "Átnevezés",
@@ -119,6 +122,10 @@ public class MainMenu extends JPanel {
                     null,
                     null,
                     "név2");
+            if (name2 != null) {
+                this.p2Name = name2;
+            } else
+                JOptionPane.showMessageDialog(null, "Nem adta meg az 2. Játékos nevét!", "Hiba", JOptionPane.ERROR_MESSAGE);
 
             updateName();
             repaint();
@@ -127,10 +134,17 @@ public class MainMenu extends JPanel {
         bottomButtons.add(rename);
         JRoundedButton mapSelect = new JRoundedButton("Pályaválasztás", 150, 50);
         mapSelect.addActionListener(e -> {
+            Pair<Map, File> current = this.map;
             Pair<Map, File> loaded = fileDialog.loadMapDialog();
-            if (map != null) {
+            if (map != null && loaded != null) {
                 this.map = loaded;
                 this.mapName = loaded.getMap().getName();
+                Pathfinder.setMap(map.getMap());
+                updateMapName();
+                repaint();
+            } else {
+                this.map = current;
+                this.mapName = current.getMap().getName();
                 Pathfinder.setMap(map.getMap());
                 updateMapName();
                 repaint();
