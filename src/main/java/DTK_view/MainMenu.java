@@ -3,6 +3,7 @@ package DTK_view;
 import DTK_model.Map;
 import DTK_model.Pair;
 import DTK_model.Pathfinder;
+import DTK_persistence.FileHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -59,8 +60,8 @@ public class MainMenu extends JPanel {
 
 
         FileDialog fileDialog = new FileDialog();
-        map = new Pair<>(new Map(), null);
-        mapName = map.getMap().getName();
+        map = FileHandler.loadMapAndFile(new File("Test.dtk"));
+        mapName = map.getMap() != null ? map.getMap().getName() : "Nincs pálya betöltve";
 
 
         p1Name = "Kék";
@@ -74,7 +75,7 @@ public class MainMenu extends JPanel {
         this.playersLabel.setForeground(Color.WHITE);
 
         topBar.add(playersLabel);
-        this.mapNameLabel = new JLabel(map != null ? map.getMap().getName() : mapName, SwingConstants.CENTER);
+        this.mapNameLabel = new JLabel(map.getMap() != null ? map.getMap().getName() : mapName, SwingConstants.CENTER);
         this.mapNameLabel.setFont(new Font("Roboto", Font.PLAIN, 16));
         this.mapNameLabel.setForeground(Color.WHITE);
         topBar.add(mapNameLabel);
@@ -134,7 +135,6 @@ public class MainMenu extends JPanel {
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
         setButtonColors(start, editor, rename, mapSelect);
-        Pathfinder.setMap(map.getMap());
     }
 
     private void loadBackground() {

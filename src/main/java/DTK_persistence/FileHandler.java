@@ -85,7 +85,7 @@ public class FileHandler {
         try {
             map = mapper.readValue(file, Map.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Could not load map");
         }
         return new Pair<>(map, file);
     }
