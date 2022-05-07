@@ -18,7 +18,7 @@ class ClimberTest {
         Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
-        Climber climber = new Climber(point, speed);
+        Climber climber = new Climber(point);
         assertEquals(point, climber.getPosition(), "Position is equal with point");
         assertEquals(speed, climber.getSpeed(), "Speed is equal with speed");
         assertTrue(climber.isAnimated(), "Climber is animated");

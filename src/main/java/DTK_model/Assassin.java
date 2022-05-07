@@ -20,8 +20,8 @@ public class Assassin extends Soldier {
      * @param position the assassin's position
      * @param speed    the assassin's current speed
      */
-    public Assassin(Point position, double speed) {
-        super(position, speed);
+    public Assassin(Point position) {
+        super(position);
         this.type = ObjectTypes.ASSASSIN;
         this.isAnimated = true;
         this.healthPoints = 10;
@@ -31,6 +31,7 @@ public class Assassin extends Soldier {
         this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
         this.range = 3;
         this.soldierTargets = new ArrayList<>();
+        this.speed = 3;
     }
 
     /**

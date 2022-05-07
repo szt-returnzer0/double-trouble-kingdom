@@ -43,9 +43,9 @@ class TowerTest {
     void sniperAttackTest() {
         Pathfinder.setMap(new Map());
         Sniper sniper = new Sniper(new Point(0, 0), null);
-        Soldier soldier1 = new Soldier(new Point(1, 0), 0);
-        Soldier soldier2 = new Soldier(new Point(7, 0), 0);
-        Soldier soldier3 = new Soldier(new Point(8, 0), 0);
+        Soldier soldier1 = new Soldier(new Point(1, 0));
+        Soldier soldier2 = new Soldier(new Point(7, 0));
+        Soldier soldier3 = new Soldier(new Point(8, 0));
         ArrayList<Soldier> targets = new ArrayList<>(Arrays.asList(soldier1, soldier2, soldier3));
         sniper.selectTargets(targets);
         sniper.attack();
@@ -59,9 +59,9 @@ class TowerTest {
     void shotgunAttackTest() {
         Pathfinder.setMap(new Map());
         Shotgun shotgun = new Shotgun(new Point(0, 0), null);
-        Soldier soldier1 = new Soldier(new Point(1, 0), 0);
-        Soldier soldier2 = new Soldier(new Point(3, 0), 0);
-        Soldier soldier3 = new Soldier(new Point(4, 0), 0);
+        Soldier soldier1 = new Soldier(new Point(1, 0));
+        Soldier soldier2 = new Soldier(new Point(3, 0));
+        Soldier soldier3 = new Soldier(new Point(4, 0));
         ArrayList<Soldier> targets = new ArrayList<>(Arrays.asList(soldier1, soldier2, soldier3));
         shotgun.selectTargets(targets);
         shotgun.attack();

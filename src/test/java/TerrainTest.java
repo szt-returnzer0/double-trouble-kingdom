@@ -15,7 +15,7 @@ class TerrainTest {
     void addEntityTest() {
         Pathfinder.setMap(new Map());
         Mountain mountain = new Mountain();
-        Soldier soldier = new Soldier(new Point(0, 0), 0);
+        Soldier soldier = new Soldier(new Point(0, 0));
         mountain.addEntities(soldier);
         assertEquals(1, mountain.getEntities().size(), "Mountain's Entity ArrayList size should be 1");
     }

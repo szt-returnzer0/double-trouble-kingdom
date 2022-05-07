@@ -1,6 +1,7 @@
 package DTK_model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -183,7 +184,7 @@ public class Player {
             if (building.getUpgradeCost() < this.gold) {
                 building.upgrade();
                 this.gold -= building.getUpgradeCost();
-                if (Objects.equals(building.getType(), "Barracks")) isUnitRestricted = false;
+                if (Objects.equals(building.getType(), ObjectTypes.BARRACKS)) isUnitRestricted = false;
             }
         }
     }
@@ -195,7 +196,7 @@ public class Player {
      * @param type  the type we want
      * @return new Tower Entity
      */
-    public Tower transformTower(Tower tower, String type) { // rewrite with void method
+    public Tower transformTower(Tower tower, ObjectTypes type) { // rewrite with void method
         this.gold += 10;
         return tower.transform(type);
     }
@@ -215,10 +216,11 @@ public class Player {
      *
      * @return the player's castle
      */
+    @JsonIgnore
     public Building getCastle() {
         for (Entity entity : entities) {
             if (entity instanceof Building) {
-                if (entity.getType().equals("Castle")) {
+                if (Objects.equals(entity.getType(), ObjectTypes.CASTLE)) {
                     return (Building) entity;
                 }
             }

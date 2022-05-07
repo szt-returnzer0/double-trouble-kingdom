@@ -99,7 +99,7 @@ public class Pathfinder {
                     }
                 }
             } else {
-                if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().equals("Castle") &&
+                if (!map.getTiles()[pos.y][pos.x].getEntities().isEmpty() && map.getTiles()[pos.y][pos.x].getEntities().get(0).getType().text.equals("Castle") &&
                         map.getTiles()[pos.y][pos.x].getEntities().get(0).getSide().equals(side)) {
                     if (end == null || distance[pos.y][pos.x] < distance[end.y][end.x]) {
                         end = new Point(pos);
@@ -125,6 +125,7 @@ public class Pathfinder {
                 }
             }
         }
+        System.out.println(end);
         return end;
     }
 
@@ -135,14 +136,15 @@ public class Pathfinder {
      * @param b The building to check when searching path at building phase.
      */
     private void fieldToGraph(Soldier s, Building b) {
+        System.out.println("Converting map to graph...");
         graph = new int[yLength][xLength];
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
                 if (s.getTerrains().contains(map.getTiles()[y][x].getType()) &&
                         !(map.getTiles()[y][x].getEntities().size() > 0 &&
-                                "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType()))) {
+                                "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType().text))) {
                     graph[y][x] = map.getTiles()[y][x].getSpeedMod();
-                } else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().equals("Castle")) {
+                } else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().text.equals("Castle")) {
                     graph[y][x] = 1;
                     if (map.getTiles()[y][x].getEntities().get(0).getSide().equals(s.getSide())) graph[y][x] = -1;
                 } else

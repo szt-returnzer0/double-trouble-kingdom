@@ -16,14 +16,14 @@ class SoliderTest {
     @DisplayName("Soldier Attack")
     void attackTest() {
         Pathfinder.setMap(new Map());
-        Soldier soldier = new Soldier(new Point(0, 0), 0);
+        Soldier soldier = new Soldier(new Point(0, 0));
         Castle castleAttacked = new Castle(new Point(0, 0), null);
         Castle castle = new Castle(new Point(10, 10), null);
         soldier.selectTarget(castleAttacked);
         soldier.attack();
         assertEquals(castleAttacked.getMaxHealthPoints() - soldier.getDamage(), castleAttacked.getHealthPoints(), "CastleAttacked health point is decreased by soldier's damage");
         assertFalse(soldier.isAlive(), "Soldier is not alive");
-        soldier = new Soldier(new Point(0, 0), 0);
+        soldier = new Soldier(new Point(0, 0));
         soldier.selectTarget(castle);
         soldier.attack();
         assertEquals(castle.getMaxHealthPoints(), castle.getHealthPoints(), "Castle's health points remains the same");
@@ -36,7 +36,7 @@ class SoliderTest {
         Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
-        Soldier soldier = new Soldier(point, speed);
+        Soldier soldier = new Soldier(point);
         assertEquals(point, soldier.getPosition(), "Position is equal with point");
         assertEquals(speed, soldier.getSpeed(), "Speed is equal with speed");
         assertTrue(soldier.isAnimated(), "Soldier is animated");

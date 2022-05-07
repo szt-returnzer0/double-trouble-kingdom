@@ -18,7 +18,7 @@ class DiverTest {
         Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
-        Diver diver = new Diver(point, speed);
+        Diver diver = new Diver(point);
         assertEquals(point, diver.getPosition(), "Position is equal with point");
         assertEquals(speed, diver.getSpeed(), "Speed is equal with speed");
         assertTrue(diver.isAnimated(), "Diver is animated");

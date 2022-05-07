@@ -20,8 +20,8 @@ public class Kamikaze extends Soldier {
      * @param position the kamikaze's position on the Map
      * @param speed    the kamikaze's current speed
      */
-    public Kamikaze(Point position, double speed) {
-        super(position, speed);
+    public Kamikaze(Point position) {
+        super(position);
         this.type = ObjectTypes.KAMIKAZE;
         this.isAnimated = true;
         this.healthPoints = 10;
@@ -31,6 +31,7 @@ public class Kamikaze extends Soldier {
         this.range = 4;
         this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
         this.towerTargets = new ArrayList<>();
+        this.speed = 2;
     }
 
     /**

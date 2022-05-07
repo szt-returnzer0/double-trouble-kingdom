@@ -49,7 +49,7 @@ public class Soldier extends Entity {
      * @param position the soldier's position
      * @param speed    the soldier's current speed
      */
-    public Soldier(Point position, double speed) {
+    public Soldier(Point position) {
         super(position);
         this.type = ObjectTypes.SOLDIER;
         this.isAnimated = true;
@@ -57,7 +57,7 @@ public class Soldier extends Entity {
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 2;
-        this.speed = speed;
+        this.speed = 2;
         this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
         this.pf = new Pathfinder();
         this.damage = 10;

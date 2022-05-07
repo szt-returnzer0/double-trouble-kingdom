@@ -42,6 +42,7 @@ public class Game {
      * @param map the Map to be injected
      */
     public Game(Map map) {
+        Pathfinder.setMap(map);
         this.map = map;
         this.gameState = new GameState();
     }

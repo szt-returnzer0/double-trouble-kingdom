@@ -14,7 +14,7 @@ class AnimatorTest {
     @DisplayName("StartAnim StopAnim")
     void animTest() {
         Pathfinder.setMap(new Map());
-        Soldier soldier = new Soldier(new Point(0, 0), 0);
+        Soldier soldier = new Soldier(new Point(0, 0));
         soldier.setSide("left");
         Animator animator = new Animator(soldier);
         animator.startAnimation();
@@ -28,7 +28,7 @@ class AnimatorTest {
     @DisplayName("Remove Path")
     void removePathTest() {
         Pathfinder.setMap(new Map());
-        Soldier soldier = new Soldier(new Point(0, 0), 0);
+        Soldier soldier = new Soldier(new Point(0, 0));
         soldier.setSide("left");
         Animator animator = new Animator(soldier);
         animator.setPath(soldier.getPath());

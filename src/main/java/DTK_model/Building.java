@@ -50,6 +50,12 @@ public abstract class Building extends Entity {
         isUpgraded = false;
     }
 
+    //copy constructor
+    public Building(Building b) {
+        super(b.getPosition(), b.getSide());
+        isUpgraded = b.isUpgraded;
+    }
+
     /**
      * Destroys the Building instance, converts it to a ruin.
      */
@@ -81,7 +87,7 @@ public abstract class Building extends Entity {
         int invert = size.width > size.height ? 2 : 0;
         int upgrade = isUpgraded ? 1 : 0;
         String color = (side.equals("left") ? "Blue" : "Red");
-        return type + color + (upgrade + invert) + ".png";
+        return type.text + color + (upgrade + invert) + ".png";
     }
 
     /**

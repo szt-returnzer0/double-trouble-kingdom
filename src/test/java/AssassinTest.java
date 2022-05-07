@@ -17,8 +17,8 @@ class AssassinTest {
     void attackTest() {
 
         Pathfinder.setMap(new Map());
-        Assassin assassin = new Assassin(new Point(0, 0), 0);
-        ArrayList<Soldier> targets = new ArrayList<>(Arrays.asList(new Soldier(new Point(0, 0), 0), new Soldier(new Point(1, 1), 0), new Soldier(new Point(10, 10), 0)));
+        Assassin assassin = new Assassin(new Point(0, 0));
+        ArrayList<Soldier> targets = new ArrayList<>(Arrays.asList(new Soldier(new Point(0, 0)), new Soldier(new Point(1, 1)), new Soldier(new Point(10, 10))));
         assassin.selectTargets(targets);
         assassin.attack();
         assertFalse(targets.get(0).isAlive(), "Soldier(with pos 0,0) gets killed");
@@ -32,7 +32,7 @@ class AssassinTest {
         Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
-        Assassin assassin = new Assassin(point, speed);
+        Assassin assassin = new Assassin(point);
         assertEquals(point, assassin.getPosition(), "Position is equal with point");
         assertEquals(speed, assassin.getSpeed(), "Speed is equal with speed");
         assertTrue(assassin.isAnimated(), "Assassin is animated");

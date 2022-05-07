@@ -14,8 +14,8 @@ public class Diver extends Soldier {
      * @param position the diver's position on the Map
      * @param speed    the diver's current speed
      */
-    public Diver(Point position, double speed) {
-        super(position, speed);
+    public Diver(Point position) {
+        super(position);
         this.type = ObjectTypes.DIVER;
         this.isAnimated = true;
         this.healthPoints = 10;
@@ -23,5 +23,6 @@ public class Diver extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT, ObjectTypes.SWAMP));
+        this.speed = 3;
     }
 }

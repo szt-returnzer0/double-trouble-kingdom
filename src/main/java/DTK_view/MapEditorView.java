@@ -53,20 +53,20 @@ public class MapEditorView extends GameField {
     protected void setupButtons() {
 
         this.controlPanel.setButtonColor(0, Color.green, 2);
-        this.controlPanel.attachActionListener(0, e -> sideText = "Selection: " + (type = "Plains"));
+        this.controlPanel.attachActionListener(0, e -> sideText = "Selection: " + (type = ObjectTypes.PLAINS).text);
         this.controlPanel.setButtonColor(1, Color.blue, 2);
-        this.controlPanel.attachActionListener(1, e -> sideText = "Selection: " + (type = "Swamp"));
+        this.controlPanel.attachActionListener(1, e -> sideText = "Selection: " + (type = ObjectTypes.SWAMP).text);
         this.controlPanel.setButtonColor(2, Color.darkGray, 2);
-        this.controlPanel.attachActionListener(2, e -> sideText = "Selection: " + (type = "Mountain"));
+        this.controlPanel.attachActionListener(2, e -> sideText = "Selection: " + (type = ObjectTypes.MOUNTAIN).text);
         this.controlPanel.setButtonColor(3, Color.yellow, 2);
-        this.controlPanel.attachActionListener(3, e -> sideText = "Selection: " + (type = "Desert"));
+        this.controlPanel.attachActionListener(3, e -> sideText = "Selection: " + (type = ObjectTypes.DESERT).text);
 
         this.controlPanel.setButtonColor(4, Color.lightGray, 2);
-        this.controlPanel.attachActionListener(4, e -> sideText = "Selection: " + (type = "Castle"));
+        this.controlPanel.attachActionListener(4, e -> sideText = "Selection: " + (type = ObjectTypes.CASTLE).text);
         this.controlPanel.setButtonColor(5, new Color(64, 37, 19), 2);
-        this.controlPanel.attachActionListener(5, e -> sideText = "Selection: " + (type = "Barracks"));
+        this.controlPanel.attachActionListener(5, e -> sideText = "Selection: " + (type = ObjectTypes.BARRACKS).text);
 
-        this.controlPanel.attachActionListener(6, e -> sideText = "Selection: " + (type = "Delete"));
+        this.controlPanel.attachActionListener(6, e -> sideText = "Selection: " + (type = ObjectTypes.DELETE).text);
         this.controlPanel.setButtonColors(6, new Color[]{
                 new Color(255, 142, 142),
                 new Color(70, 0, 0),
@@ -130,9 +130,9 @@ public class MapEditorView extends GameField {
         b.setSide(side);
         if (inverted)
             b.invert();
-        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), "Castle") ? castles : barracks;
-        int maxSize = Objects.equals(b.getType(), "Castle") ? 1 : 2;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), "Castle") || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), ObjectTypes.CASTLE) ? castles : barracks;
+        int maxSize = Objects.equals(b.getType(), ObjectTypes.CASTLE) ? 1 : 2;
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), ObjectTypes.CASTLE) || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (side.equals("left") && arr.get(0).size() >= maxSize) {
                 deleteBuilding(arr.get(0).remove());
 
@@ -168,19 +168,21 @@ public class MapEditorView extends GameField {
         if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0)
             try {
                 ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
-                switch (type) {
-                    case "Plains" -> map.getTiles()[yIdx][xIdx] = new Plains(ent);
-                    case "Swamp" -> map.getTiles()[yIdx][xIdx] = new Swamp(ent);
-                    case "Mountain" -> map.getTiles()[yIdx][xIdx] = new Mountain(ent);
-                    case "Desert" -> map.getTiles()[yIdx][xIdx] = new Desert(ent);
-                    case "Castle" -> placeLimitedBuilding(new Castle(new Point(xIdx, yIdx), ""));
-                    case "Barracks" -> placeLimitedBuilding(new Barracks(new Point(xIdx, yIdx), ""));
-                    case "Delete" -> {
-                        if (!ent.isEmpty()) safeDeleteBuilding(ent.get(0));
-                    }
-                    default -> {
-                    }
+
+                if(ObjectTypes.getBuildingTypes().contains(type)){
+                   placeLimitedBuilding(ObjectTypes.buildingFactory(type, xIdx, yIdx));
                 }
+                else if(ObjectTypes.getTerrainTypes().contains(type)){
+                    map.getTiles()[yIdx][xIdx] = ObjectTypes.terrainFactory(type,ent);
+                }
+                if(Objects.equals(type, ObjectTypes.DELETE)){
+                    safeDeleteBuilding(ent.get(0));
+                }
+
+
+
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -194,13 +196,13 @@ public class MapEditorView extends GameField {
      */
     private void safeDeleteBuilding(Entity ent) {
         switch (ent.getType()) {
-            case "Castle" -> {
+            case CASTLE -> {
                 switch (ent.getSide()) {
                     case "left" -> castles.get(0).remove((Building) ent);
                     case "right" -> castles.get(1).remove((Building) ent);
                 }
             }
-            case "Barracks" -> {
+            case BARRACKS -> {
                 switch (ent.getSide()) {
                     case "left" -> barracks.get(0).remove((Building) ent);
                     case "right" -> barracks.get(1).remove((Building) ent);

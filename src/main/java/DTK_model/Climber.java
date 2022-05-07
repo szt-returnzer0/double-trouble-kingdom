@@ -14,8 +14,8 @@ public class Climber extends Soldier {
      * @param position the climber's position on the Map
      * @param speed    the climber's current speed
      */
-    public Climber(Point position, double speed) {
-        super(position, speed);
+    public Climber(Point position) {
+        super(position);
         this.type = ObjectTypes.CLIMBER;
         this.isAnimated = true;
         this.healthPoints = 10;
@@ -23,5 +23,6 @@ public class Climber extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT, ObjectTypes.MOUNTAIN));
+        this.speed = 1;
     }
 }

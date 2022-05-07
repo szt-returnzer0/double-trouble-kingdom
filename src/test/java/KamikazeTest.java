@@ -20,7 +20,7 @@ class KamikazeTest {
         Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
-        Kamikaze kamikaze = new Kamikaze(point, speed);
+        Kamikaze kamikaze = new Kamikaze(point);
         assertEquals(point, kamikaze.getPosition(), "Position is equal with point");
         assertEquals(speed, kamikaze.getSpeed(), "Speed is equal with speed");
         assertTrue(kamikaze.isAnimated(), "Kamikaze is animated");

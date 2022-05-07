@@ -205,7 +205,6 @@ public class GameFieldRenderer extends JPanel {
     protected void drawTile(Graphics2D g2d, int x, int y) {
         if (!texturesOn) {
             handleType(g2d, mapRef.getTiles()[y][x].getType());
-            //System.out.println("["+y+"]"+"["+x+"]");
             g2d.fillRect(x * scale, y * scale, scale, scale);
         } else if (mapRef.getTiles()[y][x] != null)
             drawImage(g2d, mapRef.getTiles()[y][x], x, y);
@@ -250,8 +249,7 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the vertical coordinate
      */
     protected void drawEnt(Graphics2D g2d, int x, int y) {
-        //String side = x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
-        //remove dead entities
+
         if (!mapRef.getTiles()[y][x].getEntities().isEmpty()) {
             for (int i = 0; i < mapRef.getTiles()[y][x].getEntities().size(); i++) {
                 if (!mapRef.getTiles()[y][x].getEntities().get(i).isAlive()) {
@@ -273,13 +271,13 @@ public class GameFieldRenderer extends JPanel {
                     if (entity instanceof Building b) {
                         Point start = new Point(b.getPosition().x, b.getPosition().y);
                         Dimension size = b.getSize();
-                        if (x == start.x + size.width - 1 && y == start.y + size.height - 1)
-                            g2d.drawImage(textureHolders.get(b.getType()).get(b.getImage()), start.x * scale, start.y * scale, size.width * scale, size.height * scale, null);
+                        if (x == start.x + size.width - 1 && y == start.y + size.height - 1) {
+                            g2d.drawImage(textureHolders.get(b.getType().text).get(b.getImage()), start.x * scale, start.y * scale, size.width * scale, size.height * scale, null);
+                        }
 
                         drawHealthBar(g2d, entity);
                     } else if (entity instanceof Soldier s) {
-                        //System.out.println(s.getAnimObj().getImage());
-                        g2d.drawImage(textureHolders.get(s.getType()).get(s.getImage()), x * scale, y * scale, scale, scale, null);
+                        g2d.drawImage(textureHolders.get(s.getType().text).get(s.getImage()), x * scale, y * scale, scale, scale, null);
                         drawAvgHealthBar(g2d, mapRef.getTiles()[y][x].getEntities());
                     }
                 }
@@ -315,10 +313,7 @@ public class GameFieldRenderer extends JPanel {
         if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
             drawAnimated(g2d);
         drawWayPoints(g2d);
-        /*g2d.setColor(Color.red);
-        for (Point point : GameField.testpath) {
-            g2d.fillRect(point.x*scale,point.y*scale,scale,scale);
-        }*/ //VISUALIZATION
+
         bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
         if (game.getGameState().isPathVisualization()) {
             for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
@@ -366,7 +361,7 @@ public class GameFieldRenderer extends JPanel {
         if (ent instanceof Soldier s) {
             int width = (int) (scale * s.getHealthPoints() / ((double) s.getMaxHealthPoints()));
             drawUnitHealth(g2d, ent, green, red, width, s.getAnimObj(), s.getSide());
-        } else if (ent instanceof Building b && !b.getType().equals("Barracks")) {
+        } else if (ent instanceof Building b && !(b instanceof Barracks)) {
             drawBuildingHealth(g2d, green, red, b);
         }
 
@@ -395,25 +390,25 @@ public class GameFieldRenderer extends JPanel {
      * Draws the avg health bar of the units
      *
      * @param g2d  the graphics we use
-     * @param ents the units we want to draw the avg health bar of
+     * @param entities the units we want to draw the avg health bar of
      */
-    protected void drawAvgHealthBar(Graphics2D g2d, ArrayList<Entity> ents) {
+    protected void drawAvgHealthBar(Graphics2D g2d, ArrayList<Entity> entities) {
         int avgHealth = 0;
-        for (Entity ent : ents) {
+        for (Entity ent : entities) {
             avgHealth += ent.getHealthPoints();
         }
-        avgHealth /= ents.size();
+        avgHealth /= entities.size();
 
         int avgMaxHealth = 0;
-        for (Entity ent : ents) {
+        for (Entity ent : entities) {
             avgMaxHealth += ent.getMaxHealthPoints();
         }
-        avgMaxHealth /= ents.size();
-        Entity ent = ents.get(0);
+        avgMaxHealth /= entities.size();
+        Entity ent = entities.get(0);
 
         Color green = new Color(0, 155, 35);
         Color red = new Color(155, 0, 0);
-        int width = ((ents.get(0).getSize().width) * scale * avgHealth / avgMaxHealth);
+        int width = ((entities.get(0).getSize().width) * scale * avgHealth / avgMaxHealth);
         drawUnitHealth(g2d, ent, green, red, width, ent.getAnimObj(), ent.getSide());
     }
 
@@ -448,8 +443,7 @@ public class GameFieldRenderer extends JPanel {
      * @param entity the entity to draw to
      */
     private void drawUnitOwner(Graphics2D g2d, int x, int y, String side, Entity entity) {
-        ArrayList<String> units = new ArrayList<>(Arrays.asList("Soldier", "Kamikaze", "Diver", "Climber", "Assassin"));
-        if (units.contains(entity.getType())) {
+        if (ObjectTypes.getSoldierTypes().contains(entity.getType())) {
             setSideColor(side, g2d);
             g2d.drawRect(x * scale + 2, y * scale + 2, scale - 4, scale - 4);
 
@@ -487,7 +481,7 @@ public class GameFieldRenderer extends JPanel {
                 handleType(g2d, animator.getEntity().getType());
                 g2d.fillRect((int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale);
             } else if (animator.getEntity() instanceof Soldier s) {
-                g2d.drawImage(textureHolders.get(s.getType()).get(s.getImage()), (int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale, null);
+                g2d.drawImage(textureHolders.get(s.getType().text).get(s.getImage()), (int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale, null);
             }
 
             drawUnitAnimatedInformation(g2d, animator.getEntity().getPosition().x, animator.getEntity().getPosition().y, animator.getEntity().getSide(), animator.getEntity(), animator.getX(), animator.getY());
@@ -503,16 +497,16 @@ public class GameFieldRenderer extends JPanel {
      * @param ent the building to draw to
      */
     protected void drawBldState(Graphics2D g2d, Entity ent) {
-        String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right"; // check in if building is on current player's side
+        String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right";
 
-        ArrayList<String> towerTypes = new ArrayList<>(Arrays.asList("Sniper", "Shotgun", "Barracks"));
-        if (towerTypes.contains(ent.getType())) {
+
+        if (ObjectTypes.getTowerTypes().contains(ent.getType())) {
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, 0);
             g2d.setStroke(dashed);
 
-            if (!ent.getType().equals("Barracks")) {
+            if (!(ent instanceof Barracks)) {
                 Tower tmp = (Tower) ent;
                 g2d.setColor(new Color(255, 225, 0, 85 * tmp.getLevel()));
             } else if (((Barracks) ent).isUpgraded()) {
@@ -524,7 +518,7 @@ public class GameFieldRenderer extends JPanel {
 
             drawBldOwner(g2d, ent, side);
 
-        } else if (ent.getType().equals("Castle")) {
+        } else if (ent instanceof Castle) {
             drawBldOwner(g2d, ent, side);
         }
 
@@ -632,24 +626,8 @@ public class GameFieldRenderer extends JPanel {
      * @param g2d  the graphics we use
      * @param type the type to handle
      */
-    protected void handleType(Graphics2D g2d, String type) { //Lerakas
-        switch (type) {
-            case "Plains" -> g2d.setColor(Color.GREEN);
-            case "Desert" -> g2d.setColor(Color.YELLOW);
-            case "Swamp" -> g2d.setColor(Color.BLUE);
-            case "Mountain" -> g2d.setColor(Color.DARK_GRAY);
-            case "Castle" -> g2d.setColor(Color.lightGray);
-            case "Barracks" -> g2d.setColor(new Color(64, 37, 19));
-            case "Barricade" -> g2d.setColor(new Color(208, 146, 110));
-            case "Sniper" -> g2d.setColor(new Color(118, 110, 106));
-            case "Shotgun" -> g2d.setColor(new Color(17, 15, 15));
-            case "Soldier" -> g2d.setColor(new Color(190, 30, 30));
-            case "Assassin" -> g2d.setColor(new Color(45, 15, 80));
-            case "Kamikaze" -> g2d.setColor(new Color(72, 18, 25));
-            case "Diver" -> g2d.setColor(new Color(22, 107, 107));
-            case "Climber" -> g2d.setColor(new Color(175, 112, 81));
-            default -> g2d.setColor(Color.GRAY);
-        }
+    protected void handleType(Graphics2D g2d, ObjectTypes type) {
+        g2d.setColor(type.color);
     }
 
     /**
@@ -660,7 +638,7 @@ public class GameFieldRenderer extends JPanel {
      * @param type tile type
      * @return The tile art type
      */
-    private String getTileType(int x, int y, String type) {
+    private String getTileType(int x, int y, ObjectTypes type) {
         String tileType;
         boolean left = true;
         boolean down = true;
@@ -668,13 +646,13 @@ public class GameFieldRenderer extends JPanel {
         boolean up = true;
 
         if (x != 0)
-            left = game.getMap().getTiles()[y][x - 1].getType().equals(type);
+            left = Objects.equals(game.getMap().getTiles()[y][x - 1].getType(), type);
         if (y + 1 != game.getMap().getTiles().length)
-            down = game.getMap().getTiles()[y + 1][x].getType().equals(type);
+            down = Objects.equals(game.getMap().getTiles()[y + 1][x].getType(), type);
         if (x + 1 != game.getMap().getTiles()[0].length)
-            right = game.getMap().getTiles()[y][x + 1].getType().equals(type);
+            right = Objects.equals(game.getMap().getTiles()[y][x + 1].getType(), type);
         if (y != 0)
-            up = game.getMap().getTiles()[y - 1][x].getType().equals(type);
+            up = Objects.equals(game.getMap().getTiles()[y - 1][x].getType(), type);
 
         if (up && right && down && left) {
             tileType = "5" + game.getMap().getTiles()[y][x].getTileVersion();
@@ -751,7 +729,7 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the y coordinate
      */
     public void drawImage(Graphics2D g2d, Terrain ter, int x, int y) {
-        g2d.drawImage(textureHolders.get(ter.getType()).get(getTileType(x, y, ter.getType()) + ".png"), x * scale, y * scale, scale, scale, null);
+        g2d.drawImage(textureHolders.get(ter.getType().text).get(getTileType(x, y, ter.getType()) + ".png"), x * scale, y * scale, scale, scale, null);
     }
 
     /**

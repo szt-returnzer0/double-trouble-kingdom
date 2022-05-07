@@ -127,7 +127,7 @@ public abstract class Tower extends Building {
         String color = (side.equals("left") ? "Blue" : "Red");
         if (isDestroyed)
             return color + "Destroyed.png";
-        return type + color + level + ".png";
+        return type.text + color + level + ".png";
     }
 
     /**
