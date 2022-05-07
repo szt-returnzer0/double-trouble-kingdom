@@ -29,12 +29,18 @@ public class Game {
      * @param p2Name   the name of Player2
      */
     public Game(Database database, Map map, String p1Name, String p2Name) {
+        Pathfinder.setMap(map);
         this.database = database;
         this.gameState = new GameState(p1Name, p2Name);
         this.gameState.linkDBRef(database);
         this.map = map;
     }
 
+    /**
+     * Constructs a Game for Editor use.
+     *
+     * @param map the Map to be injected
+     */
     public Game(Map map) {
         this.map = map;
         this.gameState = new GameState();
