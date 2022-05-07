@@ -26,9 +26,10 @@ public class Castle extends Building {
      * Upgrades the Building instance, Castles cannot be upgraded
      */
     public void upgrade() {
+        throw new UnsupportedOperationException("Castles cannot be upgraded");
     }
 
     public int getUpgradeCost() {
-        return 0;
+        throw new UnsupportedOperationException("Castles cannot be upgraded");
     }
 }

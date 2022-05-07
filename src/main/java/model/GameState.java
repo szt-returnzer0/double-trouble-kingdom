@@ -47,7 +47,7 @@ public class GameState {
     /**
      * GameField instance reference.
      */
-    private GameField gameFieldReference = null;
+    private GameField gameFieldReference;
     /**
      * Frames per second.
      */
@@ -483,14 +483,18 @@ public class GameState {
         return null;
     }
 
-    public long getStartTime() {
-        return startTime;
-    }
-
+    /**
+     * Toggles if path visualization is enabled.
+     */
     public void togglePathVisualization() {
         pathVisualization = !pathVisualization;
     }
 
+    /**
+     * Returns if path visualization is enabled.
+     *
+     * @return if path visualization is enabled
+     */
     public boolean isPathVisualization() {
         return pathVisualization;
     }

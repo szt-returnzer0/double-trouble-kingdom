@@ -19,13 +19,25 @@ import java.awt.*;
         @JsonSubTypes.Type(value = Shotgun.class, name = "Shotgun"),
 })
 public abstract class Building extends Entity {
+    /**
+     * Returns if the building can be upgraded.
+     */
     protected boolean canUpgrade;
+
+    /**
+     * Returns if the building is destroyed.
+     */
     protected boolean isDestroyed;
 
     /**
      * Determines if the Barrack instance is upgraded to train special units.
      */
     protected boolean isUpgraded;
+
+    /**
+     * Returns the building's upgrade cost.
+     */
+    protected int upgradeCost;
 
     /**
      * Constructs a new Building instance.

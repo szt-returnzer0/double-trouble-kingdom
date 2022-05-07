@@ -23,6 +23,4 @@ public class Sniper extends Tower {
         this.canAttack = true;
         this.targetsPerAttack = 1;
     }
-
-
 }

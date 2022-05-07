@@ -7,21 +7,8 @@ import java.awt.*;
 /**
  * Implementation of Entity abstract class, containing the Entity types common fields and methods.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "@type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Barracks.class, name = "Barracks"),
-        @JsonSubTypes.Type(value = Castle.class, name = "Castle"),
-        @JsonSubTypes.Type(value = Building.class, name = "Barricade"),
-        @JsonSubTypes.Type(value = Building.class, name = "Sniper"),
-        @JsonSubTypes.Type(value = Building.class, name = "Shotgun"),
-        @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"),
-        @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"),
-        @JsonSubTypes.Type(value = Diver.class, name = "Diver"),
-        @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
-        @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
+@JsonSubTypes({@JsonSubTypes.Type(value = Barracks.class, name = "Barracks"), @JsonSubTypes.Type(value = Castle.class, name = "Castle"), @JsonSubTypes.Type(value = Building.class, name = "Barricade"), @JsonSubTypes.Type(value = Building.class, name = "Sniper"), @JsonSubTypes.Type(value = Building.class, name = "Shotgun"), @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"), @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"), @JsonSubTypes.Type(value = Diver.class, name = "Diver"), @JsonSubTypes.Type(value = Climber.class, name = "Climber"), @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),})
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public abstract class Entity {
     /**
@@ -82,6 +69,7 @@ public abstract class Entity {
      * Determines which side the Entity belongs to.
      */
     protected String side;
+
     /**
      * Constructs an Entity instance without side.
      *
@@ -209,7 +197,6 @@ public abstract class Entity {
         this.owner = owner;
     }
 
-
     /**
      * Returns the Entity's size.
      *
@@ -291,6 +278,9 @@ public abstract class Entity {
         this.isAlive = this.healthPoints > 0;
     }
 
+    /**
+     * Sets the Entity's health to zero and sets it to dead.
+     */
     protected void killUnit() {
         this.healthPoints = 0;
         this.isAlive = false;

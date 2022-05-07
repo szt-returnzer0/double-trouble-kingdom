@@ -53,7 +53,7 @@ public class FileHandler {
         try {
             String fileName = file.getName().split("\\.")[0] + type;
             FileOutputStream fileOut = new FileOutputStream(fileName);
-            Serialize(fileOut, obj);
+            serialize(fileOut, obj);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +113,7 @@ public class FileHandler {
      * @param obj  the Object we want to serialize
      * @throws IOException if an error occurs
      */
-    public static void Serialize(FileOutputStream file, Object obj) throws IOException {
+    public static void serialize(FileOutputStream file, Object obj) throws IOException {
         mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
         mapper.writeValue(file, obj);
     }

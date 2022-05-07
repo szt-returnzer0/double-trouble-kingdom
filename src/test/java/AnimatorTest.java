@@ -18,10 +18,10 @@ class AnimatorTest {
         Soldier soldier = new Soldier(new Point(0, 0), 0);
         soldier.setSide("left");
         Animator animator = new Animator(soldier);
-        animator.startanim();
+        animator.startAnimation();
         assertEquals(soldier.getPath(), animator.getPath(), "Animator should get the Path of the soldier");
         assertTrue(soldier.isAnimated(), "Solider should be animated");
-        animator.stopanim();
+        animator.stopAnimation();
         assertFalse(soldier.isAnimated(), "Solider shouldn't be animated");
     }
 

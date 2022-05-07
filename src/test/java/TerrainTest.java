@@ -15,7 +15,7 @@ class TerrainTest {
     @DisplayName("Add Entities")
     void addEntityTest() {
         Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
-        Mountain mountain = new Mountain(new Point(0, 0));
+        Mountain mountain = new Mountain();
         Soldier soldier = new Soldier(new Point(0, 0), 0);
         mountain.addEntities(soldier);
         assertEquals(1, mountain.getEntities().size(), "Mountain's Entity ArrayList size should be 1");

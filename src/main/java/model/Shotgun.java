@@ -24,6 +24,4 @@ public class Shotgun extends Tower {
         this.canAttack = true;
         this.targetsPerAttack = 5;
     }
-
-
 }

@@ -2,6 +2,7 @@ package model;
 
 import java.awt.*;
 
+
 /**
  * Implementation of Barracks Building type.
  */
@@ -21,6 +22,7 @@ public class Barracks extends Building {
         this.value = 50;
         this.healthPoints = 50;
         this.maxHealthPoints = this.healthPoints;
+        this.upgradeCost = 40;
     }
 
     /**
@@ -48,8 +50,13 @@ public class Barracks extends Building {
         this.isUpgraded = true;
     }
 
+    /**
+     * Returns the upgrade cost of the Barrack instance.
+     *
+     * @return the upgrade cost of the Barrack instance
+     */
     public int getUpgradeCost() {
-        return 40;
+        return this.upgradeCost;
     }
 
 

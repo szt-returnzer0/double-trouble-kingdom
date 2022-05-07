@@ -48,6 +48,7 @@ public abstract class Tower extends Building {
         this.range = 0;
         this.canAttack = false;
         this.targets = new ArrayList<>();
+        this.upgradeCost = 5;
 
     }
 
@@ -99,7 +100,7 @@ public abstract class Tower extends Building {
     }
 
     public int getUpgradeCost() {
-        return (this.level + 1) * 5;
+        return (this.level + 1) * this.upgradeCost;
     }
 
 
