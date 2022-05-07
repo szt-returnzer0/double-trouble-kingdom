@@ -10,7 +10,7 @@ public class Plains extends Terrain {
      * Constructs a new Plains instance without predefined entities.
      */
     public Plains() {
-        super("Plains");
+        super(ObjectTypes.PLAINS);
         this.speedMod = 1;
     }
 
@@ -20,7 +20,7 @@ public class Plains extends Terrain {
      * @param entities an ArrayList containing the entities
      */
     public Plains(ArrayList<Entity> entities) {
-        super("Plains", entities);
+        super(ObjectTypes.PLAINS, entities);
         speedMod = 1;
     }
 }

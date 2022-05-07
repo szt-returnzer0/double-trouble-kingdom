@@ -15,7 +15,7 @@ public class Barracks extends Building {
      */
     public Barracks(Point position, String side) {
         super(position, side);
-        this.type = "Barracks";
+        this.type = ObjectTypes.BARRACKS;
         this.size = new Dimension(2, 4);
         this.isUpgraded = false;
         this.canUpgrade = true;

@@ -23,7 +23,7 @@ public class Soldier extends Entity {
     /**
      * An ArrayList which contains which tiles the Solider can cross.
      */
-    protected ArrayList<String> terrains;
+    protected ArrayList<ObjectTypes> terrains;
     /**
      * The Soldier's target Entity.
      */
@@ -51,14 +51,14 @@ public class Soldier extends Entity {
      */
     public Soldier(Point position, double speed) {
         super(position);
-        this.type = "Soldier";
+        this.type = ObjectTypes.SOLDIER;
         this.isAnimated = true;
         this.healthPoints = 10;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 2;
         this.speed = speed;
-        this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
+        this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
         this.pf = new Pathfinder();
         this.damage = 10;
         this.wayPoints = new ArrayList<>();
@@ -80,7 +80,7 @@ public class Soldier extends Entity {
      *
      * @return which tiles the Solider can cross in an ArrayList
      */
-    public ArrayList<String> getTerrains() {
+    public ArrayList<ObjectTypes> getTerrains() {
         return terrains;
     }
 

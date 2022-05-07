@@ -16,12 +16,12 @@ public class Climber extends Soldier {
      */
     public Climber(Point position, double speed) {
         super(position, speed);
-        this.type = "Climber";
+        this.type = ObjectTypes.CLIMBER;
         this.isAnimated = true;
         this.healthPoints = 10;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 5;
-        this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert", "Mountain"));
+        this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT, ObjectTypes.MOUNTAIN));
     }
 }

@@ -16,12 +16,12 @@ public class Diver extends Soldier {
      */
     public Diver(Point position, double speed) {
         super(position, speed);
-        this.type = "Diver";
+        this.type = ObjectTypes.DIVER;
         this.isAnimated = true;
         this.healthPoints = 10;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 5;
-        this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert", "Swamp"));
+        this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT, ObjectTypes.SWAMP));
     }
 }

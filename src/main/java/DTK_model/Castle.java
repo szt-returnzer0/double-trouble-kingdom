@@ -15,7 +15,7 @@ public class Castle extends Building {
      */
     public Castle(Point position, String side) {
         super(position, side);
-        this.type = "Castle";
+        this.type = ObjectTypes.CASTLE;
         this.isAnimated = false;
         this.healthPoints = 100;
         this.maxHealthPoints = this.healthPoints;

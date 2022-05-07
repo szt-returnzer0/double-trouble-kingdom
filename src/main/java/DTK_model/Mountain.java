@@ -10,7 +10,7 @@ public class Mountain extends Terrain {
      * Constructs a new Mountain instance without predefined entities.
      */
     public Mountain() {
-        super("Mountain");
+        super(ObjectTypes.MOUNTAIN);
         this.speedMod = 3;
     }
 
@@ -20,7 +20,7 @@ public class Mountain extends Terrain {
      * @param entities an ArrayList containing the entities
      */
     public Mountain(ArrayList<Entity> entities) {
-        super("Mountain", entities);
+        super(ObjectTypes.MOUNTAIN, entities);
         this.speedMod = 3;
     }
 }

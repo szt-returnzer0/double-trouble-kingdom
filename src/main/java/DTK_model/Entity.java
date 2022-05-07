@@ -28,7 +28,7 @@ public abstract class Entity {
     /**
      * The type of Entity.
      */
-    protected String type;
+    protected ObjectTypes type;
     /**
      * Determines if the Entity is alive.
      */
@@ -153,7 +153,7 @@ public abstract class Entity {
      *
      * @return the Entity's type
      */
-    public String getType() {
+    public ObjectTypes getType() {
         return type;
     }
 

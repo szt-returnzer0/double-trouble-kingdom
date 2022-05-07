@@ -15,7 +15,7 @@ public class Shotgun extends Tower {
      */
     public Shotgun(Point position, String side) {
         super(position, side);
-        this.type = "Shotgun";
+        this.type = ObjectTypes.SHOTGUN;
         this.canUpgrade = true;
         this.value = 30;
         this.size = new Dimension(2, 2);

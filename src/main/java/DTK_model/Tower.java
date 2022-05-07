@@ -58,22 +58,23 @@ public abstract class Tower extends Building {
      * @param type the type to convert to
      * @return the new Tower subclass instance
      */
-    public Tower transform(String type) {
+    public Tower transform(ObjectTypes type) {
         switch (type) {
-            case "Sniper" -> {
+            case SNIPER -> {
                 return new Sniper(position, side);
             }
-            case "Shotgun" -> {
+            case SHOTGUN -> {
                 return new Shotgun(position, side);
             }
             default -> {
                 try {
-                    throw new OperationNotSupportedException("Tower type not Sniper or Shotgun");
+                    throw new OperationNotSupportedException("Tower type is not Sniper or Shotgun");
                 } catch (OperationNotSupportedException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
-                return null;
             }
+
+
         }
     }
 

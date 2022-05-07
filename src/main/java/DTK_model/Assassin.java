@@ -22,13 +22,13 @@ public class Assassin extends Soldier {
      */
     public Assassin(Point position, double speed) {
         super(position, speed);
-        this.type = "Assassin";
+        this.type = ObjectTypes.ASSASSIN;
         this.isAnimated = true;
         this.healthPoints = 10;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 5;
-        this.terrains = new ArrayList<>(Arrays.asList("Plains", "Desert"));
+        this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
         this.range = 3;
         this.soldierTargets = new ArrayList<>();
     }

@@ -28,7 +28,7 @@ public abstract class Terrain {
     /**
      * The type of the tile.
      */
-    protected String type;
+    protected ObjectTypes type;
     /**
      * The speed modifier of the tile.
      */
@@ -47,7 +47,7 @@ public abstract class Terrain {
      *
      * @param type the type of tile
      */
-    protected Terrain(String type) {
+    protected Terrain(ObjectTypes type) {
         this.entities = new ArrayList<>();
         this.type = type;
         int randomInt = Terrain.random.nextInt(28);
@@ -61,7 +61,7 @@ public abstract class Terrain {
      * @param type     the type of tile
      * @param entities an ArrayList containing the entities
      */
-    protected Terrain(String type, ArrayList<Entity> entities) {
+    protected Terrain(ObjectTypes type, ArrayList<Entity> entities) {
         this.type = type;
         this.entities = entities;
         int randomInt = Terrain.random.nextInt(28);
@@ -111,7 +111,7 @@ public abstract class Terrain {
      *
      * @return the type of the tile
      */
-    public String getType() {
+    public ObjectTypes getType() {
         return type;
     }
 

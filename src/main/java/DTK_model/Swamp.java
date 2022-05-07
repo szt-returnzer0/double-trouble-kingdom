@@ -10,7 +10,7 @@ public class Swamp extends Terrain {
      * Constructs a new Swamp instance without predefined entities.
      */
     public Swamp() {
-        super("Swamp");
+        super(ObjectTypes.SWAMP);
         this.speedMod = 3;
     }
 
@@ -20,7 +20,7 @@ public class Swamp extends Terrain {
      * @param entities an ArrayList containing the entities
      */
     public Swamp(ArrayList<Entity> entities) {
-        super("Swamp", entities);
+        super(ObjectTypes.SWAMP, entities);
         this.speedMod = 3;
     }
 }
