@@ -11,7 +11,7 @@ public class Desert extends Terrain {
      * Constructs a new Desert instance without predefined entities.
      */
     public Desert() {
-        super(ObjectTypes.DESERT);
+        super(Types.DESERT);
         this.speedMod = 2;
 
     }
@@ -22,7 +22,7 @@ public class Desert extends Terrain {
      * @param ent an ArrayList containing the entities
      */
     public Desert(ArrayList<Entity> ent) {
-        super(ObjectTypes.DESERT, ent);
+        super(Types.DESERT, ent);
         this.speedMod = 2;
     }
 }

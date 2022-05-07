@@ -13,9 +13,9 @@ public class Barracks extends Building {
      * @param position the barrack's position on the Map
      * @param side     the side it belongs to
      */
-    public Barracks(Point position, String side) {
+    public Barracks(Point position, Sides side) {
         super(position, side);
-        this.type = ObjectTypes.BARRACKS;
+        this.type = Types.BARRACKS;
         this.size = new Dimension(2, 4);
         this.isUpgraded = false;
         this.canUpgrade = true;

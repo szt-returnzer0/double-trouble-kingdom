@@ -28,7 +28,7 @@ public abstract class Entity {
     /**
      * The type of Entity.
      */
-    protected ObjectTypes type;
+    protected Types type;
     /**
      * Determines if the Entity is alive.
      */
@@ -68,7 +68,7 @@ public abstract class Entity {
     /**
      * Determines which side the Entity belongs to.
      */
-    protected String side;
+    protected Sides side;
 
     /**
      * Constructs an Entity instance without side.
@@ -87,7 +87,7 @@ public abstract class Entity {
      * @param position the Entity instance's position on the Map
      * @param side     the side it belongs to
      */
-    protected Entity(Point position, String side) {
+    protected Entity(Point position, Sides side) {
         this.position = position;
         this.isAlive = true;
         this.side = side;
@@ -99,7 +99,7 @@ public abstract class Entity {
      *
      * @return the side the Entity belongs to
      */
-    public String getSide() {
+    public Sides getSide() {
         return this.side;
     }
 
@@ -108,7 +108,7 @@ public abstract class Entity {
      *
      * @param side the side we want to set it
      */
-    public void setSide(String side) {
+    public void setSide(Sides side) {
         this.side = side;
     }
 
@@ -153,7 +153,7 @@ public abstract class Entity {
      *
      * @return the Entity's type
      */
-    public ObjectTypes getType() {
+    public Types getType() {
         return type;
     }
 

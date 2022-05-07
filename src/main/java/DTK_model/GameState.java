@@ -207,7 +207,7 @@ public class GameState {
             }
         }
         for (Building b : buildings) {
-            players.get(b.side.equals("left") ? 0 : 1).addSavedEntity(b);
+            players.get(b.side.equals(Sides.BLUE) ? 0 : 1).addSavedEntity(b);
         }
     }
 

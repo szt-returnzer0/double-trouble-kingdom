@@ -65,7 +65,7 @@ public class Pathfinder {
      * @param b     The building to check when searching path at building phase.
      * @return The shortest path from the start to the end.
      */
-    public Point Dijkstra(Soldier start, String side, Building b) {
+    public Point Dijkstra(Soldier start, Sides side, Building b) {
         Point src = start.getPosition();
         Point end = null;
         fieldToGraph(start, b);
@@ -92,7 +92,7 @@ public class Pathfinder {
 
             Point pos = path.remove();
 
-            if (side.equals("waypoint")) {
+            if (side.equals(Sides.WAYPOINT)) {
                 if (pos.x == wayPoint.x && pos.y == wayPoint.y) {
                     if (end == null || distance[pos.y][pos.x] < distance[end.y][end.x]) {
                         end = new Point(pos);
@@ -164,7 +164,7 @@ public class Pathfinder {
      * @param mode  The return mode.
      * @return The path.
      */
-    public ArrayList<Point> genPath(Soldier start, String side, Building b, String mode) {
+    public ArrayList<Point> genPath(Soldier start, Sides side, Building b, String mode) {
         Point end;
 
         if (!start.getWayPoints().isEmpty() && start.getPosition().equals(start.getWayPoints().get(0).getLocation()))
@@ -172,7 +172,7 @@ public class Pathfinder {
 
         if (!start.getWayPoints().isEmpty()) {
             wayPoint = start.getWayPoints().get(0);
-            end = Dijkstra(start, "waypoint", null);
+            end = Dijkstra(start, Sides.WAYPOINT, null);
         } else {
             end = Dijkstra(start, side, null);
         }

@@ -45,7 +45,7 @@ public abstract class Building extends Entity {
      * @param position the building's position on the Map
      * @param side     the side it belongs to
      */
-    public Building(Point position, String side) {
+    public Building(Point position, Sides side) {
         super(position, side);
         isUpgraded = false;
     }
@@ -86,7 +86,7 @@ public abstract class Building extends Entity {
     public String getImage() {
         int invert = size.width > size.height ? 2 : 0;
         int upgrade = isUpgraded ? 1 : 0;
-        String color = (side.equals("left") ? "Blue" : "Red");
+        String color = (side.equals(Sides.BLUE) ? "Blue" : "Red");
         return type.text + color + (upgrade + invert) + ".png";
     }
 

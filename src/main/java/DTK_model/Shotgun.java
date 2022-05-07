@@ -13,9 +13,9 @@ public class Shotgun extends Tower {
      * @param position the sniper's position on the Map
      * @param side     the side it belongs to
      */
-    public Shotgun(Point position, String side) {
+    public Shotgun(Point position, Sides side) {
         super(position, side);
-        this.type = ObjectTypes.SHOTGUN;
+        this.type = Types.SHOTGUN;
         this.canUpgrade = true;
         this.value = 30;
         this.size = new Dimension(2, 2);

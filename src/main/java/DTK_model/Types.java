@@ -1,12 +1,10 @@
 package DTK_model;
 
-import com.sun.jdi.InvalidTypeException;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public enum ObjectTypes {
+public enum Types {
     CASTLE("Castle", Color.LIGHT_GRAY),
     BARRACKS("Barracks",new Color(64, 37, 19)),
     BARRICADE("Barricade",new Color(208, 146, 110)),
@@ -28,12 +26,12 @@ public enum ObjectTypes {
     public final String text;
     public final Color color;
 
-    ObjectTypes(String text) {
+    Types(String text) {
         this.text = text;
         this.color = null;
 
     }
-    ObjectTypes(String text, Color color) {
+    Types(String text, Color color) {
         this.text = text;
         this.color = color;
     }
@@ -41,51 +39,51 @@ public enum ObjectTypes {
 
 
 
-    public static ArrayList<ObjectTypes> getSoldierTypes() {
+    public static ArrayList<Types> getSoldierTypes() {
         return new ArrayList<>(Arrays.asList(SOLDIER, ASSASSIN, KAMIKAZE, DIVER, CLIMBER));
     }
 
-    public static ArrayList<ObjectTypes> getBuildingTypes() {
+    public static ArrayList<Types> getBuildingTypes() {
         return new ArrayList<>(Arrays.asList(CASTLE, BARRACKS, BARRICADE, SHOTGUN, SNIPER));
     }
 
-    public static ArrayList<ObjectTypes> getTerrainTypes() {
+    public static ArrayList<Types> getTerrainTypes() {
         return new ArrayList<>(Arrays.asList(PLAINS, DESERT, SWAMP, MOUNTAIN));
     }
 
-    public static ArrayList<ObjectTypes> getTowerTypes() {
+    public static ArrayList<Types> getTowerTypes() {
                return new ArrayList<>(Arrays.asList(SHOTGUN, SNIPER, BARRICADE));
 
     }
 
-    public static ArrayList<ObjectTypes> getUpgradeable() {
+    public static ArrayList<Types> getUpgradeable() {
         return new ArrayList<>(Arrays.asList(SHOTGUN, SNIPER ));
 
     }
 
-    public static Building buildingFactory(ObjectTypes objectType, int x, int y) {
+    public static Building buildingFactory(Types objectType, int x, int y) {
          switch (objectType) {
              case CASTLE -> {
-                 return new Castle(new Point(x, y), "");
+                 return new Castle(new Point(x, y), Sides.EDITOR);
              }
              case BARRACKS -> {
-                 return new Barracks(new Point(x, y), "");
+                 return new Barracks(new Point(x, y), Sides.EDITOR);
              }
              case BARRICADE -> {
-                 return new Barricade(new Point(x, y), "");
+                 return new Barricade(new Point(x, y), Sides.EDITOR);
              }
              case SHOTGUN -> {
-                 return new Shotgun(new Point(x, y), "");
+                 return new Shotgun(new Point(x, y), Sides.EDITOR);
              }
              case SNIPER -> {
-                 return new Sniper(new Point(x, y), "");
+                 return new Sniper(new Point(x, y), Sides.EDITOR);
              }
 
          }
          return  null;
     }
 
-    public static Terrain terrainFactory(ObjectTypes objectType, ArrayList<Entity> entities) {
+    public static Terrain terrainFactory(Types objectType, ArrayList<Entity> entities) {
          switch (objectType) {
             case PLAINS -> {return new Plains(entities);}
             case DESERT -> {return new Desert(entities);}
@@ -95,7 +93,7 @@ public enum ObjectTypes {
         return null;
     }
 
-    public static Soldier soldierFactory(ObjectTypes objectType, int x, int y) {
+    public static Soldier soldierFactory(Types objectType, int x, int y) {
          switch (objectType) {
             case SOLDIER -> {return new Soldier(new Point(x, y));}
             case ASSASSIN -> {return new Assassin(new Point(x, y));}

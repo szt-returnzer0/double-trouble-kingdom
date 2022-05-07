@@ -23,7 +23,7 @@ public class Soldier extends Entity {
     /**
      * An ArrayList which contains which tiles the Solider can cross.
      */
-    protected ArrayList<ObjectTypes> terrains;
+    protected ArrayList<Types> terrains;
     /**
      * The Soldier's target Entity.
      */
@@ -47,18 +47,17 @@ public class Soldier extends Entity {
      * Constructs a new Soldier instance.
      *
      * @param position the soldier's position
-     * @param speed    the soldier's current speed
      */
     public Soldier(Point position) {
         super(position);
-        this.type = ObjectTypes.SOLDIER;
+        this.type = Types.SOLDIER;
         this.isAnimated = true;
         this.healthPoints = 10;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 2;
         this.speed = 2;
-        this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
+        this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
         this.pf = new Pathfinder();
         this.damage = 10;
         this.wayPoints = new ArrayList<>();
@@ -80,7 +79,7 @@ public class Soldier extends Entity {
      *
      * @return which tiles the Solider can cross in an ArrayList
      */
-    public ArrayList<ObjectTypes> getTerrains() {
+    public ArrayList<Types> getTerrains() {
         return terrains;
     }
 
@@ -95,7 +94,7 @@ public class Soldier extends Entity {
 
     @Override
     public String getImage() {
-        String color = (side.equals("left") ? "Blue" : "Red");
+        String color = (side.equals(Sides.BLUE) ? "Blue" : "Red");
         if (path == null || path.isEmpty()) {
             return color + "Front0.png";
         }
@@ -139,7 +138,7 @@ public class Soldier extends Entity {
      * Calculates the shortest path to the enemy Castle.
      */
     protected void calculatePath() {
-        this.path = pf.genPath(this, (side.equals("left") ? "right" : "left"), null, "rel");
+        this.path = pf.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "rel");
         this.animObj.setPath(this.path);
     }
 
@@ -160,6 +159,6 @@ public class Soldier extends Entity {
     }
 
     public ArrayList<Point> getAbsPath() {
-        return pf.genPath(this, (side.equals("left") ? "right" : "left"), null, "abs");
+        return pf.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "abs");
     }
 }

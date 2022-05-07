@@ -15,7 +15,7 @@ class AnimatorTest {
     void animTest() {
         Pathfinder.setMap(new Map());
         Soldier soldier = new Soldier(new Point(0, 0));
-        soldier.setSide("left");
+        soldier.setSide(Sides.BLUE);
         Animator animator = new Animator(soldier);
         animator.startAnimation();
         assertEquals(soldier.getPath(), animator.getPath(), "Animator should get the Path of the soldier");
@@ -29,7 +29,7 @@ class AnimatorTest {
     void removePathTest() {
         Pathfinder.setMap(new Map());
         Soldier soldier = new Soldier(new Point(0, 0));
-        soldier.setSide("left");
+        soldier.setSide(Sides.BLUE);
         Animator animator = new Animator(soldier);
         animator.setPath(soldier.getPath());
         animator.removePath();

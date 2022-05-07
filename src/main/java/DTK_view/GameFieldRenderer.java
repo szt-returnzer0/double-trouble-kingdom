@@ -423,7 +423,7 @@ public class GameFieldRenderer extends JPanel {
      * @param animObj the animation object of the unit
      * @param side    the side of the unit
      */
-    private void drawUnitHealth(Graphics2D g2d, Entity ent, Color green, Color red, int width, Animator animObj, String side) {
+    private void drawUnitHealth(Graphics2D g2d, Entity ent, Color green, Color red, int width, Animator animObj, Sides side) {
         g2d.setColor(green);
         g2d.fillRect((int) (ent.getPosition().x * scale + animObj.getX()), (int) (ent.getPosition().y * scale - 6 + animObj.getY()), width, 5);
         g2d.setColor(red);
@@ -442,8 +442,8 @@ public class GameFieldRenderer extends JPanel {
      * @param side   the side it belongs to
      * @param entity the entity to draw to
      */
-    private void drawUnitOwner(Graphics2D g2d, int x, int y, String side, Entity entity) {
-        if (ObjectTypes.getSoldierTypes().contains(entity.getType())) {
+    private void drawUnitOwner(Graphics2D g2d, int x, int y, Sides side, Entity entity) {
+        if (Types.getSoldierTypes().contains(entity.getType())) {
             setSideColor(side, g2d);
             g2d.drawRect(x * scale + 2, y * scale + 2, scale - 4, scale - 4);
 
@@ -459,7 +459,7 @@ public class GameFieldRenderer extends JPanel {
     protected void drawPath(Graphics2D g2d, Soldier s) {
         setSideColor(s.getSide(), g2d);
         Color c = g2d.getColor();
-        int alpha = s.getSide().equals("left") ? 200 : 150;
+        int alpha = s.getSide().equals(Sides.BLUE) ? 200 : 150;
         g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
         ArrayList<Point> path = s.getAbsPath();
         s.visualizationEnd = Math.min(s.visualizationEnd + 1, path.size());
@@ -497,10 +497,10 @@ public class GameFieldRenderer extends JPanel {
      * @param ent the building to draw to
      */
     protected void drawBldState(Graphics2D g2d, Entity ent) {
-        String side = ent.getPosition().x + 3 < xLength / 2 ? "left" : "right";
+        Sides side = ent.getPosition().x + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
 
 
-        if (ObjectTypes.getTowerTypes().contains(ent.getType())) {
+        if (Types.getTowerTypes().contains(ent.getType())) {
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, 0);
@@ -539,7 +539,7 @@ public class GameFieldRenderer extends JPanel {
      * @param ent  the building to draw to
      * @param side the side it belongs to
      */
-    private void drawBldOwner(Graphics2D g2d, Entity ent, String side) {
+    private void drawBldOwner(Graphics2D g2d, Entity ent, Sides side) {
         setSideColor(side, g2d);
         g2d.drawRect(ent.getPosition().x * scale + 4, ent.getPosition().y * scale + 4, ent.getSize().width * scale - 8, ent.getSize().height * scale - 8);
     }
@@ -550,8 +550,8 @@ public class GameFieldRenderer extends JPanel {
      * @param side the side we are on
      * @param g2d  the graphics we use
      */
-    private void setSideColor(String side, Graphics2D g2d) {
-        if (side.equals("left")) {
+    private void setSideColor(Sides side, Graphics2D g2d) {
+        if (side.equals(Sides.BLUE)) {
             g2d.setColor(Color.cyan);
         } else {
             g2d.setColor(Color.red);
@@ -626,7 +626,7 @@ public class GameFieldRenderer extends JPanel {
      * @param g2d  the graphics we use
      * @param type the type to handle
      */
-    protected void handleType(Graphics2D g2d, ObjectTypes type) {
+    protected void handleType(Graphics2D g2d, Types type) {
         g2d.setColor(type.color);
     }
 
@@ -638,7 +638,7 @@ public class GameFieldRenderer extends JPanel {
      * @param type tile type
      * @return The tile art type
      */
-    private String getTileType(int x, int y, ObjectTypes type) {
+    private String getTileType(int x, int y, Types type) {
         String tileType;
         boolean left = true;
         boolean down = true;
@@ -768,7 +768,7 @@ public class GameFieldRenderer extends JPanel {
      * @param mx     the move x coordinate
      * @param my     the move y coordinate
      */
-    private void drawUnitAnimatedInformation(Graphics2D g2d, int x, int y, String side, Entity entity, double mx, double my) {
+    private void drawUnitAnimatedInformation(Graphics2D g2d, int x, int y, Sides side, Entity entity, double mx, double my) {
         if (entity instanceof Soldier) {
 
             if (!texturesOn) {

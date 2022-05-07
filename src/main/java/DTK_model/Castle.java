@@ -13,9 +13,9 @@ public class Castle extends Building {
      * @param position the castle's position on the Map
      * @param side     the side it belongs to
      */
-    public Castle(Point position, String side) {
+    public Castle(Point position, Sides side) {
         super(position, side);
-        this.type = ObjectTypes.CASTLE;
+        this.type = Types.CASTLE;
         this.isAnimated = false;
         this.healthPoints = 100;
         this.maxHealthPoints = this.healthPoints;

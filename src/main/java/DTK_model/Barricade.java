@@ -12,9 +12,9 @@ public class Barricade extends Tower {
      * @param position the barricade's position on the Map
      * @param side     the side it belongs to
      */
-    public Barricade(Point position, String side) {
+    public Barricade(Point position, Sides side) {
         super(position, side);
-        this.type = ObjectTypes.BARRICADE;
+        this.type = Types.BARRICADE;
         this.value = 10;
         this.size = new Dimension(2, 2);
     }

@@ -22,14 +22,14 @@ public class Kamikaze extends Soldier {
      */
     public Kamikaze(Point position) {
         super(position);
-        this.type = ObjectTypes.KAMIKAZE;
+        this.type = Types.KAMIKAZE;
         this.isAnimated = true;
         this.healthPoints = 10;
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.range = 4;
-        this.terrains = new ArrayList<>(Arrays.asList(ObjectTypes.PLAINS, ObjectTypes.DESERT));
+        this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
         this.towerTargets = new ArrayList<>();
         this.speed = 2;
     }

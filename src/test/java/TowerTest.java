@@ -75,7 +75,7 @@ class TowerTest {
     void towerUpgradeTest() {
         Barricade barricadeToSniper = new Barricade(new Point(0, 0), null);
         Barricade barricadeToShotgun = new Barricade(new Point(0, 0), null);
-        Tower sniper = barricadeToSniper.transform(ObjectTypes.SNIPER);
+        Tower sniper = barricadeToSniper.transform(Types.SNIPER);
         assertEquals("Sniper", sniper.getType(), "Sniper's type is sniper");
         assertEquals(30, sniper.getValue(), "Value is 30");
         assertEquals(7, sniper.getRange(), "Sniper's range is 7");
@@ -89,7 +89,7 @@ class TowerTest {
         assertEquals(30, sniper.getHealthPoints(), "Health point is 30");
         assertEquals(30, sniper.getMaxHealthPoints(), "Max health point is 30");
 
-        Tower shotgun = barricadeToShotgun.transform(ObjectTypes.SHOTGUN);
+        Tower shotgun = barricadeToShotgun.transform(Types.SHOTGUN);
         assertEquals("Shotgun", shotgun.getType(), "Shotgun's type is shotgun");
         assertEquals(30, shotgun.getValue(), "Value is 30");
         assertEquals(3, shotgun.getRange(), "Shotgun's range is 3");

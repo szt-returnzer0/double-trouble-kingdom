@@ -43,9 +43,9 @@ public final class Map implements Serializable {
                 tiles[i][j] = new Plains();
             }
         }
-        Building[] buildings = new Building[]{new Castle(new Point(3, 8), "left"), new Castle(new Point(56, 8), "right"),
-                new Barracks(new Point(3, 5), "left"), new Barracks(new Point(57, 5), "right"),
-                new Barracks(new Point(3, 24), "left"), new Barracks(new Point(57, 24), "right"),
+        Building[] buildings = new Building[]{new Castle(new Point(3, 8), Sides.BLUE), new Castle(new Point(56, 8), Sides.RED),
+                new Barracks(new Point(3, 5), Sides.BLUE), new Barracks(new Point(57, 5), Sides.RED),
+                new Barracks(new Point(3, 24), Sides.BLUE), new Barracks(new Point(57, 24), Sides.RED),
         };
 
         for (Building building : buildings) {

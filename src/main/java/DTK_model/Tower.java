@@ -40,7 +40,7 @@ public abstract class Tower extends Building {
      * @param position the tower's position on the Map
      * @param side     the side it belongs to
      */
-    public Tower(Point position, String side) {
+    public Tower(Point position, Sides side) {
         super(position, side);
         this.healthPoints = 20;
         this.maxHealthPoints = this.healthPoints;
@@ -58,7 +58,7 @@ public abstract class Tower extends Building {
      * @param type the type to convert to
      * @return the new Tower subclass instance
      */
-    public Tower transform(ObjectTypes type) {
+    public Tower transform(Types type) {
         switch (type) {
             case SNIPER -> {
                 return new Sniper(position, side);
@@ -124,7 +124,7 @@ public abstract class Tower extends Building {
 
     @Override
     public String getImage() {
-        String color = (side.equals("left") ? "Blue" : "Red");
+        String color = (side.equals(Sides.BLUE) ? "Blue" : "Red");
         if (isDestroyed)
             return color + "Destroyed.png";
         return type.text + color + level + ".png";

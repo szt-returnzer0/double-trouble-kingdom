@@ -53,20 +53,20 @@ public class MapEditorView extends GameField {
     protected void setupButtons() {
 
         this.controlPanel.setButtonColor(0, Color.green, 2);
-        this.controlPanel.attachActionListener(0, e -> sideText = "Selection: " + (type = ObjectTypes.PLAINS).text);
+        this.controlPanel.attachActionListener(0, e -> sideText = "Selection: " + (type = Types.PLAINS).text);
         this.controlPanel.setButtonColor(1, Color.blue, 2);
-        this.controlPanel.attachActionListener(1, e -> sideText = "Selection: " + (type = ObjectTypes.SWAMP).text);
+        this.controlPanel.attachActionListener(1, e -> sideText = "Selection: " + (type = Types.SWAMP).text);
         this.controlPanel.setButtonColor(2, Color.darkGray, 2);
-        this.controlPanel.attachActionListener(2, e -> sideText = "Selection: " + (type = ObjectTypes.MOUNTAIN).text);
+        this.controlPanel.attachActionListener(2, e -> sideText = "Selection: " + (type = Types.MOUNTAIN).text);
         this.controlPanel.setButtonColor(3, Color.yellow, 2);
-        this.controlPanel.attachActionListener(3, e -> sideText = "Selection: " + (type = ObjectTypes.DESERT).text);
+        this.controlPanel.attachActionListener(3, e -> sideText = "Selection: " + (type = Types.DESERT).text);
 
         this.controlPanel.setButtonColor(4, Color.lightGray, 2);
-        this.controlPanel.attachActionListener(4, e -> sideText = "Selection: " + (type = ObjectTypes.CASTLE).text);
+        this.controlPanel.attachActionListener(4, e -> sideText = "Selection: " + (type = Types.CASTLE).text);
         this.controlPanel.setButtonColor(5, new Color(64, 37, 19), 2);
-        this.controlPanel.attachActionListener(5, e -> sideText = "Selection: " + (type = ObjectTypes.BARRACKS).text);
+        this.controlPanel.attachActionListener(5, e -> sideText = "Selection: " + (type = Types.BARRACKS).text);
 
-        this.controlPanel.attachActionListener(6, e -> sideText = "Selection: " + (type = ObjectTypes.DELETE).text);
+        this.controlPanel.attachActionListener(6, e -> sideText = "Selection: " + (type = Types.DELETE).text);
         this.controlPanel.setButtonColors(6, new Color[]{
                 new Color(255, 142, 142),
                 new Color(70, 0, 0),
@@ -126,20 +126,20 @@ public class MapEditorView extends GameField {
     private void placeLimitedBuilding(Building b) {
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
-        String side = xIdx < xLength / 2 ? "left" : "right";
+        Sides side = xIdx < xLength / 2 ? Sides.BLUE : Sides.RED;
         b.setSide(side);
         if (inverted)
             b.invert();
-        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), ObjectTypes.CASTLE) ? castles : barracks;
-        int maxSize = Objects.equals(b.getType(), ObjectTypes.CASTLE) ? 1 : 2;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), ObjectTypes.CASTLE) || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
-            if (side.equals("left") && arr.get(0).size() >= maxSize) {
+        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), Types.CASTLE) ? castles : barracks;
+        int maxSize = Objects.equals(b.getType(), Types.CASTLE) ? 1 : 2;
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), Types.CASTLE) || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+            if (side.equals(Sides.BLUE) && arr.get(0).size() >= maxSize) {
                 deleteBuilding(arr.get(0).remove());
 
-            } else if (side.equals("right") && arr.get(1).size() >= maxSize) {
+            } else if (side.equals(Sides.RED) && arr.get(1).size() >= maxSize) {
                 deleteBuilding(arr.get(1).remove());
             }
-            if (side.equals("left")) {
+            if (side.equals(Sides.BLUE)) {
                 arr.get(0).add(b);
             } else {
                 arr.get(1).add(b);
@@ -169,13 +169,13 @@ public class MapEditorView extends GameField {
             try {
                 ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
 
-                if(ObjectTypes.getBuildingTypes().contains(type)){
-                   placeLimitedBuilding(ObjectTypes.buildingFactory(type, xIdx, yIdx));
+                if(Types.getBuildingTypes().contains(type)){
+                   placeLimitedBuilding(Types.buildingFactory(type, xIdx, yIdx));
                 }
-                else if(ObjectTypes.getTerrainTypes().contains(type)){
-                    map.getTiles()[yIdx][xIdx] = ObjectTypes.terrainFactory(type,ent);
+                else if(Types.getTerrainTypes().contains(type)){
+                    map.getTiles()[yIdx][xIdx] = Types.terrainFactory(type,ent);
                 }
-                if(Objects.equals(type, ObjectTypes.DELETE)){
+                if(Objects.equals(type, Types.DELETE)){
                     safeDeleteBuilding(ent.get(0));
                 }
 
@@ -198,14 +198,14 @@ public class MapEditorView extends GameField {
         switch (ent.getType()) {
             case CASTLE -> {
                 switch (ent.getSide()) {
-                    case "left" -> castles.get(0).remove((Building) ent);
-                    case "right" -> castles.get(1).remove((Building) ent);
+                    case BLUE -> castles.get(0).remove((Building) ent);
+                    case RED -> castles.get(1).remove((Building) ent);
                 }
             }
             case BARRACKS -> {
                 switch (ent.getSide()) {
-                    case "left" -> barracks.get(0).remove((Building) ent);
-                    case "right" -> barracks.get(1).remove((Building) ent);
+                    case BLUE -> barracks.get(0).remove((Building) ent);
+                    case RED -> barracks.get(1).remove((Building) ent);
                 }
             }
         }

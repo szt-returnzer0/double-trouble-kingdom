@@ -77,9 +77,9 @@ public class PlayerTest {
 
         assertEquals(3, game.getGameState().getPlayers().get(0).getTowers().get(0).getLevel(), "Building upgrade is not correct");
 
-        game.getGameState().getPlayers().get(1).addEntity(game.getGameState().getPlayers().get(1).transformTower(game.getGameState().getPlayers().get(1).getTowers().get(0), ObjectTypes.SNIPER));
+        game.getGameState().getPlayers().get(1).addEntity(game.getGameState().getPlayers().get(1).transformTower(game.getGameState().getPlayers().get(1).getTowers().get(0), Types.SNIPER));
 
-        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType() == ObjectTypes.SNIPER).toArray()[0],
+        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType() == Types.SNIPER).toArray()[0],
                 game.getGameState().getPlayers().get(1).getTowers().get(1), "Tower is not correct");
 
 

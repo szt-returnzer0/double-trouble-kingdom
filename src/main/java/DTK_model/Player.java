@@ -22,7 +22,7 @@ public class Player {
      * The player's name.
      */
     private final String name;
-    private final String side;
+    private final Sides side;
     /**
      * ArrayList containing the player's entities.
      */
@@ -50,10 +50,10 @@ public class Player {
         this.gold = 100;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>();
-        this.side = playerNumber == 1 ? "left" : "right";
+        this.side = playerNumber == 1 ? Sides.BLUE : Sides.RED;
     }
 
-    public String getSide() {
+    public Sides getSide() {
         return side;
     }
 
@@ -184,7 +184,7 @@ public class Player {
             if (building.getUpgradeCost() < this.gold) {
                 building.upgrade();
                 this.gold -= building.getUpgradeCost();
-                if (Objects.equals(building.getType(), ObjectTypes.BARRACKS)) isUnitRestricted = false;
+                if (Objects.equals(building.getType(), Types.BARRACKS)) isUnitRestricted = false;
             }
         }
     }
@@ -196,7 +196,7 @@ public class Player {
      * @param type  the type we want
      * @return new Tower Entity
      */
-    public Tower transformTower(Tower tower, ObjectTypes type) { // rewrite with void method
+    public Tower transformTower(Tower tower, Types type) { // rewrite with void method
         this.gold += 10;
         return tower.transform(type);
     }
@@ -220,7 +220,7 @@ public class Player {
     public Building getCastle() {
         for (Entity entity : entities) {
             if (entity instanceof Building) {
-                if (Objects.equals(entity.getType(), ObjectTypes.CASTLE)) {
+                if (Objects.equals(entity.getType(), Types.CASTLE)) {
                     return (Building) entity;
                 }
             }
