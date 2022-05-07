@@ -23,7 +23,7 @@ public class ControlPanel extends JPanel {
     /**
      * The buttons in the panel.
      */
-    private final JRoundedButton[] buttons = new JRoundedButton[7]; //for multiple actionListener support
+    private final JRoundedButton[] buttons = new JRoundedButton[7];
     /**
      * The inner panel of the panel.
      */
@@ -31,12 +31,11 @@ public class ControlPanel extends JPanel {
     /**
      * Game dependency.
      */
-    private Game game;
-
+    private final Game game;
     /**
      * GridBagLayout for panels.
      */
-    GridBagLayout gbl = new GridBagLayout();
+    GridBagLayout gridBagLayout = new GridBagLayout();
 
     /**
      * Constructs a new ControlPanel instance with dependency injection.
@@ -47,7 +46,7 @@ public class ControlPanel extends JPanel {
         super();
         this.game = game;
         setLayout(new BorderLayout());
-        innerPanel.setLayout(gbl);
+        innerPanel.setLayout(gridBagLayout);
         add(innerPanel, BorderLayout.WEST);
         innerPanel.setOpaque(false);
         backgroundColor = new Color(185, 185, 185, 200);
@@ -58,36 +57,6 @@ public class ControlPanel extends JPanel {
     }
 
     /**
-     * Constructs a new ControlPanel instance.
-     */
-    public ControlPanel() {
-        super();
-        setLayout(new BorderLayout());
-        innerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 8));
-        add(innerPanel, BorderLayout.CENTER);
-        innerPanel.setOpaque(false);
-        backgroundColor = new Color(185, 185, 185, 200);
-        borderColor = Color.white;
-        setOpaque(false);
-        createButtons();
-        repaint();
-    }
-
-    /**
-     * Constructs a new ControlPanel instance with given colors.
-     *
-     * @param bg the background color
-     * @param br the border color
-     */
-    public ControlPanel(Color bg, Color br) {
-        super(new FlowLayout());
-        backgroundColor = bg;
-        borderColor = br;
-        setOpaque(false);
-        createButtons();
-    }
-
-    /**
      * Returns the buttons of the panel.
      *
      * @return the buttons of the panel
@@ -95,7 +64,6 @@ public class ControlPanel extends JPanel {
     public JRoundedButton[] getButtons() {
         return buttons;
     }
-
 
     /**
      * Resizes the panel and buttons.
@@ -123,18 +91,18 @@ public class ControlPanel extends JPanel {
                 c.insets.left = 5;
 
             buttons[i] = new JRoundedButton(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
-            gbl.setConstraints(buttons[i], c);
+            gridBagLayout.setConstraints(buttons[i], c);
             innerPanel.add(buttons[i]);
         }
 
         JPanel sidePanel = new JPanel();
-        sidePanel.setLayout(gbl);
+        sidePanel.setLayout(gridBagLayout);
         sidePanel.setOpaque(false);
         this.add(sidePanel, BorderLayout.LINE_END);
 
         c.insets.right = 13;
         buttons[5] = new JRoundedButton(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
-        gbl.setConstraints(buttons[5], c);
+        gridBagLayout.setConstraints(buttons[5], c);
         sidePanel.add(buttons[5]);
 
         buttons[6] = new JRoundedButton(String.valueOf(game.getGameState().getCurrentPlayer().getGold()), 50, 50, new Color[]{
@@ -143,7 +111,7 @@ public class ControlPanel extends JPanel {
                 new Color(255, 205, 0)}, 50, 50);
 
         c.insets.right = 20;
-        gbl.setConstraints(buttons[6], c);
+        gridBagLayout.setConstraints(buttons[6], c);
 
         sidePanel.add(buttons[6]);
         sidePanel.setOpaque(false);

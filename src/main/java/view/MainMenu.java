@@ -17,14 +17,22 @@ import java.io.IOException;
  */
 public class MainMenu extends JPanel {
     /**
-     * The default map name.
-     */
-    private String mapName;
-    BufferedImage background;
-    /**
      * The label to show the player names.
      */
     private final JLabel playersLabel;
+    /**
+     * The label to the loaded map's name.
+     */
+    private final JLabel mapNameLabel;
+
+    /**
+     * The background image of the panel.
+     */
+    BufferedImage background;
+    /**
+     * The default map name.
+     */
+    private String mapName;
     /**
      * The name of player 1.
      */
@@ -37,35 +45,30 @@ public class MainMenu extends JPanel {
      * The loaded Map instance.
      */
     private Pair<Map, File> map;
-    /**
-     * The label to the loaded map's name.
-     */
-    private final JLabel mapNameLabel;
 
     /**
      * Constructs a new MainMenu instance.
      *
-     * @param wnd the parent window
+     * @param mainWindow the parent window
      */
-    public MainMenu(MainWindow wnd) {
-        try {
-            background = ImageIO.read(new File("./src/main/resources/MainMenu.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public MainMenu(MainWindow mainWindow) {
+        setOpaque(false);
+
+        loadBackground();
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+
         FileDialog fileDialog = new FileDialog();
-
-        JPanel topBar = new JPanel();
-
-        topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
-        p1Name = "Játékos1";
-        p2Name = "Játékos2";
         map = FileHandler.loadMap(new File("Test.dtk")) != null ? FileHandler.loadMapAndFile(new File("Test.dtk")) : fileDialog.loadMapDialog();
-        assert map != null;
         mapName = map.getMap().getName();
 
-        setOpaque(false);
+
+        p1Name = "Kék";
+        p2Name = "Piros";
+
+        JPanel topBar = new JPanel();
+        topBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
         topBar.setOpaque(false);
         this.playersLabel = new JLabel(p1Name + " vs " + p2Name, SwingConstants.CENTER);
         this.playersLabel.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -81,44 +84,29 @@ public class MainMenu extends JPanel {
         JPanel centerPanel = new JPanel();
         centerPanel.setOpaque(false);
 
-
         JPanel centerButtons = new JPanel();
         centerButtons.setOpaque(false);
         centerButtons.setLayout(new FlowLayout());
         JRoundedButton start = new JRoundedButton("Start", 100, 50);
         centerButtons.add(start);
-        start.addActionListener(e -> wnd.startGame());
+        start.addActionListener(e -> mainWindow.startGame());
 
         JRoundedButton editor = new JRoundedButton("Térképszerkesztő", 200, 50);
         centerButtons.add(editor);
         centerPanel.add(centerButtons);
         this.add(centerPanel);
-        editor.addActionListener(e -> wnd.startEditor(64, 32));
+        editor.addActionListener(e -> mainWindow.startEditor(64, 32));
 
         JPanel bottomButtons = new JPanel(new FlowLayout());
         bottomButtons.setOpaque(false);
         JRoundedButton rename = new JRoundedButton("Átnevezés", 110, 50);
         rename.addActionListener(e -> {
-            String name1 = (String) JOptionPane.showInputDialog(
-                    null,
-                    "1. Játékos neve",
-                    "Átnevezés",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "név1");
+            String name1 = (String) JOptionPane.showInputDialog(null, "1. Játékos neve", "Átnevezés", JOptionPane.PLAIN_MESSAGE, null, null, "név1");
             if (name1 != null) {
                 this.p1Name = name1;
             } else
                 JOptionPane.showMessageDialog(null, "Nem adta meg az 1. Játékos nevét!", "Hiba", JOptionPane.ERROR_MESSAGE);
-            String name2 = (String) JOptionPane.showInputDialog(
-                    null,
-                    "2. Játékos neve",
-                    "Átnevezés",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "név2");
+            String name2 = (String) JOptionPane.showInputDialog(null, "2. Játékos neve", "Átnevezés", JOptionPane.PLAIN_MESSAGE, null, null, "név2");
             if (name2 != null) {
                 this.p2Name = name2;
             } else
@@ -136,26 +124,48 @@ public class MainMenu extends JPanel {
             if (map != null && loaded != null) {
                 this.map = loaded;
                 this.mapName = loaded.getMap().getName();
-                Pathfinder.setMap(map.getMap());
-                updateMapName();
-                repaint();
             } else {
                 this.map = current;
                 this.mapName = current.getMap().getName();
-                Pathfinder.setMap(map.getMap());
-                updateMapName();
-                repaint();
             }
+            Pathfinder.setMap(map.getMap());
+            updateMapName();
+            repaint();
         });
         bottomButtons.add(mapSelect);
         this.add(bottomButtons);
+        setButtonColors(start, editor, rename, mapSelect);
+        Pathfinder.setMap(map.getMap());
+    }
+
+    private void loadBackground() {
+        try {
+            background = ImageIO.read(new File("./src/main/resources/MainMenu.png"));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Sets the colors of the buttons
+     *
+     * @param start     the start button
+     * @param editor    the editor button
+     * @param rename    the rename button
+     * @param mapSelect the map select button
+     */
+    private void setButtonColors(JRoundedButton start, JRoundedButton editor, JRoundedButton rename, JRoundedButton mapSelect) {
         setColors(start, new Color(116, 231, 4));
         setColors(editor, new Color(180, 26, 26));
         setColors(rename, new Color(208, 198, 10));
         setColors(mapSelect, new Color(124, 7, 201));
-        Pathfinder.setMap(map.getMap());
     }
 
+    /**
+     * Returns the map.
+     *
+     * @return the map
+     */
     public Pair<Map, File> getMap() {
         return map;
     }

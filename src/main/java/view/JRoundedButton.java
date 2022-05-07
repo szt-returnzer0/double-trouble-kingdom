@@ -37,22 +37,28 @@ public class JRoundedButton extends JButton {
     /**
      * Constructs a new JRoundedButton instance.
      *
-     * @param text the text of the button
-     * @param w    the width of the button
-     * @param h    the height of the button
+     * @param text   the text of the button
+     * @param width  the width of the button
+     * @param height the height of the button
      */
-    public JRoundedButton(String text, int w, int h) {
+    public JRoundedButton(String text, int width, int height) {
         super(text);
         this.text = text;
-        setPreferredSize(new Dimension(w, h));
+        setPreferredSize(new Dimension(width, height));
         setOpaque(false);
         setFocusPainted(false);
         setBorderPainted(false);
     }
 
-    public JRoundedButton(int w, int h) {
+    /**
+     * Constructs a new JRoundedButton instance with blank text.
+     *
+     * @param width  the width of the button
+     * @param height the height of the button
+     */
+    public JRoundedButton(int width, int height) {
         super("");
-        setPreferredSize(new Dimension(w, h));
+        setPreferredSize(new Dimension(width, height));
         setOpaque(false);
         setFocusPainted(false);
         setBorderPainted(false);
@@ -62,14 +68,14 @@ public class JRoundedButton extends JButton {
      * Constructs a new JRoundedButton instance with non-default colors.
      *
      * @param text   the text of the button
-     * @param w      the width of the button
-     * @param h      the height of the button
+     * @param width  the width of the button
+     * @param height the height of the button
      * @param colors color array with colors to set the three color types
      */
-    public JRoundedButton(String text, int w, int h, Color[] colors) {
+    public JRoundedButton(String text, int width, int height, Color[] colors) {
         super(text);
         this.text = text;
-        setPreferredSize(new Dimension(w, h));
+        setPreferredSize(new Dimension(width, height));
         setOpaque(false);
         setFocusPainted(false);
         setBorderPainted(false);
@@ -85,17 +91,17 @@ public class JRoundedButton extends JButton {
     /**
      * Constructs a new JRoundedButton instance with non-default colors and non-default rounding.
      *
-     * @param text   the text of the button
-     * @param w      the width of the button
-     * @param h      the height of the button
-     * @param colors color array with colors to set the three color types
-     * @param arcW   the arc width we want
-     * @param arcH   the arc height we want
+     * @param text      the text of the button
+     * @param width     the width of the button
+     * @param height    the height of the button
+     * @param colors    color array with colors to set the three color types
+     * @param arcWidth  the arc width we want
+     * @param arcHeight the arc height we want
      */
-    public JRoundedButton(String text, int w, int h, Color[] colors, int arcW, int arcH) {
+    public JRoundedButton(String text, int width, int height, Color[] colors, int arcWidth, int arcHeight) {
         super(text);
         this.text = text;
-        setPreferredSize(new Dimension(w, h));
+        setPreferredSize(new Dimension(width, height));
         setOpaque(false);
         setFocusPainted(false);
         setBorderPainted(false);
@@ -106,8 +112,8 @@ public class JRoundedButton extends JButton {
                 case 2 -> enabled_bgColor = colors[i];
             }
         }
-        arcWidth = arcW;
-        arcHeight = arcH;
+        this.arcWidth = arcWidth;
+        this.arcHeight = arcHeight;
     }
 
     /**

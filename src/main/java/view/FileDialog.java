@@ -60,14 +60,15 @@ public class FileDialog {
      * @return the loaded Map
      */
     public Pair<Map, File> loadMapDialog() {
+        Pair<Map, File> pair = null;
         this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Map", "dtk"));
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            return new Pair<>(FileHandler.loadMap(file), file);
+            pair = new Pair<>(FileHandler.loadMap(file), file);
         } else
             JOptionPane.showMessageDialog(null, "Kérem válassza ki a pályát, melyet be szeretne tölteni.", "Hiba", JOptionPane.ERROR_MESSAGE);
-        return null;
+        return pair;
     }
 
     /**
@@ -76,12 +77,13 @@ public class FileDialog {
      * @return the loaded Game state
      */
     public Game loadGameDialog() {
+        Game game = null;
         this.fileChooser.setFileFilter(new FileNameExtensionFilter("DTK Save", "dtk_save"));
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION)
-            return FileHandler.loadGame(fileChooser.getSelectedFile());
+            game = FileHandler.loadGame(fileChooser.getSelectedFile());
         else
             JOptionPane.showMessageDialog(null, "Kérem válassza ki a betöltendő állást.", "Hiba", JOptionPane.ERROR_MESSAGE);
-        return null;
+        return game;
     }
 }

@@ -56,8 +56,8 @@ public class MainWindow {
     public void startGame() {
         frame.remove(mainMenu);
 
-        Database db = new Database();
-        Game game = new Game(db, FileHandler.loadMap(mainMenu.getMap().getFile()), mainMenu.getP1Name(), mainMenu.getP2Name());
+        Database database = new Database();
+        Game game = new Game(database, FileHandler.loadMap(mainMenu.getMap().getFile()), mainMenu.getP1Name(), mainMenu.getP2Name());
         GameField gameField = new GameField(game, frame);
 
         frame.add(gameField, BorderLayout.CENTER);
@@ -67,10 +67,10 @@ public class MainWindow {
     /**
      * Starts a new Map editor
      *
-     * @param xMax the width of the game Map
-     * @param yMax the height of the game Map
+     * @param maxWidth  the width of the game Map
+     * @param maxHeight the height of the game Map
      */
-    public void startEditor(int xMax, int yMax) {
+    public void startEditor(int maxWidth, int maxHeight) {
         frame.remove(mainMenu);
 
         Map map = new Map((String) JOptionPane.showInputDialog(
@@ -80,8 +80,8 @@ public class MainWindow {
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
-                "Új Pálya"), new Terrain[yMax][xMax]);
-        generateBlankMap(xMax, yMax, map);
+                "Új Pálya"), new Terrain[maxHeight][maxWidth]);
+        generateBlankMap(maxWidth, maxHeight, map);
         Game editor = new Game(map);
         MapEditorView mapEditor = new MapEditorView(editor, frame);
 
@@ -89,9 +89,17 @@ public class MainWindow {
         frame.pack();
     }
 
-    private void generateBlankMap(int xMax, int yMax, Map map) {
-        for (int y = 0; y < yMax; y++) {
-            for (int x = 0; x < xMax; x++) {
+
+    /**
+     * Generates a blank map.
+     *
+     * @param maxWidth  the width of the game Map
+     * @param maxHeight the height of the game Map
+     * @param map       the game Map
+     */
+    private void generateBlankMap(int maxWidth, int maxHeight, Map map) {
+        for (int y = 0; y < maxHeight; y++) {
+            for (int x = 0; x < maxWidth; x++) {
                 map.getTiles()[y][x] = new Plains();
             }
         }
