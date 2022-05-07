@@ -1,7 +1,7 @@
-import model.*;
+import DTK_model.*;
+import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import persistence.FileHandler;
 
 import java.awt.*;
 import java.io.File;

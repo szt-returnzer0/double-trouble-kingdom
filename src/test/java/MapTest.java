@@ -1,7 +1,7 @@
-import model.Map;
+import DTK_model.Map;
+import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import persistence.FileHandler;
 
 import java.io.File;
 

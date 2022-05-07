@@ -1,4 +1,4 @@
-import view.MainWindow;
+import DTK_view.MainWindow;
 
 /**
  * Main class of the Double Trouble Kingdom Game.

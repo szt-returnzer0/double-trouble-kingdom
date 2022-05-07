@@ -1,8 +1,8 @@
-import model.Diver;
-import model.Pathfinder;
+import DTK_model.Diver;
+import DTK_model.Pathfinder;
+import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import persistence.FileHandler;
 
 import java.awt.*;
 import java.io.File;

@@ -1,9 +1,9 @@
-import model.Mountain;
-import model.Pathfinder;
-import model.Soldier;
+import DTK_model.Mountain;
+import DTK_model.Pathfinder;
+import DTK_model.Soldier;
+import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import persistence.FileHandler;
 
 import java.awt.*;
 import java.io.File;

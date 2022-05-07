@@ -1,8 +1,8 @@
-import model.Game;
+import DTK_model.Game;
+import DTK_persistence.Database;
+import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import persistence.Database;
-import persistence.FileHandler;
 
 import java.io.File;
 
