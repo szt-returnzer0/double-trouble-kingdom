@@ -1,10 +1,8 @@
 import DTK_model.*;
-import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,7 +41,7 @@ class TowerTest {
     @Test
     @DisplayName("Sniper attack")
     void sniperAttackTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Sniper sniper = new Sniper(new Point(0, 0), null);
         Soldier soldier1 = new Soldier(new Point(1, 0), 0);
         Soldier soldier2 = new Soldier(new Point(7, 0), 0);
@@ -59,7 +57,7 @@ class TowerTest {
     @Test
     @DisplayName("Shotgun attack")
     void shotgunAttackTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Shotgun shotgun = new Shotgun(new Point(0, 0), null);
         Soldier soldier1 = new Soldier(new Point(1, 0), 0);
         Soldier soldier2 = new Soldier(new Point(3, 0), 0);

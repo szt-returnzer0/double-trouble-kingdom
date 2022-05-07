@@ -1,11 +1,10 @@
 import DTK_model.Diver;
+import DTK_model.Map;
 import DTK_model.Pathfinder;
-import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +15,7 @@ class DiverTest {
     @Test
     @DisplayName("Diver construct")
     void constructTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
         Diver diver = new Diver(point, speed);

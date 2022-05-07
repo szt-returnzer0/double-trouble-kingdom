@@ -1,12 +1,11 @@
 import DTK_model.Castle;
+import DTK_model.Map;
 import DTK_model.Pathfinder;
 import DTK_model.Soldier;
-import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +15,7 @@ class SoliderTest {
     @Test
     @DisplayName("Soldier Attack")
     void attackTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Soldier soldier = new Soldier(new Point(0, 0), 0);
         Castle castleAttacked = new Castle(new Point(0, 0), null);
         Castle castle = new Castle(new Point(10, 10), null);
@@ -34,7 +33,7 @@ class SoliderTest {
     @Test
     @DisplayName("Soldier construct")
     void constructTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
         Soldier soldier = new Soldier(point, speed);

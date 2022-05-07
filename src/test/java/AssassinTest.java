@@ -1,12 +1,11 @@
 import DTK_model.Assassin;
+import DTK_model.Map;
 import DTK_model.Pathfinder;
 import DTK_model.Soldier;
-import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,7 +16,7 @@ class AssassinTest {
     @DisplayName("Assassin Attack")
     void attackTest() {
 
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Assassin assassin = new Assassin(new Point(0, 0), 0);
         ArrayList<Soldier> targets = new ArrayList<>(Arrays.asList(new Soldier(new Point(0, 0), 0), new Soldier(new Point(1, 1), 0), new Soldier(new Point(10, 10), 0)));
         assassin.selectTargets(targets);
@@ -30,7 +29,7 @@ class AssassinTest {
     @Test
     @DisplayName("Assassin construct")
     void constructTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         double speed = 2.0;
         Point point = new Point(2, 3);
         Assassin assassin = new Assassin(point, speed);

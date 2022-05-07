@@ -1,12 +1,11 @@
 import DTK_model.Animator;
+import DTK_model.Map;
 import DTK_model.Pathfinder;
 import DTK_model.Soldier;
-import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +13,7 @@ class AnimatorTest {
     @Test
     @DisplayName("StartAnim StopAnim")
     void animTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Soldier soldier = new Soldier(new Point(0, 0), 0);
         soldier.setSide("left");
         Animator animator = new Animator(soldier);
@@ -28,7 +27,7 @@ class AnimatorTest {
     @Test
     @DisplayName("Remove Path")
     void removePathTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Soldier soldier = new Soldier(new Point(0, 0), 0);
         soldier.setSide("left");
         Animator animator = new Animator(soldier);

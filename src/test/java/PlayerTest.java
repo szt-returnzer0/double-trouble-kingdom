@@ -1,10 +1,8 @@
 import DTK_model.*;
-import DTK_persistence.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,7 +11,7 @@ public class PlayerTest {
     @Test
     @DisplayName("Simulation test")
     void SimulationTest() {
-        Game game = new Game(null, FileHandler.loadMap(new File("Test.dtk")), "test1", "test2");
+        Game game = new Game(null, new Map(), "test1", "test2");
         Pathfinder.setMap(game.getMap());
 
         game.getGameState().loadBuildings(game.getMap());
@@ -79,7 +77,6 @@ public class PlayerTest {
 
         assertEquals(3, game.getGameState().getPlayers().get(0).getTowers().get(0).getLevel(), "Building upgrade is not correct");
 
-        //revise if return val change
         game.getGameState().getPlayers().get(1).addEntity(game.getGameState().getPlayers().get(1).transformTower(game.getGameState().getPlayers().get(1).getTowers().get(0), "Sniper"));
 
         assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals("Sniper")).toArray()[0],
@@ -101,7 +98,7 @@ public class PlayerTest {
     @Test
     @DisplayName("Add Saved Entity Test")
     void addSavedEntityTest() {
-        Pathfinder.setMap(FileHandler.loadMap(new File("Test.dtk")));
+        Pathfinder.setMap(new Map());
         Player player = new Player("Player");
         Soldier soldier = new Soldier(new Point(0, 0), 0);
         player.addSavedEntity(soldier);

@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -197,12 +198,16 @@ public class GameState {
      * @param map the map file
      */
     public void loadBuildings(Map map) {
+        HashSet<Building> buildings = new HashSet<>();
         for (Terrain[] terrainRow : map.getTiles()) {
             for (Terrain terrain : terrainRow) {
                 if (terrain.getEntities().size() > 0) {
-                    players.get(terrain.getEntities().get(0).side.equals("left") ? 0 : 1).addSavedEntity(terrain.getEntities().get(0));
+                    buildings.add((Building) terrain.getEntities().get(0));
                 }
             }
+        }
+        for (Building b : buildings) {
+            players.get(b.side.equals("left") ? 0 : 1).addSavedEntity(b);
         }
     }
 
