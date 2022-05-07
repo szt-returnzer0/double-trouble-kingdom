@@ -125,7 +125,6 @@ public class Pathfinder {
                 }
             }
         }
-        System.out.println(end);
         return end;
     }
 
@@ -136,7 +135,6 @@ public class Pathfinder {
      * @param b The building to check when searching path at building phase.
      */
     private void fieldToGraph(Soldier s, Building b) {
-        System.out.println("Converting map to graph...");
         graph = new int[yLength][xLength];
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {

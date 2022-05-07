@@ -52,6 +52,18 @@ public abstract class Tower extends Building {
 
     }
 
+    public Tower(Point position) {
+        super(position);
+        this.healthPoints = 20;
+        this.maxHealthPoints = this.healthPoints;
+        this.attackSpeed = 1;
+        this.range = 0;
+        this.canAttack = false;
+        this.targets = new ArrayList<>();
+        this.upgradeCost = 5;
+
+    }
+
     /**
      * Transforms the Tower's subclass to a new Tower subclass.
      *

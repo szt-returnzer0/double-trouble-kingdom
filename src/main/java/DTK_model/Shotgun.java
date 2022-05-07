@@ -24,4 +24,16 @@ public class Shotgun extends Tower {
         this.canAttack = true;
         this.targetsPerAttack = 5;
     }
+
+    public Shotgun(Point position) {
+        super(position);
+        this.type = Types.SHOTGUN;
+        this.canUpgrade = true;
+        this.value = 30;
+        this.size = new Dimension(2, 2);
+        this.damage = 5;
+        this.range = 3;
+        this.canAttack = true;
+        this.targetsPerAttack = 5;
+    }
 }

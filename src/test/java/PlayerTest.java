@@ -1,4 +1,6 @@
 import DTK_model.*;
+import DTK_persistence.Database;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +13,9 @@ public class PlayerTest {
     @Test
     @DisplayName("Simulation test")
     void SimulationTest() {
-        Game game = new Game(null, new Map(), "test1", "test2");
+        Game game = new Game(new Database(), new Map(), "test1", "test2");
         Pathfinder.setMap(game.getMap());
 
-        game.getGameState().loadBuildings(game.getMap());
 
         assertEquals("test1", game.getGameState().getPlayers().get(0).getName(), "Player name is not correct");
         assertEquals(3, game.getGameState().getPlayers().get(0).getEntities().size(), "Player entities size is not correct");
@@ -46,8 +47,8 @@ public class PlayerTest {
         assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals(Types.CASTLE)).toArray()[0], game.getGameState().getPlayers().get(0).getCastle(), "Castle is not correct");
         assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals(Types.CASTLE)).toArray()[0], game.getGameState().getPlayers().get(1).getCastle(), "Castle is not correct");
 
-        game.getGameState().getPlayers().get(0).addEntity(new Sniper(new Point(0, 0), null));
-        game.getGameState().getPlayers().get(1).addEntity(new Shotgun(new Point(0, 0), null));
+        game.getGameState().getPlayers().get(0).addEntity(new Sniper(new Point(0, 0)));
+        game.getGameState().getPlayers().get(1).addEntity(new Shotgun(new Point(0, 0)));
 
         assertEquals(1, game.getGameState().getPlayers().get(0).getSoldierCount(), "Soldier count is not correct");
         assertEquals(1, game.getGameState().getPlayers().get(1).getSoldierCount(), "Assassin count is not correct");
@@ -108,7 +109,7 @@ public class PlayerTest {
     @Test
     @DisplayName("Remove Entity Test")
     void removeEntityTest() {
-        Sniper sniper = new Sniper(new Point(0, 0), null);
+        Sniper sniper = new Sniper(new Point(0, 0));
         Player player = new Player("Player");
         int startingGold = player.getGold();
         player.addSavedEntity(sniper);

@@ -32,7 +32,6 @@ public class MapEditorView extends GameField {
      */
     public MapEditorView(Game dummyGame, JFrame frame) {
         super(dummyGame, frame);
-        game.getGameState().linkGameField(null);
         middleText = mapRef.getName();
         sideText = "Selection: " + type;
         Timer reP = new Timer(17, e ->
@@ -79,9 +78,8 @@ public class MapEditorView extends GameField {
 
         this.hamburgerMenu.attachActionListener(1, e -> {
             Pair<Map, File> loaded = fileDialog.loadMapDialog();
-            if (loaded != null) {
                 mapRef = loaded.getMap();
-            }
+            
         });
 
     }

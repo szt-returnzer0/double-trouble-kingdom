@@ -184,7 +184,7 @@ public class GameFieldRenderer extends JPanel {
 
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
-                //System.out.println("["+y+"]"+"["+x+"]");
+
                 drawTile(g2d, x, y);
                 drawEnt(g2d, x, y);
                 if (!texturesOn) {
@@ -564,7 +564,7 @@ public class GameFieldRenderer extends JPanel {
      * @param g2d the graphics we use
      */
     protected void drawCurrentSelection(Graphics2D g2d) {
-        //System.out.println(selection);
+
         if (selection != null) {
             handleType(g2d, selection.getType());
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
@@ -598,7 +598,7 @@ public class GameFieldRenderer extends JPanel {
         g2d.drawString(middleText, getWidth() / 2 - (int) Math.ceil(middleWidth / 2.0), 40);
         g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2), 40);
 
-        if (game.getGameState().isEnded()) {
+        if (game.getGameState().isGameEnded()) {
             font = new Font("Roboto", Font.PLAIN, 64);
             g2d.setFont(font);
             String winner = game.getGameState().getWinner().getName() + " nyerte a játékot!";

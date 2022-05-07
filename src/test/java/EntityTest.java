@@ -10,7 +10,7 @@ class EntityTest {
     @Test
     @DisplayName("Invert Test")
     void invertTest() {
-        Castle castle = new Castle(new Point(0, 0), null);
+        Castle castle = new Castle(new Point(0, 0));
         int height = castle.getSize().height;
         int width = castle.getSize().width;
         Dimension invertedDimension = new Dimension(height, width);
@@ -21,7 +21,7 @@ class EntityTest {
     @Test
     @DisplayName("Take Damage Test")
     void takeDamageTest() {
-        Castle castle = new Castle(new Point(0, 0), null);
+        Castle castle = new Castle(new Point(0, 0));
         int hp = castle.getHealthPoints();
         int damage = 20;
         castle.takeDamage(damage);

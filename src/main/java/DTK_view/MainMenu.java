@@ -141,7 +141,7 @@ public class MainMenu extends JPanel {
         try {
             background = ImageIO.read(new File("./src/main/resources/MainMenu.png"));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

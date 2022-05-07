@@ -4,7 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Implementation of the Game's Database class, contains SQL queries, and SQLite connection opening and closing methods.
+ * Implementation of the Game's Database class, contains SQL queries, and SQLite
+ * connection opening and closing methods.
  */
 public class Database {
     Statement statement;
@@ -15,16 +16,18 @@ public class Database {
     private Connection connection;
 
     /**
-     * Constructs the Database class. Opens a new SQLite connection, creates Game.db if it does not exist.
+     * Constructs the Database class. Opens a new SQLite connection, creates Game.db
+     * if it does not exist.
      */
     public Database() {
         try {
             Class.forName("org.sqlite.JDBC");
             openConnection();
             ResultSet tables = connection.getMetaData().getTables(null, null, "RECORDS", null);
-            if (!tables.next()) createTable();
+            if (!tables.next())
+                createTable();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -65,7 +68,8 @@ public class Database {
     }
 
     /**
-     * SQL query to select all the records, and returns it as an ArrayList containing DBRecords.
+     * SQL query to select all the records, and returns it as an ArrayList
+     * containing DBRecords.
      *
      * @return an ArrayList containing DBRecords
      */

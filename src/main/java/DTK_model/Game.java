@@ -33,6 +33,7 @@ public class Game {
         this.database = database;
         this.gameState = new GameState(p1Name, p2Name);
         this.gameState.linkDBRef(database);
+        this.gameState.loadBuildings(map);
         this.map = map;
     }
 
@@ -45,6 +46,8 @@ public class Game {
         Pathfinder.setMap(map);
         this.map = map;
         this.gameState = new GameState();
+        this.gameState.linkDBRef(database);
+        this.gameState.loadBuildings(map);
     }
 
     /**

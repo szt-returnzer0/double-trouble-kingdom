@@ -228,7 +228,7 @@ public class Player {
                 return castle;
             }
         }
-        return null;
+        throw new IllegalStateException("No castle found");
     }
 
     /**

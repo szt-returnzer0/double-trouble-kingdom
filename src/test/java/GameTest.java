@@ -19,7 +19,7 @@ public class GameTest {
     @Test
     @DisplayName("Player name test")
     void playerNameTest() {
-        Game game = new Game(null, new Map(), "P1", "P2");
+        Game game = new Game(new Database(), new Map(), "P1", "P2");
         assertEquals("P1", game.getGameState().getPlayers().get(0).getName(), "Name not P1");
         assertEquals("P2", game.getGameState().getPlayers().get(1).getName(), "Name not P2");
     }
@@ -27,7 +27,7 @@ public class GameTest {
     @Test
     @DisplayName("Map test")
     void mapTest() {
-        Game game = new Game(null, new Map(), "P1", "P2");
+        Game game = new Game(new Database(), new Map(), "P1", "P2");
         assertEquals("Alapértelmezett", game.getMap().getName(), "Map name is not correct");
         assertEquals(32, game.getMap().getTiles().length, "Height of map is not correct");
         assertEquals(64, game.getMap().getTiles()[0].length, "Width of map is not correct");
@@ -36,13 +36,13 @@ public class GameTest {
     @Test
     @DisplayName("Pause/Resume/End test")
     void pauseResumeEndTest() throws InterruptedException {
-        Game game = new Game(null, new Map(), "P1", "P2");
+        Game game = new Game(new Database(), new Map(), "P1", "P2");
         game.pauseGame();
         assertEquals(0, game.getGameState().getElapsedTime(), "Time is not 0");
         Thread.sleep(2000);
         game.restartGame();
         assertEquals(0, game.getGameState().getElapsedTime(), "Time is not 0");
-        assertFalse(game.getGameState().isEnded(), "isEnded is not false");
+        assertFalse(game.getGameState().isGameEnded(), "isEnded is not false");
     }
 
 }

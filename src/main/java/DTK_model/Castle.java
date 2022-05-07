@@ -22,6 +22,15 @@ public class Castle extends Building {
         this.size = new Dimension(5, 15);
     }
 
+    public Castle(Point position) {
+        super(position);
+        this.type = Types.CASTLE;
+        this.isAnimated = false;
+        this.healthPoints = 100;
+        this.maxHealthPoints = this.healthPoints;
+        this.size = new Dimension(5, 15);
+    }
+
     /**
      * Upgrades the Building instance, Castles cannot be upgraded
      */

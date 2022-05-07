@@ -36,10 +36,7 @@ public class GameState {
      * The current Player's number.
      */
     private int playerNumber;
-    /**
-     * Check if the Game is ended.
-     */
-    private boolean isEnded;
+
     private long prevTime = 1;
     /**
      * The current round phase.
@@ -52,7 +49,7 @@ public class GameState {
     /**
      * Frames per second.
      */
-    private int fps = 60;
+    private final int fps = 60;
     /**
      * DB reference.
      */
@@ -70,7 +67,6 @@ public class GameState {
      * @param p2Name name of Player2
      */
     public GameState(String p1Name, String p2Name) {
-        this.isEnded = false;
         this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
         startElapsedTimer();
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
@@ -80,7 +76,6 @@ public class GameState {
     }
 
     public GameState() {
-        this.isEnded = false;
         this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
         startElapsedTimer();
         this.players = new ArrayList<>(Arrays.asList(new Player(""), new Player("")));
@@ -89,23 +84,9 @@ public class GameState {
         startTime = System.currentTimeMillis();
     }
 
-    /**
-     * Returns if the Game is ended.
-     *
-     * @return if the Game is ended
-     */
-    public boolean isEnded() {
-        return isEnded;
-    }
 
-    /**
-     * Sets the Game's end to a boolean value.
-     *
-     * @param ended if the Game has ended
-     */
-    public void setEnded(boolean ended) {
-        this.isEnded = ended;
-    }
+
+
 
 
     /**
@@ -133,7 +114,8 @@ public class GameState {
         gameLoop();
         calculateTimes();
         animateBuffer();
-        updateUI();
+        if(gameFieldReference != null)
+            updateUI();
     }
 
     private void calculateTimes() {
@@ -154,10 +136,8 @@ public class GameState {
         }
     }
 
-    private void updateUI() {
-        if (gameFieldReference != null) {
+    private void updateUI() { 
             gameFieldReference.updateUIState();
-        }
     }
 
     /**
@@ -172,9 +152,8 @@ public class GameState {
                 towerAttack();
                 soldierAttack();
 
-                if (getWinner() != null) {
-                    isEnded = true;
-                    System.out.println("Winner: " + getWinner().getName());
+                if (isGameEnded()) {
+                    
                     elapsedTimer.stop();
                     saveScore();
                 }
@@ -197,8 +176,8 @@ public class GameState {
                 }
             }
         }
-        for (Building b : buildings) {
-            players.get(b.side.equals(Sides.BLUE) ? 0 : 1).addSavedEntity(b);
+        for (Building building : buildings) {
+            players.get(building.side.equals(Sides.BLUE) ? 0 : 1).addSavedEntity(building);
         }
     }
 
@@ -242,20 +221,28 @@ public class GameState {
     }
 
     /**
+     * Returns if the Game is ended.
+     *
+     * @return if the Game is ended
+     */
+    public boolean isGameEnded() {
+        return players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0 ||
+                players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0;
+    }
+
+    /**
      * Returns the winner of the game.
      *
      * @return the winner of the game
      */
     public Player getWinner() {
-        Player player = null;
         if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0) {
             elapsedTimer.stop();
-            player = players.get(1);
-        } else if (players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0) {
-            elapsedTimer.stop();
-            player = players.get(0);
-        }
-        return player;
+            return players.get(1);
+        } else
+
+            return players.get(0);
+
     }
 
     /**

@@ -25,6 +25,18 @@ public class Barracks extends Building {
         this.upgradeCost = 40;
     }
 
+    public Barracks(Point position) {
+        super(position);
+        this.type = Types.BARRACKS;
+        this.size = new Dimension(2, 4);
+        this.isUpgraded = false;
+        this.canUpgrade = true;
+        this.value = 50;
+        this.healthPoints = 50;
+        this.maxHealthPoints = this.healthPoints;
+        this.upgradeCost = 40;
+    }
+
     /**
      * Returns if the Barrack instance is upgraded.
      *

@@ -19,6 +19,13 @@ public class Barricade extends Tower {
         this.size = new Dimension(2, 2);
     }
 
+    public Barricade(Point position) {
+        super(position);
+        this.type = Types.BARRICADE;
+        this.value = 10;
+        this.size = new Dimension(2, 2);
+    }
+
     /**
      * Attack method for the Barricade.
      */

@@ -1,7 +1,4 @@
-import DTK_model.Assassin;
-import DTK_model.Map;
-import DTK_model.Pathfinder;
-import DTK_model.Soldier;
+import DTK_model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,16 +27,15 @@ class AssassinTest {
     @DisplayName("Assassin construct")
     void constructTest() {
         Pathfinder.setMap(new Map());
-        double speed = 2.0;
         Point point = new Point(2, 3);
         Assassin assassin = new Assassin(point);
         assertEquals(point, assassin.getPosition(), "Position is equal with point");
-        assertEquals(speed, assassin.getSpeed(), "Speed is equal with speed");
+        assertEquals(3, assassin.getSpeed(), "Speed is equal with speed");
         assertTrue(assassin.isAnimated(), "Assassin is animated");
         assertEquals(10, assassin.getHealthPoints(), "HealthPoints is 10 ");
-        assertEquals(new ArrayList<>(Arrays.asList("Plains", "Desert")), assassin.getTerrains(), "Terrain is an ArrayList with Plains and Desert in it");
+        assertEquals(new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT)), assassin.getTerrains(), "Terrain is an ArrayList with Plains and Desert in it");
         assertEquals(5, assassin.getValue(), "Value is 5");
-        assertEquals("Assassin", assassin.getType(), "Assassin's type is assassin");
+        assertEquals(Types.ASSASSIN, assassin.getType(), "Assassin's type is assassin");
 
     }
 }

@@ -50,10 +50,9 @@ public abstract class Building extends Entity {
         isUpgraded = false;
     }
 
-    //copy constructor
-    public Building(Building b) {
-        super(b.getPosition(), b.getSide());
-        isUpgraded = b.isUpgraded;
+    public Building(Point position) {
+        super(position);
+        isUpgraded = false;
     }
 
     /**

@@ -23,4 +23,15 @@ public class Sniper extends Tower {
         this.canAttack = true;
         this.targetsPerAttack = 1;
     }
+    public Sniper(Point position) {
+        super(position);
+        this.type = Types.SNIPER;
+        this.canUpgrade = true;
+        this.value = 30;
+        this.size = new Dimension(2, 2);
+        this.damage = 3;
+        this.range = 7;
+        this.canAttack = true;
+        this.targetsPerAttack = 1;
+    }
 }

@@ -44,7 +44,6 @@ public class GameField extends GameFieldRenderer {
         GameFieldModel gameFieldModel = new GameFieldModel();
         this.game = game;
         setupButtons();
-        game.getGameState().loadBuildings(mapRef);
 
         middleText = "0 sec";
         sideText = getRoundStateText();
@@ -108,7 +107,6 @@ public class GameField extends GameFieldRenderer {
                     wayPoints.add(new Point(xIdx, yIdx));
             }
         }
-        // System.out.println(wayPoints);
     }
 
     /**
@@ -131,7 +129,7 @@ public class GameField extends GameFieldRenderer {
             updateButtons();
         } else
             controlPanel.hideControlPanel();
-        if (game.getGameState().isEnded()) {
+        if (game.getGameState().isGameEnded()) {
             controlPanel.hideControlPanel();
         }
         repaint();
@@ -331,8 +329,7 @@ public class GameField extends GameFieldRenderer {
         int yIdx = y / scale;
         int xIdx = x / scale;
 
-        System.out.println(type);
-        System.out.println(Types.getBuildingTypes());
+
         if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
             if (Types.getBuildingTypes().contains(type)) {
                 placeBuilding(Types.buildingFactory(type, xIdx, yIdx));
@@ -553,7 +550,6 @@ public class GameField extends GameFieldRenderer {
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx);
-                System.out.println(point);
                 s.setPosition(point);
 
                 GameState.animBuffer.add(s.getAnimObj());
@@ -578,7 +574,7 @@ public class GameField extends GameFieldRenderer {
      */
     protected void placeBuilding(Building b) {
 
-        System.out.println(0);
+
 
         b.setOwner(game.getGameState().getCurrentPlayer());
 
@@ -590,7 +586,7 @@ public class GameField extends GameFieldRenderer {
         if (inverted)
             b.invert();
 
-        System.out.println(1);
+
 
         if (destroyedOnPos(xIdx, yIdx))
             return;
@@ -604,19 +600,19 @@ public class GameField extends GameFieldRenderer {
         Pathfinder pf = new Pathfinder();
         Pathfinder.setMap(mapRef);
 
-        System.out.println(2);
+
 
         if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals(Sides.RED) ? Sides.BLUE : Sides.RED, b) == null)
             return;
 
-        System.out.println(55555);
+
 
         Sides playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? Sides.BLUE : Sides.RED;
         if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength
                 && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
-            System.out.println(13);
+
             if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
-                System.out.println(3);
+
                 placeOnEmptyField(yIdx, b, xIdx);
 
                 if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
@@ -658,7 +654,7 @@ public class GameField extends GameFieldRenderer {
                 transformTower(b, xIdx, yIdx);
             }
         }
-        System.out.println(9);
+
     }
 
     /**

@@ -102,7 +102,6 @@ public class Soldier extends Entity {
         return color + Directions[1 + path.get(0).y][1 + path.get(0).x] + animObj.getFrame() + ".png";
     }
 
-    public int visStartPoint = 0;
 
     /**
      * Selects a target for the Soldier to attack.

@@ -13,25 +13,25 @@ class TowerTest {
     @DisplayName("Tower construct")
     void constructTest() {
         Point point = new Point(5, 2);
-        Barricade barricade = new Barricade(point, null);
+        Barricade barricade = new Barricade(point);
         assertEquals(20, barricade.getHealthPoints(), "Health point is 20");
-        assertEquals("Barricade", barricade.getType(), "Barricade's type is barricade");
+        assertEquals(Types.BARRICADE, barricade.getType(), "Barricade's type is barricade");
         assertEquals(10, barricade.getValue(), "Value is 10");
         assertEquals(0, barricade.getRange(), "Barricade's range is 0");
         assertEquals(0, barricade.getDamage(), "Barricade's damage is 0");
         assertFalse(barricade.isCanAttack(), "Barricade can't attack");
 
-        Sniper sniper = new Sniper(point, null);
+        Sniper sniper = new Sniper(point);
         assertEquals(20, sniper.getHealthPoints(), "Health point is 20");
-        assertEquals("Sniper", sniper.getType(), "Sniper's type is sniper");
+        assertEquals(Types.SNIPER, sniper.getType(), "Sniper's type is sniper");
         assertEquals(30, sniper.getValue(), "Value is 30");
         assertEquals(7, sniper.getRange(), "Sniper's range is 7");
         assertEquals(3, sniper.getDamage(), "Sniper's damage is 3");
         assertTrue(sniper.isCanAttack(), "Sniper can attack");
 
-        Shotgun shotgun = new Shotgun(point, null);
+        Shotgun shotgun = new Shotgun(point);
         assertEquals(20, shotgun.getHealthPoints(), "Health point is 20");
-        assertEquals("Shotgun", shotgun.getType(), "Shotgun's type is shotgun");
+        assertEquals(Types.SHOTGUN, shotgun.getType(), "Shotgun's type is shotgun");
         assertEquals(30, shotgun.getValue(), "Value is 30");
         assertEquals(3, shotgun.getRange(), "Shotgun's range is 3");
         assertEquals(5, shotgun.getDamage(), "Shotgun's damage is 5");
@@ -42,7 +42,7 @@ class TowerTest {
     @DisplayName("Sniper attack")
     void sniperAttackTest() {
         Pathfinder.setMap(new Map());
-        Sniper sniper = new Sniper(new Point(0, 0), null);
+        Sniper sniper = new Sniper(new Point(0, 0));
         Soldier soldier1 = new Soldier(new Point(1, 0));
         Soldier soldier2 = new Soldier(new Point(7, 0));
         Soldier soldier3 = new Soldier(new Point(8, 0));
@@ -58,7 +58,7 @@ class TowerTest {
     @DisplayName("Shotgun attack")
     void shotgunAttackTest() {
         Pathfinder.setMap(new Map());
-        Shotgun shotgun = new Shotgun(new Point(0, 0), null);
+        Shotgun shotgun = new Shotgun(new Point(0, 0));
         Soldier soldier1 = new Soldier(new Point(1, 0));
         Soldier soldier2 = new Soldier(new Point(3, 0));
         Soldier soldier3 = new Soldier(new Point(4, 0));
@@ -73,10 +73,10 @@ class TowerTest {
     @Test
     @DisplayName("Tower Upgrade")
     void towerUpgradeTest() {
-        Barricade barricadeToSniper = new Barricade(new Point(0, 0), null);
-        Barricade barricadeToShotgun = new Barricade(new Point(0, 0), null);
+        Barricade barricadeToSniper = new Barricade(new Point(0, 0));
+        Barricade barricadeToShotgun = new Barricade(new Point(0, 0));
         Tower sniper = barricadeToSniper.transform(Types.SNIPER);
-        assertEquals("Sniper", sniper.getType(), "Sniper's type is sniper");
+        assertEquals(Types.SNIPER, sniper.getType(), "Sniper's type is sniper");
         assertEquals(30, sniper.getValue(), "Value is 30");
         assertEquals(7, sniper.getRange(), "Sniper's range is 7");
         assertEquals(3, sniper.getDamage(), "Sniper's damage is 3");
@@ -90,7 +90,7 @@ class TowerTest {
         assertEquals(30, sniper.getMaxHealthPoints(), "Max health point is 30");
 
         Tower shotgun = barricadeToShotgun.transform(Types.SHOTGUN);
-        assertEquals("Shotgun", shotgun.getType(), "Shotgun's type is shotgun");
+        assertEquals(Types.SHOTGUN, shotgun.getType(), "Shotgun's type is shotgun");
         assertEquals(30, shotgun.getValue(), "Value is 30");
         assertEquals(3, shotgun.getRange(), "Shotgun's range is 3");
         assertEquals(5, shotgun.getDamage(), "Shotgun's damage is 5");
@@ -107,7 +107,7 @@ class TowerTest {
     @Test
     @DisplayName("Take Damage")
     void takeDamageTest() {
-        Barricade barricade = new Barricade(new Point(0, 0), null);
+        Barricade barricade = new Barricade(new Point(0, 0));
         int damage = 20;
         barricade.takeDamage(damage);
         assertEquals(barricade.getMaxHealthPoints() - damage, barricade.getHealthPoints(), "Barricade' hp should be reduced by damage");
