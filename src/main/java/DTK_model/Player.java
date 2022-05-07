@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Implementation of the Player class for Double Trouble Kingdom Game, contains the Player's name, entities and gold. Implements the methods of manipulating entities.
+ * Implementation of the Player class for Double Trouble Kingdom Game, contains
+ * the Player's name, entities and gold. Implements the methods of manipulating
+ * entities.
  */
 public class Player {
     /**
@@ -44,7 +46,8 @@ public class Player {
      */
     @JsonCreator
     public Player(String name) {
-        if (number == 2) number = 0;
+        if (number == 2)
+            number = 0;
         this.playerNumber = ++number;
         this.name = name;
         this.gold = 100;
@@ -173,9 +176,9 @@ public class Player {
         this.entities.add(entity);
     }
 
-
     /**
-     * Upgrades the selected Building, removes the upgrade cost from the player's gold.
+     * Upgrades the selected Building, removes the upgrade cost from the player's
+     * gold.
      *
      * @param building the Building to upgrade
      */
@@ -184,13 +187,15 @@ public class Player {
             if (building.getUpgradeCost() < this.gold) {
                 building.upgrade();
                 this.gold -= building.getUpgradeCost();
-                if (Objects.equals(building.getType(), Types.BARRACKS)) isUnitRestricted = false;
+                if (building instanceof Barracks)
+                    isUnitRestricted = false;
             }
         }
     }
 
     /**
-     * Transforms the selected Tower to the given type, refunds a part of the building cost.
+     * Transforms the selected Tower to the given type, refunds a part of the
+     * building cost.
      *
      * @param tower the tower to transform
      * @param type  the type we want
@@ -219,10 +224,8 @@ public class Player {
     @JsonIgnore
     public Building getCastle() {
         for (Entity entity : entities) {
-            if (entity instanceof Building) {
-                if (Objects.equals(entity.getType(), Types.CASTLE)) {
-                    return (Building) entity;
-                }
+            if (entity instanceof Castle castle) {
+                return castle;
             }
         }
         return null;

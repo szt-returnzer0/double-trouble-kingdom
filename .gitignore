@@ -1,6 +1,7 @@
 /.idea/
 /.gradle/
 /build/
+/bin/
 *.DS_Store
 *.db
 *.dtk

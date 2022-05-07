@@ -78,9 +78,9 @@ public enum Types {
              case SNIPER -> {
                  return new Sniper(new Point(x, y), Sides.EDITOR);
              }
+            default -> throw new IllegalArgumentException("Unexpected value: " + objectType);
 
          }
-         return  null;
     }
 
     public static Terrain terrainFactory(Types objectType, ArrayList<Entity> entities) {
@@ -89,8 +89,8 @@ public enum Types {
             case DESERT -> {return new Desert(entities);}
             case SWAMP -> {return new Swamp(entities);}
             case MOUNTAIN -> {return new Mountain(entities);}
+            default -> throw new IllegalArgumentException("Unexpected value: " + objectType);
         }
-        return null;
     }
 
     public static Soldier soldierFactory(Types objectType, int x, int y) {
@@ -100,8 +100,8 @@ public enum Types {
             case KAMIKAZE -> {return new Kamikaze(new Point(x, y));}
             case DIVER -> {return new Diver(new Point(x, y));}
             case CLIMBER ->{ return new Climber(new Point(x, y));}
+            default -> throw new IllegalArgumentException("Unexpected value: " + objectType);
         }
-        return null;
     }
 
 

@@ -43,8 +43,8 @@ public class PlayerTest {
         assertEquals("test2", game.getGameState().getPlayers().get(1).getName(), "Player name is not correct");
         assertEquals(4, game.getGameState().getPlayers().get(1).getEntities().size(), "Player entities size is not correct");
 
-        assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals("Castle")).toArray()[0], game.getGameState().getPlayers().get(0).getCastle(), "Castle is not correct");
-        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals("Castle")).toArray()[0], game.getGameState().getPlayers().get(1).getCastle(), "Castle is not correct");
+        assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals(Types.CASTLE)).toArray()[0], game.getGameState().getPlayers().get(0).getCastle(), "Castle is not correct");
+        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals(Types.CASTLE)).toArray()[0], game.getGameState().getPlayers().get(1).getCastle(), "Castle is not correct");
 
         game.getGameState().getPlayers().get(0).addEntity(new Sniper(new Point(0, 0), null));
         game.getGameState().getPlayers().get(1).addEntity(new Shotgun(new Point(0, 0), null));
@@ -52,11 +52,11 @@ public class PlayerTest {
         assertEquals(1, game.getGameState().getPlayers().get(0).getSoldierCount(), "Soldier count is not correct");
         assertEquals(1, game.getGameState().getPlayers().get(1).getSoldierCount(), "Assassin count is not correct");
 
-        assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals("Sniper")).toArray()[0], game.getGameState().getPlayers().get(0).getTowers().get(0), "Tower is not correct");
-        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals("Shotgun")).toArray()[0], game.getGameState().getPlayers().get(1).getTowers().get(0), "Tower is not correct");
+        assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals(Types.SNIPER)).toArray()[0], game.getGameState().getPlayers().get(0).getTowers().get(0), "Tower is not correct");
+        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals(Types.SHOTGUN)).toArray()[0], game.getGameState().getPlayers().get(1).getTowers().get(0), "Tower is not correct");
 
-        assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals("Soldier")).toArray()[0], game.getGameState().getPlayers().get(0).getSoldiers().get(0), "Soldier is not correct");
-        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals("Assassin")).toArray()[0], game.getGameState().getPlayers().get(1).getSoldiers().get(0), "Soldier is not correct");
+        assertEquals(game.getGameState().getPlayers().get(0).getEntities().stream().filter(e -> e.getType().equals(Types.SOLDIER)).toArray()[0], game.getGameState().getPlayers().get(0).getSoldiers().get(0), "Soldier is not correct");
+        assertEquals(game.getGameState().getPlayers().get(1).getEntities().stream().filter(e -> e.getType().equals(Types.ASSASSIN)).toArray()[0], game.getGameState().getPlayers().get(1).getSoldiers().get(0), "Soldier is not correct");
 
         game.getGameState().getPlayers().get(0).removeSoldier(game.getGameState().getPlayers().get(0).getSoldiers().get(0));
         game.getGameState().getPlayers().get(1).removeSoldier(game.getGameState().getPlayers().get(1).getSoldiers().get(0));
@@ -100,7 +100,7 @@ public class PlayerTest {
     void addSavedEntityTest() {
         Pathfinder.setMap(new Map());
         Player player = new Player("Player");
-        Soldier soldier = new Soldier(new Point(0, 0), 0);
+        Soldier soldier = new Soldier(new Point(0, 0));
         player.addSavedEntity(soldier);
         assertEquals(1, player.getEntities().size(), "Player Entity Array size should be 1");
     }

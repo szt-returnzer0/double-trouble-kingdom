@@ -248,7 +248,7 @@ public class Animator {
      * @return if the entity is on a Castle instance
      */
     private boolean isCastle(Terrain[][] entities) {
-        return entities[entity.getPosition().y + path.get(0).y][entity.getPosition().x + path.get(0).x].getEntities().get(0).getType().equals("Castle");
+        return entities[entity.getPosition().y + path.get(0).y][entity.getPosition().x + path.get(0).x].getEntities().get(0).getType().equals(Types.CASTLE);
     }
 
     /**

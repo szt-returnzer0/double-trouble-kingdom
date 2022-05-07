@@ -49,7 +49,6 @@ public class GameField extends GameFieldRenderer {
         middleText = "0 sec";
         sideText = getRoundStateText();
 
-
         game.getGameState().linkGameField(this);
         if (game.getDatabase() == null) {
             addMouseMotionListener(new MouseAdapter() {
@@ -62,7 +61,6 @@ public class GameField extends GameFieldRenderer {
 
                 }
             });
-
 
         }
 
@@ -110,7 +108,7 @@ public class GameField extends GameFieldRenderer {
                     wayPoints.add(new Point(xIdx, yIdx));
             }
         }
-        //System.out.println(wayPoints);
+        // System.out.println(wayPoints);
     }
 
     /**
@@ -127,7 +125,7 @@ public class GameField extends GameFieldRenderer {
      */
     public void updateUIState() {
         middleText = "" + game.getGameState().getElapsedTime() + " sec";
-        if (!game.getGameState().getRoundState().equals("Attacking")) {
+        if (!game.getGameState().getRoundState().equals(RoundState.ATTACKING)) {
             sideText = getRoundStateText();
             controlPanel.showControlPanel();
             updateButtons();
@@ -139,15 +137,16 @@ public class GameField extends GameFieldRenderer {
         repaint();
     }
 
-
     /**
      * Draws or removes new Entities on the canvas.
      */
     private void draw(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        if (!deleteState) placeBlock(x, y);
-        else delete(x, y);
+        if (!deleteState)
+            placeBlock(x, y);
+        else
+            delete(x, y);
         repaint();
     }
 
@@ -192,17 +191,17 @@ public class GameField extends GameFieldRenderer {
             sideText = getRoundStateText();
             updateButtons();
             setSelection(null);
-            if (deleteState) toggleDelete();
+            if (deleteState)
+                toggleDelete();
             type = Types.NO_SELECTION;
         });
         this.controlPanel.setButtonSize(5, new Dimension(100, 50));
 
         this.controlPanel.attachActionListener(6, e -> {
-                    toggleDelete();
-                    setSelection(null);
-                    type = Types.NO_SELECTION;
-                }
-        );
+            toggleDelete();
+            setSelection(null);
+            type = Types.NO_SELECTION;
+        });
 
     }
 
@@ -212,7 +211,10 @@ public class GameField extends GameFieldRenderer {
      * @return the Round state as a String
      */
     private String getRoundStateText() {
-        return !Objects.equals(game.getGameState().getRoundState(), "Attacking") ? ("Phase: " + game.getGameState().getRoundState() + " | Player: " + game.getGameState().getCurrentPlayer().getPlayerNumber()) : ("Phase: " + game.getGameState().getRoundState());
+        return !Objects.equals(game.getGameState().getRoundState(), RoundState.ATTACKING)
+                ? ("Phase: " + game.getGameState().getRoundState() + " | Player: "
+                        + game.getGameState().getCurrentPlayer().getPlayerNumber())
+                : ("Phase: " + game.getGameState().getRoundState());
     }
 
     /**
@@ -233,57 +235,57 @@ public class GameField extends GameFieldRenderer {
      * Updates the buttons' state.
      */
     private void updateButtons() {
-        if (game.getGameState().getRoundState().equals("Building")) {
+        if (game.getGameState().getRoundState().equals(RoundState.BUILDING)) {
             this.controlPanel.setButtonText(0, "Bar");
             this.controlPanel.attachActionListener(0, e -> {
                 type = Types.BARRICADE;
-                if (deleteState) toggleDelete();
+                if (deleteState)
+                    toggleDelete();
             });
 
             this.controlPanel.setButtonText(1, "Sho");
             this.controlPanel.attachActionListener(1, e -> {
                 type = Types.SHOTGUN;
-                if (deleteState) toggleDelete();
+                if (deleteState)
+                    toggleDelete();
             });
             this.controlPanel.getButtons()[1].setEnabled(true);
 
             this.controlPanel.setButtonText(2, "Sni");
             this.controlPanel.attachActionListener(2, e -> {
                 type = Types.SNIPER;
-                if (deleteState) toggleDelete();
+                if (deleteState)
+                    toggleDelete();
             });
             this.controlPanel.getButtons()[2].setEnabled(true);
 
             this.controlPanel.setButtonText(3, "Brk");
             this.controlPanel.attachActionListener(3, e -> {
                 type = Types.BARRACKS;
-                if (deleteState) toggleDelete();
+                if (deleteState)
+                    toggleDelete();
             });
             this.controlPanel.getButtons()[3].setEnabled(true);
 
             this.controlPanel.hideButton(4);
 
-        } else if (game.getGameState().getRoundState().equals("Training")) {
+        } else if (game.getGameState().getRoundState().equals(RoundState.TRAINING)) {
 
             this.controlPanel.setButtonText(0, "Sol");
-            this.controlPanel.attachActionListener(0, e -> type = Types.SOLDIER);          //Lerakas
-
+            this.controlPanel.attachActionListener(0, e -> type = Types.SOLDIER); // Lerakas
 
             if (!game.getGameState().getCurrentPlayer().isUnitRestricted()) {
                 this.controlPanel.setButtonText(1, "Kam");
                 this.controlPanel.attachActionListener(1, e -> type = Types.KAMIKAZE);
                 this.controlPanel.getButtons()[1].setEnabled(true);
 
-
                 this.controlPanel.setButtonText(2, "Ass");
                 this.controlPanel.attachActionListener(2, e -> type = Types.ASSASSIN);
                 this.controlPanel.getButtons()[2].setEnabled(true);
 
-
                 this.controlPanel.setButtonText(3, "Div");
                 this.controlPanel.attachActionListener(3, e -> type = Types.DIVER);
                 this.controlPanel.getButtons()[3].setEnabled(true);
-
 
                 this.controlPanel.setButtonText(4, "Cli");
                 this.controlPanel.attachActionListener(4, e -> type = Types.CLIMBER);
@@ -294,7 +296,6 @@ public class GameField extends GameFieldRenderer {
                 }
             }
         }
-
 
         JRoundedButton[] buttons = this.controlPanel.getButtons();
         for (int i = 0, buttonsLength = buttons.length - 2; i < buttonsLength; i++) {
@@ -312,7 +313,9 @@ public class GameField extends GameFieldRenderer {
                 case "Cli" -> tmp = new Color(175, 112, 81);
                 default -> tmp = Color.gray;
             }
-            button.setColors(new Color[]{new Color(Math.min(tmp.getRed() + 30, 255), Math.min(tmp.getGreen() + 30, 255), Math.min(tmp.getBlue() + 30, 255)), new Color(0, 0, 0, 0), tmp});
+            button.setColors(
+                    new Color[] { new Color(Math.min(tmp.getRed() + 30, 255), Math.min(tmp.getGreen() + 30, 255),
+                            Math.min(tmp.getBlue() + 30, 255)), new Color(0, 0, 0, 0), tmp });
         }
         controlPanel.updateButtonText();
         repaint();
@@ -330,11 +333,10 @@ public class GameField extends GameFieldRenderer {
 
         System.out.println(type);
         System.out.println(Types.getBuildingTypes());
-        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0){
-            if(Types.getBuildingTypes().contains(type)){
+        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
+            if (Types.getBuildingTypes().contains(type)) {
                 placeBuilding(Types.buildingFactory(type, xIdx, yIdx));
-            }
-            else if(Types.getSoldierTypes().contains(type)){
+            } else if (Types.getSoldierTypes().contains(type)) {
                 trainSoldiers(Types.soldierFactory(type, xIdx, yIdx));
             }
 
@@ -342,8 +344,6 @@ public class GameField extends GameFieldRenderer {
 
         game.getGameState().setTargets();
     }
-
-
 
     /**
      * Checks if the tile is empty.
@@ -376,10 +376,13 @@ public class GameField extends GameFieldRenderer {
         boolean isBuildable = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                isBuildable = isBuildable && mapRef.getTiles()[y][x].getEntities().isEmpty() && !Objects.equals(mapRef.getTiles()[y][x].getType(), Types.MOUNTAIN) && !Objects.equals(mapRef.getTiles()[y][x].getType(), Types.SWAMP);
+                isBuildable = isBuildable && mapRef.getTiles()[y][x].getEntities().isEmpty()
+                        && !Objects.equals(mapRef.getTiles()[y][x].getType(), Types.MOUNTAIN)
+                        && !Objects.equals(mapRef.getTiles()[y][x].getType(), Types.SWAMP);
             }
         }
-        if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1) || (side.equals(Sides.RED) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
+        if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1)
+                || (side.equals(Sides.RED) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
             isBuildable = false;
         return isBuildable;
     }
@@ -398,27 +401,31 @@ public class GameField extends GameFieldRenderer {
         boolean isInTrainingGround = false;
         for (Entity entity : entities) {
 
-
             /*
-
-            if ((entity.getType().equals("Castle") || entity.getType().equals("Barracks")) && s.getType().equals("Soldier")) {
-                isInTrainingGround = true;
-            }
-
-            if (entity.getType().equals("Barracks") && !((Barracks) entity).isUpgraded() && s.getType().equals("Soldier")) {
-                isInTrainingGround = true;
-            }
-
-            if (entity.getType().equals("Barracks") && ((Barracks) entity).isUpgraded()) {
-                isInTrainingGround = true;
-            }
+             * 
+             * if ((entity.getType().equals("Castle") ||
+             * entity.getType().equals("Barracks")) && s.getType().equals("Soldier")) {
+             * isInTrainingGround = true;
+             * }
+             * 
+             * if (entity.getType().equals("Barracks") && !((Barracks) entity).isUpgraded()
+             * && s.getType().equals("Soldier")) {
+             * isInTrainingGround = true;
+             * }
+             * 
+             * if (entity.getType().equals("Barracks") && ((Barracks) entity).isUpgraded())
+             * {
+             * isInTrainingGround = true;
+             * }
              */
 
-            if ((entity.getType().equals(Types.CASTLE) || entity.getType().equals(Types.BARRACKS)) && Objects.equals(s.getType(), Types.SOLDIER)) {
+            if ((entity.getType().equals(Types.CASTLE) || entity.getType().equals(Types.BARRACKS))
+                    && Objects.equals(s.getType(), Types.SOLDIER)) {
                 isInTrainingGround = true;
             }
 
-            if (Objects.equals(entity.getType(), Types.BARRACKS) && !((Barracks) entity).isUpgraded() && Objects.equals(s.getType(), Types.SOLDIER)) {
+            if (Objects.equals(entity.getType(), Types.BARRACKS) && !((Barracks) entity).isUpgraded()
+                    && Objects.equals(s.getType(), Types.SOLDIER)) {
                 isInTrainingGround = true;
             }
 
@@ -426,9 +433,9 @@ public class GameField extends GameFieldRenderer {
                 isInTrainingGround = true;
             }
         }
-        if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1) || (side.equals(Sides.RED) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
+        if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1)
+                || (side.equals(Sides.RED) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
             isInTrainingGround = false;
-
 
         return isInTrainingGround;
     }
@@ -443,12 +450,13 @@ public class GameField extends GameFieldRenderer {
         int yIdx = y / scale;
         int xIdx = x / scale;
         Entity tmp = null;
-        if(Types.getBuildingTypes().contains(type))
+        if (Types.getBuildingTypes().contains(type))
             tmp = Types.buildingFactory(type, xIdx, yIdx);
         else if (Types.getSoldierTypes().contains(type))
             tmp = Types.soldierFactory(type, xIdx, yIdx);
 
-        if (inverted && tmp != null) tmp.invert();
+        if (inverted && tmp != null)
+            tmp.invert();
         setSelection(tmp);
         repaint();
     }
@@ -461,8 +469,9 @@ public class GameField extends GameFieldRenderer {
      * @return the location of the closest empty tile
      */
     protected Point closestEmptyTile(int xIdx, int yIdx) {
-        Point[] directions = new Point[]{new Point(-1, 0), new Point(0, 1), new Point(1, 0), new Point(0, -1)};
-        Integer[] counts = Arrays.stream(directions).map(e -> countTiles(new Point(xIdx, yIdx), e, 0)).toArray(Integer[]::new);
+        Point[] directions = new Point[] { new Point(-1, 0), new Point(0, 1), new Point(1, 0), new Point(0, -1) };
+        Integer[] counts = Arrays.stream(directions).map(e -> countTiles(new Point(xIdx, yIdx), e, 0))
+                .toArray(Integer[]::new);
         int idx = Arrays.asList(counts).indexOf(Arrays.stream(counts).min(Integer::compare).get());
         return new Point(xIdx + directions[idx].x * counts[idx], yIdx + directions[idx].y * counts[idx]);
     }
@@ -507,7 +516,7 @@ public class GameField extends GameFieldRenderer {
     private boolean unitIsPlaceable(Terrain ter) {
         boolean result;
         switch (ter.getType()) {
-            case SWAMP-> result = Objects.equals(type, Types.DIVER);
+            case SWAMP -> result = Objects.equals(type, Types.DIVER);
             case MOUNTAIN -> result = Objects.equals(type, Types.CLIMBER);
             default -> result = true;
         }
@@ -539,7 +548,8 @@ public class GameField extends GameFieldRenderer {
             s.setOwner(game.getGameState().getCurrentPlayer());
             int xIdx = s.getPosition().x;
             int yIdx = s.getPosition().y;
-            Sides side = xIdx + 3 < xLength / 2 ? Sides.BLUE : Sides.RED; // check in if building is on current player's side
+            Sides side = xIdx + 3 < xLength / 2 ? Sides.BLUE : Sides.RED; // check in if building is on current player's
+                                                                          // side
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx);
@@ -559,7 +569,7 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
-    //public static ArrayList<Point> testpath = new ArrayList<>(); //visualization
+    // public static ArrayList<Point> testpath = new ArrayList<>(); //visualization
 
     /**
      * Places a building.
@@ -572,35 +582,38 @@ public class GameField extends GameFieldRenderer {
 
         b.setOwner(game.getGameState().getCurrentPlayer());
 
-
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
         Sides side = xIdx + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
         b.setSide(side);
-
 
         if (inverted)
             b.invert();
 
         System.out.println(1);
 
-        if (destroyedOnPos(xIdx, yIdx)) return;
-
+        if (destroyedOnPos(xIdx, yIdx))
+            return;
 
         Building enemyCastle = game.getGameState().getEnemyCastle(b.getOwner().getPlayerNumber());
-        Soldier testUnit = new Soldier(closestEmptyTile(enemyCastle.getPosition().x + enemyCastle.getSize().width / 2 + (b.getSide().equals(Sides.BLUE) ? 1 : -1), enemyCastle.getPosition().y + enemyCastle.getSize().height / 2));
+        Soldier testUnit = new Soldier(closestEmptyTile(
+                enemyCastle.getPosition().x + enemyCastle.getSize().width / 2
+                        + (b.getSide().equals(Sides.BLUE) ? 1 : -1),
+                enemyCastle.getPosition().y + enemyCastle.getSize().height / 2));
         testUnit.setSide(enemyCastle.getSide());
         Pathfinder pf = new Pathfinder();
         Pathfinder.setMap(mapRef);
 
         System.out.println(2);
 
-        if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals(Sides.RED) ? Sides.BLUE : Sides.RED, b) == null) return;
+        if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals(Sides.RED) ? Sides.BLUE : Sides.RED, b) == null)
+            return;
 
         System.out.println(55555);
 
         Sides playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? Sides.BLUE : Sides.RED;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength
+                && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             System.out.println(13);
             if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
                 System.out.println(3);
@@ -610,27 +623,36 @@ public class GameField extends GameFieldRenderer {
                     game.getGameState().getCurrentPlayer().addEntity(b);
                     controlPanel.updateButtonText();
                 }
-            } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(b.getType())
+            } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                    .contains(b.getType())
                     && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                if ((game.getGameState().getCurrentPlayer().getGold() >= 30 && Objects.equals(b.getType(), Types.BARRACKS))
-                        || (game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10) && Types.getUpgradeable().contains(b.getType()))) {
-                    game.getGameState().getCurrentPlayer().upgradeBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
+                if ((game.getGameState().getCurrentPlayer().getGold() >= 30
+                        && Objects.equals(b.getType(), Types.BARRACKS))
+                        || (game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10)
+                                && Types.getUpgradeable().contains(b.getType()))) {
+                    game.getGameState().getCurrentPlayer()
+                            .upgradeBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
                     this.controlPanel.updateButtonText();
                     repaint();
                 }
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(Types.SHOTGUN)
-                    && Objects.equals(b.getType(), Types.SNIPER) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                            .contains(Types.SHOTGUN)
+                    && Objects.equals(b.getType(), Types.SNIPER)
+                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 transformTower(b, xIdx, yIdx);
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(Types.SNIPER)
-                    && Objects.equals(b.getType(), Types.SHOTGUN) && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                            .contains(Types.SNIPER)
+                    && Objects.equals(b.getType(), Types.SHOTGUN)
+                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 transformTower(b, xIdx, yIdx);
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList().contains(Types.BARRICADE)
+                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                            .contains(Types.BARRICADE)
                     && (Objects.equals(b.getType(), Types.SHOTGUN) || Objects.equals(b.getType(), Types.BARRICADE))
                     && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 transformTower(b, xIdx, yIdx);
@@ -683,7 +705,8 @@ public class GameField extends GameFieldRenderer {
      */
     private void transformTower(Building b, int xIdx, int yIdx) {
 
-        Building newTower = game.getGameState().getCurrentPlayer().transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
+        Building newTower = game.getGameState().getCurrentPlayer()
+                .transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
         deleteBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
         placeBuilding(newTower);
         repaint();
@@ -694,27 +717,26 @@ public class GameField extends GameFieldRenderer {
      */
     private void toggleDelete() {
 
-        if ("Building".equals(game.getGameState().getRoundState()) && !deleteState) {
+        if (RoundState.BUILDING.equals(game.getGameState().getRoundState()) && !deleteState) {
 
-            this.controlPanel.setButtonColors(6, new Color[]{
+            this.controlPanel.setButtonColors(6, new Color[] {
                     new Color(255, 142, 142),
                     new Color(70, 0, 0),
-                    new Color(166, 0, 0)});
+                    new Color(166, 0, 0) });
             this.controlPanel.setButtonText(6, "X");
             deleteState = true;
             repaint();
 
         } else {
-            this.controlPanel.setButtonColors(6, new Color[]{
+            this.controlPanel.setButtonColors(6, new Color[] {
                     new Color(255, 205, 0),
                     new Color(255, 205, 0),
-                    new Color(255, 205, 0)});
+                    new Color(255, 205, 0) });
             this.controlPanel.setButtonText(6, "0");
             controlPanel.updateButtonText();
             deleteState = false;
             repaint();
         }
     }
-
 
 }

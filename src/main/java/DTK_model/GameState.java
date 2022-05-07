@@ -44,7 +44,7 @@ public class GameState {
     /**
      * The current round phase.
      */
-    private String roundState;
+    private RoundState roundState;
     /**
      * GameField instance reference.
      */
@@ -75,7 +75,7 @@ public class GameState {
         startElapsedTimer();
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
         decideStarter();
-        this.roundState = "Building";
+        this.roundState = RoundState.BUILDING;
         startTime = System.currentTimeMillis();
     }
 
@@ -85,7 +85,7 @@ public class GameState {
         startElapsedTimer();
         this.players = new ArrayList<>(Arrays.asList(new Player(""), new Player("")));
         decideStarter();
-        this.roundState = "Building";
+        this.roundState = RoundState.BUILDING;
         startTime = System.currentTimeMillis();
     }
 
@@ -107,15 +107,6 @@ public class GameState {
         this.isEnded = ended;
     }
 
-    /**
-     * Sets the frame rate of the game.
-     *
-     * @param fps the frame rate
-     */
-    private void setFps(int fps) {
-        this.fps = fps;
-        elapsedTimer.setDelay((int) (1000.0 / this.fps));
-    }
 
     /**
      * Link the GameField to the GameState.
@@ -173,7 +164,7 @@ public class GameState {
      * The game loop for the GameState.
      */
     private void gameLoop() {
-        if (roundState.equals("Attacking")) {
+        if (roundState.equals(RoundState.ATTACKING)) {
             if (animBuffer.stream().noneMatch(e -> e.getEntity().isAnimated())) {
                 calculatePaths();
                 setTowerTargets();
@@ -225,7 +216,7 @@ public class GameState {
      *
      * @return the roundState
      */
-    public String getRoundState() {
+    public RoundState getRoundState() {
         return roundState;
     }
 
@@ -234,16 +225,16 @@ public class GameState {
      */
     public void nextRoundState() {
         switch (this.roundState) {
-            case "Building" -> this.roundState = "Training";
-            case "Training" -> {
-                this.roundState = "Attacking";
+            case BUILDING -> this.roundState = RoundState.TRAINING;
+            case TRAINING -> {
+                this.roundState = RoundState.ATTACKING;
                 for (Animator animator : animBuffer) {
                     animator.startAnimation();
                 }
             }
-            case "Attacking" -> {
+            case ATTACKING -> {
                 nextPlayer();
-                this.roundState = "Building";
+                this.roundState = RoundState.BUILDING;
                 currentPlayer.calculateGoldAtRound();
             }
         }
@@ -357,8 +348,8 @@ public class GameState {
     public void setTargets() {
         for (Player player : players) {
             for (Entity entity : player.getEntities()) {
-                if (entity instanceof Soldier s) {
-                    s.selectTarget(getEnemyCastle(player.getPlayerNumber()));
+                if (Types.getSoldierTypes().contains(entity.getType())) {
+                    ((Soldier) entity).selectTarget(getEnemyCastle(player.getPlayerNumber()));
                 }
             }
         }

@@ -200,14 +200,17 @@ public class MapEditorView extends GameField {
                 switch (ent.getSide()) {
                     case BLUE -> castles.get(0).remove((Building) ent);
                     case RED -> castles.get(1).remove((Building) ent);
+                    default -> throw new IllegalArgumentException("Unexpected value: " + ent.getSide());
                 }
             }
             case BARRACKS -> {
                 switch (ent.getSide()) {
                     case BLUE -> barracks.get(0).remove((Building) ent);
                     case RED -> barracks.get(1).remove((Building) ent);
+                    default -> throw new IllegalArgumentException("Unexpected value: " + ent.getSide());
                 }
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + ent.getType());
         }
         deleteBuilding((Building) ent);
     }

@@ -287,7 +287,7 @@ public class GameFieldRenderer extends JPanel {
 
 
         }
-        if (!game.getGameState().getRoundState().equals("Attacking")) {
+        if (!game.getGameState().getRoundState().equals(RoundState.ATTACKING)) {
             drawUnitNumber(g2d, x, y, 0, 0);
         }
 
@@ -310,7 +310,7 @@ public class GameFieldRenderer extends JPanel {
         renderField(g2d);
         drawCurrentSelection(g2d);
         drawLabels(g2d);
-        if (Objects.equals(game.getGameState().getRoundState(), "Attacking"))
+        if (Objects.equals(game.getGameState().getRoundState(), RoundState.ATTACKING))
             drawAnimated(g2d);
         drawWayPoints(g2d);
 
@@ -329,7 +329,7 @@ public class GameFieldRenderer extends JPanel {
         towers.addAll(game.getGameState().getEnemyTowers(1));
         towers.addAll(game.getGameState().getEnemyTowers(2));
 
-        if (game.getGameState().getRoundState().equals("Attacking")) {
+        if (game.getGameState().getRoundState().equals(RoundState.ATTACKING)) {
             g2d.setColor(Color.white);
             g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, bevelCnt * 2));

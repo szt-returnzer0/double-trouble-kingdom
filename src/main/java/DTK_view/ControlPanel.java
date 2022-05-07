@@ -1,6 +1,7 @@
 package DTK_view;
 
 import DTK_model.Game;
+import DTK_model.RoundState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,7 +123,7 @@ public class ControlPanel extends JPanel {
      * Updates the buttons text in the panel.
      */
     public void updateButtonText() {
-        buttons[5].setText(Objects.equals(game.getGameState().getRoundState(), "Building") ? "Train" : "End turn");
+        buttons[5].setText(Objects.equals(game.getGameState().getRoundState(), RoundState.BUILDING) ? "Train" : "End turn");
         if (!buttons[6].getText().equals("X"))
             buttons[6].setText("" + game.getGameState().getCurrentPlayer().getGold());
     }
