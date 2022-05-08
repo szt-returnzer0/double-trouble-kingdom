@@ -28,9 +28,9 @@ public class GameTest {
     @DisplayName("Map test")
     void mapTest() {
         Game game = new Game(new Database(), new Map(), "P1", "P2");
-        assertEquals("Alapértelmezett", game.getMap().getName(), "Map name is not correct");
-        assertEquals(32, game.getMap().getTiles().length, "Height of map is not correct");
-        assertEquals(64, game.getMap().getTiles()[0].length, "Width of map is not correct");
+        assertEquals("Alapértelmezett", Game.getMap().getName(), "Map name is not correct");
+        assertEquals(32, Game.getMap().getTiles().length, "Height of map is not correct");
+        assertEquals(64, Game.getMap().getTiles()[0].length, "Width of map is not correct");
     }
 
     @Test

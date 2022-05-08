@@ -56,7 +56,7 @@ public class Soldier extends Entity {
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 2;
-        this.speed = 2;
+        this.speed = 12;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
         this.pf = new Pathfinder();
         this.damage = 10;

@@ -95,7 +95,8 @@ public class GameFieldRenderer extends JPanel {
     public GameFieldRenderer(Game game, JFrame frame) {
         texturesOn = true;
         this.game = game;
-        mapRef = game.getMap();
+        //mapRef = game.getMap();
+        mapRef = Game.getMap();
         setTextures();
 
         this.frame = frame;
@@ -221,7 +222,7 @@ public class GameFieldRenderer extends JPanel {
         return mapRef;
     }
 
-
+    //model
     /**
      * Draws the waypoints
      *
@@ -241,6 +242,7 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    //model
     /**
      * Draws the selected Entity.
      *
@@ -250,14 +252,14 @@ public class GameFieldRenderer extends JPanel {
      */
     protected void drawEnt(Graphics2D g2d, int x, int y) {
 
-        if (!mapRef.getTiles()[y][x].getEntities().isEmpty()) {
+       /* if (!mapRef.getTiles()[y][x].getEntities().isEmpty()) {
             for (int i = 0; i < mapRef.getTiles()[y][x].getEntities().size(); i++) {
                 if (!mapRef.getTiles()[y][x].getEntities().get(i).isAlive()) {
                     mapRef.getTiles()[y][x].getEntities().remove(i--);
 
                 }
             }
-        }
+        }*/
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             if (!entity.isAnimated() && entity.isAlive()) {
@@ -305,7 +307,6 @@ public class GameFieldRenderer extends JPanel {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        //scale = (this.frame.getContentPane().getSize().width + 15) / xLength;
 
         renderField(g2d);
         drawCurrentSelection(g2d);
@@ -315,6 +316,14 @@ public class GameFieldRenderer extends JPanel {
         drawWayPoints(g2d);
 
         bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
+
+        drawPathVisualization(g2d);
+        drawAttackAnimation(g2d);
+        g2d.dispose();
+    }
+
+    //model
+    void drawPathVisualization(Graphics2D g2d) {
         if (game.getGameState().isPathVisualization()) {
             for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
                 if (entity instanceof Soldier s) {
@@ -325,6 +334,10 @@ public class GameFieldRenderer extends JPanel {
                 }
             }
         }
+    }
+
+    //model
+    void drawAttackAnimation(Graphics2D g2d) {
         Set<Tower> towers = new HashSet<>();
         towers.addAll(game.getGameState().getEnemyTowers(1));
         towers.addAll(game.getGameState().getEnemyTowers(2));
@@ -344,8 +357,6 @@ public class GameFieldRenderer extends JPanel {
                 }
             }
         }
-        g2d.dispose();
-        //g.dispose(); //not needed as g wasn't created by us
     }
 
     /**
@@ -646,16 +657,16 @@ public class GameFieldRenderer extends JPanel {
         boolean up = true;
 
         if (x != 0)
-            left = Objects.equals(game.getMap().getTiles()[y][x - 1].getType(), type);
-        if (y + 1 != game.getMap().getTiles().length)
-            down = Objects.equals(game.getMap().getTiles()[y + 1][x].getType(), type);
-        if (x + 1 != game.getMap().getTiles()[0].length)
-            right = Objects.equals(game.getMap().getTiles()[y][x + 1].getType(), type);
+            left = Objects.equals(mapRef.getTiles()[y][x - 1].getType(), type);
+        if (y + 1 != mapRef.getTiles().length)
+            down = Objects.equals(mapRef.getTiles()[y + 1][x].getType(), type);
+        if (x + 1 != mapRef.getTiles()[0].length)
+            right = Objects.equals(mapRef.getTiles()[y][x + 1].getType(), type);
         if (y != 0)
-            up = Objects.equals(game.getMap().getTiles()[y - 1][x].getType(), type);
+            up = Objects.equals(mapRef.getTiles()[y - 1][x].getType(), type);
 
         if (up && right && down && left) {
-            tileType = "5" + game.getMap().getTiles()[y][x].getTileVersion();
+            tileType = "5" + mapRef.getTiles()[y][x].getTileVersion();
         } else if (left && right && down) {
             tileType = "2";
         } else if (up && left && down) {

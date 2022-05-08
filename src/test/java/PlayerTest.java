@@ -1,6 +1,5 @@
 import DTK_model.*;
 import DTK_persistence.Database;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ public class PlayerTest {
     @DisplayName("Simulation test")
     void SimulationTest() {
         Game game = new Game(new Database(), new Map(), "test1", "test2");
-        Pathfinder.setMap(game.getMap());
+        Pathfinder.setMap(Game.getMap());
 
 
         assertEquals("test1", game.getGameState().getPlayers().get(0).getName(), "Player name is not correct");

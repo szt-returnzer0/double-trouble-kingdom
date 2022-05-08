@@ -10,7 +10,7 @@ public class Game {
     /**
      * The Map of the game.
      */
-    private final Map map;
+    private static Map map;
     /**
      * The Database of the game.
      */
@@ -34,7 +34,7 @@ public class Game {
         this.gameState = new GameState(p1Name, p2Name);
         this.gameState.linkDBRef(database);
         this.gameState.loadBuildings(map);
-        this.map = map;
+        Game.map = map;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Game {
      */
     public Game(Map map) {
         Pathfinder.setMap(map);
-        this.map = map;
+        Game.map = map;
         this.gameState = new GameState();
         this.gameState.linkDBRef(database);
         this.gameState.loadBuildings(map);
@@ -70,8 +70,8 @@ public class Game {
      *
      * @return the Map of the Game
      */
-    public Map getMap() {
-        return this.map;
+    public static Map getMap() {
+        return map;
     }
 
     /**

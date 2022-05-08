@@ -387,6 +387,8 @@ public class GameState {
             for (Soldier soldier : player.getSoldiers()) {
                 if (!soldier.isAlive()) {
                     player.removeSoldier(soldier);
+                    Point pos = soldier.getPosition();
+                    Game.getMap().getTiles()[pos.y][pos.x].getEntities().remove(soldier);
                     players.get(player.getPlayerNumber() == 1 ? 1 : 0).addGold(KILL_GOLD);
                 }
             }
