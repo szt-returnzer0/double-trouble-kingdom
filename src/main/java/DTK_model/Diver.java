@@ -22,6 +22,6 @@ public class Diver extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT, Types.SWAMP));
-        this.speed = 3;
+        this.speed = 5;
     }
 }

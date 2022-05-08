@@ -22,6 +22,6 @@ public class Climber extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT, Types.MOUNTAIN));
-        this.speed = 1;
+        this.speed = 4;
     }
 }

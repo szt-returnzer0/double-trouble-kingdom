@@ -387,9 +387,10 @@ public class GameState implements Serializable {
                 if (soldier.isAlive) {
                     soldier.attack();
                 }
+
             }
         }
-        removeDeadSoldiers();
+        removeAllDeadSoldiers();
     }
 
     /**
@@ -403,23 +404,32 @@ public class GameState implements Serializable {
                 }
             }
         }
-        removeDeadSoldiers();
+        removeAllDeadSoldiers();
     }
 
     /**
      * Removes dead Soldiers.
      */
-    private void removeDeadSoldiers() {
+    private void removeAllDeadSoldiers() {
         for (Player player : players) {
             for (Soldier soldier : player.getSoldiers()) {
                 if (!soldier.isAlive()) {
-                    player.removeSoldier(soldier);
-                    Point pos = soldier.getPosition();
-                    Game.getMapReference().getTiles()[pos.y][pos.x].getEntities().remove(soldier);
-                    players.get(player.getPlayerNumber() == 1 ? 1 : 0).addGold(KILL_GOLD);
+                    removeDeadSoldier(player, soldier);
                 }
             }
         }
+    }
+
+    /**
+     * Removes a dead Soldier.
+     * @param player the Player
+     * @param soldier the Soldier
+     */
+    private void removeDeadSoldier(Player player, Soldier soldier) {
+        player.removeSoldier(soldier);
+        Point pos = soldier.getPosition();
+        Game.getMapReference().getTiles()[pos.y][pos.x].getEntities().remove(soldier);
+        players.get(player.getPlayerNumber() == 1 ? 1 : 0).addGold(KILL_GOLD);
     }
 
 

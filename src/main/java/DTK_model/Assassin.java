@@ -28,9 +28,9 @@ public class Assassin extends Soldier {
         this.size = new Dimension(1, 1);
         this.value = 5;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
-        this.range = 3;
+        this.range = 2;
         this.soldierTargets = new ArrayList<>();
-        this.speed = 3;
+        this.speed = 6;
     }
 
     /**
@@ -39,13 +39,13 @@ public class Assassin extends Soldier {
     @Override
     public void attack() {
         super.attack();
-        if (!soldierTargets.isEmpty()) {
+
             for (Soldier soldier : soldierTargets) {
                 if (soldier.getPosition().distance(this.getPosition()) <= range) {
                     soldier.takeDamage(this.damage);
                 }
             }
-        }
+
     }
 
     /**

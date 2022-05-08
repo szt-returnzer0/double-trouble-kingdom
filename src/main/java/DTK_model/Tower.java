@@ -15,7 +15,7 @@ public abstract class Tower extends Building {
     /**
      * The targets of the Tower in an ArrayList.
      */
-    protected ArrayList<Entity> targets;
+    protected ArrayList<Soldier> targets;
     /**
      * Determines if the Tower can attack.
      */
@@ -56,7 +56,7 @@ public abstract class Tower extends Building {
         this.attackSpeed = 1;
         this.range = 0;
         this.canAttack = false;
-        this.targets = new ArrayList<>();
+        this.targets = new ArrayList<Soldier>();
         this.upgradeCost = 5;
 
     }
@@ -72,7 +72,7 @@ public abstract class Tower extends Building {
         this.attackSpeed = 1;
         this.range = 0;
         this.canAttack = false;
-        this.targets = new ArrayList<>();
+        this.targets = new ArrayList<Soldier>();
         this.upgradeCost = 5;
 
     }
@@ -136,7 +136,7 @@ public abstract class Tower extends Building {
      * @param entities the entities to select
      */
     public void selectTargets(ArrayList<Soldier> entities) {
-        targets.addAll(entities);
+        targets = entities;
     }
 
     /**
@@ -162,7 +162,7 @@ public abstract class Tower extends Building {
      *
      * @return the Tower's targets in an ArrayList
      */
-    public ArrayList<Entity> getTargets() {
+    public ArrayList<Soldier> getTargets() {
         return targets;
     }
 
@@ -188,6 +188,8 @@ public abstract class Tower extends Building {
      */
     public void attack() {
         targetCount = 0;
+        System.out.println(targetCount);
+        System.out.println(targets.size());
         for (Entity target : this.targets) {
             if (target.getPosition().distance(this.position) <= range && targetCount < targetsPerAttack) {
                 target.takeDamage(this.damage);

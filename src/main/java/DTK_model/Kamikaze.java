@@ -30,7 +30,7 @@ public class Kamikaze extends Soldier {
         this.range = 4;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
         this.towerTargets = new ArrayList<>();
-        this.speed = 2;
+        this.speed = 4;
     }
 
     /**
@@ -40,7 +40,7 @@ public class Kamikaze extends Soldier {
     public void attack() {
         super.attack();
         if (canSplash()) {
-            if (!this.towerTargets.isEmpty()) {
+
                 for (Tower tower : this.towerTargets) {
                     if (!tower.isDestroyed && tower.getPosition().distance(this.getPosition()) <= range) {
                         tower.takeDamage(this.damage);
@@ -48,7 +48,7 @@ public class Kamikaze extends Soldier {
                     }
                 }
             }
-        }
+
     }
 
     /**

@@ -300,7 +300,9 @@ public class GameFieldRenderer extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         Graphics2D g2d = (Graphics2D) g.create();
+        Stroke def = g2d.getStroke();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -315,7 +317,22 @@ public class GameFieldRenderer extends JPanel {
 
         drawPathVisualization(g2d);
         drawAttackAnimation(g2d);
+        drawCastleHealth(g2d, def);
         g2d.dispose();
+    }
+
+    /**
+     * Drew the health bar of the castle.
+     * @param g2d the graphics we use
+     * @param def the default stroke
+     */
+    private void drawCastleHealth(Graphics2D g2d, Stroke def) {
+        Color green = new Color(0, 155, 35);
+        Color red = new Color(155, 0, 0);
+        g2d.setStroke(def);
+        for (Player player : game.getGameState().getPlayers()) {
+            drawBuildingHealth(g2d, green, red, player.getCastle());
+        }
     }
 
 
@@ -367,7 +384,7 @@ public class GameFieldRenderer extends JPanel {
         if (entity instanceof Soldier s) {
             int width = (int) (scale * s.getHealthPoints() / ((double) s.getMaxHealthPoints()));
             drawUnitHealth(g2d, entity, green, red, width, s.getAnimObj(), s.getSide());
-        } else if (entity instanceof Building building && !(building instanceof Barracks)) {
+        } else if (entity instanceof Building building && !(building instanceof Barracks) && !(building instanceof Castle)) {
             drawBuildingHealth(g2d, green, red, building);
         }
 
@@ -510,7 +527,7 @@ public class GameFieldRenderer extends JPanel {
         Sides side = entity.getPosition().x + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
 
 
-        if (Types.getTowerTypes().contains(entity.getType())) {
+        if (Types.getTowerTypes().contains(entity.getType()) || Objects.equals(entity.getType(), Types.BARRACKS)) {
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, 0);
