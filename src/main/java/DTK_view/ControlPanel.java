@@ -73,7 +73,7 @@ public class ControlPanel extends JPanel {
         setPreferredSize(new Dimension(getWidth(), getHeight()));
         for (int i = 0; i < buttons.length; i++) {
             JRoundedButton button = buttons[i];
-            button.setPreferredSize(new Dimension((i == 5 && !button.getText().equals("") ? 2 : 1) * (GameFieldRenderer.scale + 20), GameFieldRenderer.scale + 20));
+            button.setPreferredSize(new Dimension((i == 5 && !button.getText().equals("") ? 2 : 1) * (GameFieldRenderer.dockScale() + 20), GameFieldRenderer.dockScale() + 20));
         }
         validate();
     }

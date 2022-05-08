@@ -7,10 +7,13 @@ import DTK_persistence.FileHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 
 /**
  * Implementation of MainMenu panel.
@@ -95,7 +98,8 @@ public class MainMenu extends JPanel {
         centerButtons.add(editor);
         centerPanel.add(centerButtons);
         this.add(centerPanel);
-        editor.addActionListener(e -> mainWindow.startEditor(64, 32));
+
+        editor.addActionListener(e -> mainWindow.startEditor());
 
         JPanel bottomButtons = new JPanel(new FlowLayout());
         bottomButtons.setOpaque(false);
@@ -224,4 +228,6 @@ public class MainMenu extends JPanel {
     private void setColors(JRoundedButton button, Color color) {
         button.setColors(new Color[]{new Color(Math.min(color.getRed() + 30, 255), Math.min(color.getGreen() + 30, 255), Math.min(color.getBlue() + 30, 255)), new Color(0, 0, 0, 0), color});
     }
+
+
 }

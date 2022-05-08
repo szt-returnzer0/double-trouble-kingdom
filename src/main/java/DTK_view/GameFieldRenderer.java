@@ -49,7 +49,7 @@ public class GameFieldRenderer extends JPanel {
     /**
      * The parent frame.
      */
-    protected JFrame frame;
+    protected static JFrame frame;
     /**
      * The Game dependency.
      */
@@ -98,7 +98,7 @@ public class GameFieldRenderer extends JPanel {
         mapRef = Game.getMap();
         setTextures();
 
-        this.frame = frame;
+        GameFieldRenderer.frame = frame;
         this.xLength = mapRef.getTiles()[0].length;
         this.yLength = mapRef.getTiles().length;
         scale = (frame.getContentPane().getSize().width) / xLength;
@@ -140,6 +140,10 @@ public class GameFieldRenderer extends JPanel {
         this.hamburgerMenu.attachActionListener(4, e -> toggleTextures());
 
     }
+
+   public static int dockScale() {
+       return (frame.getContentPane().getSize().width) / 64;
+   }
 
     /**
      * Toggles the scale.

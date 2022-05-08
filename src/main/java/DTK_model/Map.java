@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Implementation of Map class as a record.
+ * Implementation of Map class.
  */
 public final class Map implements Serializable {
     /**

@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+
 /**
  * Implementation of the game's main window.
  */
@@ -73,17 +74,24 @@ public class MainWindow {
      * @param maxWidth  the width of the game Map
      * @param maxHeight the height of the game Map
      */
-    public void startEditor(int maxWidth, int maxHeight) {
+    public void startEditor() {
         frame.remove(mainMenu);
 
-        Map map = new Map((String) JOptionPane.showInputDialog(
+        String mapName = (String) JOptionPane.showInputDialog(
                 frame,
                 "Add meg a pálya nevét",
                 "Pályanév",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
-                "Új Pálya"), new Terrain[maxHeight][maxWidth]);
+                "Új Pálya");
+
+
+        int maxHeight = 16;
+                int maxWidth = 32;
+
+
+        Map map = new Map( mapName, new Terrain[maxHeight][maxWidth]);
         generateBlankMap(maxWidth, maxHeight, map);
         Game editor = new Game(map);
         MapEditorView mapEditor = new MapEditorView(editor, frame);
