@@ -4,6 +4,9 @@ import java.awt.*;
 import java.util.Map;
 import java.util.*;
 
+/**
+ * Implementation of the GameField's logic.
+ */
 public class GameFieldModel {
 
     /**
@@ -25,13 +28,12 @@ public class GameFieldModel {
 
     private int yLength;
 
+
+
     /**
      * Constructs a new GameFieldModel.
+     * @param game the game reference
      */
-    public GameFieldModel() {
-        genPriceList();
-    }
-
     public GameFieldModel(Game game) {
         genPriceList();
         this.game = game;
@@ -61,12 +63,24 @@ public class GameFieldModel {
         priceList.put("Ass", (new Assassin(new Point(0, 0))).getValue() + "g");
     }
 
-    public static boolean isAttackAnimated(Tower t) {
-        return t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack() && !t.isDestroyed();
+    /**
+     * Checks if Tower attack is animated.
+     * @param tower the Tower we query
+     * @return true if Tower is attacking, false otherwise
+     */
+    public static boolean isAttackAnimated(Tower tower) {
+        return tower.getTargets() != null && !tower.getTargets().isEmpty() && tower.isCanAttack() && !tower.isDestroyed();
     }
 
-    public static boolean isInAttackRange(Tower t, Entity target) {
-        return t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive();
+
+    /**
+     * Checks if Tower has a Solider in attack range.
+     * @param tower the Tower we query
+     * @param target the target we query
+     * @return true if Tower has a Soldier in attack range, false otherwise
+     */
+    public static boolean isInAttackRange(Tower tower, Entity target) {
+        return tower.getPosition().distance(target.getPosition()) <= tower.getRange() && target.isAlive();
     }
 
     /**
@@ -96,6 +110,11 @@ public class GameFieldModel {
         return wayPoints;
     }
 
+    /**
+     * Deletes an entity.
+     * @param xIdx x Index
+     * @param yIdx y Index
+     */
     public void delete(int xIdx, int yIdx) {
         if (!Game.getMap().getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
             Building b = (Building) Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0);
@@ -108,7 +127,14 @@ public class GameFieldModel {
         }
     }
 
-    public void placeBlock(int xIdx, int yIdx, boolean inverted, Types type) {
+    /**
+     * Places an entity.
+     * @param xIdx x Index
+     * @param yIdx y Index
+     * @param inverted if the entity is inverted
+     * @param type the type of the entity
+     */
+    public void placeEntity(int xIdx, int yIdx, boolean inverted, Types type) {
         if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
             if (Types.getBuildingTypes().contains(type)) {
                 placeBuilding(Types.buildingFactory(type, xIdx, yIdx), inverted, type);

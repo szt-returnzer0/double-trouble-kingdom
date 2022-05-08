@@ -35,6 +35,9 @@ public final class Map implements Serializable {
         this.tiles = map.tiles;
     }
 
+    /**
+     * Constructs a default Map instance if the Map file is not found.
+     */
     public Map() {
         this.name = "Alapértelmezett";
         this.tiles = new Terrain[32][64];

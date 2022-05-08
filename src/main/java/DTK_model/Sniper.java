@@ -23,6 +23,11 @@ public class Sniper extends Tower {
         this.canAttack = true;
         this.targetsPerAttack = 1;
     }
+
+    /**
+     * Constructs a Sniper instance.
+     * @param position the sniper's position on the Map
+     */
     public Sniper(Point position) {
         super(position);
         this.type = Types.SNIPER;

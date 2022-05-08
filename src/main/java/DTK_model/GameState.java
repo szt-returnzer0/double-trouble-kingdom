@@ -16,7 +16,15 @@ import java.util.Random;
  */
 public class GameState {
     private static final int KILL_GOLD = 6;
+
+    /**
+     * The deltaTime for animation drawing.
+     */
     public static double deltaTime = 1;
+
+    /**
+     * The buffer of animations.
+     */
     public static ArrayList<Animator> animBuffer = new ArrayList<>();
     /**
      * Timer to increment elapsedTime.
@@ -74,6 +82,9 @@ public class GameState {
         startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Constructs a gamesState.
+     */
     public GameState() {
         this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
         startElapsedTimer();
@@ -220,11 +231,20 @@ public class GameState {
 
     boolean isEnded = false;
 
+    /**
+     * Sets if the game is ended.
+     * @param ended if the game is ended
+     */
     public void setEnded(boolean ended) {
         isEnded = ended;
     }
 
-    public boolean getEnded() {
+
+    /**
+     * Checks if the game is ended.
+     * @return true if the game is ended
+     */
+    public boolean isEnded() {
         return isEnded;
     }
 

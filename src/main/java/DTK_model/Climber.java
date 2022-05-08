@@ -12,7 +12,6 @@ public class Climber extends Soldier {
      * Constructs a new Climber instance.
      *
      * @param position the climber's position on the Map
-     * @param speed    the climber's current speed
      */
     public Climber(Point position) {
         super(position);

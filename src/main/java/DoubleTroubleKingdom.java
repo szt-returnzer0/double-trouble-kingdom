@@ -6,8 +6,9 @@ import DTK_view.MainWindow;
 public class DoubleTroubleKingdom {
     /**
      * Starts the game.
+     * @param args Command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main( String[] args ) {
         new MainWindow();
     }
 }

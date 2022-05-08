@@ -18,7 +18,6 @@ public class Kamikaze extends Soldier {
      * Constructs a new Kamikaze instance.
      *
      * @param position the kamikaze's position on the Map
-     * @param speed    the kamikaze's current speed
      */
     public Kamikaze(Point position) {
         super(position);
@@ -52,10 +51,18 @@ public class Kamikaze extends Soldier {
         }
     }
 
+    /**
+     * Checks if the Kamikaze can splash.
+     * @return true if the Kamikaze can splash
+     */
     private boolean canSplash() {
         return (Math.random() * 150) >= 100;
     }
 
+    /**
+     * Sets the Kamikaze's target list.
+     * @param targets the targets to add
+     */
     public void selectTargets(ArrayList<Tower> targets) {
         this.towerTargets = targets;
     }

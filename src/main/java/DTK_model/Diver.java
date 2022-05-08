@@ -12,7 +12,6 @@ public class Diver extends Soldier {
      * Constructs a new Diver instance
      *
      * @param position the diver's position on the Map
-     * @param speed    the diver's current speed
      */
     public Diver(Point position) {
         super(position);

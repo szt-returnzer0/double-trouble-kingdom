@@ -18,7 +18,6 @@ public class Assassin extends Soldier {
      * Constructs a new Assassin instance.
      *
      * @param position the assassin's position
-     * @param speed    the assassin's current speed
      */
     public Assassin(Point position) {
         super(position);

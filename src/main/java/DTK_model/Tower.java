@@ -21,6 +21,9 @@ public abstract class Tower extends Building {
      */
     protected boolean canAttack;
 
+    /**
+     * The attack range of the Tower.
+     */
     protected int range;
 
 
@@ -29,8 +32,14 @@ public abstract class Tower extends Building {
      */
     protected int attackSpeed;
 
+    /**
+     * The maximum amount of targets the Tower can attack at once.
+     */
     protected int targetCount;
 
+    /**
+     * The amount of targets the Tower can attack at once.
+     */
     protected int targetsPerAttack;
 
 
@@ -52,6 +61,10 @@ public abstract class Tower extends Building {
 
     }
 
+    /**
+     * Constructs a new Tower instance.
+     * @param  position the tower's position on the Map
+     */
     public Tower(Point position) {
         super(position);
         this.healthPoints = 20;
@@ -119,6 +132,8 @@ public abstract class Tower extends Building {
 
     /**
      * Selects the Tower's targets.
+     *
+     * @param entities the entities to select
      */
     public void selectTargets(ArrayList<Soldier> entities) {
         targets.addAll(entities);
@@ -160,6 +175,10 @@ public abstract class Tower extends Building {
         return canAttack;
     }
 
+    /**
+     * Returns the Tower's range.
+     * @return the Tower's range
+     */
     public int getRange() {
         return range;
     }
@@ -191,6 +210,10 @@ public abstract class Tower extends Building {
         this.isDestroyed = this.healthPoints <= 0;
     }
 
+    /**
+     * Returns the attack speed of the Tower.
+     * @return the attack speed of the Tower
+     */
     public int getAttackSpeed() {
         return attackSpeed;
     }

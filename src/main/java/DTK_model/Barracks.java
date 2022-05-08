@@ -25,6 +25,11 @@ public class Barracks extends Building {
         this.upgradeCost = 40;
     }
 
+    /**
+     * Constructs a new Barracks instance.
+     *
+     * @param position the barrack's position on the Map
+     */
     public Barracks(Point position) {
         super(position);
         this.type = Types.BARRACKS;

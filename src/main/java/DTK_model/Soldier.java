@@ -41,6 +41,9 @@ public class Soldier extends Entity {
      */
     protected ArrayList<Point> wayPoints;
 
+    /**
+     * The location of the enemy Castle's Tile locations.
+     */
     protected ArrayList<Point> castleParts;
 
     /**
@@ -56,7 +59,7 @@ public class Soldier extends Entity {
         this.maxHealthPoints = this.healthPoints;
         this.size = new Dimension(1, 1);
         this.value = 2;
-        this.speed = 12;
+        this.speed = 2;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
         this.pf = new Pathfinder();
         this.damage = 10;
@@ -105,6 +108,8 @@ public class Soldier extends Entity {
 
     /**
      * Selects a target for the Soldier to attack.
+     *
+     * @param target the target to select
      */
     public void selectTarget(Entity target) {
         this.target = target;
@@ -143,6 +148,8 @@ public class Soldier extends Entity {
 
     /**
      * Adds a waypoint to the Soldier's path.
+     *
+     * @param waypoint the waypoint to add
      */
     public void addWaypoint(Point waypoint) {
         this.wayPoints.add(waypoint);
@@ -157,6 +164,10 @@ public class Soldier extends Entity {
         return wayPoints;
     }
 
+    /**
+     * Returns the Soldier's absolute path of the found path in an ArrayList.
+     * @return the Soldier's absolute path of the found path in an ArrayList
+     */
     public ArrayList<Point> getAbsPath() {
         return pf.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "abs");
     }

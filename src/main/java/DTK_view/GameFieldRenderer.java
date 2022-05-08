@@ -171,6 +171,9 @@ public class GameFieldRenderer extends JPanel {
         repaint();
     }
 
+    /**
+     * Toggles the textures.
+     */
     public void toggleTextures() {
         texturesOn = !texturesOn;
     }
@@ -211,7 +214,10 @@ public class GameFieldRenderer extends JPanel {
             drawImage(g2d, mapRef.getTiles()[y][x], x, y);
     }
 
-    private int bevelCnt = 0;
+    /**
+     * The count of bevel when drawing beveled lines.
+     */
+    private int bevelCount = 0;
 
     /**
      * Draws the waypoints
@@ -223,7 +229,7 @@ public class GameFieldRenderer extends JPanel {
             setSideColor(game.getGameState().getCurrentPlayer().getSide(), g2d);
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[]{9}, bevelCnt);
+                    0, new float[]{9}, bevelCount);
             g2d.setStroke(dashed);
             for (Point wayPoint : game.getGameState().getWayPoints()) {
                 g2d.drawRoundRect(wayPoint.x * scale, wayPoint.y * scale, scale, scale, 200, 200);
@@ -295,7 +301,7 @@ public class GameFieldRenderer extends JPanel {
             drawAnimated(g2d);
         drawWayPoints(g2d);
 
-        bevelCnt = bevelCnt < 360 ? bevelCnt + 1 : 0;
+        bevelCount = bevelCount < 360 ? bevelCount + 1 : 0;
 
         drawPathVisualization(g2d);
         drawAttackAnimation(g2d);
@@ -324,7 +330,7 @@ public class GameFieldRenderer extends JPanel {
         if (game.getGameState().getRoundState().equals(RoundState.ATTACKING)) {
             g2d.setColor(Color.white);
             g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[]{9}, bevelCnt * 2));
+                    0, new float[]{9}, bevelCount * 2));
             for (Tower tower : towers) {
                 if (GameFieldModel.isAttackAnimated(tower)) {
                     for (Entity target : tower.getTargets()) {
@@ -465,6 +471,10 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
+    /**
+     * Draws the animated units
+     * @param g2d the graphics we use
+     */
     protected void drawAnimated(Graphics2D g2d) {
         for (Animator animator : GameState.animBuffer) {
             if (!texturesOn) {
@@ -557,7 +567,7 @@ public class GameFieldRenderer extends JPanel {
         if (selection != null) {
             handleType(g2d, selection.getType());
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[]{9}, bevelCnt);
+                    0, new float[]{9}, bevelCount);
             g2d.setStroke(dashed);
             Color col = g2d.getColor();
             g2d.drawRect(selection.getPosition().x * scale, selection.getPosition().y * scale, selection.getSize().width * scale, selection.getSize().height * scale);
@@ -587,7 +597,7 @@ public class GameFieldRenderer extends JPanel {
         g2d.drawString(middleText, getWidth() / 2 - (int) Math.ceil(middleWidth / 2.0), 40);
         g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2), 40);
 
-        if (game.getGameState().getEnded()) {
+        if (game.getGameState().isEnded()) {
             font = new Font("Roboto", Font.PLAIN, 64);
             g2d.setFont(font);
             String winner = game.getGameState().getWinner().getName() + " nyerte a játékot!";

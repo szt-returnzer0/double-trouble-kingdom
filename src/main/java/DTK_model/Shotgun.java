@@ -25,6 +25,10 @@ public class Shotgun extends Tower {
         this.targetsPerAttack = 5;
     }
 
+    /**
+     * Constructs a Shotgun instance.
+     * @param position the sniper's position on the Map
+     */
     public Shotgun(Point position) {
         super(position);
         this.type = Types.SHOTGUN;

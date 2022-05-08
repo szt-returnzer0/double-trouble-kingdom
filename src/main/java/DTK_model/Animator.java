@@ -98,6 +98,8 @@ public class Animator {
 
     /**
      * Set the entity to animate.
+     *
+     * @param entity The entity to animate.
      */
     public void setEntity(Entity entity) {
         this.entity = entity;
@@ -131,7 +133,9 @@ public class Animator {
     }
 
     /**
-     * Set the path of the animation.
+     * Set the steps of the animation.
+     *
+     * @param steps The steps of the animation
      */
     public void setSteps(int steps) {
         this.steps = steps;

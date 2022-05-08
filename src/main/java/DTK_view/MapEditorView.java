@@ -190,8 +190,8 @@ public class MapEditorView extends GameField {
 
         Sides side = building.getSide();
         switch (building.getType()) {
-            case CASTLE -> castles.get(side.number).remove(building);
-            case BARRACKS -> barracks.get(side.number).remove(building);
+            case CASTLE -> castles.get(side.id).remove(building);
+            case BARRACKS -> barracks.get(side.id).remove(building);
             default -> throw new IllegalArgumentException("Unexpected value: " + building.getType());
 
         }

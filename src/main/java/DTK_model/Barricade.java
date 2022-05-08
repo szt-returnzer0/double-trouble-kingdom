@@ -19,6 +19,10 @@ public class Barricade extends Tower {
         this.size = new Dimension(2, 2);
     }
 
+    /**
+     * Constructs a new Barricade instance.
+     * @param position the barricade's position on the Map
+     */
     public Barricade(Point position) {
         super(position);
         this.type = Types.BARRICADE;

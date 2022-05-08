@@ -27,6 +27,9 @@ public class GameField extends GameFieldRenderer {
      */
     private boolean deleteState;
 
+    /**
+     * Model of the GameField.
+     */
     GameFieldModel gameFieldModel;
 
     /**
@@ -118,7 +121,7 @@ public class GameField extends GameFieldRenderer {
             updateButtons();
         } else
             controlPanel.hideControlPanel();
-        if (game.getGameState().getEnded()) {
+        if (game.getGameState().isEnded()) {
             controlPanel.hideControlPanel();
         }
         repaint();
@@ -251,7 +254,7 @@ public class GameField extends GameFieldRenderer {
         } else if (game.getGameState().getRoundState().equals(RoundState.TRAINING)) {
 
             this.controlPanel.setButtonText(0, "Sol");
-            this.controlPanel.attachActionListener(0, e -> type = Types.SOLDIER); // Lerakas
+            this.controlPanel.attachActionListener(0, e -> type = Types.SOLDIER);
 
             if (!game.getGameState().getCurrentPlayer().isUnitRestricted()) {
                 this.controlPanel.setButtonText(1, "Kam");
@@ -310,7 +313,7 @@ public class GameField extends GameFieldRenderer {
         int yIdx = y / scale;
         int xIdx = x / scale;
 
-        gameFieldModel.placeBlock(xIdx, yIdx, inverted, type);
+        gameFieldModel.placeEntity(xIdx, yIdx, inverted, type);
     }
 
     /**

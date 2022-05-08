@@ -50,6 +50,10 @@ public abstract class Building extends Entity {
         isUpgraded = false;
     }
 
+    /**
+     * Constructs a new Building instance.
+     * @param position the building's position on the Map
+     */
     public Building(Point position) {
         super(position);
         isUpgraded = false;
@@ -97,6 +101,10 @@ public abstract class Building extends Entity {
      */
     public abstract void upgrade();
 
+    /**
+     * Retutns the upgrade cost of the Building instance.
+     * @return the upgrade cost of the Building instance
+     */
     @JsonIgnore
     public abstract int getUpgradeCost();
 }

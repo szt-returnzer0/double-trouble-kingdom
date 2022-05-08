@@ -193,6 +193,11 @@ public abstract class Entity {
         return owner;
     }
 
+
+    /**
+     * Sets the Entity's owner.
+     * @param owner the new owner
+     */
     public void setOwner(Player owner) {
         this.owner = owner;
     }

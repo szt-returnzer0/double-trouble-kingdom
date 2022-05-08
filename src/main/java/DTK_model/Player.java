@@ -49,12 +49,16 @@ public class Player {
             number = 0;
         this.playerNumber = ++number;
         this.name = name;
-        this.gold = 100000;
+        this.gold = 100;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>();
         this.side = playerNumber == 1 ? Sides.BLUE : Sides.RED;
     }
 
+    /**
+     * Returns the player's side.
+     * @return the player's side
+     */
     public Sides getSide() {
         return side;
     }
@@ -68,6 +72,10 @@ public class Player {
         return isUnitRestricted;
     }
 
+    /**
+     * Sets the unit restriction to the given value.
+     * @param isUnitRestricted the value to set the unit restriction to
+     */
     public void setUnitRestricted(boolean isUnitRestricted) {
         this.isUnitRestricted = isUnitRestricted;
     }
@@ -117,6 +125,10 @@ public class Player {
         return entities;
     }
 
+    /**
+     * Sets the player's entities.
+     * @param entities the player's entities
+     */
     public void setEntities(ArrayList<Entity> entities) {
         this.entities = entities;
     }
