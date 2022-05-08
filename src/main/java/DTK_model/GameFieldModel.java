@@ -24,8 +24,14 @@ public class GameFieldModel {
      */
     private Game game;
 
+    /**
+     * Thw vertical size of the game field.
+     */
     private int xLength;
 
+    /**
+     * The horizontal size of the game field.
+     */
     private int yLength;
 
 
@@ -313,8 +319,7 @@ public class GameFieldModel {
             s.setOwner(game.getGameState().getCurrentPlayer());
             int xIdx = s.getPosition().x;
             int yIdx = s.getPosition().y;
-            Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
-
+            Sides side = determineSide(xIdx);
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx, type);
@@ -328,7 +333,6 @@ public class GameFieldModel {
                 wayPoints.clear();
                 Game.getMap().getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
-                //controlPanel.updateButtonText();
             }
         }
     }
@@ -342,10 +346,9 @@ public class GameFieldModel {
 
 
         b.setOwner(game.getGameState().getCurrentPlayer());
-
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
-        Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = determineSide(xIdx);
         b.setSide(side);
 
         if (inverted)
@@ -379,19 +382,16 @@ public class GameFieldModel {
 
                 if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
                     game.getGameState().getCurrentPlayer().addEntity(b);
-                    //controlPanel.updateButtonText();
                 }
             } else if (Game.getMap().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
                     .contains(b.getType())
                     && Objects.equals(Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 if ((game.getGameState().getCurrentPlayer().getGold() >= 30
                         && Objects.equals(b.getType(), Types.BARRACKS))
-                        || (game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10)
-                        && Types.getUpgradeable().contains(b.getType()))) { //CAN'T CAST TO TOWER
+                        || (Types.getTowerTypes().contains(b.getType()) && game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10)
+                        && Types.getUpgradeable().contains(b.getType()))) {
                     game.getGameState().getCurrentPlayer()
                             .upgradeBuilding((Building) Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0));
-                    //this.controlPanel.updateButtonText();
-                    //repaint();
                 }
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
@@ -417,6 +417,10 @@ public class GameFieldModel {
             }
         }
 
+    }
+
+    private Sides determineSide(int xIdx) {
+        return xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
     }
 
     /**

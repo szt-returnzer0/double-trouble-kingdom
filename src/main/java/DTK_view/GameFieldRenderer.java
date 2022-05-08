@@ -95,7 +95,6 @@ public class GameFieldRenderer extends JPanel {
     public GameFieldRenderer(Game game, JFrame frame) {
         texturesOn = true;
         this.game = game;
-        //mapRef = game.getMap();
         mapRef = Game.getMap();
         setTextures();
 
@@ -116,9 +115,9 @@ public class GameFieldRenderer extends JPanel {
                 scale = (frame.getContentPane().getSize().width) / xLength;
                 int panelX = (int) (frame.getSize().getWidth());
                 int panelY = (int) (frame.getSize().getHeight());
-                int w = panelX / 3;
-                int h = (int) (panelY * 0.07);
-                controlPanel.setBounds(panelX / 2 - w / 2, (int) (panelY * 0.85), w, h);
+                int width = (int) (panelX / 3 * 0.9);
+                int height = (int) (panelY * 0.07);
+                controlPanel.setBounds(panelX / 2 - width / 2, (int) (panelY * 0.85), width, height);
                 controlPanel.resize();
                 repaint();
             }

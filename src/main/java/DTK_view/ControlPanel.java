@@ -73,7 +73,7 @@ public class ControlPanel extends JPanel {
         setPreferredSize(new Dimension(getWidth(), getHeight()));
         for (int i = 0; i < buttons.length; i++) {
             JRoundedButton button = buttons[i];
-            button.setPreferredSize(new Dimension((i == 5 ? 2 : 1) * (GameFieldRenderer.scale + 20), GameFieldRenderer.scale + 20));
+            button.setPreferredSize(new Dimension((i == 5 && !button.getText().equals("") ? 2 : 1) * (GameFieldRenderer.scale + 20), GameFieldRenderer.scale + 20));
         }
         validate();
     }
@@ -85,7 +85,7 @@ public class ControlPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(0, 10, 0, 10);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             if (i == 0)
                 c.insets.left = 20;
             else if (i == 1)
@@ -101,10 +101,6 @@ public class ControlPanel extends JPanel {
         sidePanel.setOpaque(false);
         this.add(sidePanel, BorderLayout.LINE_END);
 
-        c.insets.right = 13;
-        buttons[5] = new JRoundedButton(GameFieldRenderer.scale + 20, GameFieldRenderer.scale + 20);
-        gridBagLayout.setConstraints(buttons[5], c);
-        sidePanel.add(buttons[5]);
 
         buttons[6] = new JRoundedButton(String.valueOf(game.getGameState().getCurrentPlayer().getGold()), 50, 50, new Color[]{
                 new Color(255, 205, 0),

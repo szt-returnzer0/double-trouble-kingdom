@@ -344,24 +344,38 @@ public class GameField extends GameFieldRenderer {
 
         if (RoundState.BUILDING.equals(game.getGameState().getRoundState()) && !deleteState) {
 
-            this.controlPanel.setButtonColors(6, new Color[] {
-                    new Color(255, 142, 142),
-                    new Color(70, 0, 0),
-                    new Color(166, 0, 0) });
-            this.controlPanel.setButtonText(6, "X");
+            setDeleteButton();
             deleteState = true;
             repaint();
 
         } else {
-            this.controlPanel.setButtonColors(6, new Color[] {
-                    new Color(255, 205, 0),
-                    new Color(255, 205, 0),
-                    new Color(255, 205, 0) });
-            this.controlPanel.setButtonText(6, "0");
+            setGoldButton();
             controlPanel.updateButtonText();
             deleteState = false;
             repaint();
         }
+    }
+
+    /**
+     * Sets the Button to show the gold mode.
+     */
+    private void setGoldButton() {
+        this.controlPanel.setButtonColors(6, new Color[] {
+                new Color(255, 205, 0),
+                new Color(255, 205, 0),
+                new Color(255, 205, 0) });
+        this.controlPanel.setButtonText(6, "0");
+    }
+
+    /**
+     * Sets the Button to show the delete mode.
+     */
+    private void setDeleteButton() {
+        this.controlPanel.setButtonColors(6, new Color[] {
+                new Color(255, 142, 142),
+                new Color(70, 0, 0),
+                new Color(166, 0, 0) });
+        this.controlPanel.setButtonText(6, "X");
     }
 
 }
