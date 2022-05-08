@@ -97,18 +97,19 @@ public class MainWindow {
 
 
         JTextField width = new JTextField();
-        JTextField height = new JTextField();
+        //JTextField height = new JTextField();
         do {
             Object[] message = {
-                    "Width:", width,
-                    "Height:", height
+                    "Width:", width/*,
+                    "Height:", height*/
             };
 
             int option = JOptionPane.showConfirmDialog(null, message, "MapSize", JOptionPane.OK_CANCEL_OPTION);
-        } while (!(isNumeric(width.getText()) && isNumeric(height.getText()) && Integer.parseInt(width.getText()) > 30 && Integer.parseInt(height.getText()) > 15));
+        } while (!(isNumeric(width.getText()) && Integer.parseInt(width.getText()) > 30));//while (!(isNumeric(width.getText()) && isNumeric(height.getText()) && Integer.parseInt(width.getText()) > 30 && Integer.parseInt(height.getText()) > 15));
 
-        int maxHeight = Integer.parseInt(height.getText());
+
         int maxWidth = Integer.parseInt(width.getText());
+        int maxHeight = 2 * maxWidth; //Integer.parseInt(height.getText());
         Map map = new Map(mapName, new Terrain[maxHeight][maxWidth]);
         generateBlankMap(maxWidth, maxHeight, map);
         Game editor = new Game(map);
