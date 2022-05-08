@@ -64,6 +64,10 @@ public class GameFieldModel {
         priceList.put("Div", (new Diver(new Point(0, 0))).getValue() + "g");
         priceList.put("Cli", (new Climber(new Point(0, 0))).getValue() + "g");
         priceList.put("Ass", (new Assassin(new Point(0, 0))).getValue() + "g");
+        priceList.put("Bar", (new Barricade(new Point(0, 0))).getValue() + "g");
+        priceList.put("Sni", (new Sniper(new Point(0, 0))).getValue() + "g");
+        priceList.put("Sho", (new Shotgun(new Point(0, 0))).getValue() + "g");
+        priceList.put("Brk", (new Barracks(new Point(0, 0))).getValue() + "g");
     }
 
     /**
