@@ -1,14 +1,10 @@
 package DTK_view;
 
-import DTK_model.Map;
 import DTK_model.*;
 
-import javax.swing.Timer;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.Queue;
-import java.util.*;
 
 
 /**
@@ -16,13 +12,9 @@ import java.util.*;
  */
 public class MapEditorView extends GameField {
     /**
-     * List to check if enough castles were placed.
+     * MapEditorModel for logics
      */
-    private final ArrayList<Queue<Building>> castles = new ArrayList<>(Arrays.asList(new LinkedList<>(), new LinkedList<>()));
-    /**
-     * List to check if enough barracks were placed.
-     */
-    private final ArrayList<Queue<Building>> barracks = new ArrayList<>(Arrays.asList(new LinkedList<>(), new LinkedList<>()));
+    private final MapEditorModel mapEditorModel;
 
     /**
      * Constructs a new MapEditorView instance.
@@ -34,6 +26,7 @@ public class MapEditorView extends GameField {
         super(editor, frame);
         game.getGameState().linkGameField(null);
         middleText = mapRef.getName();
+        mapEditorModel = new MapEditorModel();
         sideText = "Selection: " + type.text;
         Timer repaintTimer = new Timer(17, e ->
                 this.repaint()
@@ -87,73 +80,6 @@ public class MapEditorView extends GameField {
     }
 
     /**
-     * Checks if an ArrayList has matching types.
-     *
-     * @param entities the ArrayList to check
-     * @return if it had matching types
-     */
-    private boolean hasMatchingTypes(ArrayList<Entity> entities) {
-        boolean result = false;
-        for (Entity entity : entities) {
-            result = result || Objects.equals(entity.getType(), this.type);
-        }
-        return result;
-    }
-
-    /**
-     * Checks if we don't build on other buildings
-     *
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     * @param size the size of the building
-     * @return if we don't try to build on an existing building
-     */
-    private boolean notOnOtherBuilding(int xIdx, int yIdx, Dimension size) {
-        boolean onBuilding = true;
-        for (int y = yIdx; y < yIdx + size.height; y++) {
-            for (int x = xIdx; x < xIdx + size.width; x++) {
-                onBuilding = onBuilding && (hasMatchingTypes(mapRef.getTiles()[y][x].getEntities()) || mapRef.getTiles()[y][x].getEntities().isEmpty());//hasNoMatchingTypes(mapRef.getTiles()[y][x].getEntities(), type);
-            }
-        }
-        return onBuilding;
-    }
-
-    /**
-     * Places a building with placement rules.
-     *
-     * @param b the building to place
-     */
-    private void placeLimitedBuilding(Building b) {
-        int xIdx = b.getPosition().x;
-        int yIdx = b.getPosition().y;
-        Sides side = xIdx < xLength / 2 ? Sides.BLUE : Sides.RED;
-        b.setSide(side);
-        if (inverted)
-            b.invert();
-        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), Types.CASTLE) ? castles : barracks;
-        int maxSize = Objects.equals(b.getType(), Types.CASTLE) ? 1 : 2;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), Types.CASTLE) || gameFieldModel.isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
-            if (side.equals(Sides.BLUE) && arr.get(0).size() >= maxSize) {
-                gameFieldModel.deleteBuilding(arr.get(0).remove());
-
-            } else if (side.equals(Sides.RED) && arr.get(1).size() >= maxSize) {
-                gameFieldModel.deleteBuilding(arr.get(1).remove());
-            }
-            if (side.equals(Sides.BLUE)) {
-                arr.get(0).add(b);
-            } else {
-                arr.get(1).add(b);
-            }
-            for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                    mapRef.getTiles()[y][x].addEntities(b);
-                }
-            }
-
-        }
-    }
-
-    /**
      * Places a new tile.
      *
      * @param x the horizontal coordinate
@@ -163,40 +89,7 @@ public class MapEditorView extends GameField {
     protected void placeBlock(int x, int y) {
         int yIdx = y / scale;
         int xIdx = x / scale;
-        Map map = mapRef;
-
-        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
-
-            ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
-
-            if (Types.getBuildingTypes().contains(type)) {
-                placeLimitedBuilding(Types.buildingFactory(type, xIdx, yIdx));
-            } else if (Types.getTerrainTypes().contains(type)) {
-                map.getTiles()[yIdx][xIdx] = Types.terrainFactory(type, ent);
-            }
-            if (Objects.equals(type, Types.DELETE)) {
-                safeDeleteBuilding((Building) ent.get(0));
-            }
-        }
-
-    }
-
-    /**
-     * Deletes a building with placement rules.
-     *
-     * @param building the building to delete
-     */
-    private void safeDeleteBuilding(Building building) {
-
-        Sides side = building.getSide();
-        switch (building.getType()) {
-            case CASTLE -> castles.get(side.id).remove(building);
-            case BARRACKS -> barracks.get(side.id).remove(building);
-            default -> throw new IllegalArgumentException("Unexpected value: " + building.getType());
-
-        }
-        gameFieldModel.deleteBuilding(building);
-
+        mapEditorModel.placeBlock(xIdx, yIdx, gameFieldModel, this.inverted, this.type);
     }
 
 }
