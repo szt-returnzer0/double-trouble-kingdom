@@ -134,7 +134,7 @@ public class MapEditorModel {
             } else if (Types.getTerrainTypes().contains(type)) {
                 Game.getMapReference().getTiles()[yIdx][xIdx] = Types.terrainFactory(type, ent);
             }
-            if (Objects.equals(type, Types.DELETE)) {
+            if (Objects.equals(type, Types.DELETE) && !ent.isEmpty()) {
                 safeDeleteBuilding((Building) ent.get(0), gameFieldModel);
             }
         }
