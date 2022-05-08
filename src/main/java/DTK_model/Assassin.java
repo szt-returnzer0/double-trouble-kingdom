@@ -1,14 +1,13 @@
 package DTK_model;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Implementation of Assassin special soldier type.
  */
-public class Assassin extends Soldier implements Serializable {
+public class Assassin extends Soldier {
 
     /**
      * The soldier targets of the Assassin.

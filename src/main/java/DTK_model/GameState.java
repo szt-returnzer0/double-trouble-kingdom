@@ -35,6 +35,9 @@ public class GameState implements Serializable {
      * ArrayList containing the Players.
      */
     private final ArrayList<Player> players;
+    /**
+     * The start time of the game.
+     */
     private final long startTime;
     /**
      * The current Player.
@@ -45,6 +48,9 @@ public class GameState implements Serializable {
      */
     private int playerNumber;
 
+    /**
+     * The previous time
+     */
     private long prevTime = 1;
     /**
      * The current round phase.
@@ -63,23 +69,15 @@ public class GameState implements Serializable {
      * The elapsed time in seconds.
      */
     private int elapsedTime;
-    private boolean pathVisualization = false;
 
     /**
-     * Constructs a class containing the Players, roundState, and elapsedTimer.
-     *
-     * @param p1Name name of Player1
-     * @param p2Name name of Player2
+     * If the path visualization is enabled.
      */
-    public GameState(String p1Name, String p2Name , Database database) {
-        this.database = database;
-        this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
-        startElapsedTimer();
-        this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
-        decideStarter();
-        this.roundState = RoundState.BUILDING;
-        startTime = System.currentTimeMillis();
-    }
+    private boolean pathVisualization;
+    /**
+     * Checks if the game is ended.
+     */
+    private boolean isEnded;
 
     /**
      * Constructs a gamesState.
@@ -110,6 +108,7 @@ public class GameState implements Serializable {
         this.elapsedTime = gameState.elapsedTime;
         this.pathVisualization = gameState.pathVisualization;
         this.database = gameState.database;
+        this.isEnded = gameState.isEnded;
         GameState.getAnimBuffer().clear();
         for (Player player : getPlayers()) {
             for (Soldier soldier : player.getSoldiers()) {
@@ -231,14 +230,30 @@ public class GameState implements Serializable {
         }
     }
 
-    private boolean isEnded = false;
+    /**
+     * Constructs a class containing the Players, roundState, and elapsedTimer.
+     *
+     * @param p1Name   name of Player1
+     * @param p2Name   name of Player2
+     * @param database DB reference
+     */
+    public GameState(String p1Name, String p2Name, Database database) {
+        this.database = database;
+        this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
+        startElapsedTimer();
+        this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
+        decideStarter();
+        this.roundState = RoundState.BUILDING;
+        startTime = System.currentTimeMillis();
+    }
 
     /**
-     * Sets if the game is ended.
-     * @param ended if the game is ended
+     * Returns the animation buffer.
+     *
+     * @return the animation buffer
      */
-    public void setEnded(boolean ended) {
-        isEnded = ended;
+    public static ArrayList<Animator> getAnimBuffer() {
+        return animBuffer;
     }
 
 
@@ -505,7 +520,12 @@ public class GameState implements Serializable {
         return pathVisualization;
     }
 
-    public static ArrayList<Animator> getAnimBuffer() {
-        return animBuffer;
+    /**
+     * Sets if the game is ended.
+     *
+     * @param ended if the game is ended
+     */
+    public void setEnded(boolean ended) {
+        isEnded = ended;
     }
 }

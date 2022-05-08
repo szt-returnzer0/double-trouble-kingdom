@@ -1,18 +1,14 @@
 package DTK_view;
 
 import DTK_model.*;
-import DTK_persistence.Database;
-import DTK_persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.SimpleTimeZone;
+
 
 /**
  * Implementation of the GameField class, which displays the game table.
@@ -37,7 +33,10 @@ public class GameField extends GameFieldRenderer {
      */
     protected GameFieldModel gameFieldModel;
 
-    protected Timer  refreshTimer;
+    /**
+     * Timer to refresh the game field.
+     */
+    protected Timer refreshTimer;
 
 
     /**
@@ -118,7 +117,7 @@ public class GameField extends GameFieldRenderer {
      * @return the waypoints
      */
     public ArrayList<Point> getWayPoints() {
-        return gameFieldModel.getWayPoints();
+        return GameFieldModel.getWayPoints();
     }
 
     /**
@@ -204,9 +203,9 @@ public class GameField extends GameFieldRenderer {
      * @return the Round state as a String
      */
     private String getRoundStateText() {
-        return !Objects.equals(game.getGameState().getRoundState().text, RoundState.ATTACKING)
+        return !Objects.equals(game.getGameState().getRoundState().text, RoundState.ATTACKING.text)
                 ? ("Phase: " + game.getGameState().getRoundState().text + " | Player: "
-                        + game.getGameState().getCurrentPlayer().getPlayerNumber())
+                + game.getGameState().getCurrentPlayer().getPlayerNumber())
                 : ("Phase: " + game.getGameState().getRoundState().text);
     }
 

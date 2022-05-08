@@ -2,7 +2,6 @@ package DTK_model;
 
 
 import DTK_persistence.Database;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 
@@ -17,22 +16,24 @@ public class Game implements Serializable {
     /**
      * The Database of the game.
      */
-    @JsonIgnore
     private Database database;
     /**
      * The GameState of the game.
      */
     private final GameState gameState;
 
-    private Map map;
+    /**
+     * Local Map of the game.
+     */
+    private final Map map;
 
     /**
      * Constructs a Game with dependency injection of Database and Map.
      *
-     * @param database the Database to be injected
-     * @param mapReference      the Map to be injected
-     * @param p1Name   the name of Player1
-     * @param p2Name   the name of Player2
+     * @param database     the Database to be injected
+     * @param mapReference the Map to be injected
+     * @param p1Name       the name of Player1
+     * @param p2Name       the name of Player2
      */
     public Game(Database database, Map mapReference, String p1Name, String p2Name) {
         Pathfinder.setMap(mapReference);
@@ -43,6 +44,11 @@ public class Game implements Serializable {
         this.map = mapReference;
     }
 
+    /**
+     * Returns the Map of the game.
+     *
+     * @return the Map of the game
+     */
     public Map getMap() {
         return map;
     }
@@ -60,9 +66,6 @@ public class Game implements Serializable {
         this.map = mapReference;
     }
 
-    public Game() {
-        this.gameState = new GameState();
-    }
 
     /**
      * Copy Constructor for Game.

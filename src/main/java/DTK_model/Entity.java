@@ -109,6 +109,9 @@ public abstract class Entity implements Serializable {
         this.animObj = new Animator(this);
     }
 
+    /**
+     * Constructs an Entity instance with JacksonJSON.
+     */
     protected Entity() {
 
     }

@@ -1,14 +1,13 @@
 package DTK_model;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Implementation of Diver Soldier type.
  */
-public class Diver extends Soldier implements Serializable {
+public class Diver extends Soldier {
     /**
      * Constructs a new Diver instance
      *

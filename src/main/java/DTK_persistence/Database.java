@@ -1,6 +1,5 @@
 package DTK_persistence;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.sql.*;
@@ -11,7 +10,14 @@ import java.util.ArrayList;
  * connection opening and closing methods.
  */
 public class Database implements Serializable {
+    /**
+     * Statement for running SQL queries.
+     */
     Statement statement;
+
+    /**
+     * SQL query.
+     */
     String query;
     /**
      * Connection to the SQLite database.

@@ -1,6 +1,8 @@
 package DTK_persistence;
 
-import DTK_model.*;
+import DTK_model.Game;
+import DTK_model.Map;
+import DTK_model.Pair;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
@@ -114,6 +116,13 @@ public class FileHandler {
         mapper.writeValue(file, obj);
     }
 
+    /**
+     * Serializes an Object to a Stream.
+     *
+     * @param file the file we want to serialize to
+     * @param obj  the Object we want to serialize
+     * @param type the extension of the file we serialize to
+     */
     public static void saveToStream(File file, Object obj, String type) {
         try {
             String fileName = file.getName().split("\\.")[0] + type;
@@ -126,6 +135,12 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Loads an Object from a specified file as a Stream.
+     *
+     * @param file the file we want to load from
+     * @return an Object from the specified file
+     */
     private static Object loadFromStream(File file) {
         try {
             FileInputStream fileIn = new FileInputStream(file);

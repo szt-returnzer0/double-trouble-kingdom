@@ -70,12 +70,18 @@ public class MainWindow {
         frame.pack();
     }
 
+    /**
+     * Checks if the given value is a number.
+     *
+     * @param strNum the string to check
+     * @return true if the string is a number
+     */
     public boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
         }
         try {
-            int d = Integer.parseInt(strNum);
+            Integer.parseInt(strNum);
         } catch (NumberFormatException nfe) {
             return false;
         }

@@ -21,6 +21,9 @@ public class MapEditorModel {
     private final int xLength;
     private final int yLength;
 
+    /**
+     * Constructor for MapEditorModel.
+     */
     public MapEditorModel() {
         xLength = Game.getMapReference().getTiles()[0].length;
         yLength = Game.getMapReference().getTiles().length;
@@ -112,6 +115,15 @@ public class MapEditorModel {
 
     }
 
+    /**
+     * Handles the placement of a building or unit.
+     *
+     * @param xIdx           the x index of the tile
+     * @param yIdx           the y index of the tile
+     * @param gameFieldModel the game field model
+     * @param inverted       whether the building is inverted
+     * @param type           the type of the building
+     */
     public void placeBlock(int xIdx, int yIdx, GameFieldModel gameFieldModel, boolean inverted, Types type) {
         if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
 

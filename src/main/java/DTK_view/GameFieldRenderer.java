@@ -5,7 +5,6 @@ import DTK_model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -144,9 +143,14 @@ public class GameFieldRenderer extends JPanel {
 
     }
 
-   public static int dockScale() {
-       return (frame.getContentPane().getSize().width) / 64;
-   }
+    /**
+     * Returns the dock's scale.
+     *
+     * @return the dock's scale
+     */
+    public static int dockScale() {
+        return (frame.getContentPane().getSize().width) / 64;
+    }
 
     /**
      * Toggles the scale.

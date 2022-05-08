@@ -2,13 +2,12 @@ package DTK_model;
 
 import javax.naming.OperationNotSupportedException;
 import java.awt.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Implementation of the Tower Building type.
  */
-public abstract class Tower extends Building implements Serializable {
+public abstract class Tower extends Building {
     /**
      * The level of the Tower.
      */

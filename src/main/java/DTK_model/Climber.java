@@ -1,14 +1,13 @@
 package DTK_model;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Implementation of Climber Soldier type.
  */
-public class Climber extends Soldier implements Serializable {
+public class Climber extends Soldier {
     /**
      * Constructs a new Climber instance.
      *

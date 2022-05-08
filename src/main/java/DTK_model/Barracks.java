@@ -1,13 +1,12 @@
 package DTK_model;
 
 import java.awt.*;
-import java.io.Serializable;
 
 
 /**
  * Implementation of Barracks Building type.
  */
-public class Barracks extends Building implements Serializable {
+public class Barracks extends Building {
     /**
      * Constructs a new Barracks instance.
      *

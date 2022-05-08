@@ -1,12 +1,11 @@
 package DTK_model;
 
 import java.awt.*;
-import java.io.Serializable;
 
 /**
  * Implementation of Shotgun Tower type.
  */
-public class Shotgun extends Tower  implements Serializable {
+public class Shotgun extends Tower {
 
     /**
      * Constructs a Shotgun instance.

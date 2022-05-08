@@ -1,14 +1,13 @@
 package DTK_model;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Implementation of Kamikaze Soldier type.
  */
-public class Kamikaze extends Soldier implements Serializable  {
+public class Kamikaze extends Soldier {
 
     /**
      * The towers the Kamikaze can target.

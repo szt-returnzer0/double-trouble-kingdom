@@ -1,28 +1,14 @@
 package DTK_model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Implementation of Soldier Entity type.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "@type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"),
-        @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
-        @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"),
-        @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
-        @JsonSubTypes.Type(value = Diver.class, name = "Diver"),
-})
-public class Soldier extends Entity implements Serializable {
+public class Soldier extends Entity {
     /**
      * The start of visualization highlighting.
      */
@@ -82,19 +68,6 @@ public class Soldier extends Entity implements Serializable {
         this.visualizationStart = this.visualizationEnd = 0;
         this.castleParts = new ArrayList<>();
     }
-
-    /**
-     * Constructs a new Soldier instance.
-     */
-    @JsonCreator
-    public Soldier() {
-        this.pathfinder = new Pathfinder();
-    }
-
-    public void setWayPoints(ArrayList<Point> wayPoints) {
-        this.wayPoints = wayPoints;
-    }
-
 
 
     /**

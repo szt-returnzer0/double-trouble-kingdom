@@ -24,6 +24,10 @@ public class Player implements Serializable {
      * The player's name.
      */
     private final String name;
+
+    /**
+     * The side of the player.
+     */
     private final Sides side;
     /**
      * ArrayList containing the player's entities.
@@ -37,6 +41,10 @@ public class Player implements Serializable {
      * Determines if the Player has unlocked all units.
      */
     private boolean isUnitRestricted;
+
+    /**
+     * The soldier count of the player.
+     */
     private int soldierCount;
 
     /**

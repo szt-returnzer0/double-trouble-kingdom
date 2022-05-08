@@ -1,25 +1,26 @@
 package DTK_model;
 
-import java.io.Serializable;
 
 /**
  * This class is used to store the current state of the game.
  */
-public enum RoundState implements Serializable {
+public enum RoundState {
     /**
      * The game is in the first state.
      */
-    TRAINING ("Training"),
+    TRAINING("Training"),
     /**
      * The game is in the second state.
      */
-    BUILDING ("Building"),
+    BUILDING("Building"),
     /**
      * The game is in the third state.
      */
-    ATTACKING ("Attacking");
+    ATTACKING("Attacking");
 
-
+    /**
+     * The text of the state.
+     */
     public final String text;
 
     /**
