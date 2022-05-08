@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Implementation of the Player class for Double Trouble Kingdom Game, contains
@@ -50,7 +49,7 @@ public class Player {
             number = 0;
         this.playerNumber = ++number;
         this.name = name;
-        this.gold = 100;
+        this.gold = 100000;
         this.isUnitRestricted = true;
         this.entities = new ArrayList<>();
         this.side = playerNumber == 1 ? Sides.BLUE : Sides.RED;

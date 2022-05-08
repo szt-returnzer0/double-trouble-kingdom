@@ -398,23 +398,7 @@ public class GameField extends GameFieldRenderer {
         boolean isInTrainingGround = false;
         for (Entity entity : entities) {
 
-            /*
-             * 
-             * if ((entity.getType().equals("Castle") ||
-             * entity.getType().equals("Barracks")) && s.getType().equals("Soldier")) {
-             * isInTrainingGround = true;
-             * }
-             * 
-             * if (entity.getType().equals("Barracks") && !((Barracks) entity).isUpgraded()
-             * && s.getType().equals("Soldier")) {
-             * isInTrainingGround = true;
-             * }
-             * 
-             * if (entity.getType().equals("Barracks") && ((Barracks) entity).isUpgraded())
-             * {
-             * isInTrainingGround = true;
-             * }
-             */
+
 
             if ((entity.getType().equals(Types.CASTLE) || entity.getType().equals(Types.BARRACKS))
                     && Objects.equals(s.getType(), Types.SOLDIER)) {
@@ -545,8 +529,8 @@ public class GameField extends GameFieldRenderer {
             s.setOwner(game.getGameState().getCurrentPlayer());
             int xIdx = s.getPosition().x;
             int yIdx = s.getPosition().y;
-            Sides side = xIdx + 3 < xLength / 2 ? Sides.BLUE : Sides.RED; // check in if building is on current player's
-                                                                          // side
+            Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
+
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx);
@@ -565,7 +549,6 @@ public class GameField extends GameFieldRenderer {
         }
     }
 
-    // public static ArrayList<Point> testpath = new ArrayList<>(); //visualization
 
     /**
      * Places a building.
@@ -580,7 +563,7 @@ public class GameField extends GameFieldRenderer {
 
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
-        Sides side = xIdx + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
         b.setSide(side);
 
         if (inverted)

@@ -250,11 +250,11 @@ public class GameFieldRenderer extends JPanel {
                     drawBldState(g2d, entity);
                     drawHealthBar(g2d, entity);
                 } else {
-                    if (entity instanceof Building b) {
-                        Point start = new Point(b.getPosition().x, b.getPosition().y);
-                        Dimension size = b.getSize();
+                    if (entity instanceof Building building) {
+                        Point start = new Point(building.getPosition().x, building.getPosition().y);
+                        Dimension size = building.getSize();
                         if (x == start.x + size.width - 1 && y == start.y + size.height - 1) {
-                            g2d.drawImage(textureHolders.get(b.getType().text).get(b.getImage()), start.x * scale, start.y * scale, size.width * scale, size.height * scale, null);
+                            g2d.drawImage(textureHolders.get(building.getType().text).get(building.getImage()), start.x * scale, start.y * scale, size.width * scale, size.height * scale, null);
                         }
 
                         drawHealthBar(g2d, entity);
@@ -325,12 +325,12 @@ public class GameFieldRenderer extends JPanel {
             g2d.setColor(Color.white);
             g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, bevelCnt * 2));
-            for (Tower t : towers) {
-                if (GameFieldModel.isAttackAnimated(t)) {
-                    for (Entity target : t.getTargets()) {
-                        if (GameFieldModel.isInAttackRange(t, target)) {
+            for (Tower tower : towers) {
+                if (GameFieldModel.isAttackAnimated(tower)) {
+                    for (Entity target : tower.getTargets()) {
+                        if (GameFieldModel.isInAttackRange(tower, target)) {
                             g2d.drawLine((target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale,
-                                    (t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale);
+                                    (tower.getPosition().x + tower.getSize().width / 2) * scale, (tower.getPosition().y + tower.getSize().height / 2) * scale);
                         }
                     }
                 }
@@ -341,18 +341,18 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Draws the health bar of the unit
      *
-     * @param g2d the graphics we use
-     * @param ent the unit we want to draw the health bar of
+     * @param g2d    the graphics we use
+     * @param entity the unit we want to draw the health bar of
      */
-    protected void drawHealthBar(Graphics2D g2d, Entity ent) {
+    protected void drawHealthBar(Graphics2D g2d, Entity entity) {
 
         Color green = new Color(0, 155, 35);
         Color red = new Color(155, 0, 0);
-        if (ent instanceof Soldier s) {
+        if (entity instanceof Soldier s) {
             int width = (int) (scale * s.getHealthPoints() / ((double) s.getMaxHealthPoints()));
-            drawUnitHealth(g2d, ent, green, red, width, s.getAnimObj(), s.getSide());
-        } else if (ent instanceof Building b && !(b instanceof Barracks)) {
-            drawBuildingHealth(g2d, green, red, b);
+            drawUnitHealth(g2d, entity, green, red, width, s.getAnimObj(), s.getSide());
+        } else if (entity instanceof Building building && !(building instanceof Barracks)) {
+            drawBuildingHealth(g2d, green, red, building);
         }
 
     }
@@ -360,19 +360,19 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Draws the health bar of the building
      *
-     * @param g2d   the graphics we use
-     * @param green the color of the health bar
-     * @param red   the color of the health bar
-     * @param b     the building we want to draw the health bar of
+     * @param g2d      the graphics we use
+     * @param green    the color of the health bar
+     * @param red      the color of the health bar
+     * @param building the building we want to draw the health bar of
      */
-    private void drawBuildingHealth(Graphics2D g2d, Color green, Color red, Building b) {
-        int width = (int) ((b.getSize().width) * scale * b.getHealthPoints() / ((double) b.getMaxHealthPoints()));
+    private void drawBuildingHealth(Graphics2D g2d, Color green, Color red, Building building) {
+        int width = (int) ((building.getSize().width) * scale * building.getHealthPoints() / ((double) building.getMaxHealthPoints()));
         g2d.setColor(green);
-        g2d.fillRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, width, 5);
+        g2d.fillRect(building.getPosition().x * scale, building.getPosition().y * scale - 6, width, 5);
         g2d.setColor(red);
-        g2d.fillRect(b.getPosition().x * scale + width, b.getPosition().y * scale - 6, (b.getSize().width) * scale - width, 5);
-        setSideColor(b.getSide(), g2d);
-        g2d.drawRect(b.getPosition().x * scale, b.getPosition().y * scale - 6, (b.getSize().width) * scale, 5);
+        g2d.fillRect(building.getPosition().x * scale + width, building.getPosition().y * scale - 6, (building.getSize().width) * scale - width, 5);
+        setSideColor(building.getSide(), g2d);
+        g2d.drawRect(building.getPosition().x * scale, building.getPosition().y * scale - 6, (building.getSize().width) * scale, 5);
     }
 
 
@@ -384,42 +384,42 @@ public class GameFieldRenderer extends JPanel {
      */
     protected void drawAvgHealthBar(Graphics2D g2d, ArrayList<Entity> entities) {
         int avgHealth = 0;
-        for (Entity ent : entities) {
-            avgHealth += ent.getHealthPoints();
+        for (Entity entity : entities) {
+            avgHealth += entity.getHealthPoints();
         }
         avgHealth /= entities.size();
 
         int avgMaxHealth = 0;
-        for (Entity ent : entities) {
-            avgMaxHealth += ent.getMaxHealthPoints();
+        for (Entity entity : entities) {
+            avgMaxHealth += entity.getMaxHealthPoints();
         }
         avgMaxHealth /= entities.size();
-        Entity ent = entities.get(0);
+        Entity entity = entities.get(0);
 
         Color green = new Color(0, 155, 35);
         Color red = new Color(155, 0, 0);
         int width = ((entities.get(0).getSize().width) * scale * avgHealth / avgMaxHealth);
-        drawUnitHealth(g2d, ent, green, red, width, ent.getAnimObj(), ent.getSide());
+        drawUnitHealth(g2d, entity, green, red, width, entity.getAnimObj(), entity.getSide());
     }
 
     /**
      * Draws the health bar of the unit
      *
      * @param g2d     the graphics we use
-     * @param ent     the unit we want to draw the health bar of
+     * @param entity  the unit we want to draw the health bar of
      * @param green   the color of the health bar
      * @param red     the color of the health bar
      * @param width   the width of the health bar
      * @param animObj the animation object of the unit
      * @param side    the side of the unit
      */
-    private void drawUnitHealth(Graphics2D g2d, Entity ent, Color green, Color red, int width, Animator animObj, Sides side) {
+    private void drawUnitHealth(Graphics2D g2d, Entity entity, Color green, Color red, int width, Animator animObj, Sides side) {
         g2d.setColor(green);
-        g2d.fillRect((int) (ent.getPosition().x * scale + animObj.getX()), (int) (ent.getPosition().y * scale - 6 + animObj.getY()), width, 5);
+        g2d.fillRect((int) (entity.getPosition().x * scale + animObj.getX()), (int) (entity.getPosition().y * scale - 6 + animObj.getY()), width, 5);
         g2d.setColor(red);
-        g2d.fillRect((int) (ent.getPosition().x * scale + animObj.getX()) + width, (int) (ent.getPosition().y * scale - 6 + animObj.getY()), scale - width, 5);
+        g2d.fillRect((int) (entity.getPosition().x * scale + animObj.getX()) + width, (int) (entity.getPosition().y * scale - 6 + animObj.getY()), scale - width, 5);
         setSideColor(side, g2d);
-        g2d.drawRect((int) (ent.getPosition().x * scale + animObj.getX()), (int) (ent.getPosition().y * scale - 6 + animObj.getY()), scale, 5);
+        g2d.drawRect((int) (entity.getPosition().x * scale + animObj.getX()), (int) (entity.getPosition().y * scale - 6 + animObj.getY()), scale, 5);
     }
 
 
@@ -483,38 +483,38 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Draws a building's visible attributes
      *
-     * @param g2d the graphics we use
-     * @param ent the building to draw to
+     * @param g2d    the graphics we use
+     * @param entity the building to draw to
      */
-    protected void drawBldState(Graphics2D g2d, Entity ent) {
-        Sides side = ent.getPosition().x + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
+    protected void drawBldState(Graphics2D g2d, Entity entity) {
+        Sides side = entity.getPosition().x + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
 
 
-        if (Types.getTowerTypes().contains(ent.getType())) {
+        if (Types.getTowerTypes().contains(entity.getType())) {
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, 0);
             g2d.setStroke(dashed);
 
-            if (!(ent instanceof Barracks)) {
-                Tower tmp = (Tower) ent;
+            if (!(entity instanceof Barracks)) {
+                Tower tmp = (Tower) entity;
                 g2d.setColor(new Color(255, 225, 0, 85 * tmp.getLevel()));
-            } else if (((Barracks) ent).isUpgraded()) {
+            } else if (((Barracks) entity).isUpgraded()) {
                 g2d.setColor(new Color(255, 225, 0));
             }
-            g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);
+            g2d.drawRect(entity.getPosition().x * scale + 2, entity.getPosition().y * scale + 2, entity.getSize().width * scale - 4, entity.getSize().height * scale - 4);
 
             g2d.setStroke(def);
 
-            drawBldOwner(g2d, ent, side);
+            drawBldOwner(g2d, entity, side);
 
-        } else if (ent instanceof Castle) {
-            drawBldOwner(g2d, ent, side);
+        } else if (entity instanceof Castle) {
+            drawBldOwner(g2d, entity, side);
         }
 
-        if (ent instanceof Tower t && t.isDestroyed()) {
+        if (entity instanceof Tower tower && tower.isDestroyed()) {
             g2d.setColor(Color.RED);
-            g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);
+            g2d.drawRect(entity.getPosition().x * scale + 2, entity.getPosition().y * scale + 2, entity.getSize().width * scale - 4, entity.getSize().height * scale - 4);
 
 
         }
@@ -524,13 +524,13 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Draws the building's owner
      *
-     * @param g2d  the graphics we use
-     * @param ent  the building to draw to
-     * @param side the side it belongs to
+     * @param g2d    the graphics we use
+     * @param entity the building to draw to
+     * @param side   the side it belongs to
      */
-    private void drawBldOwner(Graphics2D g2d, Entity ent, Sides side) {
+    private void drawBldOwner(Graphics2D g2d, Entity entity, Sides side) {
         setSideColor(side, g2d);
-        g2d.drawRect(ent.getPosition().x * scale + 4, ent.getPosition().y * scale + 4, ent.getSize().width * scale - 8, ent.getSize().height * scale - 8);
+        g2d.drawRect(entity.getPosition().x * scale + 4, entity.getPosition().y * scale + 4, entity.getSize().width * scale - 8, entity.getSize().height * scale - 8);
     }
 
     /**
@@ -603,10 +603,10 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Sets the selection to a new Entity.
      *
-     * @param ent the entity to set to
+     * @param entity the entity to set to
      */
-    protected void setSelection(Entity ent) {
-        selection = ent;
+    protected void setSelection(Entity entity) {
+        selection = entity;
     }
 
     /**

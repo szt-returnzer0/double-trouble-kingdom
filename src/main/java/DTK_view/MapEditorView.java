@@ -28,7 +28,7 @@ public class MapEditorView extends GameField {
      * Constructs a new MapEditorView instance.
      *
      * @param editor game dependency, because of inheritance
-     * @param frame     the parent frame
+     * @param frame  the parent frame
      */
     public MapEditorView(Game editor, JFrame frame) {
         super(editor, frame);
@@ -165,28 +165,20 @@ public class MapEditorView extends GameField {
         int xIdx = x / scale;
         Map map = mapRef;
 
-        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0)
-            try {
-                ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
+        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
 
-                if(Types.getBuildingTypes().contains(type)){
-                    placeLimitedBuilding(Types.buildingFactory(type, xIdx, yIdx));
-                }
-                else if(Types.getTerrainTypes().contains(type)){
-                    map.getTiles()[yIdx][xIdx] = Types.terrainFactory(type,ent);
-                }
-                if(Objects.equals(type, Types.DELETE)){
-                    safeDeleteBuilding((Building) ent.get(0));
-                }
+            ArrayList<Entity> ent = map.getTiles()[yIdx][xIdx].getEntities();
 
-
-
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (Types.getBuildingTypes().contains(type)) {
+                placeLimitedBuilding(Types.buildingFactory(type, xIdx, yIdx));
+            } else if (Types.getTerrainTypes().contains(type)) {
+                map.getTiles()[yIdx][xIdx] = Types.terrainFactory(type, ent);
             }
+            if (Objects.equals(type, Types.DELETE)) {
+                safeDeleteBuilding((Building) ent.get(0));
+            }
+        }
+
     }
 
     /**
@@ -197,13 +189,13 @@ public class MapEditorView extends GameField {
     private void safeDeleteBuilding(Building building) {
 
         Sides side = building.getSide();
-                    switch (building.getType()) {
-                        case CASTLE -> castles.get(side.number).remove( building);
-                        case BARRACKS -> barracks.get(side.number).remove(building);
-                        default -> throw new IllegalArgumentException("Unexpected value: " + building.getType());
+        switch (building.getType()) {
+            case CASTLE -> castles.get(side.number).remove(building);
+            case BARRACKS -> barracks.get(side.number).remove(building);
+            default -> throw new IllegalArgumentException("Unexpected value: " + building.getType());
 
-                    }
-        deleteBuilding( building);
+        }
+        deleteBuilding(building);
 
     }
 
