@@ -68,11 +68,20 @@ public class MainWindow {
         frame.pack();
     }
 
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int d = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Starts a new Map editor
-     *
-     * @param maxWidth  the width of the game Map
-     * @param maxHeight the height of the game Map
      */
     public void startEditor() {
         frame.remove(mainMenu);
@@ -87,11 +96,20 @@ public class MainWindow {
                 "Új Pálya");
 
 
-        int maxHeight = 16;
-                int maxWidth = 32;
+        JTextField width = new JTextField();
+        JTextField height = new JTextField();
+        do {
+            Object[] message = {
+                    "Width:", width,
+                    "Height:", height
+            };
 
+            int option = JOptionPane.showConfirmDialog(null, message, "MapSize", JOptionPane.OK_CANCEL_OPTION);
+        } while (!(isNumeric(width.getText()) && isNumeric(height.getText()) && Integer.parseInt(width.getText()) > 30 && Integer.parseInt(height.getText()) > 15));
 
-        Map map = new Map( mapName, new Terrain[maxHeight][maxWidth]);
+        int maxHeight = Integer.parseInt(height.getText());
+        int maxWidth = Integer.parseInt(width.getText());
+        Map map = new Map(mapName, new Terrain[maxHeight][maxWidth]);
         generateBlankMap(maxWidth, maxHeight, map);
         Game editor = new Game(map);
         MapEditorView mapEditor = new MapEditorView(editor, frame);
