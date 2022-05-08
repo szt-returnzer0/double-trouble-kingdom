@@ -137,14 +137,16 @@ public class GameState implements Serializable {
     }
 
     private void animateBuffer() {
+        for (int i = 0; i < animBuffer.size(); i++) {
+            if (!animBuffer.get(i).getEntity().isAnimated) continue;
+            animBuffer.get(i).animate();
+            if (animBuffer.get(i).getPath().isEmpty()) {
+                animBuffer.get(i).stopAnimation();
+                if (animBuffer.get(i).getEntity() instanceof Soldier s && s.getWayPoints().isEmpty())
+                    animBuffer.remove(i--);
 
-        for (Animator animator : animBuffer) {
-            if (animator.getEntity().isAnimated) {
-                animator.animate();
             }
-            if (animator.getPath().isEmpty()) {
-                animator.stopAnimation();
-            }
+
         }
     }
 
@@ -387,7 +389,6 @@ public class GameState implements Serializable {
                 if (soldier.isAlive) {
                     soldier.attack();
                 }
-
             }
         }
         removeAllDeadSoldiers();
@@ -399,7 +400,7 @@ public class GameState implements Serializable {
     private void towerAttack() {
         for (Player player : players) {
             for (Tower tower : player.getTowers()) {
-                if (tower.isAlive) {
+                if (tower.isAlive && !tower.isDestroyed) {
                     tower.attack();
                 }
             }

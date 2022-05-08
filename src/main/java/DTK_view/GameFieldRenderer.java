@@ -106,7 +106,6 @@ public class GameFieldRenderer extends JPanel {
         scale = (frame.getContentPane().getSize().width) / xLength;
         middleText = "";
         sideText = "";
-      // GameState.animBuffer.clear();
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
         setLayout(null);
         this.controlPanel = new ControlPanel(game);

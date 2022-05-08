@@ -148,7 +148,7 @@ public class Player implements Serializable {
      * @param entity the entity to add
      */
     public void addEntity(Entity entity) {
-        if (entity.value < this.gold) {
+        if (entity.value <= this.gold) {
             this.entities.add(entity);
             this.gold -= entity.value;
             if (entity instanceof Soldier)

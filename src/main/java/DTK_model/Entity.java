@@ -302,7 +302,7 @@ public abstract class Entity implements Serializable {
      */
     public void takeDamage(int damage) {
         this.healthPoints = Math.max(0, healthPoints - damage);
-        this.isAlive = this.healthPoints > 0;
+        this.isAlive = this.healthPoints != 0;
     }
 
     /**

@@ -280,23 +280,23 @@ public class GameField extends GameFieldRenderer {
         } else if (game.getGameState().getRoundState().equals(RoundState.TRAINING)) {
 
             this.controlPanel.setButtonText(0, "Sol");
-            this.controlPanel.attachActionListener(0, e -> type = Types.SOLDIER);
+            this.controlPanel.attachActionListener(0, e -> {type = Types.SOLDIER; GameFieldModel.getWayPoints().clear();});
 
             if (!game.getGameState().getCurrentPlayer().isUnitRestricted()) {
                 this.controlPanel.setButtonText(1, "Kam");
-                this.controlPanel.attachActionListener(1, e -> type = Types.KAMIKAZE);
+                this.controlPanel.attachActionListener(1, e -> {type = Types.KAMIKAZE; GameFieldModel.getWayPoints().clear();});
                 this.controlPanel.getButtons()[1].setEnabled(true);
 
                 this.controlPanel.setButtonText(2, "Ass");
-                this.controlPanel.attachActionListener(2, e -> type = Types.ASSASSIN);
+                this.controlPanel.attachActionListener(2, e -> {type = Types.ASSASSIN; GameFieldModel.getWayPoints().clear();});
                 this.controlPanel.getButtons()[2].setEnabled(true);
 
                 this.controlPanel.setButtonText(3, "Div");
-                this.controlPanel.attachActionListener(3, e -> type = Types.DIVER);
+                this.controlPanel.attachActionListener(3, e -> {type = Types.DIVER; GameFieldModel.getWayPoints().clear();});
                 this.controlPanel.getButtons()[3].setEnabled(true);
 
                 this.controlPanel.setButtonText(4, "Cli");
-                this.controlPanel.attachActionListener(4, e -> type = Types.CLIMBER);
+                this.controlPanel.attachActionListener(4, e -> {type = Types.CLIMBER; GameFieldModel.getWayPoints().clear();});
                 this.controlPanel.getButtons()[4].setEnabled(true);
             } else {
                 for (int i = 1; i < 5; i++) {
