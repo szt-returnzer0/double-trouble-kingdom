@@ -59,7 +59,7 @@ class GameFieldModelTest {
         int y = 3;
         GameFieldModel gameFieldModel = new GameFieldModel(game);
         gameFieldModel.placeEntity(x, y, false, Types.SNIPER);
-        assertEquals(1, game.getMap().getTiles()[y][x].getEntities().size(), "The entities size should be 1");
+        assertEquals(1, Game.getMapReference().getTiles()[y][x].getEntities().size(), "The entities size should be 1");
         gameFieldModel.delete(x, y);
         assertEquals(0, game.getMap().getTiles()[y][x].getEntities().size(), "The entities size should be 0");
         Sniper sniper = new Sniper(new Point(x, y), null);
