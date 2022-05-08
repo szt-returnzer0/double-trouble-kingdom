@@ -27,11 +27,6 @@ public class GameField extends GameFieldRenderer {
      */
     private boolean deleteState;
 
-    /**
-     * The list of waypoints.
-     */
-    private final ArrayList<Point> wayPoints = new ArrayList<>();
-
     GameFieldModel gameFieldModel;
 
     /**
@@ -101,14 +96,6 @@ public class GameField extends GameFieldRenderer {
         int yIdx = y / scale;
         int xIdx = x / scale;
         gameFieldModel.handleWayPoint(xIdx, yIdx, selection);
-        /*if (mapRef.getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
-            if (selection instanceof Soldier s && s.getTerrains().contains(mapRef.getTiles()[yIdx][xIdx].getType())) {
-                if (wayPoints.contains(new Point(xIdx, yIdx))) {
-                    wayPoints.remove(new Point(xIdx, yIdx));
-                } else
-                    wayPoints.add(new Point(xIdx, yIdx));
-            }
-        }*/
     }
 
     /**
@@ -117,7 +104,6 @@ public class GameField extends GameFieldRenderer {
      * @return the waypoints
      */
     public ArrayList<Point> getWayPoints() {
-        //return wayPoints;
         return gameFieldModel.getWayPoints();
     }
 
@@ -161,15 +147,6 @@ public class GameField extends GameFieldRenderer {
         int yIdx = y / scale;
         int xIdx = x / scale;
         gameFieldModel.delete(xIdx, yIdx);
-        /*if (!mapRef.getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
-            Building b = (Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0);
-            Sides pSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? Sides.BLUE : Sides.RED;
-            if (Objects.equals(b.getSide(), pSide) &&
-                    !(b instanceof Castle)) {
-                deleteBuilding(b);
-                game.getGameState().getCurrentPlayer().removeEntity(b);
-            }
-        }*/
     }
 
     /**
@@ -334,98 +311,7 @@ public class GameField extends GameFieldRenderer {
         int xIdx = x / scale;
 
         gameFieldModel.placeBlock(xIdx, yIdx, inverted, type);
-        //controlPanel.updateButtonText();
-        //repaint();
-        /*if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
-            if (Types.getBuildingTypes().contains(type)) {
-                placeBuilding(Types.buildingFactory(type, xIdx, yIdx));
-            } else if (Types.getSoldierTypes().contains(type)) {
-                trainSoldiers(Types.soldierFactory(type, xIdx, yIdx));
-            }
-
-        }
-
-        game.getGameState().setTargets();*/
     }
-
-    /**
-     * Checks if the tile is empty.
-     *
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     * @param size the size of the Entity
-     * @return if the tile is empty
-     */
-    /*protected boolean isEmpty(int xIdx, int yIdx, Dimension size) {
-        boolean isEmpty = true;
-        for (int y = yIdx; y < yIdx + size.height; y++) {
-            for (int x = xIdx; x < xIdx + size.width; x++) {
-                isEmpty = isEmpty && mapRef.getTiles()[y][x].getEntities().isEmpty();
-            }
-        }
-        return isEmpty;
-    }*/
-
-    /**
-     * Check if we can build.
-     *
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     * @param size the size of the building
-     * @param side the side it belongs to
-     * @return if we can build
-     */
-    /*protected boolean isBuildable(int xIdx, int yIdx, Dimension size, Sides side) {
-        boolean isBuildable = true;
-        for (int y = yIdx; y < yIdx + size.height; y++) {
-            for (int x = xIdx; x < xIdx + size.width; x++) {
-                isBuildable = isBuildable && mapRef.getTiles()[y][x].getEntities().isEmpty()
-                        && !Objects.equals(mapRef.getTiles()[y][x].getType(), Types.MOUNTAIN)
-                        && !Objects.equals(mapRef.getTiles()[y][x].getType(), Types.SWAMP);
-            }
-        }
-        if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1)
-                || (side.equals(Sides.RED) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
-            isBuildable = false;
-        return isBuildable;
-    }*/
-
-    /**
-     * Check if we can train a unit.
-     *
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     * @param s    the unit instance
-     * @param side the side it belongs to
-     * @return if we can train it
-     */
-    /*protected boolean isInTrainingGround(int xIdx, int yIdx, Soldier s, Sides side) {
-        ArrayList<Entity> entities = mapRef.getTiles()[yIdx][xIdx].getEntities();
-        boolean isInTrainingGround = false;
-        for (Entity entity : entities) {
-
-
-
-            if ((entity.getType().equals(Types.CASTLE) || entity.getType().equals(Types.BARRACKS))
-                    && Objects.equals(s.getType(), Types.SOLDIER)) {
-                isInTrainingGround = true;
-            }
-
-            if (Objects.equals(entity.getType(), Types.BARRACKS) && !((Barracks) entity).isUpgraded()
-                    && Objects.equals(s.getType(), Types.SOLDIER)) {
-                isInTrainingGround = true;
-            }
-
-            if (Objects.equals(entity.getType(), Types.BARRACKS) && ((Barracks) entity).isUpgraded()) {
-                isInTrainingGround = true;
-            }
-        }
-        if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1)
-                || (side.equals(Sides.RED) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 2)))
-            isInTrainingGround = false;
-
-        return isInTrainingGround;
-    }*/
 
     /**
      * Updates the current selection to be drawn on the canvas.
@@ -447,255 +333,6 @@ public class GameField extends GameFieldRenderer {
         setSelection(tmp);
         repaint();
     }
-
-    /**
-     * Determines the closest empty tile.
-     *
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     * @return the location of the closest empty tile
-     */
-    /*protected Point closestEmptyTile(int xIdx, int yIdx) {
-        Point[] directions = new Point[] { new Point(-1, 0), new Point(0, 1), new Point(1, 0), new Point(0, -1) };
-        Integer[] counts = Arrays.stream(directions).map(e -> countTiles(new Point(xIdx, yIdx), e, 0))
-                .toArray(Integer[]::new);
-        int idx = Arrays.asList(counts).indexOf(Arrays.stream(counts).min(Integer::compare).get());
-        return new Point(xIdx + directions[idx].x * counts[idx], yIdx + directions[idx].y * counts[idx]);
-    }*/
-
-    /**
-     * Counts the tiles from a position to a direction.
-     *
-     * @param from    the point the count from
-     * @param dir     the direction to go
-     * @param counter the count of tiles
-     * @return the count of tiles
-     */
-    /*private int countTiles(Point from, Point dir, int counter) {
-        if (from.x < 0 || from.x > xLength - 1 || from.y < 0 || from.y > yLength - 1) {
-            return 10000;
-        }
-        if (hasNoBuilding(mapRef.getTiles()[from.y][from.x]) && unitIsPlaceable(mapRef.getTiles()[from.y][from.x]))
-            return counter;
-        return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1);
-    }*/
-
-    /**
-     * Check if a tile has no building.
-     *
-     * @param ter the tile to check
-     * @return if it has no building
-     */
-    /*private boolean hasNoBuilding(Terrain ter) {
-        boolean l = true;
-        for (Entity entity : ter.getEntities()) {
-            l = l && !Types.getBuildingTypes().contains(entity.getType());
-        }
-        return l;
-    }*/
-
-    /**
-     * Checks if a unit is placeable.
-     *
-     * @param ter the tile to check
-     * @return if its placeable
-     */
-    /*private boolean unitIsPlaceable(Terrain ter) {
-        boolean result;
-        switch (ter.getType()) {
-            case SWAMP -> result = Objects.equals(type, Types.DIVER);
-            case MOUNTAIN -> result = Objects.equals(type, Types.CLIMBER);
-            default -> result = true;
-        }
-        return result;
-    }*/
-
-    /**
-     * Deletes a building from the Map
-     *
-     * @param b the building to delete
-     */
-    /*protected void deleteBuilding(Building b) {
-        if (b != null) {
-            for (int y = b.getPosition().y; y < b.getPosition().y + b.getSize().height; y++) {
-                for (int x = b.getPosition().x; x < b.getPosition().x + b.getSize().width; x++) {
-                    mapRef.getTiles()[y][x].getEntities().clear();
-                }
-            }
-        }
-    }*/
-
-    /**
-     * Trains soldiers.
-     *
-     * @param s the soldier to train.
-     */
-    /*protected void trainSoldiers(Soldier s) {
-        if (game.getGameState().getCurrentPlayer().getGold() >= s.getValue()) {
-            s.setOwner(game.getGameState().getCurrentPlayer());
-            int xIdx = s.getPosition().x;
-            int yIdx = s.getPosition().y;
-            Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
-
-            s.setSide(side);
-            if (isInTrainingGround(xIdx, yIdx, s, side)) {
-                Point point = closestEmptyTile(xIdx, yIdx);
-                s.setPosition(point);
-
-                GameState.animBuffer.add(s.getAnimObj());
-                s.getAnimObj().setSeconds(1 / s.getSpeed());
-                s.getAnimObj().setSpeedModifier(mapRef.getTiles()[point.y][point.x].getSpeedMod());
-                s.setIsAnimated(false);
-                wayPoints.forEach(s::addWaypoint);
-                wayPoints.clear();
-                mapRef.getTiles()[point.y][point.x].addEntities(s);
-                game.getGameState().getCurrentPlayer().addEntity(s);
-                controlPanel.updateButtonText();
-            }
-        }
-    }*/
-
-
-    /**
-     * Places a building.
-     *
-     * @param b the building to place
-     */
-    /*protected void placeBuilding(Building b) {
-
-
-
-        b.setOwner(game.getGameState().getCurrentPlayer());
-
-        int xIdx = b.getPosition().x;
-        int yIdx = b.getPosition().y;
-        Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
-        b.setSide(side);
-
-        if (inverted)
-            b.invert();
-
-
-
-        if (destroyedOnPos(xIdx, yIdx))
-            return;
-
-        Building enemyCastle = game.getGameState().getEnemyCastle(b.getOwner().getPlayerNumber());
-        Soldier testUnit = new Soldier(closestEmptyTile(
-                enemyCastle.getPosition().x + enemyCastle.getSize().width / 2
-                        + (b.getSide().equals(Sides.BLUE) ? 1 : -1),
-                enemyCastle.getPosition().y + enemyCastle.getSize().height / 2));
-        testUnit.setSide(enemyCastle.getSide());
-        Pathfinder pf = new Pathfinder();
-        Pathfinder.setMap(mapRef);
-
-
-
-        if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals(Sides.RED) ? Sides.BLUE : Sides.RED, b) == null)
-            return;
-
-
-
-        Sides playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? Sides.BLUE : Sides.RED;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength
-                && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
-
-            if (isBuildable(xIdx, yIdx, b.getSize(), side)) {
-
-                placeOnEmptyField(yIdx, b, xIdx);
-
-                if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
-                    game.getGameState().getCurrentPlayer().addEntity(b);
-                    controlPanel.updateButtonText();
-                }
-            } else if (mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
-                    .contains(b.getType())
-                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                if ((game.getGameState().getCurrentPlayer().getGold() >= 30
-                        && Objects.equals(b.getType(), Types.BARRACKS))
-                        || (game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10)
-                        && Types.getUpgradeable().contains(b.getType()))) { //CAN'T CAST TO TOWER
-                    game.getGameState().getCurrentPlayer()
-                            .upgradeBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
-                    this.controlPanel.updateButtonText();
-                    repaint();
-                }
-
-            } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
-                            .contains(Types.SHOTGUN)
-                    && Objects.equals(b.getType(), Types.SNIPER)
-                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                transformTower(b, xIdx, yIdx);
-
-            } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
-                            .contains(Types.SNIPER)
-                    && Objects.equals(b.getType(), Types.SHOTGUN)
-                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                transformTower(b, xIdx, yIdx);
-
-            } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && mapRef.getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
-                            .contains(Types.BARRICADE)
-                    && (Objects.equals(b.getType(), Types.SHOTGUN) || Objects.equals(b.getType(), Types.BARRICADE))
-                    && Objects.equals(mapRef.getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
-                transformTower(b, xIdx, yIdx);
-            }
-        }
-
-    }*/
-
-    /**
-     * Checks if the building can be placed on the given tile
-     *
-     * @param yIdx the y-coordinate of the tile
-     * @param b    the building to be placed
-     * @param xIdx the x-coordinate of the tile
-     */
-    /*private void placeOnEmptyField(int yIdx, Building b, int xIdx) {
-        for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-            for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
-                    mapRef.getTiles()[y][x].addEntities(b);
-                }
-            }
-        }
-    }*/
-
-    /**
-     * Check if a building is destroyed on the position
-     *
-     * @param xIdx the x-coordinate of the tile
-     * @param yIdx the y-coordinate of the tile
-     * @return true if the building is destroyed
-     */
-    /*private boolean destroyedOnPos(int xIdx, int yIdx) {
-        if (mapRef.getTiles()[yIdx][xIdx].getEntities().size() > 0) {
-            for (Entity e : mapRef.getTiles()[yIdx][xIdx].getEntities()) {
-                if (e instanceof Tower t && t.isDestroyed()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }*/
-
-    /**
-     * Transforms a Tower
-     *
-     * @param b    the tower to transform
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     */
-    /*private void transformTower(Building b, int xIdx, int yIdx) {
-
-        Building newTower = game.getGameState().getCurrentPlayer()
-                .transformTower((Tower) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
-        deleteBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
-        placeBuilding(newTower);
-        repaint();
-    }*/
 
     /**
      * Toggles the delete mode.
