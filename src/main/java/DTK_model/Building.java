@@ -83,7 +83,10 @@ public abstract class Building extends Entity {
 
     @Override
     public String getImage() {
-        int invert = size.width > size.height ? 2 : 0;
+        int invert = (size.width > size.height) ? 1 : 0;
+        if (canUpgrade)
+            invert++;
+
         int upgrade = isUpgraded ? 1 : 0;
         String color = (side.equals(Sides.BLUE) ? "Blue" : "Red");
         return type.text + color + (upgrade + invert) + ".png";
