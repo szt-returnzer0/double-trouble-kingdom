@@ -31,12 +31,12 @@ public class GameField extends GameFieldRenderer {
     /**
      * Model of the GameField.
      */
-    protected GameFieldModel gameFieldModel;
+    protected final GameFieldModel gameFieldModel;
 
     /**
      * Timer to refresh the game field.
      */
-    protected Timer refreshTimer;
+    protected final Timer refreshTimer;
 
 
     /**

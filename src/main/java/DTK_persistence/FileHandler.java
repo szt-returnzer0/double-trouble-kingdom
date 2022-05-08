@@ -17,7 +17,7 @@ public class FileHandler {
     /**
      * Jackson objectMapper for serializing data.
      */
-    static ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+    static final ObjectMapper mapper = new ObjectMapper().registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
 
 
     /**

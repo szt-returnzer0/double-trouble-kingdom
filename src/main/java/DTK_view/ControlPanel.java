@@ -28,7 +28,7 @@ public class ControlPanel extends JPanel {
     /**
      * The inner panel of the panel.
      */
-    JPanel innerPanel = new JPanel();
+    final JPanel innerPanel = new JPanel();
     /**
      * Game dependency.
      */
@@ -36,7 +36,7 @@ public class ControlPanel extends JPanel {
     /**
      * GridBagLayout for panels.
      */
-    GridBagLayout gridBagLayout = new GridBagLayout();
+    final GridBagLayout gridBagLayout = new GridBagLayout();
 
     /**
      * Constructs a new ControlPanel instance with dependency injection.

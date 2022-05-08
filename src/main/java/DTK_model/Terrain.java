@@ -29,7 +29,7 @@ public abstract class Terrain implements Serializable {
     /**
      * The type of the tile.
      */
-    protected Types type;
+    protected final Types type;
     /**
      * The speed modifier of the tile.
      */
@@ -41,7 +41,7 @@ public abstract class Terrain implements Serializable {
     /**
      * The version of the tile.
      */
-    protected int tileVersion;
+    protected final int tileVersion;
 
     /**
      * Constructs a new Terrain instance without entities.

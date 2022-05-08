@@ -32,7 +32,7 @@ public class Soldier extends Entity {
     /**
      * The soldier's pathfinder
      */
-    protected Pathfinder pathfinder;
+    protected final Pathfinder pathfinder;
     /**
      * An ArrayList containing the path of the Solider to the enemy Castle.
      */
@@ -40,12 +40,12 @@ public class Soldier extends Entity {
     /**
      * The soldier's waypoints.
      */
-    protected ArrayList<Point> wayPoints;
+    protected final ArrayList<Point> wayPoints;
 
     /**
      * The location of the enemy Castle's Tile locations.
      */
-    protected ArrayList<Point> castleParts;
+    protected final ArrayList<Point> castleParts;
 
     /**
      * Constructs a new Soldier instance.
