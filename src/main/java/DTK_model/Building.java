@@ -54,6 +54,7 @@ public abstract class Building extends Entity implements Serializable {
 
     /**
      * Constructs a new Building instance.
+     *
      * @param position the building's position on the Map
      */
     public Building(Point position) {
@@ -105,6 +106,7 @@ public abstract class Building extends Entity implements Serializable {
 
     /**
      * Retutns the upgrade cost of the Building instance.
+     *
      * @return the upgrade cost of the Building instance
      */
     @JsonIgnore

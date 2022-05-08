@@ -41,18 +41,19 @@ public class Kamikaze extends Soldier {
         super.attack();
         if (canSplash()) {
 
-                for (Tower tower : this.towerTargets) {
-                    if (!tower.isDestroyed && tower.getPosition().distance(this.getPosition()) <= range) {
-                        tower.takeDamage(this.damage);
-                        killUnit();
-                    }
+            for (Tower tower : this.towerTargets) {
+                if (!tower.isDestroyed && tower.getPosition().distance(this.getPosition()) <= range) {
+                    tower.takeDamage(this.damage);
+                    killUnit();
                 }
             }
+        }
 
     }
 
     /**
      * Checks if the Kamikaze can splash.
+     *
      * @return true if the Kamikaze can splash
      */
     private boolean canSplash() {
@@ -61,6 +62,7 @@ public class Kamikaze extends Soldier {
 
     /**
      * Sets the Kamikaze's target list.
+     *
      * @param targets the targets to add
      */
     public void selectTargets(ArrayList<Tower> targets) {

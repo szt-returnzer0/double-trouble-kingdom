@@ -13,15 +13,15 @@ import java.io.Serializable;
 
         {
                 @JsonSubTypes.Type(value = Barracks.class, name = "Barracks"),
-        @JsonSubTypes.Type(value = Castle.class, name = "Castle"),
-        @JsonSubTypes.Type(value = Building.class, name = "Barricade"),
-        @JsonSubTypes.Type(value = Building.class, name = "Sniper"),
-        @JsonSubTypes.Type(value = Building.class, name = "Shotgun"),
-        @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"),
-        @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"),
-        @JsonSubTypes.Type(value = Diver.class, name = "Diver"),
-        @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
-        @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
+                @JsonSubTypes.Type(value = Castle.class, name = "Castle"),
+                @JsonSubTypes.Type(value = Building.class, name = "Barricade"),
+                @JsonSubTypes.Type(value = Building.class, name = "Sniper"),
+                @JsonSubTypes.Type(value = Building.class, name = "Shotgun"),
+                @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"),
+                @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"),
+                @JsonSubTypes.Type(value = Diver.class, name = "Diver"),
+                @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
+                @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
         }
 )
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
@@ -218,6 +218,7 @@ public abstract class Entity implements Serializable {
 
     /**
      * Sets the Entity's owner.
+     *
      * @param owner the new owner
      */
     public void setOwner(Player owner) {

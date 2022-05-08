@@ -40,11 +40,11 @@ public class Assassin extends Soldier {
     public void attack() {
         super.attack();
 
-            for (Soldier soldier : soldierTargets) {
-                if (soldier.getPosition().distance(this.getPosition()) <= range) {
-                    soldier.takeDamage(this.damage);
-                }
+        for (Soldier soldier : soldierTargets) {
+            if (soldier.getPosition().distance(this.getPosition()) <= range) {
+                soldier.takeDamage(this.damage);
             }
+        }
 
     }
 

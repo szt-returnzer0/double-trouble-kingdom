@@ -36,6 +36,7 @@ public class GameFieldModel {
 
     /**
      * Constructs a new GameFieldModel.
+     *
      * @param game the game reference
      */
     public GameFieldModel(Game game) {
@@ -56,6 +57,36 @@ public class GameFieldModel {
     }
 
     /**
+     * Checks if Tower attack is animated.
+     *
+     * @param tower the Tower we query
+     * @return true if Tower is attacking, false otherwise
+     */
+    public static boolean isAttackAnimated(Tower tower) {
+        return tower.getTargets() != null && !tower.getTargets().isEmpty() && tower.isCanAttack() && !tower.isDestroyed();
+    }
+
+    /**
+     * Checks if Tower has a Solider in attack range.
+     *
+     * @param tower  the Tower we query
+     * @param target the target we query
+     * @return true if Tower has a Soldier in attack range, false otherwise
+     */
+    public static boolean isInAttackRange(Tower tower, Entity target) {
+        return tower.getPosition().distance(target.getPosition()) <= tower.getRange() && target.isAlive();
+    }
+
+    /**
+     * Returns the waypoints.
+     *
+     * @return the waypoints
+     */
+    public static ArrayList<Point> getWayPoints() {
+        return wayPoints;
+    }
+
+    /**
      * Generates the priceList.
      */
     private void genPriceList() {
@@ -68,26 +99,6 @@ public class GameFieldModel {
         priceList.put("Sni", (new Sniper(new Point(0, 0))).getValue() + "g");
         priceList.put("Sho", (new Shotgun(new Point(0, 0))).getValue() + "g");
         priceList.put("Brk", (new Barracks(new Point(0, 0))).getValue() + "g");
-    }
-
-    /**
-     * Checks if Tower attack is animated.
-     * @param tower the Tower we query
-     * @return true if Tower is attacking, false otherwise
-     */
-    public static boolean isAttackAnimated(Tower tower) {
-        return tower.getTargets() != null && !tower.getTargets().isEmpty() && tower.isCanAttack() && !tower.isDestroyed();
-    }
-
-
-    /**
-     * Checks if Tower has a Solider in attack range.
-     * @param tower the Tower we query
-     * @param target the target we query
-     * @return true if Tower has a Soldier in attack range, false otherwise
-     */
-    public static boolean isInAttackRange(Tower tower, Entity target) {
-        return tower.getPosition().distance(target.getPosition()) <= tower.getRange() && target.isAlive();
     }
 
     /**
@@ -109,16 +120,8 @@ public class GameFieldModel {
     }
 
     /**
-     * Returns the waypoints.
-     *
-     * @return the waypoints
-     */
-    public static ArrayList<Point> getWayPoints() {
-        return wayPoints;
-    }
-
-    /**
      * Deletes an entity.
+     *
      * @param xIdx x Index
      * @param yIdx y Index
      */
@@ -136,10 +139,11 @@ public class GameFieldModel {
 
     /**
      * Places an entity.
-     * @param xIdx x Index
-     * @param yIdx y Index
+     *
+     * @param xIdx     x Index
+     * @param yIdx     y Index
      * @param inverted if the entity is inverted
-     * @param type the type of the entity
+     * @param type     the type of the entity
      */
     public void placeEntity(int xIdx, int yIdx, boolean inverted, Types type) {
         if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
@@ -327,7 +331,7 @@ public class GameFieldModel {
                 Point point = closestEmptyTile(xIdx, yIdx, type);
                 s.setPosition(point);
 
-                GameState.animBuffer.add(s.getAnimObj());
+                GameState.getAnimBuffer().add(s.getAnimObj());
                 s.getAnimObj().setSeconds(1 / s.getSpeed());
                 s.getAnimObj().setSpeedModifier(Game.getMapReference().getTiles()[point.y][point.x].getSpeedMod());
                 s.setIsAnimated(false);
@@ -350,7 +354,7 @@ public class GameFieldModel {
         b.setOwner(game.getGameState().getCurrentPlayer());
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
-        Sides side = xIdx + b.getSize().width / 2 -1 <= xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = xIdx + b.getSize().width / 2 - 1 <= xLength / 2 ? Sides.BLUE : Sides.RED;
         b.setSide(side);
 
         if (inverted)
@@ -420,7 +424,6 @@ public class GameFieldModel {
         }
 
     }
-
 
 
     /**

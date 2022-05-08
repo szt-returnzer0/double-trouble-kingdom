@@ -14,18 +14,17 @@ public class Game implements Serializable {
      */
     private static Map mapReference;
     /**
-     * The Database of the game.
-     */
-    private Database database;
-    /**
      * The GameState of the game.
      */
     private final GameState gameState;
-
     /**
      * Local Map of the game.
      */
     private final Map map;
+    /**
+     * The Database of the game.
+     */
+    private Database database;
 
     /**
      * Constructs a Game with dependency injection of Database and Map.
@@ -36,6 +35,7 @@ public class Game implements Serializable {
      * @param p2Name       the name of Player2
      */
     public Game(Database database, Map mapReference, String p1Name, String p2Name) {
+        GameState.getAnimBuffer().clear();
         Pathfinder.setMap(mapReference);
         this.database = database;
         this.gameState = new GameState(p1Name, p2Name, database);
@@ -45,20 +45,12 @@ public class Game implements Serializable {
     }
 
     /**
-     * Returns the Map of the game.
-     *
-     * @return the Map of the game
-     */
-    public Map getMap() {
-        return map;
-    }
-
-    /**
      * Constructs a Game for Editor use.
      *
      * @param mapReference the Map to be injected
      */
     public Game(Map mapReference) {
+        GameState.getAnimBuffer().clear();
         Pathfinder.setMap(mapReference);
         Game.mapReference = mapReference;
         this.gameState = new GameState();
@@ -66,18 +58,37 @@ public class Game implements Serializable {
         this.map = mapReference;
     }
 
-
     /**
      * Copy Constructor for Game.
+     *
      * @param game the Game to be copied
      */
     public Game(Game game) {
+        GameState.getAnimBuffer().clear();
         this.gameState = new GameState(game.getGameState());
         this.map = game.map;
         this.database = game.database;
         Pathfinder.setMap(map);
         Game.mapReference = map;
         game.getGameState().setElapsedTime(game.gameState.getElapsedTime());
+    }
+
+    /**
+     * Returns the Map of the Game.
+     *
+     * @return the Map of the Game
+     */
+    public static Map getMapReference() {
+        return mapReference;
+    }
+
+    /**
+     * Returns the Map of the game.
+     *
+     * @return the Map of the game
+     */
+    public Map getMap() {
+        return map;
     }
 
     /**
@@ -93,15 +104,6 @@ public class Game implements Serializable {
      */
     public void pauseGame() {
         this.gameState.stopElapsedTimer();
-    }
-
-    /**
-     * Returns the Map of the Game.
-     *
-     * @return the Map of the Game
-     */
-    public static Map getMapReference() {
-        return mapReference;
     }
 
     /**

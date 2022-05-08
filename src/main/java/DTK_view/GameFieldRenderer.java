@@ -489,7 +489,7 @@ public class GameFieldRenderer extends JPanel {
      * @param g2d the graphics we use
      */
     protected void drawAnimated(Graphics2D g2d) {
-        for (Animator animator : GameState.animBuffer) {
+        for (Animator animator : GameState.getAnimBuffer()) {
             if (!texturesOn) {
                 handleType(g2d, animator.getEntity().getType());
                 g2d.fillRect((int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale);

@@ -26,7 +26,7 @@ public class Castle extends Building {
      * Constructs a new Castle instance.
      *
      * @param position the castle's position on the Map
-   */
+     */
     public Castle(Point position) {
         super(position);
         this.type = Types.CASTLE;

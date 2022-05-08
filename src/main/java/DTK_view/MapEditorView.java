@@ -74,6 +74,15 @@ public class MapEditorView extends GameField {
             Pair<Map, File> loaded = fileDialog.loadMapDialog();
             if (loaded != null) {
                 mapRef = loaded.getMap();
+
+                frame.remove(this);
+
+                GameField gameField = new MapEditorView(new Game(mapRef), frame);
+
+
+                frame.add(gameField);
+                frame.pack();
+                repaint();
             }
         });
 

@@ -182,7 +182,7 @@ public class Player implements Serializable {
     public void removeSoldier(Soldier s) {
         soldierCount--;
         entities.remove(s);
-        GameState.animBuffer.remove(s.getAnimObj());
+        GameState.getAnimBuffer().remove(s.getAnimObj());
         s.getAnimObj().stopAnimation();
         s.getAnimObj().removePath();
     }

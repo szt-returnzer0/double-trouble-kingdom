@@ -17,16 +17,14 @@ import java.util.Random;
  */
 public class GameState implements Serializable {
     private static final int KILL_GOLD = 6;
-
+    /**
+     * The buffer of animations.
+     */
+    private static final ArrayList<Animator> animBuffer = new ArrayList<>();
     /**
      * The deltaTime for animation drawing.
      */
     public static double deltaTime = 1;
-
-    /**
-     * The buffer of animations.
-     */
-    public static ArrayList<Animator> animBuffer = new ArrayList<>();
     /**
      * Timer to increment elapsedTime.
      */
@@ -39,6 +37,10 @@ public class GameState implements Serializable {
      * The start time of the game.
      */
     private final long startTime;
+    /**
+     * Frames per second.
+     */
+    private final int fps = 60;
     /**
      * The current Player.
      */
@@ -56,11 +58,6 @@ public class GameState implements Serializable {
      * The current round phase.
      */
     private RoundState roundState;
-
-    /**
-     * Frames per second.
-     */
-    private final int fps = 60;
     /**
      * DB reference.
      */
@@ -69,7 +66,6 @@ public class GameState implements Serializable {
      * The elapsed time in seconds.
      */
     private int elapsedTime;
-
     /**
      * If the path visualization is enabled.
      */
@@ -94,6 +90,7 @@ public class GameState implements Serializable {
 
     /**
      * Constructs a copy of the GameState.
+     *
      * @param gameState the GameState to copy
      */
     public GameState(GameState gameState) {
@@ -117,7 +114,31 @@ public class GameState implements Serializable {
         }
     }
 
+    /**
+     * Constructs a class containing the Players, roundState, and elapsedTimer.
+     *
+     * @param p1Name   name of Player1
+     * @param p2Name   name of Player2
+     * @param database DB reference
+     */
+    public GameState(String p1Name, String p2Name, Database database) {
+        this.database = database;
+        this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
+        startElapsedTimer();
+        this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
+        decideStarter();
+        this.roundState = RoundState.BUILDING;
+        startTime = System.currentTimeMillis();
+    }
 
+    /**
+     * Returns the animation buffer.
+     *
+     * @return the animation buffer
+     */
+    public static ArrayList<Animator> getAnimBuffer() {
+        return animBuffer;
+    }
 
     /**
      * The tick function for the elapsedTimer.
@@ -149,8 +170,6 @@ public class GameState implements Serializable {
 
         }
     }
-
-
 
     /**
      * The game loop for the GameState.
@@ -233,34 +252,8 @@ public class GameState implements Serializable {
     }
 
     /**
-     * Constructs a class containing the Players, roundState, and elapsedTimer.
-     *
-     * @param p1Name   name of Player1
-     * @param p2Name   name of Player2
-     * @param database DB reference
-     */
-    public GameState(String p1Name, String p2Name, Database database) {
-        this.database = database;
-        this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
-        startElapsedTimer();
-        this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
-        decideStarter();
-        this.roundState = RoundState.BUILDING;
-        startTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Returns the animation buffer.
-     *
-     * @return the animation buffer
-     */
-    public static ArrayList<Animator> getAnimBuffer() {
-        return animBuffer;
-    }
-
-
-    /**
      * Checks if the game is ended.
+     *
      * @return true if the game is ended
      */
     public boolean isEnded() {
@@ -324,6 +317,15 @@ public class GameState implements Serializable {
      */
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    /**
+     * Sets the current Player.
+     *
+     * @param currentPlayer the Player to set
+     */
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     /**
@@ -423,7 +425,8 @@ public class GameState implements Serializable {
 
     /**
      * Removes a dead Soldier.
-     * @param player the Player
+     *
+     * @param player  the Player
      * @param soldier the Soldier
      */
     private void removeDeadSoldier(Player player, Soldier soldier) {
@@ -502,7 +505,6 @@ public class GameState implements Serializable {
             }
         }
     }
-
 
 
     /**
