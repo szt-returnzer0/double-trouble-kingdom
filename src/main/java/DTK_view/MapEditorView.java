@@ -96,9 +96,9 @@ public class MapEditorView extends GameField {
      */
     @Override
     protected void placeBlock(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
-        mapEditorModel.placeBlock(xIdx, yIdx, gameFieldModel, this.inverted, this.type);
+        int yIndex = y / scale;
+        int xIndex = x / scale;
+        mapEditorModel.placeBlock(xIndex, yIndex, gameFieldModel, this.inverted, this.type);
     }
 
 }

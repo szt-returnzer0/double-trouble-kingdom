@@ -106,9 +106,9 @@ public class GameField extends GameFieldRenderer {
      * @param y y coordinate
      */
     private void handleWayPoint(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
-        gameFieldModel.handleWayPoint(xIdx, yIdx, selection);
+        int yIndex = y / scale;
+        int xIndex = x / scale;
+        gameFieldModel.handleWayPoint(xIndex, yIndex, selection);
     }
 
     /**
@@ -157,9 +157,9 @@ public class GameField extends GameFieldRenderer {
      * @param y the vertical coordinate
      */
     private void delete(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
-        gameFieldModel.delete(xIdx, yIdx);
+        int yIndex = y / scale;
+        int xIndex = x / scale;
+        gameFieldModel.delete(xIndex, yIndex);
     }
 
     /**
@@ -336,10 +336,10 @@ public class GameField extends GameFieldRenderer {
      * @param y the vertical coordinate
      */
     protected void placeBlock(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
+        int yIndex = y / scale;
+        int xIndex = x / scale;
 
-        gameFieldModel.placeEntity(xIdx, yIdx, inverted, type);
+        gameFieldModel.placeEntity(xIndex, yIndex, inverted, type);
     }
 
     /**
@@ -349,13 +349,13 @@ public class GameField extends GameFieldRenderer {
      * @param y the vertical coordinate
      */
     private void updateSelection(int x, int y) {
-        int yIdx = y / scale;
-        int xIdx = x / scale;
+        int yIndex = y / scale;
+        int xIndex = x / scale;
         Entity tmp = null;
         if (Types.getBuildingTypes().contains(type))
-            tmp = Types.buildingFactory(type, xIdx, yIdx);
+            tmp = Types.buildingFactory(type, xIndex, yIndex);
         else if (Types.getSoldierTypes().contains(type))
-            tmp = Types.soldierFactory(type, xIdx, yIdx);
+            tmp = Types.soldierFactory(type, xIndex, yIndex);
 
         if (inverted && tmp != null)
             tmp.invert();

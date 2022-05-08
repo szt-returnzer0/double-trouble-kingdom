@@ -64,15 +64,15 @@ public class Pathfinder implements Serializable {
     /**
      * Finds the shortest path from the start to the end.
      *
-     * @param start The soldier to move.
-     * @param side  The side of the end point.
-     * @param b     The building to check when searching path at building phase.
+     * @param start    The soldier to move.
+     * @param side     The side of the end point.
+     * @param building The building to check when searching path at building phase.
      * @return The shortest path from the start to the end.
      */
-    public Point Dijkstra(Soldier start, Sides side, Building b) {
+    public Point Dijkstra(Soldier start, Sides side, Building building) {
         Point src = start.getPosition();
         Point end = null;
-        fieldToGraph(start, b);
+        fieldToGraph(start, building);
 
         int vCount = 0;
         int vMax = 0;
@@ -135,23 +135,24 @@ public class Pathfinder implements Serializable {
     /**
      * Converts the map to a graph with routes.
      *
-     * @param s The soldier that is moving.
-     * @param b The building to check when searching path at building phase.
+     * @param soldiers The soldier that is moving.
+     * @param building The building to check when searching path at building phase.
      */
-    private void fieldToGraph(Soldier s, Building b) {
+    private void fieldToGraph(Soldier soldiers, Building building) {
         graph = new int[yLength][xLength];
         for (int y = 0; y < yLength; y++) {
             for (int x = 0; x < xLength; x++) {
-                if (s.getTerrains().contains(map.getTiles()[y][x].getType()) &&
+                if (soldiers.getTerrains().contains(map.getTiles()[y][x].getType()) &&
                         !(map.getTiles()[y][x].getEntities().size() > 0 &&
                                 "Castle Barracks Barricade Sniper Shotgun".contains(map.getTiles()[y][x].getEntities().get(0).getType().text))) {
                     graph[y][x] = map.getTiles()[y][x].getSpeedMod();
                 } else if (!map.getTiles()[y][x].getEntities().isEmpty() && map.getTiles()[y][x].getEntities().get(0).getType().text.equals("Castle")) {
                     graph[y][x] = 1;
-                    if (map.getTiles()[y][x].getEntities().get(0).getSide().equals(s.getSide())) graph[y][x] = -1;
+                    if (map.getTiles()[y][x].getEntities().get(0).getSide().equals(soldiers.getSide()))
+                        graph[y][x] = -1;
                 } else
                     graph[y][x] = -1;
-                if (b != null && x >= b.getPosition().x && x < b.getPosition().x + b.getSize().width && y >= b.getPosition().y && y < b.getPosition().y + b.getSize().height)
+                if (building != null && x >= building.getPosition().x && x < building.getPosition().x + building.getSize().width && y >= building.getPosition().y && y < building.getPosition().y + building.getSize().height)
                     graph[y][x] = -1;
             }
         }
@@ -160,13 +161,13 @@ public class Pathfinder implements Serializable {
     /**
      * Generates a path from start to end.
      *
-     * @param start The soldier to move.
-     * @param side  The side of the enemy.
-     * @param b     The building to check when searching path at building phase.
-     * @param mode  The return mode.
+     * @param start    The soldier to move.
+     * @param side     The side of the enemy.
+     * @param building The building to check when searching path at building phase.
+     * @param mode     The return mode.
      * @return The path.
      */
-    public ArrayList<Point> genPath(Soldier start, Sides side, Building b, String mode) {
+    public ArrayList<Point> genPath(Soldier start, Sides side, Building building, String mode) {
         Point end;
 
         if (!start.getWayPoints().isEmpty() && start.getPosition().equals(start.getWayPoints().get(0).getLocation()))

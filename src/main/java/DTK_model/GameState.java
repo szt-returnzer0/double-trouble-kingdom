@@ -150,6 +150,9 @@ public class GameState implements Serializable {
 
     }
 
+    /**
+     * Calulates the times.
+     */
     private void calculateTimes() {
         long curTime = System.currentTimeMillis();
         deltaTime = (double) curTime - prevTime;
@@ -157,13 +160,16 @@ public class GameState implements Serializable {
         elapsedTime = (int) ((System.currentTimeMillis() - startTime) / 1000);
     }
 
+    /**
+     * Iterate all the animations in the buffer.
+     */
     private void animateBuffer() {
         for (int i = 0; i < animBuffer.size(); i++) {
             if (!animBuffer.get(i).getEntity().isAnimated) continue;
             animBuffer.get(i).animate();
             if (animBuffer.get(i).getPath().isEmpty()) {
                 animBuffer.get(i).stopAnimation();
-                if (animBuffer.get(i).getEntity() instanceof Soldier s && s.getWayPoints().isEmpty())
+                if (animBuffer.get(i).getEntity() instanceof Soldier soldier && soldier.getWayPoints().isEmpty())
                     animBuffer.remove(i--);
 
             }

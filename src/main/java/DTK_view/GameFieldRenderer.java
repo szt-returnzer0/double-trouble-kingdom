@@ -262,7 +262,7 @@ public class GameFieldRenderer extends JPanel {
                     g2d.fillRect(x * scale, y * scale, scale, scale);
 
                     drawUnitOwner(g2d, x, y, entity.getSide(), entity);
-                    drawBldState(g2d, entity);
+                    drawBuildingState(g2d, entity);
                     drawHealthBar(g2d, entity);
                 } else {
                     if (entity instanceof Building building) {
@@ -273,8 +273,8 @@ public class GameFieldRenderer extends JPanel {
                         }
 
                         drawHealthBar(g2d, entity);
-                    } else if (entity instanceof Soldier s) {
-                        g2d.drawImage(textureHolders.get(s.getType().text).get(s.getImage()), x * scale, y * scale, scale, scale, null);
+                    } else if (entity instanceof Soldier soldier) {
+                        g2d.drawImage(textureHolders.get(soldier.getType().text).get(soldier.getImage()), x * scale, y * scale, scale, scale, null);
                         drawAvgHealthBar(g2d, mapRef.getTiles()[y][x].getEntities());
                     }
                 }
@@ -319,22 +319,29 @@ public class GameFieldRenderer extends JPanel {
     }
 
 
-
-
-
+    /**
+     * Draws the path animation.
+     *
+     * @param g2d the graphics we use
+     */
     private void drawPathVisualization(Graphics2D g2d) {
         if (game.getGameState().isPathVisualization()) {
             for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
-                if (entity instanceof Soldier s) {
-                    if (s.isAnimated())
-                        s.visualizationStart = s.visualizationEnd = 0;
+                if (entity instanceof Soldier soldier) {
+                    if (soldier.isAnimated())
+                        soldier.visualizationStart = soldier.visualizationEnd = 0;
                     else
-                        drawPath(g2d, s);
+                        drawPath(g2d, soldier);
                 }
             }
         }
     }
 
+    /**
+     * Draws the attack animation.
+     *
+     * @param g2d the graphics we use
+     */
     private void drawAttackAnimation(Graphics2D g2d) {
         Set<Tower> towers = new HashSet<>();
         towers.addAll(game.getGameState().getEnemyTowers(1));
@@ -367,9 +374,9 @@ public class GameFieldRenderer extends JPanel {
 
         Color green = new Color(0, 155, 35);
         Color red = new Color(155, 0, 0);
-        if (entity instanceof Soldier s) {
-            int width = (int) (scale * s.getHealthPoints() / ((double) s.getMaxHealthPoints()));
-            drawUnitHealth(g2d, entity, green, red, width, s.getAnimObj(), s.getSide());
+        if (entity instanceof Soldier soldier) {
+            int width = (int) (scale * soldier.getHealthPoints() / ((double) soldier.getMaxHealthPoints()));
+            drawUnitHealth(g2d, entity, green, red, width, soldier.getAnimObj(), soldier.getSide());
         } else if (entity instanceof Building building && !(building instanceof Barracks)) {
             drawBuildingHealth(g2d, green, red, building);
         }
@@ -462,23 +469,23 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Draws the paths
      *
-     * @param g2d the graphics we use
-     * @param s   the path we want to draw
+     * @param g2d     the graphics we use
+     * @param soldier the path we want to draw
      */
-    protected void drawPath(Graphics2D g2d, Soldier s) {
-        setSideColor(s.getSide(), g2d);
+    protected void drawPath(Graphics2D g2d, Soldier soldier) {
+        setSideColor(soldier.getSide(), g2d);
         Color c = g2d.getColor();
-        int alpha = s.getSide().equals(Sides.BLUE) ? 200 : 150;
+        int alpha = soldier.getSide().equals(Sides.BLUE) ? 200 : 150;
         g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
-        ArrayList<Point> path = s.getAbsPath();
-        s.visualizationEnd = Math.min(s.visualizationEnd + 1, path.size());
-        if (s.visualizationEnd >= path.size()) {
-            s.visualizationStart = Math.min(s.visualizationStart + 1, path.size());
-            if (s.visualizationStart >= path.size())
-                s.visualizationStart = s.visualizationEnd = 0;
+        ArrayList<Point> path = soldier.getAbsPath();
+        soldier.visualizationEnd = Math.min(soldier.visualizationEnd + 1, path.size());
+        if (soldier.visualizationEnd >= path.size()) {
+            soldier.visualizationStart = Math.min(soldier.visualizationStart + 1, path.size());
+            if (soldier.visualizationStart >= path.size())
+                soldier.visualizationStart = soldier.visualizationEnd = 0;
         }
 
-        for (int i = s.visualizationStart; i < s.visualizationEnd; i++) {
+        for (int i = soldier.visualizationStart; i < soldier.visualizationEnd; i++) {
             Point p = path.get(i);
             g2d.fillRect(p.x * scale, p.y * scale, scale, scale);
         }
@@ -493,8 +500,8 @@ public class GameFieldRenderer extends JPanel {
             if (!texturesOn) {
                 handleType(g2d, animator.getEntity().getType());
                 g2d.fillRect((int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale);
-            } else if (animator.getEntity() instanceof Soldier s) {
-                g2d.drawImage(textureHolders.get(s.getType().text).get(s.getImage()), (int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale, null);
+            } else if (animator.getEntity() instanceof Soldier soldier) {
+                g2d.drawImage(textureHolders.get(soldier.getType().text).get(soldier.getImage()), (int) (animator.getEntity().getPosition().x * scale + animator.getX()), (int) (animator.getEntity().getPosition().y * scale + animator.getY()), scale, scale, null);
             }
 
             drawUnitAnimatedInformation(g2d, animator.getEntity().getPosition().x, animator.getEntity().getPosition().y, animator.getEntity().getSide(), animator.getEntity(), animator.getX(), animator.getY());
@@ -509,7 +516,7 @@ public class GameFieldRenderer extends JPanel {
      * @param g2d    the graphics we use
      * @param entity the building to draw to
      */
-    protected void drawBldState(Graphics2D g2d, Entity entity) {
+    protected void drawBuildingState(Graphics2D g2d, Entity entity) {
         Sides side = entity.getPosition().x + 3 < xLength / 2 ? Sides.BLUE : Sides.RED;
 
 
@@ -529,10 +536,10 @@ public class GameFieldRenderer extends JPanel {
 
             g2d.setStroke(def);
 
-            drawBldOwner(g2d, entity, side);
+            drawBuildingOwner(g2d, entity, side);
 
         } else if (entity instanceof Castle) {
-            drawBldOwner(g2d, entity, side);
+            drawBuildingOwner(g2d, entity, side);
         }
 
         if (entity instanceof Tower tower && tower.isDestroyed()) {
@@ -551,7 +558,7 @@ public class GameFieldRenderer extends JPanel {
      * @param entity the building to draw to
      * @param side   the side it belongs to
      */
-    private void drawBldOwner(Graphics2D g2d, Entity entity, Sides side) {
+    private void drawBuildingOwner(Graphics2D g2d, Entity entity, Sides side) {
         setSideColor(side, g2d);
         g2d.drawRect(entity.getPosition().x * scale + 4, entity.getPosition().y * scale + 4, entity.getSize().width * scale - 8, entity.getSize().height * scale - 8);
     }

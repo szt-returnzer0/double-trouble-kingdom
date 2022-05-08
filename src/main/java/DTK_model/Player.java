@@ -177,14 +177,14 @@ public class Player implements Serializable {
     /**
      * Remove a soldier from the player's entity ArrayList.
      *
-     * @param s the soldier to remove
+     * @param soldier the soldier to remove
      */
-    public void removeSoldier(Soldier s) {
+    public void removeSoldier(Soldier soldier) {
         soldierCount--;
-        entities.remove(s);
-        GameState.getAnimBuffer().remove(s.getAnimObj());
-        s.getAnimObj().stopAnimation();
-        s.getAnimObj().removePath();
+        entities.remove(soldier);
+        GameState.getAnimBuffer().remove(soldier.getAnimObj());
+        soldier.getAnimObj().stopAnimation();
+        soldier.getAnimObj().removePath();
     }
 
     /**

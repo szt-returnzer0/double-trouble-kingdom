@@ -46,15 +46,15 @@ public class MapEditorModel {
     /**
      * Checks if we don't build on other buildings
      *
-     * @param xIdx index of the row
-     * @param yIdx index of the column
-     * @param size the size of the building
+     * @param xIndex index of the row
+     * @param yIndex index of the column
+     * @param size   the size of the building
      * @return if we don't try to build on an existing building
      */
-    private boolean notOnOtherBuilding(int xIdx, int yIdx, Dimension size, Types type) {
+    private boolean notOnOtherBuilding(int xIndex, int yIndex, Dimension size, Types type) {
         boolean onBuilding = true;
-        for (int y = yIdx; y < yIdx + size.height; y++) {
-            for (int x = xIdx; x < xIdx + size.width; x++) {
+        for (int y = yIndex; y < yIndex + size.height; y++) {
+            for (int x = xIndex; x < xIndex + size.width; x++) {
                 onBuilding = onBuilding && (hasMatchingTypes(Game.getMapReference().getTiles()[y][x].getEntities(), type) || Game.getMapReference().getTiles()[y][x].getEntities().isEmpty());
             }
         }
@@ -64,18 +64,20 @@ public class MapEditorModel {
     /**
      * Places a building with placement rules.
      *
-     * @param b the building to place
+     * @param building the building to place
      */
-    private void placeLimitedBuilding(Building b, boolean inverted, Types type, GameFieldModel gameFieldModel) {
-        int xIdx = b.getPosition().x;
-        int yIdx = b.getPosition().y;
-        Sides side = xIdx < xLength / 2 ? Sides.BLUE : Sides.RED;
-        b.setSide(side);
+    private void placeLimitedBuilding(Building building, boolean inverted, Types type, GameFieldModel gameFieldModel) {
+        int xIndex = building.getPosition().x;
+        int yIndex = building.getPosition().y;
+        Sides side = xIndex < xLength / 2 ? Sides.BLUE : Sides.RED;
+        building.setSide(side);
         if (inverted)
-            b.invert();
-        ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), Types.CASTLE) ? castles : barracks;
-        int maxSize = Objects.equals(b.getType(), Types.CASTLE) ? 1 : 2;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize(), type) && (Objects.equals(b.getType(), Types.CASTLE) || gameFieldModel.isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+            building.invert();
+
+
+        ArrayList<Queue<Building>> arr = Objects.equals(building.getType(), Types.CASTLE) ? castles : barracks;
+        int maxSize = Objects.equals(building.getType(), Types.CASTLE) ? 1 : 2;
+        if (xIndex + building.getSize().width <= xLength && yIndex + building.getSize().height <= yLength && notOnOtherBuilding(xIndex, yIndex, building.getSize(), type) && (Objects.equals(building.getType(), Types.CASTLE) || gameFieldModel.isEmpty(xIndex, yIndex, building.getSize())) && !(xIndex > xLength / 2.0 - 1 - (building.getSize().width) && xIndex < xLength / 2.0)) {
             if (side.equals(Sides.BLUE) && arr.get(0).size() >= maxSize) {
                 gameFieldModel.deleteBuilding(arr.get(0).remove());
 
@@ -83,13 +85,13 @@ public class MapEditorModel {
                 gameFieldModel.deleteBuilding(arr.get(1).remove());
             }
             if (side.equals(Sides.BLUE)) {
-                arr.get(0).add(b);
+                arr.get(0).add(building);
             } else {
-                arr.get(1).add(b);
+                arr.get(1).add(building);
             }
-            for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
-                for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                    Game.getMapReference().getTiles()[y][x].addEntities(b);
+            for (int y = yIndex; y < yIndex + building.getSize().height; y++) {
+                for (int x = xIndex; x < xIndex + building.getSize().width; x++) {
+                    Game.getMapReference().getTiles()[y][x].addEntities(building);
                 }
             }
 
@@ -118,24 +120,24 @@ public class MapEditorModel {
     /**
      * Handles the placement of a building or unit.
      *
-     * @param xIdx           the x index of the tile
-     * @param yIdx           the y index of the tile
+     * @param xIndex         the x index of the tile
+     * @param yIndex         the y index of the tile
      * @param gameFieldModel the game field model
      * @param inverted       whether the building is inverted
      * @param type           the type of the building
      */
-    public void placeBlock(int xIdx, int yIdx, GameFieldModel gameFieldModel, boolean inverted, Types type) {
-        if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
+    public void placeBlock(int xIndex, int yIndex, GameFieldModel gameFieldModel, boolean inverted, Types type) {
+        if (yIndex < yLength && xIndex < xLength && yIndex >= 0 && xIndex >= 0) {
 
-            ArrayList<Entity> ent = Game.getMapReference().getTiles()[yIdx][xIdx].getEntities();
+            ArrayList<Entity> entities = Game.getMapReference().getTiles()[yIndex][xIndex].getEntities();
 
             if (Types.getBuildingTypes().contains(type)) {
-                placeLimitedBuilding(Types.buildingFactory(type, xIdx, yIdx), inverted, type, gameFieldModel);
+                placeLimitedBuilding(Types.buildingFactory(type, xIndex, yIndex), inverted, type, gameFieldModel);
             } else if (Types.getTerrainTypes().contains(type)) {
-                Game.getMapReference().getTiles()[yIdx][xIdx] = Types.terrainFactory(type, ent);
+                Game.getMapReference().getTiles()[yIndex][xIndex] = Types.terrainFactory(type, entities);
             }
-            if (Objects.equals(type, Types.DELETE) && !ent.isEmpty()) {
-                safeDeleteBuilding((Building) ent.get(0), gameFieldModel);
+            if (Objects.equals(type, Types.DELETE) && !entities.isEmpty()) {
+                safeDeleteBuilding((Building) entities.get(0), gameFieldModel);
             }
         }
     }
