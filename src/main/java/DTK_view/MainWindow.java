@@ -103,6 +103,9 @@ public class MainWindow {
                 null,
                 "Új Pálya");
 
+        if (mapName == null) {
+            mapName = "Új Pálya";
+        }
 
         JTextField height = new JTextField();
         do {
@@ -110,7 +113,7 @@ public class MainWindow {
                     "Méret (16-128):", height
 
             };
-            JOptionPane.showConfirmDialog(null, message, "MapSize", JOptionPane.DEFAULT_OPTION);
+            JOptionPane.showConfirmDialog(null, message, "Pályaméret", JOptionPane.DEFAULT_OPTION);
         } while (!(isNumeric(height.getText()) && Integer.parseInt(height.getText()) >= 16 && Integer.parseInt(height.getText()) <= 128));
 
         int maxHeight = Integer.parseInt(height.getText());

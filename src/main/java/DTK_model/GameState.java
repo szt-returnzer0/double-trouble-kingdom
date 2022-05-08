@@ -181,8 +181,8 @@ public class GameState implements Serializable {
         HashSet<Building> buildings = new HashSet<>();
         for (Terrain[] terrainRow : map.getTiles()) {
             for (Terrain terrain : terrainRow) {
-                if (terrain.getEntities().size() > 0 && terrain.getEntities().get(0) instanceof Building building) {
-                    buildings.add(building);
+                if (terrain.getEntities().size() > 0) {
+                    buildings.add((Building) terrain.getEntities().get(0));
                 }
             }
         }
@@ -322,16 +322,6 @@ public class GameState implements Serializable {
      */
     public Player getCurrentPlayer() {
         return currentPlayer;
-    }
-
-    /**
-     * Sets the current player number.
-     *
-     * @param p the current player number
-     */
-    public void setCurrentPlayer(Player p) {
-        currentPlayer = p;
-        playerNumber = p.getPlayerNumber() == 1 ? 0 : 1;
     }
 
     /**
@@ -520,12 +510,4 @@ public class GameState implements Serializable {
         return pathVisualization;
     }
 
-    /**
-     * Sets if the game is ended.
-     *
-     * @param ended if the game is ended
-     */
-    public void setEnded(boolean ended) {
-        isEnded = ended;
-    }
 }

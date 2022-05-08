@@ -54,14 +54,11 @@ public class MainMenu extends JPanel {
      */
     public MainMenu(MainWindow mainWindow) {
         setOpaque(false);
-
         loadBackground();
-
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-
         FileDialog fileDialog = new FileDialog();
-        map = FileHandler.loadMapAndFile(new File("Test.dtk"));
+        map = FileHandler.loadMapAndFile(new File("DTK_Map.dtk"));
         mapName = map.getMap() != null ? map.getMap().getName() : "Nincs pálya betöltve";
 
 
