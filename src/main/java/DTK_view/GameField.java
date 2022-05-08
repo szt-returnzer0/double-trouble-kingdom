@@ -129,7 +129,7 @@ public class GameField extends GameFieldRenderer {
             updateButtons();
         } else
             controlPanel.hideControlPanel();
-        if (game.getGameState().isGameEnded()) {
+        if (game.getGameState().getEnded()) {
             controlPanel.hideControlPanel();
         }
         repaint();

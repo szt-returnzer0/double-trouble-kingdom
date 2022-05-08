@@ -42,7 +42,7 @@ public class GameTest {
         Thread.sleep(2000);
         game.restartGame();
         assertEquals(0, game.getGameState().getElapsedTime(), "Time is not 0");
-        assertFalse(game.getGameState().isGameEnded(), "isEnded is not false");
+        assertFalse(game.getGameState().checkAlive(), "isEnded is not false");
     }
 
 }

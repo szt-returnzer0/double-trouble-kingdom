@@ -598,7 +598,7 @@ public class GameFieldRenderer extends JPanel {
         g2d.drawString(middleText, getWidth() / 2 - (int) Math.ceil(middleWidth / 2.0), 40);
         g2d.drawString(sideText, getWidth() - (int) (sideWidth * 1.2), 40);
 
-        if (game.getGameState().isGameEnded()) {
+        if (game.getGameState().getEnded()) {
             font = new Font("Roboto", Font.PLAIN, 64);
             g2d.setFont(font);
             String winner = game.getGameState().getWinner().getName() + " nyerte a játékot!";

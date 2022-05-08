@@ -152,8 +152,7 @@ public class GameState {
                 towerAttack();
                 soldierAttack();
 
-                if (isGameEnded()) {
-                    
+                if (checkAlive()) {
                     elapsedTimer.stop();
                     saveScore();
                 }
@@ -220,12 +219,22 @@ public class GameState {
 
     }
 
+    boolean isEnded = false;
+
+    public void setEnded(boolean ended) {
+        isEnded = ended;
+    }
+
+    public boolean getEnded() {
+        return isEnded;
+    }
+
     /**
      * Returns if the Game is ended.
      *
      * @return if the Game is ended
      */
-    public boolean isGameEnded() {
+    public boolean checkAlive() {
         return players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0 ||
                 players.get(1).getCastle().getHealthPoints() <= 0 && players.get(1).getSoldierCount() == 0;
     }
