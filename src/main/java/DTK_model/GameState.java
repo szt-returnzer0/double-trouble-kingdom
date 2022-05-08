@@ -2,10 +2,11 @@ package DTK_model;
 
 import DTK_persistence.DBRecord;
 import DTK_persistence.Database;
-import DTK_view.GameField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,7 +15,7 @@ import java.util.Random;
 /**
  * GameState class implementation for Double Trouble Kingdom game, contains the Players, playerNumbers, the roundState, and other fields and methods for managing the state of the Game.
  */
-public class GameState {
+public class GameState implements Serializable {
     private static final int KILL_GOLD = 6;
 
     /**
@@ -49,10 +50,7 @@ public class GameState {
      * The current round phase.
      */
     private RoundState roundState;
-    /**
-     * GameField instance reference.
-     */
-    private GameField gameFieldReference;
+
     /**
      * Frames per second.
      */
@@ -60,7 +58,7 @@ public class GameState {
     /**
      * DB reference.
      */
-    private Database databaseReference;
+    private Database database;
     /**
      * The elapsed time in seconds.
      */
@@ -73,7 +71,8 @@ public class GameState {
      * @param p1Name name of Player1
      * @param p2Name name of Player2
      */
-    public GameState(String p1Name, String p2Name) {
+    public GameState(String p1Name, String p2Name , Database database) {
+        this.database = database;
         this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
         startElapsedTimer();
         this.players = new ArrayList<>(Arrays.asList(new Player(p1Name), new Player(p2Name)));
@@ -92,30 +91,34 @@ public class GameState {
         decideStarter();
         this.roundState = RoundState.BUILDING;
         startTime = System.currentTimeMillis();
-    }
 
-
-
-
-
-
-    /**
-     * Link the GameField to the GameState.
-     *
-     * @param gameFieldReference the GameField
-     */
-    public void linkGameField(GameField gameFieldReference) {
-        this.gameFieldReference = gameFieldReference;
     }
 
     /**
-     * Link the Database to the GameState.
-     *
-     * @param db the Database
+     * Constructs a copy of the GameState.
+     * @param gameState the GameState to copy
      */
-    public void linkDBRef(Database db) {
-        databaseReference = db;
+    public GameState(GameState gameState) {
+        this.elapsedTimer = new Timer((int) (1000.0 / fps), (e) -> tickEvent());
+        startElapsedTimer();
+        this.players = gameState.players;
+        this.currentPlayer = gameState.currentPlayer;
+        this.playerNumber = gameState.playerNumber;
+        this.roundState = gameState.roundState;
+        this.startTime = gameState.startTime;
+        this.prevTime = gameState.prevTime;
+        this.elapsedTime = gameState.elapsedTime;
+        this.pathVisualization = gameState.pathVisualization;
+        this.database = gameState.database;
+        GameState.getAnimBuffer().clear();
+        for (Player player : getPlayers()) {
+            for (Soldier soldier : player.getSoldiers()) {
+                GameState.getAnimBuffer().add(soldier.getAnimObj());
+            }
+        }
     }
+
+
 
     /**
      * The tick function for the elapsedTimer.
@@ -124,8 +127,7 @@ public class GameState {
         gameLoop();
         calculateTimes();
         animateBuffer();
-        if(gameFieldReference != null)
-            updateUI();
+
     }
 
     private void calculateTimes() {
@@ -136,6 +138,7 @@ public class GameState {
     }
 
     private void animateBuffer() {
+
         for (Animator animator : animBuffer) {
             if (animator.getEntity().isAnimated) {
                 animator.animate();
@@ -146,9 +149,7 @@ public class GameState {
         }
     }
 
-    private void updateUI() { 
-            gameFieldReference.updateUIState();
-    }
+
 
     /**
      * The game loop for the GameState.
@@ -163,6 +164,7 @@ public class GameState {
                 soldierAttack();
 
                 if (checkAlive()) {
+                    isEnded = true;
                     elapsedTimer.stop();
                     saveScore();
                 }
@@ -180,8 +182,8 @@ public class GameState {
         HashSet<Building> buildings = new HashSet<>();
         for (Terrain[] terrainRow : map.getTiles()) {
             for (Terrain terrain : terrainRow) {
-                if (terrain.getEntities().size() > 0) {
-                    buildings.add((Building) terrain.getEntities().get(0));
+                if (terrain.getEntities().size() > 0 && terrain.getEntities().get(0) instanceof Building building) {
+                    buildings.add(building);
                 }
             }
         }
@@ -219,6 +221,7 @@ public class GameState {
                 for (Animator animator : animBuffer) {
                     animator.startAnimation();
                 }
+
             }
             case ATTACKING -> {
                 nextPlayer();
@@ -226,10 +229,9 @@ public class GameState {
                 currentPlayer.calculateGoldAtRound();
             }
         }
-
     }
 
-    boolean isEnded = false;
+    private boolean isEnded = false;
 
     /**
      * Sets if the game is ended.
@@ -263,6 +265,7 @@ public class GameState {
      *
      * @return the winner of the game
      */
+    @JsonIgnore
     public Player getWinner() {
         if (players.get(0).getCastle().getHealthPoints() <= 0 && players.get(0).getSoldierCount() == 0) {
             elapsedTimer.stop();
@@ -277,7 +280,7 @@ public class GameState {
      * Saves a DBRecord to the Game's Database.
      */
     private void saveScore() {
-        databaseReference.saveRecord(new DBRecord(getPlayers().get(0).getName(), getPlayers().get(1).getName(), getWinner().getPlayerNumber(), getElapsedTime()));
+        database.saveRecord(new DBRecord(getPlayers().get(0).getName(), getPlayers().get(1).getName(), getWinner().getPlayerNumber(), getElapsedTime()));
     }
 
     /**
@@ -407,7 +410,7 @@ public class GameState {
                 if (!soldier.isAlive()) {
                     player.removeSoldier(soldier);
                     Point pos = soldier.getPosition();
-                    Game.getMap().getTiles()[pos.y][pos.x].getEntities().remove(soldier);
+                    Game.getMapReference().getTiles()[pos.y][pos.x].getEntities().remove(soldier);
                     players.get(player.getPlayerNumber() == 1 ? 1 : 0).addGold(KILL_GOLD);
                 }
             }
@@ -475,7 +478,7 @@ public class GameState {
      * Calculates the soldier' path.
      */
     public void calculatePaths() {
-        Pathfinder.setMap(Game.getMap());
+        Pathfinder.setMap(Game.getMapReference());
         for (Player player : players) {
             for (Soldier soldier : player.getSoldiers()) {
                 soldier.calculatePath();
@@ -484,17 +487,7 @@ public class GameState {
         }
     }
 
-    /**
-     * Returns the waypoints.
-     *
-     * @return the waypoints
-     */
-    public ArrayList<Point> getWayPoints() {
-        if (gameFieldReference != null) {
-            return gameFieldReference.getWayPoints();
-        }
-        return null;
-    }
+
 
     /**
      * Toggles if path visualization is enabled.
@@ -510,5 +503,9 @@ public class GameState {
      */
     public boolean isPathVisualization() {
         return pathVisualization;
+    }
+
+    public static ArrayList<Animator> getAnimBuffer() {
+        return animBuffer;
     }
 }

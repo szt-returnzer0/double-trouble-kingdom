@@ -1,13 +1,18 @@
 package DTK_view;
 
 import DTK_model.*;
+import DTK_persistence.Database;
+import DTK_persistence.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.SimpleTimeZone;
 
 /**
  * Implementation of the GameField class, which displays the game table.
@@ -30,7 +35,10 @@ public class GameField extends GameFieldRenderer {
     /**
      * Model of the GameField.
      */
-    GameFieldModel gameFieldModel;
+    protected GameFieldModel gameFieldModel;
+
+    protected Timer  refreshTimer;
+
 
     /**
      * Constructs a new GameField instance.
@@ -47,7 +55,10 @@ public class GameField extends GameFieldRenderer {
         middleText = "0 sec";
         sideText = getRoundStateText();
 
-        game.getGameState().linkGameField(this);
+        refreshTimer = new Timer((int) (1000.0 / 60), e -> { updateUIState(); repaint();});
+        refreshTimer.start();
+
+
         if (game.getDatabase() == null) {
             addMouseMotionListener(new MouseAdapter() {
                 @Override
@@ -203,14 +214,30 @@ public class GameField extends GameFieldRenderer {
      * Redraws the canvas.
      */
     public void refreshGameField() {
-        frame.remove(this);
+        game.getGameState().stopElapsedTimer();
         FileDialog fileDialog = new FileDialog();
         Game loadedGame = fileDialog.loadGameDialog();
         if (loadedGame != null) {
             this.game = loadedGame;
+
+
+
+
+            frame.remove(this);
+
+            GameField gameField = new GameField(new Game(game), frame);
+
+
+
+
+            frame.add(gameField);
+            frame.pack();
+            repaint();
+
         }
-        frame.add(new GameField(game, frame));
-        frame.pack();
+
+
+
     }
 
     /**

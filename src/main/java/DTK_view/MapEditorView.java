@@ -24,7 +24,7 @@ public class MapEditorView extends GameField {
      */
     public MapEditorView(Game editor, JFrame frame) {
         super(editor, frame);
-        game.getGameState().linkGameField(null);
+        refreshTimer.stop();
         middleText = mapRef.getName();
         mapEditorModel = new MapEditorModel();
         sideText = "Selection: " + type.text;

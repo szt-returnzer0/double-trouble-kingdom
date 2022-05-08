@@ -1,13 +1,28 @@
 package DTK_model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Implementation of Soldier Entity type.
  */
-public class Soldier extends Entity {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "@type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"),
+        @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
+        @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"),
+        @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
+        @JsonSubTypes.Type(value = Diver.class, name = "Diver"),
+})
+public class Soldier extends Entity implements Serializable {
     /**
      * The start of visualization highlighting.
      */
@@ -31,7 +46,7 @@ public class Soldier extends Entity {
     /**
      * The soldier's pathfinder
      */
-    protected Pathfinder pf;
+    protected Pathfinder pathfinder;
     /**
      * An ArrayList containing the path of the Solider to the enemy Castle.
      */
@@ -61,12 +76,26 @@ public class Soldier extends Entity {
         this.value = 2;
         this.speed = 2;
         this.terrains = new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT));
-        this.pf = new Pathfinder();
+        this.pathfinder = new Pathfinder();
         this.damage = 10;
         this.wayPoints = new ArrayList<>();
         this.visualizationStart = this.visualizationEnd = 0;
         this.castleParts = new ArrayList<>();
     }
+
+    /**
+     * Constructs a new Soldier instance.
+     */
+    @JsonCreator
+    public Soldier() {
+        this.pathfinder = new Pathfinder();
+    }
+
+    public void setWayPoints(ArrayList<Point> wayPoints) {
+        this.wayPoints = wayPoints;
+    }
+
+
 
     /**
      * Returns the current speed of the Soldier.
@@ -142,7 +171,7 @@ public class Soldier extends Entity {
      * Calculates the shortest path to the enemy Castle.
      */
     protected void calculatePath() {
-        this.path = pf.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "rel");
+        this.path = pathfinder.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "rel");
         this.animObj.setPath(this.path);
     }
 
@@ -169,6 +198,6 @@ public class Soldier extends Entity {
      * @return the Soldier's absolute path of the found path in an ArrayList
      */
     public ArrayList<Point> getAbsPath() {
-        return pf.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "abs");
+        return pathfinder.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "abs");
     }
 }

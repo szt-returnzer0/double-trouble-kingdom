@@ -4,12 +4,13 @@ import DTK_view.GameFieldRenderer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Implementation of Animator class, contains methods for moving the Units, and animate the attacking of Towers.
  */
-public class Animator {
+public class Animator implements Serializable {
     /**
      * x-coordinate of the Unit.
      */
@@ -186,7 +187,7 @@ public class Animator {
      * Animate an entity.
      */
     public void animate() {
-        Terrain[][] entities = Game.getMap().getTiles();
+        Terrain[][] entities = Game.getMapReference().getTiles();
         setSpeedModifier(entities[entity.getPosition().y][entity.getPosition().x].getSpeedMod());
         setSeconds(speedModifier);
 
@@ -203,6 +204,8 @@ public class Animator {
 
             nextFrame();
             performSteps();
+
+
         }
     }
 

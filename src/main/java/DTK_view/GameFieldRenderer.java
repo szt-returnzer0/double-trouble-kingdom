@@ -5,6 +5,7 @@ import DTK_model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -72,6 +73,7 @@ public class GameFieldRenderer extends JPanel {
      */
     private int resolutionState = 0;
 
+
     /**
      * Texture indexer.
      */
@@ -95,8 +97,9 @@ public class GameFieldRenderer extends JPanel {
     public GameFieldRenderer(Game game, JFrame frame) {
         texturesOn = true;
         this.game = game;
-        mapRef = Game.getMap();
+        mapRef = Game.getMapReference();
         setTextures();
+
 
         GameFieldRenderer.frame = frame;
         this.xLength = mapRef.getTiles()[0].length;
@@ -104,7 +107,7 @@ public class GameFieldRenderer extends JPanel {
         scale = (frame.getContentPane().getSize().width) / xLength;
         middleText = "";
         sideText = "";
-        GameState.animBuffer.clear();
+      // GameState.animBuffer.clear();
         frame.setPreferredSize(new Dimension(xLength * scale + 17, yLength * scale + 40));
         setLayout(null);
         this.controlPanel = new ControlPanel(game);
@@ -228,13 +231,13 @@ public class GameFieldRenderer extends JPanel {
      * @param g2d the graphics we use
      */
     protected void drawWayPoints(Graphics2D g2d) {
-        if (game.getGameState().getWayPoints() != null && !game.getGameState().getWayPoints().isEmpty()) {
+        if (GameFieldModel.getWayPoints() != null && !GameFieldModel.getWayPoints().isEmpty()) {
             setSideColor(game.getGameState().getCurrentPlayer().getSide(), g2d);
             Stroke def = g2d.getStroke();
             Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, bevelCount);
             g2d.setStroke(dashed);
-            for (Point wayPoint : game.getGameState().getWayPoints()) {
+            for (Point wayPoint : GameFieldModel.getWayPoints()) {
                 g2d.drawRoundRect(wayPoint.x * scale, wayPoint.y * scale, scale, scale, 200, 200);
             }
             g2d.setStroke(def);

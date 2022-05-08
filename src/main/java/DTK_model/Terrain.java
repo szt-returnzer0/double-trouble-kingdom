@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ import java.util.Random;
         @JsonSubTypes.Type(value = Mountain.class, name = "Mountain"),
 })
 @JsonIgnoreProperties("texture")
-public abstract class Terrain {
+public abstract class Terrain implements Serializable {
     /**
      * An ArrayList of Entities on the tile.
      */

@@ -1,11 +1,12 @@
 package DTK_model;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Implementation of the archerless Barricade Tower type.
  */
-public class Barricade extends Tower {
+public class Barricade extends Tower implements Serializable {
     /**
      * Constructs a new Barricade instance.
      *

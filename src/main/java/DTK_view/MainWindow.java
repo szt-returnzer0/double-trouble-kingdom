@@ -61,6 +61,8 @@ public class MainWindow {
         if (tileMap == null) {
             tileMap = new Map();
         }
+
+
         Game game = new Game(database, map.getMap() == null ? tileMap : FileHandler.loadMap(map.getFile()), mainMenu.getP1Name(), mainMenu.getP2Name());
         GameField gameField = new GameField(game, frame);
 

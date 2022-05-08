@@ -1,11 +1,12 @@
 package DTK_model;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Implementation of Castle Building type.
  */
-public class Castle extends Building {
+public class Castle extends Building  implements Serializable  {
 
     /**
      * Constructs a new Castle instance.

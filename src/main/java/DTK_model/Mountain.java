@@ -1,11 +1,12 @@
 package DTK_model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Implementation of Mountain Terrain type.
  */
-public class Mountain extends Terrain {
+public class Mountain extends Terrain implements Serializable {
     /**
      * Constructs a new Mountain instance without predefined entities.
      */

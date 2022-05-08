@@ -1,15 +1,11 @@
 package DTK_persistence;
 
-import DTK_model.Game;
-import DTK_model.Map;
-import DTK_model.Pair;
+import DTK_model.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Implementation of FileHandler class, contains static methods for saving and loading Map and Game state to and from files.
@@ -29,7 +25,7 @@ public class FileHandler {
      * @param map  the Map instance we want to save
      */
     public static void saveMap(File file, Map map) {
-        saveToFile(file, map, ".dtk");
+        saveToJson(file, map, ".dtk");
     }
 
     /**
@@ -39,7 +35,9 @@ public class FileHandler {
      * @param game the Game instance we want to save
      */
     public static void saveGame(File file, Game game) {
-        saveToFile(file, game, ".dtk_save");
+        game.getDatabase().closeConnection();
+        saveToStream(file, game, ".dtk_save");
+        game.getDatabase().openConnection();
     }
 
     /**
@@ -49,7 +47,7 @@ public class FileHandler {
      * @param obj  the Object we want to save
      * @param type the extension of the file we save to
      */
-    public static void saveToFile(File file, Object obj, String type) {
+    public static void saveToJson(File file, Object obj, String type) {
         try {
             String fileName = file.getName().split("\\.")[0] + type;
             FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -97,11 +95,9 @@ public class FileHandler {
      * @return a Game instance from the specified file
      */
     public static Game loadGame(File file) {
-        Game game = null;
-        try {
-            game = mapper.readValue(file, Game.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Game game = (Game) loadFromStream(file);
+        if (game != null) {
+            game.getDatabase().openConnection();
         }
         return game;
     }
@@ -116,5 +112,30 @@ public class FileHandler {
     public static void serialize(FileOutputStream file, Object obj) throws IOException {
         mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
         mapper.writeValue(file, obj);
+    }
+
+    public static void saveToStream(File file, Object obj, String type) {
+        try {
+            String fileName = file.getName().split("\\.")[0] + type;
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(obj);
+            objectOut.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private static Object loadFromStream(File file) {
+        try {
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            Object data = objectIn.readObject();
+            fileIn.close();
+            return data;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

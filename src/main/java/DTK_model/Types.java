@@ -1,13 +1,14 @@
 package DTK_model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * The Game types which are used in the game and rendered in the game
  */
-public enum Types {
+public enum Types implements Serializable {
     /**
      * The Castle type
      */

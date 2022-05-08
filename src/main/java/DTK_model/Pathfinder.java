@@ -1,6 +1,7 @@
 package DTK_model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,7 +10,7 @@ import java.util.PriorityQueue;
 /**
  * Implementation of the Dijkstra's algorithm for finding the shortest path between two nodes.
  */
-public class Pathfinder {
+public class Pathfinder implements Serializable {
     /**
      * The map that the pathfinder is working on
      */

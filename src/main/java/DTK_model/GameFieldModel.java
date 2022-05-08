@@ -17,24 +17,22 @@ public class GameFieldModel {
     /**
      * The list of waypoints.
      */
-    private final ArrayList<Point> wayPoints = new ArrayList<>();
+    private static final ArrayList<Point> wayPoints = new ArrayList<>();
 
     /**
      * Game reference
      */
-    private Game game;
+    private final Game game;
 
     /**
      * Thw vertical size of the game field.
      */
-    private int xLength;
+    private final int xLength;
 
     /**
      * The horizontal size of the game field.
      */
-    private int yLength;
-
-
+    private final int yLength;
 
     /**
      * Constructs a new GameFieldModel.
@@ -43,10 +41,9 @@ public class GameFieldModel {
     public GameFieldModel(Game game) {
         genPriceList();
         this.game = game;
-        xLength = Game.getMap().getTiles()[0].length;
-        yLength = Game.getMap().getTiles().length;
+        xLength = Game.getMapReference().getTiles()[0].length;
+        yLength = Game.getMapReference().getTiles().length;
     }
-
 
     /**
      * Returns the price of a Unit.
@@ -97,8 +94,8 @@ public class GameFieldModel {
      * @param selection selection Entity
      */
     public void handleWayPoint(int xIdx, int yIdx, Entity selection) {
-        if (Game.getMap().getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
-            if (selection instanceof Soldier s && s.getTerrains().contains(Game.getMap().getTiles()[yIdx][xIdx].getType())) {
+        if (Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
+            if (selection instanceof Soldier s && s.getTerrains().contains(Game.getMapReference().getTiles()[yIdx][xIdx].getType())) {
                 if (wayPoints.contains(new Point(xIdx, yIdx))) {
                     wayPoints.remove(new Point(xIdx, yIdx));
                 } else
@@ -112,7 +109,7 @@ public class GameFieldModel {
      *
      * @return the waypoints
      */
-    public ArrayList<Point> getWayPoints() {
+    public static ArrayList<Point> getWayPoints() {
         return wayPoints;
     }
 
@@ -122,8 +119,8 @@ public class GameFieldModel {
      * @param yIdx y Index
      */
     public void delete(int xIdx, int yIdx) {
-        if (!Game.getMap().getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
-            Building b = (Building) Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0);
+        if (!Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().isEmpty()) {
+            Building b = (Building) Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0);
             Sides pSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? Sides.BLUE : Sides.RED;
             if (Objects.equals(b.getSide(), pSide) &&
                     !(b instanceof Castle)) {
@@ -165,7 +162,7 @@ public class GameFieldModel {
         boolean isEmpty = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                isEmpty = isEmpty && Game.getMap().getTiles()[y][x].getEntities().isEmpty();
+                isEmpty = isEmpty && Game.getMapReference().getTiles()[y][x].getEntities().isEmpty();
             }
         }
         return isEmpty;
@@ -184,9 +181,9 @@ public class GameFieldModel {
         boolean isBuildable = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                isBuildable = isBuildable && Game.getMap().getTiles()[y][x].getEntities().isEmpty()
-                        && !Objects.equals(Game.getMap().getTiles()[y][x].getType(), Types.MOUNTAIN)
-                        && !Objects.equals(Game.getMap().getTiles()[y][x].getType(), Types.SWAMP);
+                isBuildable = isBuildable && Game.getMapReference().getTiles()[y][x].getEntities().isEmpty()
+                        && !Objects.equals(Game.getMapReference().getTiles()[y][x].getType(), Types.MOUNTAIN)
+                        && !Objects.equals(Game.getMapReference().getTiles()[y][x].getType(), Types.SWAMP);
             }
         }
         if (!((side.equals(Sides.BLUE) && game.getGameState().getCurrentPlayer().getPlayerNumber() == 1)
@@ -205,7 +202,7 @@ public class GameFieldModel {
      * @return if we can train it
      */
     private boolean isInTrainingGround(int xIdx, int yIdx, Soldier s, Sides side) {
-        ArrayList<Entity> entities = Game.getMap().getTiles()[yIdx][xIdx].getEntities();
+        ArrayList<Entity> entities = Game.getMapReference().getTiles()[yIdx][xIdx].getEntities();
         boolean isInTrainingGround = false;
         for (Entity entity : entities) {
 
@@ -259,7 +256,7 @@ public class GameFieldModel {
         if (from.x < 0 || from.x > xLength - 1 || from.y < 0 || from.y > yLength - 1) {
             return 10000;
         }
-        if (hasNoBuilding(Game.getMap().getTiles()[from.y][from.x]) && unitIsPlaceable(Game.getMap().getTiles()[from.y][from.x], type))
+        if (hasNoBuilding(Game.getMapReference().getTiles()[from.y][from.x]) && unitIsPlaceable(Game.getMapReference().getTiles()[from.y][from.x], type))
             return counter;
         return countTiles(new Point(from.x + dir.x, from.y + dir.y), dir, counter + 1, type);
     }
@@ -303,7 +300,7 @@ public class GameFieldModel {
         if (b != null) {
             for (int y = b.getPosition().y; y < b.getPosition().y + b.getSize().height; y++) {
                 for (int x = b.getPosition().x; x < b.getPosition().x + b.getSize().width; x++) {
-                    Game.getMap().getTiles()[y][x].getEntities().clear();
+                    Game.getMapReference().getTiles()[y][x].getEntities().clear();
                 }
             }
         }
@@ -327,11 +324,11 @@ public class GameFieldModel {
 
                 GameState.animBuffer.add(s.getAnimObj());
                 s.getAnimObj().setSeconds(1 / s.getSpeed());
-                s.getAnimObj().setSpeedModifier(Game.getMap().getTiles()[point.y][point.x].getSpeedMod());
+                s.getAnimObj().setSpeedModifier(Game.getMapReference().getTiles()[point.y][point.x].getSpeedMod());
                 s.setIsAnimated(false);
                 wayPoints.forEach(s::addWaypoint);
                 wayPoints.clear();
-                Game.getMap().getTiles()[point.y][point.x].addEntities(s);
+                Game.getMapReference().getTiles()[point.y][point.x].addEntities(s);
                 game.getGameState().getCurrentPlayer().addEntity(s);
             }
         }
@@ -365,7 +362,7 @@ public class GameFieldModel {
                 enemyCastle.getPosition().y + enemyCastle.getSize().height / 2, type));
         testUnit.setSide(enemyCastle.getSide());
         Pathfinder pf = new Pathfinder();
-        Pathfinder.setMap(Game.getMap());
+        Pathfinder.setMap(Game.getMapReference());
 
 
         if (pf.Dijkstra(testUnit, enemyCastle.getSide().equals(Sides.RED) ? Sides.BLUE : Sides.RED, b) == null)
@@ -383,36 +380,36 @@ public class GameFieldModel {
                 if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
                     game.getGameState().getCurrentPlayer().addEntity(b);
                 }
-            } else if (Game.getMap().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+            } else if (Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
                     .contains(b.getType())
-                    && Objects.equals(Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    && Objects.equals(Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 if ((game.getGameState().getCurrentPlayer().getGold() >= 30
                         && Objects.equals(b.getType(), Types.BARRACKS))
                         || (Types.getTowerTypes().contains(b.getType()) && game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10)
                         && Types.getUpgradeable().contains(b.getType()))) {
                     game.getGameState().getCurrentPlayer()
-                            .upgradeBuilding((Building) Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0));
+                            .upgradeBuilding((Building) Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0));
                 }
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && Game.getMap().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                    && Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
                     .contains(Types.SHOTGUN)
                     && Objects.equals(b.getType(), Types.SNIPER)
-                    && Objects.equals(Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    && Objects.equals(Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 transformTower(b, xIdx, yIdx, inverted, type);
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && Game.getMap().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                    && Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
                     .contains(Types.SNIPER)
                     && Objects.equals(b.getType(), Types.SHOTGUN)
-                    && Objects.equals(Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    && Objects.equals(Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 transformTower(b, xIdx, yIdx, inverted, type);
 
             } else if (game.getGameState().getCurrentPlayer().getGold() >= 20
-                    && Game.getMap().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
+                    && Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().stream().map(Entity::getType).toList()
                     .contains(Types.BARRICADE)
                     && (Objects.equals(b.getType(), Types.SHOTGUN) || Objects.equals(b.getType(), Types.BARRICADE))
-                    && Objects.equals(Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
+                    && Objects.equals(Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0).getSide(), playerSide)) {
                 transformTower(b, xIdx, yIdx, inverted, type);
             }
         }
@@ -434,7 +431,7 @@ public class GameFieldModel {
         for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
             for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
                 if (game.getGameState().getCurrentPlayer().getGold() >= b.getValue()) {
-                    Game.getMap().getTiles()[y][x].addEntities(b);
+                    Game.getMapReference().getTiles()[y][x].addEntities(b);
                 }
             }
         }
@@ -449,8 +446,8 @@ public class GameFieldModel {
      * @return true if the building is destroyed
      */
     private boolean destroyedOnPos(int xIdx, int yIdx) {
-        if (Game.getMap().getTiles()[yIdx][xIdx].getEntities().size() > 0) {
-            for (Entity e : Game.getMap().getTiles()[yIdx][xIdx].getEntities()) {
+        if (Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().size() > 0) {
+            for (Entity e : Game.getMapReference().getTiles()[yIdx][xIdx].getEntities()) {
                 if (e instanceof Tower t && t.isDestroyed()) {
                     return true;
                 }
@@ -469,8 +466,8 @@ public class GameFieldModel {
     private void transformTower(Building b, int xIdx, int yIdx, boolean inverted, Types type) {
 
         Building newTower = game.getGameState().getCurrentPlayer()
-                .transformTower((Tower) Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
-        deleteBuilding((Building) Game.getMap().getTiles()[yIdx][xIdx].getEntities().get(0));
+                .transformTower((Tower) Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0), b.getType());
+        deleteBuilding((Building) Game.getMapReference().getTiles()[yIdx][xIdx].getEntities().get(0));
         placeBuilding(newTower, inverted, type);
         //repaint();
     }

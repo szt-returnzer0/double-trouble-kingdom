@@ -1,9 +1,11 @@
 package DTK_model;
 
+import java.io.Serializable;
+
 /**
  * This class is used to store the sides of the DTK model.
  */
-public enum Sides {
+public enum Sides implements Serializable  {
     /**
      * The left side of the Map.
      */

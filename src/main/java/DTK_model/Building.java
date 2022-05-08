@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Implements the Building Entity type.
@@ -13,12 +14,13 @@ import java.awt.*;
         use = JsonTypeInfo.Id.NAME,
         property = "type")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = Castle.class, name = "Castle"),
         @JsonSubTypes.Type(value = Barracks.class, name = "Barracks"),
         @JsonSubTypes.Type(value = Barricade.class, name = "Barricade"),
         @JsonSubTypes.Type(value = Sniper.class, name = "Sniper"),
         @JsonSubTypes.Type(value = Shotgun.class, name = "Shotgun"),
 })
-public abstract class Building extends Entity {
+public abstract class Building extends Entity implements Serializable {
     /**
      * Returns if the building can be upgraded.
      */

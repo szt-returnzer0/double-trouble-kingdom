@@ -2,52 +2,79 @@ package DTK_model;
 
 
 import DTK_persistence.Database;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 
 /**
  * Game class implementation for Double Trouble Kingdom, connects different game systems, contains methods for managing the state of game.
  */
-public class Game {
+public class Game implements Serializable {
     /**
      * The Map of the game.
      */
-    private static Map map;
+    private static Map mapReference;
     /**
      * The Database of the game.
      */
+    @JsonIgnore
     private Database database;
     /**
      * The GameState of the game.
      */
     private final GameState gameState;
 
+    private Map map;
+
     /**
      * Constructs a Game with dependency injection of Database and Map.
      *
      * @param database the Database to be injected
-     * @param map      the Map to be injected
+     * @param mapReference      the Map to be injected
      * @param p1Name   the name of Player1
      * @param p2Name   the name of Player2
      */
-    public Game(Database database, Map map, String p1Name, String p2Name) {
-        Pathfinder.setMap(map);
+    public Game(Database database, Map mapReference, String p1Name, String p2Name) {
+        Pathfinder.setMap(mapReference);
         this.database = database;
-        this.gameState = new GameState(p1Name, p2Name);
-        this.gameState.linkDBRef(database);
-        this.gameState.loadBuildings(map);
-        Game.map = map;
+        this.gameState = new GameState(p1Name, p2Name, database);
+        this.gameState.loadBuildings(mapReference);
+        Game.mapReference = mapReference;
+        this.map = mapReference;
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     /**
      * Constructs a Game for Editor use.
      *
-     * @param map the Map to be injected
+     * @param mapReference the Map to be injected
      */
-    public Game(Map map) {
-        Pathfinder.setMap(map);
-        Game.map = map;
+    public Game(Map mapReference) {
+        Pathfinder.setMap(mapReference);
+        Game.mapReference = mapReference;
         this.gameState = new GameState();
-        this.gameState.linkDBRef(database);
-        this.gameState.loadBuildings(map);
+        this.gameState.loadBuildings(mapReference);
+        this.map = mapReference;
+    }
+
+    public Game() {
+        this.gameState = new GameState();
+    }
+
+    /**
+     * Copy Constructor for Game.
+     * @param game the Game to be copied
+     */
+    public Game(Game game) {
+        this.gameState = new GameState(game.getGameState());
+        this.map = game.map;
+        this.database = game.database;
+        Pathfinder.setMap(map);
+        Game.mapReference = map;
+        game.getGameState().setElapsedTime(game.gameState.getElapsedTime());
     }
 
     /**
@@ -70,8 +97,8 @@ public class Game {
      *
      * @return the Map of the Game
      */
-    public static Map getMap() {
-        return map;
+    public static Map getMapReference() {
+        return mapReference;
     }
 
     /**

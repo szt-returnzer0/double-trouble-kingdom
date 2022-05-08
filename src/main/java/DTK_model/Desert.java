@@ -1,12 +1,13 @@
 package DTK_model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Implementation of Desert Terrain type.
  */
-public class Desert extends Terrain {
+public class Desert extends Terrain implements Serializable {
     /**
      * Constructs a new Desert instance without predefined entities.
      */

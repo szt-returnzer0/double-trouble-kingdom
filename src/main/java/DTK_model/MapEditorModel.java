@@ -22,8 +22,8 @@ public class MapEditorModel {
     private final int yLength;
 
     public MapEditorModel() {
-        xLength = Game.getMap().getTiles()[0].length;
-        yLength = Game.getMap().getTiles().length;
+        xLength = Game.getMapReference().getTiles()[0].length;
+        yLength = Game.getMapReference().getTiles().length;
     }
 
     /**
@@ -52,7 +52,7 @@ public class MapEditorModel {
         boolean onBuilding = true;
         for (int y = yIdx; y < yIdx + size.height; y++) {
             for (int x = xIdx; x < xIdx + size.width; x++) {
-                onBuilding = onBuilding && (hasMatchingTypes(Game.getMap().getTiles()[y][x].getEntities(), type) || Game.getMap().getTiles()[y][x].getEntities().isEmpty());
+                onBuilding = onBuilding && (hasMatchingTypes(Game.getMapReference().getTiles()[y][x].getEntities(), type) || Game.getMapReference().getTiles()[y][x].getEntities().isEmpty());
             }
         }
         return onBuilding;
@@ -86,7 +86,7 @@ public class MapEditorModel {
             }
             for (int y = yIdx; y < yIdx + b.getSize().height; y++) {
                 for (int x = xIdx; x < xIdx + b.getSize().width; x++) {
-                    Game.getMap().getTiles()[y][x].addEntities(b);
+                    Game.getMapReference().getTiles()[y][x].addEntities(b);
                 }
             }
 
@@ -115,12 +115,12 @@ public class MapEditorModel {
     public void placeBlock(int xIdx, int yIdx, GameFieldModel gameFieldModel, boolean inverted, Types type) {
         if (yIdx < yLength && xIdx < xLength && yIdx >= 0 && xIdx >= 0) {
 
-            ArrayList<Entity> ent = Game.getMap().getTiles()[yIdx][xIdx].getEntities();
+            ArrayList<Entity> ent = Game.getMapReference().getTiles()[yIdx][xIdx].getEntities();
 
             if (Types.getBuildingTypes().contains(type)) {
                 placeLimitedBuilding(Types.buildingFactory(type, xIdx, yIdx), inverted, type, gameFieldModel);
             } else if (Types.getTerrainTypes().contains(type)) {
-                Game.getMap().getTiles()[yIdx][xIdx] = Types.terrainFactory(type, ent);
+                Game.getMapReference().getTiles()[yIdx][xIdx] = Types.terrainFactory(type, ent);
             }
             if (Objects.equals(type, Types.DELETE)) {
                 safeDeleteBuilding((Building) ent.get(0), gameFieldModel);

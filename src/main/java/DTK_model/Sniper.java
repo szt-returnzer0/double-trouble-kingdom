@@ -1,11 +1,12 @@
 package DTK_model;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Implementation of Sniper Tower type.
  */
-public class Sniper extends Tower {
+public class Sniper extends Tower implements Serializable  {
     /**
      * Constructs a Sniper instance.
      *

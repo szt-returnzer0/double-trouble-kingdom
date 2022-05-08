@@ -3,14 +3,29 @@ package DTK_model;
 import com.fasterxml.jackson.annotation.*;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Implementation of Entity abstract class, containing the Entity types common fields and methods.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
-@JsonSubTypes({@JsonSubTypes.Type(value = Barracks.class, name = "Barracks"), @JsonSubTypes.Type(value = Castle.class, name = "Castle"), @JsonSubTypes.Type(value = Building.class, name = "Barricade"), @JsonSubTypes.Type(value = Building.class, name = "Sniper"), @JsonSubTypes.Type(value = Building.class, name = "Shotgun"), @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"), @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"), @JsonSubTypes.Type(value = Diver.class, name = "Diver"), @JsonSubTypes.Type(value = Climber.class, name = "Climber"), @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),})
+@JsonSubTypes(
+
+        {
+                @JsonSubTypes.Type(value = Barracks.class, name = "Barracks"),
+        @JsonSubTypes.Type(value = Castle.class, name = "Castle"),
+        @JsonSubTypes.Type(value = Building.class, name = "Barricade"),
+        @JsonSubTypes.Type(value = Building.class, name = "Sniper"),
+        @JsonSubTypes.Type(value = Building.class, name = "Shotgun"),
+        @JsonSubTypes.Type(value = Soldier.class, name = "Soldier"),
+        @JsonSubTypes.Type(value = Kamikaze.class, name = "Kamikaze"),
+        @JsonSubTypes.Type(value = Diver.class, name = "Diver"),
+        @JsonSubTypes.Type(value = Climber.class, name = "Climber"),
+        @JsonSubTypes.Type(value = Assassin.class, name = "Assassin"),
+        }
+)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-public abstract class Entity {
+public abstract class Entity implements Serializable {
     /**
      * The health of the Entity.
      */
@@ -92,6 +107,10 @@ public abstract class Entity {
         this.isAlive = true;
         this.side = side;
         this.animObj = new Animator(this);
+    }
+
+    protected Entity() {
+
     }
 
     /**

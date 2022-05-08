@@ -13,7 +13,7 @@ public class PlayerTest {
     @DisplayName("Simulation test")
     void SimulationTest() {
         Game game = new Game(new Database(), new Map(), "test1", "test2");
-        Pathfinder.setMap(Game.getMap());
+        Pathfinder.setMap(Game.getMapReference());
 
 
         assertEquals("test1", game.getGameState().getPlayers().get(0).getName(), "Player name is not correct");

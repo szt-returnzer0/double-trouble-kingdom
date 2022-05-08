@@ -3,6 +3,7 @@ package DTK_model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * the Player's name, entities and gold. Implements the methods of manipulating
  * entities.
  */
-public class Player {
+public class Player implements Serializable {
     /**
      * Static counter to determine the player's playerNumber.
      */

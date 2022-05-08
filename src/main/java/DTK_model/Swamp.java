@@ -1,11 +1,12 @@
 package DTK_model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Implementation of Swamp Terrain type.
  */
-public class Swamp extends Terrain {
+public class Swamp extends Terrain implements Serializable {
     /**
      * Constructs a new Swamp instance without predefined entities.
      */
