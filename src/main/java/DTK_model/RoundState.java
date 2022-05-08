@@ -7,13 +7,25 @@ public enum RoundState {
     /**
      * The game is in the first state.
      */
-    TRAINING,
+    TRAINING ("Training"),
     /**
      * The game is in the second state.
      */
-    BUILDING,
+    BUILDING ("Building"),
     /**
      * The game is in the third state.
      */
-    ATTACKING
+    ATTACKING ("Attacking");
+
+    /**
+     * The name of the state.
+     */
+    public final String text;
+
+    /**
+     * Constructor for the RoundState enum.
+     */
+    RoundState(String text) {
+        this.text = text;
+    }
 }

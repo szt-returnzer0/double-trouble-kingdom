@@ -193,10 +193,10 @@ public class GameField extends GameFieldRenderer {
      * @return the Round state as a String
      */
     private String getRoundStateText() {
-        return !Objects.equals(game.getGameState().getRoundState(), RoundState.ATTACKING)
-                ? ("Phase: " + game.getGameState().getRoundState() + " | Player: "
+        return !Objects.equals(game.getGameState().getRoundState().text, RoundState.ATTACKING)
+                ? ("Phase: " + game.getGameState().getRoundState().text + " | Player: "
                         + game.getGameState().getCurrentPlayer().getPlayerNumber())
-                : ("Phase: " + game.getGameState().getRoundState());
+                : ("Phase: " + game.getGameState().getRoundState().text);
     }
 
     /**
