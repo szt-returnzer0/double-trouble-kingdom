@@ -41,7 +41,7 @@ public class GameFieldRenderer extends JPanel {
     /**
      * Reference to a Map instance.
      */
-    protected static Map mapRef;
+    protected Map mapRef;
     /**
      * The selected Entity.
      */

@@ -132,12 +132,12 @@ public class MapEditorView extends GameField {
             b.invert();
         ArrayList<Queue<Building>> arr = Objects.equals(b.getType(), Types.CASTLE) ? castles : barracks;
         int maxSize = Objects.equals(b.getType(), Types.CASTLE) ? 1 : 2;
-        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), Types.CASTLE) || isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
+        if (xIdx + b.getSize().width <= xLength && yIdx + b.getSize().height <= yLength && notOnOtherBuilding(xIdx, yIdx, b.getSize()) && (Objects.equals(b.getType(), Types.CASTLE) || gameFieldModel.isEmpty(xIdx, yIdx, b.getSize())) && !(xIdx > xLength / 2.0 - 1 - (b.getSize().width) && xIdx < xLength / 2.0)) {
             if (side.equals(Sides.BLUE) && arr.get(0).size() >= maxSize) {
-                deleteBuilding(arr.get(0).remove());
+                gameFieldModel.deleteBuilding(arr.get(0).remove());
 
             } else if (side.equals(Sides.RED) && arr.get(1).size() >= maxSize) {
-                deleteBuilding(arr.get(1).remove());
+                gameFieldModel.deleteBuilding(arr.get(1).remove());
             }
             if (side.equals(Sides.BLUE)) {
                 arr.get(0).add(b);
@@ -195,7 +195,7 @@ public class MapEditorView extends GameField {
             default -> throw new IllegalArgumentException("Unexpected value: " + building.getType());
 
         }
-        deleteBuilding(building);
+        gameFieldModel.deleteBuilding(building);
 
     }
 
