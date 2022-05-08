@@ -22,7 +22,7 @@ class KamikazeTest {
         Point point = new Point(2, 3);
         Kamikaze kamikaze = new Kamikaze(point);
         assertEquals(point, kamikaze.getPosition(), "Position is equal with point");
-        assertEquals(2, kamikaze.getSpeed(), "Speed is equal with speed");
+        assertEquals(4, kamikaze.getSpeed(), "Speed is equal with speed");
         assertTrue(kamikaze.isAnimated(), "Kamikaze is animated");
         assertEquals(10, kamikaze.getHealthPoints(), "HealthPoints is 10 ");
         assertEquals(new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT)), kamikaze.getTerrains(), "Terrain is an ArrayList with Plains and Desert in it");

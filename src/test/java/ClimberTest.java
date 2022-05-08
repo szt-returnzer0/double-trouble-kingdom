@@ -20,7 +20,7 @@ class ClimberTest {
         Point point = new Point(2, 3);
         Climber climber = new Climber(point);
         assertEquals(point, climber.getPosition(), "Position is equal with point");
-        assertEquals(1, climber.getSpeed(), "Speed is equal with speed");
+        assertEquals(4, climber.getSpeed(), "Speed is equal with speed");
         assertTrue(climber.isAnimated(), "Climber is animated");
         assertEquals(10, climber.getHealthPoints(), "HealthPoints is 10 ");
         assertEquals(new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT, Types.MOUNTAIN)), climber.getTerrains(), "Terrain is an ArrayList with Plains, Desert and Mountain in it");

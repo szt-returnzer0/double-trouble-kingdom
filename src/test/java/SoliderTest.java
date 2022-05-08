@@ -34,7 +34,7 @@ class SoliderTest {
         Point point = new Point(2, 3);
         Soldier soldier = new Soldier(point);
         assertEquals(point, soldier.getPosition(), "Position is equal with point");
-        assertEquals(2, soldier.getSpeed(), "Speed is equal with speed");
+        assertEquals(5, soldier.getSpeed(), "Speed is equal with speed");
         assertTrue(soldier.isAnimated(), "Soldier is animated");
         assertEquals(10, soldier.getHealthPoints(), "HealthPoints is 10 ");
         assertEquals(new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT)), soldier.getTerrains(), "Terrain is an ArrayList with Plains and Desert in it");

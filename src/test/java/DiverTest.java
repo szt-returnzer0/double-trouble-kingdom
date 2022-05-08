@@ -21,7 +21,7 @@ class DiverTest {
         Point point = new Point(2, 3);
         Diver diver = new Diver(point);
         assertEquals(point, diver.getPosition(), "Position is equal with point");
-        assertEquals(3, diver.getSpeed(), "Speed is equal with speed");
+        assertEquals(5, diver.getSpeed(), "Speed is equal with speed");
         assertTrue(diver.isAnimated(), "Diver is animated");
         assertEquals(10, diver.getHealthPoints(), "HealthPoints is 10 ");
         assertEquals(new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT, Types.SWAMP)), diver.getTerrains(), "Terrain is an ArrayList with Plains, Desert and Swamp in it");

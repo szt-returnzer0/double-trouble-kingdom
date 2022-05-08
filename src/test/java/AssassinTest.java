@@ -30,7 +30,7 @@ class AssassinTest {
         Point point = new Point(2, 3);
         Assassin assassin = new Assassin(point);
         assertEquals(point, assassin.getPosition(), "Position is equal with point");
-        assertEquals(3, assassin.getSpeed(), "Speed is equal with speed");
+        assertEquals(6, assassin.getSpeed(), "Speed is equal with speed");
         assertTrue(assassin.isAnimated(), "Assassin is animated");
         assertEquals(10, assassin.getHealthPoints(), "HealthPoints is 10 ");
         assertEquals(new ArrayList<>(Arrays.asList(Types.PLAINS, Types.DESERT)), assassin.getTerrains(), "Terrain is an ArrayList with Plains and Desert in it");

@@ -316,7 +316,8 @@ public class GameFieldModel {
             s.setOwner(game.getGameState().getCurrentPlayer());
             int xIdx = s.getPosition().x;
             int yIdx = s.getPosition().y;
-            Sides side = determineSide(xIdx);
+            Sides side = xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
+
             s.setSide(side);
             if (isInTrainingGround(xIdx, yIdx, s, side)) {
                 Point point = closestEmptyTile(xIdx, yIdx, type);
@@ -345,7 +346,7 @@ public class GameFieldModel {
         b.setOwner(game.getGameState().getCurrentPlayer());
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
-        Sides side = determineSide(xIdx);
+        Sides side = xIdx + b.getSize().width / 2 -1 <= xLength / 2 ? Sides.BLUE : Sides.RED;
         b.setSide(side);
 
         if (inverted)
@@ -416,9 +417,7 @@ public class GameFieldModel {
 
     }
 
-    private Sides determineSide(int xIdx) {
-        return xIdx <= xLength / 2 ? Sides.BLUE : Sides.RED;
-    }
+
 
     /**
      * Checks if the building can be placed on the given tile
