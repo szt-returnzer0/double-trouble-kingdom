@@ -84,7 +84,7 @@ public abstract class Building extends Entity {
     @Override
     public String getImage() {
         int invert = (size.width > size.height) ? 1 : 0;
-        if (canUpgrade)
+        if (canUpgrade && invert == 1)
             invert++;
 
         int upgrade = isUpgraded ? 1 : 0;

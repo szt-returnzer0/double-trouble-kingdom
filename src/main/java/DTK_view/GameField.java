@@ -625,7 +625,7 @@ public class GameField extends GameFieldRenderer {
                 if ((game.getGameState().getCurrentPlayer().getGold() >= 30
                         && Objects.equals(b.getType(), Types.BARRACKS))
                         || (game.getGameState().getCurrentPlayer().getGold() >= (((Tower) b).getLevel() * 5 + 10)
-                                && Types.getUpgradeable().contains(b.getType()))) {
+                        && Types.getUpgradeable().contains(b.getType()))) { //CAN'T CAST TO TOWER
                     game.getGameState().getCurrentPlayer()
                             .upgradeBuilding((Building) mapRef.getTiles()[yIdx][xIdx].getEntities().get(0));
                     this.controlPanel.updateButtonText();

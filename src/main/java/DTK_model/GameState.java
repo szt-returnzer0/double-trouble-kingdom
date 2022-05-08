@@ -3,7 +3,6 @@ package DTK_model;
 import DTK_persistence.DBRecord;
 import DTK_persistence.Database;
 import DTK_view.GameField;
-import DTK_view.GameFieldRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -456,7 +455,7 @@ public class GameState {
      * Calculates the soldier' path.
      */
     public void calculatePaths() {
-        Pathfinder.setMap(GameFieldRenderer.getMapRef());
+        Pathfinder.setMap(Game.getMap());
         for (Player player : players) {
             for (Soldier soldier : player.getSoldiers()) {
                 soldier.calculatePath();

@@ -38,4 +38,12 @@ public class GameFieldModel {
         priceList.put("Cli", (new Climber(new Point(0, 0))).getValue() + "g");
         priceList.put("Ass", (new Assassin(new Point(0, 0))).getValue() + "g");
     }
+
+    public static boolean isAttackAnimated(Tower t) {
+        return t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack() && !t.isDestroyed();
+    }
+
+    public static boolean isInAttackRange(Tower t, Entity target) {
+        return t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive();
+    }
 }

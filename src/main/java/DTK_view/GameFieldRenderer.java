@@ -214,16 +214,6 @@ public class GameFieldRenderer extends JPanel {
     private int bevelCnt = 0;
 
     /**
-     * Returns a map reference.
-     *
-     * @return the map
-     */
-    public static Map getMapRef() {
-        return mapRef;
-    }
-
-    //model
-    /**
      * Draws the waypoints
      *
      * @param g2d the graphics we use
@@ -242,7 +232,6 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
-    //model
     /**
      * Draws the selected Entity.
      *
@@ -251,15 +240,6 @@ public class GameFieldRenderer extends JPanel {
      * @param y   the vertical coordinate
      */
     protected void drawEnt(Graphics2D g2d, int x, int y) {
-
-       /* if (!mapRef.getTiles()[y][x].getEntities().isEmpty()) {
-            for (int i = 0; i < mapRef.getTiles()[y][x].getEntities().size(); i++) {
-                if (!mapRef.getTiles()[y][x].getEntities().get(i).isAlive()) {
-                    mapRef.getTiles()[y][x].getEntities().remove(i--);
-
-                }
-            }
-        }*/
         for (Entity entity : mapRef.getTiles()[y][x].getEntities()) {
             handleType(g2d, entity.getType());
             if (!entity.isAnimated() && entity.isAlive()) {
@@ -322,8 +302,8 @@ public class GameFieldRenderer extends JPanel {
         g2d.dispose();
     }
 
-    //model
-    void drawPathVisualization(Graphics2D g2d) {
+
+    private void drawPathVisualization(Graphics2D g2d) {
         if (game.getGameState().isPathVisualization()) {
             for (Entity entity : game.getGameState().getCurrentPlayer().getEntities()) {
                 if (entity instanceof Soldier s) {
@@ -336,8 +316,7 @@ public class GameFieldRenderer extends JPanel {
         }
     }
 
-    //model
-    void drawAttackAnimation(Graphics2D g2d) {
+    private void drawAttackAnimation(Graphics2D g2d) {
         Set<Tower> towers = new HashSet<>();
         towers.addAll(game.getGameState().getEnemyTowers(1));
         towers.addAll(game.getGameState().getEnemyTowers(2));
@@ -347,9 +326,9 @@ public class GameFieldRenderer extends JPanel {
             g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, new float[]{9}, bevelCnt * 2));
             for (Tower t : towers) {
-                if (t.getTargets() != null && !t.getTargets().isEmpty() && t.isCanAttack() && !t.isDestroyed()) {
+                if (GameFieldModel.isAttackAnimated(t)) {
                     for (Entity target : t.getTargets()) {
-                        if (t.getPosition().distance(target.getPosition()) <= t.getRange() && target.isAlive()) {
+                        if (GameFieldModel.isInAttackRange(t, target)) {
                             g2d.drawLine((target.getPosition().x + target.getSize().width / 2) * scale, (target.getPosition().y + target.getSize().height / 2) * scale,
                                     (t.getPosition().x + t.getSize().width / 2) * scale, (t.getPosition().y + t.getSize().height / 2) * scale);
                         }
@@ -533,7 +512,6 @@ public class GameFieldRenderer extends JPanel {
             drawBldOwner(g2d, ent, side);
         }
 
-        //draw destroyed towers in red
         if (ent instanceof Tower t && t.isDestroyed()) {
             g2d.setColor(Color.RED);
             g2d.drawRect(ent.getPosition().x * scale + 2, ent.getPosition().y * scale + 2, ent.getSize().width * scale - 4, ent.getSize().height * scale - 4);

@@ -182,7 +182,7 @@ public class Animator {
      * Animate an entity.
      */
     public void animate() {
-        Terrain[][] entities = GameFieldRenderer.getMapRef().getTiles();
+        Terrain[][] entities = Game.getMap().getTiles();
         setSpeedModifier(entities[entity.getPosition().y][entity.getPosition().x].getSpeedMod());
         setSeconds(speedModifier);
 
