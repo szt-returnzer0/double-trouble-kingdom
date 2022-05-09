@@ -69,7 +69,8 @@ public class MapEditorModel {
     private void placeLimitedBuilding(Building building, boolean inverted, Types type, GameFieldModel gameFieldModel) {
         int xIndex = building.getPosition().x;
         int yIndex = building.getPosition().y;
-        Sides side = xIndex < xLength / 2 ? Sides.BLUE : Sides.RED;
+        //Sides side = xIndex < xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = xIndex + building.getSize().width / 2 - 1 < xLength / 2 ? Sides.BLUE : Sides.RED;
         building.setSide(side);
         if (inverted)
             building.invert();
