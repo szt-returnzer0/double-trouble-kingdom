@@ -116,7 +116,7 @@ public class GameFieldRenderer extends JPanel {
                 scale = (frame.getContentPane().getSize().width) / xLength;
                 int panelX = (int) (frame.getSize().getWidth());
                 int panelY = (int) (frame.getSize().getHeight());
-                int width = (int) (panelX / 3 * 0.9);
+                int width = (int) (panelX / 3);
                 int height = (int) (panelY * 0.07);
                 controlPanel.setBounds(panelX / 2 - width / 2, (int) (panelY * 0.85), width, height);
                 controlPanel.resize();
