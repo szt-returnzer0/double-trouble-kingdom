@@ -15,9 +15,9 @@ class MapEditorModelTest {
         int y = 0;
         GameFieldModel gameFieldModel = new GameFieldModel(game);
         boolean inverted = false;
-        mapEditorModel.placeBlock(x, y, gameFieldModel, inverted, Types.SNIPER);
+        mapEditorModel.placeBlock(x, y, gameFieldModel, inverted, Types.SNIPER, game);
         assertEquals(1, Game.getMapReference().getTiles()[0][0].getEntities().size(), "Entities count should be 1");
-        mapEditorModel.placeBlock(x, y, gameFieldModel, inverted, Types.MOUNTAIN);
+        mapEditorModel.placeBlock(x, y, gameFieldModel, inverted, Types.MOUNTAIN, game);
         assertEquals(Types.MOUNTAIN, Game.getMapReference().getTiles()[0][0].getType(), "Type should be Mountain");
     }
 }

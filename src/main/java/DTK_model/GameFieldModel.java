@@ -244,7 +244,7 @@ public class GameFieldModel {
      * @param yIdx index of the column
      * @return the location of the closest empty tile
      */
-    private Point closestEmptyTile(int xIdx, int yIdx, Types type) {
+    public Point closestEmptyTile(int xIdx, int yIdx, Types type) {
         Point[] directions = new Point[]{new Point(-1, 0), new Point(0, 1), new Point(1, 0), new Point(0, -1)};
         Integer[] counts = Arrays.stream(directions).map(e -> countTiles(new Point(xIdx, yIdx), e, 0, type))
                 .toArray(Integer[]::new);
@@ -354,7 +354,7 @@ public class GameFieldModel {
         b.setOwner(game.getGameState().getCurrentPlayer());
         int xIdx = b.getPosition().x;
         int yIdx = b.getPosition().y;
-        Sides side = xIdx + b.getSize().width / 2 - 1 <= xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = xIdx + b.getSize().width / 2 - 1 < xLength / 2 ? Sides.BLUE : Sides.RED;
         b.setSide(side);
 
         if (inverted)
