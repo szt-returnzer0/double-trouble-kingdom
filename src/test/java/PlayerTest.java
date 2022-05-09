@@ -1,7 +1,7 @@
-import DTK_model.*;
-import DTK_persistence.Database;
+import model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import persistence.Database;
 
 import java.awt.*;
 

@@ -1,8 +1,8 @@
-import DTK_model.Game;
-import DTK_model.Map;
-import DTK_persistence.Database;
+import model.Game;
+import model.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import persistence.Database;
 
 import static org.junit.jupiter.api.Assertions.*;
 

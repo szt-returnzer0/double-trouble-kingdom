@@ -1,4 +1,4 @@
-import DTK_model.Castle;
+import model.Castle;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

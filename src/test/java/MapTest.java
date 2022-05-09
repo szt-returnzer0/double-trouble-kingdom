@@ -1,4 +1,4 @@
-import DTK_model.Map;
+import model.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

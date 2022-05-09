@@ -1,6 +1,6 @@
-import DTK_model.Barracks;
-import DTK_model.Castle;
-import DTK_model.Types;
+import model.Barracks;
+import model.Castle;
+import model.Types;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,4 @@
-import DTK_model.Animator;
-import DTK_model.Map;
-import DTK_model.Pathfinder;
-import DTK_model.Sides;
-import DTK_model.Soldier;
+import model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

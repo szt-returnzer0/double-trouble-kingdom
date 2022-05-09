@@ -1,7 +1,7 @@
-import DTK_model.Diver;
-import DTK_model.Map;
-import DTK_model.Pathfinder;
-import DTK_model.Types;
+import model.Diver;
+import model.Map;
+import model.Pathfinder;
+import model.Types;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

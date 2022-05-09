@@ -1,7 +1,7 @@
-import DTK_model.Map;
-import DTK_model.Mountain;
-import DTK_model.Pathfinder;
-import DTK_model.Soldier;
+import model.Map;
+import model.Mountain;
+import model.Pathfinder;
+import model.Soldier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
