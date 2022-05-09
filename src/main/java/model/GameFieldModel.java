@@ -354,7 +354,7 @@ public class GameFieldModel {
         building.setOwner(game.getGameState().getCurrentPlayer());
         int xIndex = building.getPosition().x;
         int yIndex = building.getPosition().y;
-        Sides side = xIndex + building.getSize().width / 2 - 1 < xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = xIndex + building.getSize().width / 2 - 1 <= xLength / 2 ? Sides.BLUE : Sides.RED;
         building.setSide(side);
 
         if (inverted)
@@ -380,7 +380,7 @@ public class GameFieldModel {
 
         Sides playerSide = game.getGameState().getCurrentPlayer().getPlayerNumber() == 1 ? Sides.BLUE : Sides.RED;
         if (xIndex + building.getSize().width <= xLength && yIndex + building.getSize().height <= yLength
-                && !(xIndex > xLength / 2.0 - 1 - (building.getSize().width) && xIndex < xLength / 2.0)) {
+                && !(xIndex > xLength / 2.0 - 1 - (building.getSize().width) && xIndex < xLength / 2.0)&& xIndex != xLength/2.0) {
 
             if (isBuildable(xIndex, yIndex, building.getSize(), side)) {
 

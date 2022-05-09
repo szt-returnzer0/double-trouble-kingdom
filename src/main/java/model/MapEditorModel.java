@@ -69,8 +69,7 @@ public class MapEditorModel {
     private void placeLimitedBuilding(Building building, boolean inverted, Types type, GameFieldModel gameFieldModel) {
         int xIndex = building.getPosition().x;
         int yIndex = building.getPosition().y;
-        //Sides side = xIndex < xLength / 2 ? Sides.BLUE : Sides.RED;
-        Sides side = xIndex + building.getSize().width / 2 - 1 < xLength / 2 ? Sides.BLUE : Sides.RED;
+        Sides side = xIndex + building.getSize().width / 2 - 1 <= xLength / 2 ? Sides.BLUE : Sides.RED;
         building.setSide(side);
         if (inverted)
             building.invert();
@@ -78,7 +77,10 @@ public class MapEditorModel {
 
         ArrayList<Queue<Building>> arr = Objects.equals(building.getType(), Types.CASTLE) ? castles : barracks;
         int maxSize = Objects.equals(building.getType(), Types.CASTLE) ? 1 : 2;
-        if (xIndex + building.getSize().width <= xLength && yIndex + building.getSize().height <= yLength && notOnOtherBuilding(xIndex, yIndex, building.getSize(), type) && (Objects.equals(building.getType(), Types.CASTLE) || gameFieldModel.isEmpty(xIndex, yIndex, building.getSize())) && !(xIndex > xLength / 2.0 - 1 - (building.getSize().width) && xIndex < xLength / 2.0)) {
+        if (xIndex + building.getSize().width <= xLength && yIndex + building.getSize().height <= yLength &&
+                notOnOtherBuilding(xIndex, yIndex, building.getSize(), type) &&
+                (Objects.equals(building.getType(), Types.CASTLE) || gameFieldModel.isEmpty(xIndex, yIndex, building.getSize())) &&
+                !(xIndex > xLength / 2.0 - 1 - (building.getSize().width) && xIndex < xLength / 2.0) && xIndex != xLength/2.0){
             if (side.equals(Sides.BLUE) && arr.get(0).size() >= maxSize) {
                 gameFieldModel.deleteBuilding(arr.get(0).remove());
 

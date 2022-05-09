@@ -48,6 +48,11 @@ public class Soldier extends Entity {
     protected final ArrayList<Point> castleParts;
 
     /**
+     * Is soldier targeted
+     */
+    private boolean isTargeted;
+
+    /**
      * Constructs a new Soldier instance.
      *
      * @param position the soldier's position
@@ -67,6 +72,7 @@ public class Soldier extends Entity {
         this.wayPoints = new ArrayList<>();
         this.visualizationStart = this.visualizationEnd = 0;
         this.castleParts = new ArrayList<>();
+        this.isTargeted = false;
     }
 
 
@@ -172,5 +178,23 @@ public class Soldier extends Entity {
      */
     public ArrayList<Point> getAbsPath() {
         return pathfinder.genPath(this, (side.equals(Sides.BLUE) ? Sides.RED : Sides.BLUE), null, "abs");
+    }
+
+    /**
+     * Returns if the Soldier is targeted.
+     *
+     * @return if the Soldier is targeted
+     */
+    public boolean isTargeted() {
+        return isTargeted;
+    }
+
+    /**
+     * Sets if the Soldier is targeted.
+     *
+     * @param targeted if the Soldier is targeted
+     */
+    public void setTargeted(boolean targeted) {
+        isTargeted = targeted;
     }
 }

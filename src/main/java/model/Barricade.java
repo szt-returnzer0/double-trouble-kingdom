@@ -24,6 +24,5 @@ public class Barricade extends Tower {
      */
     @Override
     public void attack() {
-        throw new UnsupportedOperationException("Barricades cannot attack.");
     }
 }

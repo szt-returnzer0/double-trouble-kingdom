@@ -380,6 +380,9 @@ public class GameState implements Serializable {
      */
     public void setTargets() {
         for (Player player : players) {
+            for (Soldier soldier : player.getSoldiers()) {
+                soldier.setTargeted(false);
+            }
             for (Entity entity : player.getEntities()) {
                 if (Types.getSoldierTypes().contains(entity.getType())) {
                     ((Soldier) entity).selectTarget(getEnemyCastle(player.getPlayerNumber()));

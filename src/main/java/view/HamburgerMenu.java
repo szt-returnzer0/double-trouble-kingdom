@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 
-//NEEDS CLEANUP!!!
 
 /**
  * Implementation of HamburgerMenu component.

@@ -221,7 +221,7 @@ public class Player implements Serializable {
      * @param type  the type we want
      * @return new Tower Entity
      */
-    public Tower transformTower(Tower tower, Types type) { // rewrite with void method
+    public Tower transformTower(Tower tower, Types type) { 
         this.gold += 10;
         return tower.transform(type);
     }

@@ -189,8 +189,9 @@ public abstract class Tower extends Building {
     public void attack() {
         targetCount = 0;
 
-        for (Entity target : this.targets) {
-            if (target.getPosition().distance(this.position) <= range && targetCount < targetsPerAttack) {
+        for (Soldier target : this.targets) {
+            if (target.getPosition().distance(this.position) <= range && targetCount < targetsPerAttack && !target.isTargeted()) {
+                target.setTargeted(true);
                 target.takeDamage(this.damage);
                 if (attackSpeed > 1)
                     target.takeDamage(this.damage);
