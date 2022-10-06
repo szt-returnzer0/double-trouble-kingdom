@@ -27,6 +27,22 @@ A Double Trouble Kingdom kétszemélyes, egy gépen játszható stratégiai ját
 A feladat megvalósításához a Java nyelvet választottuk, mert hatékonyan lehet benne eseményvezérelt alkalmazásokat fejleszteni és beszédes a szintaxisa. A fejlesztést a legújabb LTS verzióban, a Java 17-ben végezzük. A projekt buildeléséhez a Gradle-t használjuk, a tisztán érthető dokumentációja és a felkapottsága miatt esett rá a választás. A felhasználói felület fejlesztéshez a Java Swing és AWT párost alkalmazzuk. A korábbi játékeredményeket SQLite adatbázisban tároljuk a serverless mivoltából és könnyen kezelhetőségéből kiindulva. 
 
 
+## Képek
+Menü:
+![menu](https://user-images.githubusercontent.com/83843622/194316554-2ef52e42-f473-4771-8be6-c69c19847603.png)
+
+
+Játékmenet:
+![gameplay](https://user-images.githubusercontent.com/83843622/194316453-43e69a5f-740c-4719-af7d-e5954105b15e.gif)
+
+Szerkesztő:
+![editor](https://user-images.githubusercontent.com/83843622/194316507-cb2232ed-3f02-4a29-89b7-df7eb6933253.png)
+
+Útkeresési debug:
+![debugwaypoint](https://user-images.githubusercontent.com/83843622/194316630-368bc780-1c2a-4237-86a8-83f9cb33e5c7.gif)
+
+
+
 ## Projekt Setup
 Klónozás után a projektmappát tetszőleges text editorban vagy IDE-ben megnyitva, a terminálban a következő parancsokkal tudjuk buildelni, futtatni és tesztelni a projektet.
 
